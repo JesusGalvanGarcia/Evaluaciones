@@ -1,0 +1,231 @@
+.sd{
+  --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 50%))));
+  font-size: 200%;
+  line-height: calc(1.25*(var(--cover-title-font-size)));
+  color: var(--sjs-primary-backcolor, var(--primary, #157722));
+  font-family: var(--sjs-font-surveytitle-family, var(--font-family));
+  font-weight: var(--sjs-font-surveytitle-weight, 700);
+  text-align: center;
+  align-items: center;
+  display: flex;
+}
+.contenedor-padre {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  /* Establece la altura para ocupar toda la pantalla si es necesario */
+}
+
+.sdComienzo{
+  --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
+  font-size: 120%;
+  width: 95%;
+  line-height: calc(1.25*(var(--cover-title-font-size)));
+  color: var(--sjs-primary-backcolor, var(--primary, #57575a));
+  font-family: var(--sjs-font-surveytitle-family, var(--font-family));
+  font-weight: var(--sjs-font-surveytitle-weight, 700);
+  text-align: center;
+}
+.sdPregunta{
+  --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
+  font-size: 150%;
+  line-height: calc(1.25*(var(--cover-title-font-size)));
+  color: var(--sjs-primary-backcolor, var(--primary, #6b6b6e));
+  font-family: var(--sjs-font-surveytitle-family, var(--font-family));
+  font-weight: var(--sjs-font-surveytitle-weight, 700);
+  margin-left: 15%;
+}
+.sdDescripcion{
+  --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
+  font-size: 90%;
+  line-height: calc(1.25*(var(--cover-title-font-size)));
+  color: var(--sjs-primary-backcolor, var(--primary, #b60b0b));
+  font-family: var(--sjs-font-surveytitle-family, var(--font-family));
+  font-weight: var(--sjs-font-surveytitle-weight, 700);
+  margin-left: 15%;
+}
+.bgImageContainer2 {
+  z-index: -1;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, rgb(84 114 92 / 92%) 0%, rgb(11 32 112 / 78%) 100%), linear-gradient(180deg, #ebece8 0%, rgba(24, 28, 215, 0) 100%);
+
+  background-size: 100% 100%;
+}
+
+.main-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bgImageContainer {
+  z-index: -1;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgb(46,117,182);
+  background: linear-gradient(0deg, rgba(16, 26, 62, 0.43) 0%, rgba(16, 26, 62, 0.43) 100%), linear-gradient(180deg, #ebece8 0%, rgba(107, 175, 96, 0.00) 100%);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  background-size: 100% 100%;
+}
+
+.btn-ingresar{
+  margin-top: 30px;
+  border-radius: 15px !important;
+  inline-size: max-content;
+  transition: 200ms;
+  min-height: 50px;
+  border: 0px; //Cambiar color borde
+  font-size: 1.5rem;
+  color: white;
+  width: 100%;
+  background: #7FBC03;
+}
+
+.btn-ingresar:hover{
+
+background: #4983CF;
+}
+.screen{
+  margin-top: 3%;
+  opacity: 0;
+  transform: translateX(500px); /* Desplazar 20px hacia la derecha */
+
+  transition: opacity 1s ease, transform 1s ease, margin 1s ease; /* Duración y funciones de la animación */
+}
+.fade-out {
+  opacity: 0;
+  transform: translateX(500px); /* Desplazar 20px hacia la derecha */
+  margin-right: -20px; /* Mantén el margen para evitar saltos */
+  transition: opacity 1s ease, transform 1s ease, margin 1s ease; /* Duración y funciones de la animación */
+}
+
+/* Estilo personalizado para los radio botones */
+.radio-button {
+  -webkit-appearance: none; /* Elimina los estilos nativos del navegador */
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px; /* Tamaño del radio botón */
+  height: 20px;
+  border: 2px solid #333; /* Borde del radio botón */
+  border-radius: 50%; /* Hace que el radio botón sea circular */
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+
+  /* Estilo cuando está marcado */
+  &:checked {
+    background-color: #168f20; /* Color de fondo cuando está marcado */
+    border-color: #333; /* Color del borde cuando está marcado */
+  }
+}
+
+/* Estilo para las etiquetas de los radio botones */
+.radio-label {
+  font-size: 16px; /* Tamaño de fuente de la etiqueta */
+  margin-left: 8px; /* Espacio entre el radio botón y la etiqueta (ajusta según tus necesidades) */
+}
+
+/* Estilo para el contenedor padre (puedes personalizar según tus necesidades) */
+.radio-container {
+  display: flex;
+  align-items: center;
+}
+
+.pregunta-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin-top: -5%;
+  font-weight: bold;
+  color: #999797;
+}
+.back
+{
+  width: 30%;
+  margin-top: -72%;
+  margin-left: 5%;
+}
+.contenedor-form {
+  background-color: white;
+  flex-direction: column;
+  width: 60%;
+  height: 520px;
+  /* padding: 30px; */
+  border-radius: 30px;
+  box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+}
+.cent {
+  display: flex;
+  flex-direction: column; /* Alinea verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+
+}
+.btn{
+  width: 40%;
+}
+.btnEmpezar{
+  width: 60%;
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column; /* Alinea verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+}
+.cent2 {
+  
+  justify-content: center !important ; /* Centra horizontalmente */
+  align-items: center !important ; /* Centra verticalmente */
+  /* Otras propiedades de estilo según tus necesidades */
+
+}
+
+.custom-label {
+  display: flex;
+  align-items: center; /* Alinear verticalmente el contenido */
+  height: 2rem; /* Establecer una altura fija */
+  /* Puedes ajustar la altura según tus necesidades */
+}
+
+
+.sub-contenedor-login {
+    /* padding: 20px; */
+    background: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+
+.contenedor-footer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.icons{
+  width: 30px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+  display: none;
+}
+.colorinp{
+border-radius: 30px;
+background: #FAF7F7;
+}
+.center-div {
+display: flex; /* Convierte el contenedor en un contenedor flexible */
+justify-content: center; /* Centra horizontalmente los elementos dentro del contenedor */
+align-items: center; /* Centra verticalmente los elementos dentro del contenedor */
+
+}

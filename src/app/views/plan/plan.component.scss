@@ -1,0 +1,97 @@
+p {
+    font-family: inherit;
+  }
+  table {
+    width: 70%;
+    margin: auto;
+    margin-top: 25px;
+  }
+  .btn-edit {
+    text-align: right;
+  }
+  .text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+  }
+  .button-round {
+    width: 40px; /* Establece el ancho deseado */
+    height: 40px; /* Establece el alto deseado (el mismo que el ancho para hacerlo redondo) */
+    border-radius: 50%; /* Hace que los bordes sean redondeados para lograr la forma circular */
+    background-color: #007ACC; /* Color de fondo del botón */
+    color: #fff; /* Color del texto en el botón */
+    font-size: 24px; /* Tamaño de fuente del texto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none; /* Quita el borde para hacerlo aún más redondo */
+  }
+  
+  .button-round:hover {
+    background-color: #005B9D; /* Cambia el color de fondo al pasar el cursor sobre el botón */
+  }
+  
+  .intrucciones{
+    text-align: left;
+    color: #393c50;
+    justify-content: center;
+  }
+  .titles{
+    text-align: center;
+    font-size: 150%;
+    padding: 30px;
+  }
+  h2 {
+    text-align: center;
+    padding-top: 20px;
+  }
+  .fondo{
+    background-color: #ffffff;
+   margin: 20px;
+
+  }
+  .mat-mdc-table {
+    --mat-table-row-item-outline-width: 1px;
+    table-layout: 0% !important; 
+    /* white-space: normal; */
+    background-color: var(--mat-table-background-color);
+}
+  .table-header {
+    width: 90%;
+    margin: auto;
+    text-align: right;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .save{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .button-add-row {
+    background: #1b9e1b;
+    color: #ffffff;
+  }
+  
+  .button-remove-rows {
+    background: red;
+    color: #ffffff;
+    margin-right: 5px;
+  }
+  
+  .button-remove {
+    color: red;
+  }
+  
+  ::ng-deep .mat-form-field-infix {
+    width: 100% !important;
+  }
+  
+  .form-input {
+    padding-right: 5px;
+  }
+  

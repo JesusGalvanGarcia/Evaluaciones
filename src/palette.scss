@@ -1,0 +1,52 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$my-primary-palette:(
+    50: #e2f2fc,
+    100:#b9ddfa,
+    200:#8dc9f7,
+    300:#5fb3f3,
+    400:#38a3f2,
+    500:#0094f0,
+    600:#0086e2,
+    700:#0074cf,
+    800:#0063be,
+    900:#00469f,
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
+        500: rgba(black, 0.87),
+        600: rgba(white, 0.87),
+        700: rgba(white, 0.87),
+        800: rgba(white, 0.87),
+        900: rgba(white, 0.87),
+    )
+);
+$my-accent-palette: (
+    50: #ddf3f3,
+    100:#a9e0de,
+    200:#6ccdc9,
+    300:#00b9b3,
+    400:#00a9a1,
+    500:#00998f,
+    600:#008c81,
+    700:#007c70,
+    800:#006c60,
+    900:#005043,
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
+        500: rgba(black, 0.87),
+        600: rgba(white, 0.87),
+        700: rgba(white, 0.87),
+        800: rgba(white, 0.87),
+        900: rgba(white, 0.87),
+    )
+);

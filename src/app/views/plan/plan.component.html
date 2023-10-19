@@ -1,0 +1,88 @@
+<div class="fondo">
+  <div>
+  <div>
+<div class="titles">
+  <span style="font-weight: bold;">Evaluaciones de desempeño y competencias</span><br/>
+  <span style="color: #707070;font-weight: bold;">Plan de Acción</span>
+</div>
+<div class="text">
+    <div class="intrucciones">
+      <p>
+        *Realiza el plan de acción de acuerdo a los siguientes lineamientos:<br/>												
+													
+        1.- <b>RETADOR:</b> que emocionen y sean deseados, que sean desafiantes y nos saquen de nuestra zona de confort.<br/>												
+        2.- <b>MEDIBLE:</b> deben ser lo más cuantitativos posible y estar ligados a un límite de tiempo.		<br/>										
+        3.- <b>ALCANZABLE:</b> El objeivo es no darse por vencido al buscar alcanzar la meta y que en el trayecto no se pierda el interés 		<br/>										
+        4.- <b>REALISTA:</b> Que las habilidades, destrezas, etc estén disponibles y al alcance para lograr el objetivo.		<br/>										
+        5.- <b>FECHA DETERMINADA:</b>  no necesariamente tiene que ser la duración del trimestre.										<br/>		
+        6.- <b>ACCIÓN / VERBO:</b> Cada plan debe estar escrito empezando con un verbo en infinitivo: Desarrollar, Terminar, Iniciar, definir, etc	<br/>
+      </p>
+    </div>
+  </div>
+  </div>
+  <article class="table-header">
+  </article>
+  <table mat-table [dataSource]="dataSource" >
+    <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema">
+      <th mat-header-cell *matHeaderCellDef [ngSwitch]="col.key" style="text-align: center;">
+ 
+        <span *ngSwitchCase="'isSelected'" >
+          <button class="btn btn-light" mat-button (click)="addRow()">
+           <img
+           src="assets/svg/add.svg"
+           style="color:white"
+           />
+          </button>
+        </span>
+        <span *ngSwitchDefault>{{ col.label }}</span>
+      </th>
+ 
+      <td mat-cell *matCellDef="let element">
+
+        <div [ngSwitch]="col.type" *ngIf="!element.isEdit">
+       
+          
+          <span *ngSwitchDefault>
+            {{ element[col.key]  }}
+          </span>
+        </div>
+  
+        <div [ngSwitch]="col.type" *ngIf="'isSelected'" style="text-align: center; color: #117211;">
+          <span *ngSwitchCase="'isSelected'">
+          # {{ element.id }}
+          </span>
+       
+        </div>
+        <div [ngSwitch]="col.type" *ngIf="element.isEdit">
+          <div *ngSwitchCase="'isSelected'"></div>
+   
+          <div class="btn-edit" *ngSwitchCase="'isEdit'">
+           
+          </div>
+        
+       
+          <mat-form-field class="form-input" *ngSwitchDefault>
+            <textarea
+              matInput
+              [placeholder]="col.label === 'Fecha establecida' ? 'dd/mm/yyyy' : ''"
+              [required]="col.required"
+              [(ngModel)]="element[col.key]"
+              (change)="inputHandler($event, element.id, col.key)"
+            ></textarea>
+          </mat-form-field>
+          
+   
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+ 
+</div>
+<div  style="display: flex; justify-content: center; align-items: center; margin-top: 5%;">
+  <button type="button" class="btn btn-success" (click)="save()">
+    {{page==false ? "Guardar": "Firmar"}}
+  </button>
+</div><br/><br/><br/>
+</div>

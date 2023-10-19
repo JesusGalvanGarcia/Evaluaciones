@@ -1,0 +1,94 @@
+/* Tabla principal */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Filas de detalles colapsadas */
+tr.example-detail-row {
+  height: 0;
+}
+
+/* Efecto de resaltado al pasar el mouse sobre filas */
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+/* Efecto de selección al hacer clic en filas */
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+/* Estilos de celdas en las filas principales */
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+/* Contenedor de detalles expandidos */
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+/* Diagrama en detalles expandidos */
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+/* Símbolo en detalles expandidos */
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+/* Descripción en detalles expandidos */
+.example-element-description {
+  padding: 16px;
+  width: 100%;
+}
+
+/* Atribución en detalles expandidos */
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+/* Estilos de la tabla responsiva */
+.tabla {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+/* Filas y celdas en la tabla responsiva */
+.encabezados, .fila {
+  display: table-row;
+}
+
+.encabezado, .dato {
+  display: table-cell;
+  padding: 8px 12px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+/* Estilos para el encabezado de la tabla responsiva */
+.encabezado {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+/* Estilos alternos para filas de la tabla responsiva */
+.fila:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.fila:nth-child(even) {
+  background-color: #e0e0e0;
+}

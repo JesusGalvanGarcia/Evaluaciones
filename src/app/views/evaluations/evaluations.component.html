@@ -1,0 +1,52 @@
+<div class="bgImageContainer2">
+ 
+</div><br/><br/>
+
+<div class="posi bgImageContainer" >
+
+  <div class="container ">
+    <br/>
+    <div class="colabora">
+      <span >
+        <img
+        src="assets/svg/users.svg"
+        style="width: 2%;"
+        alt="Logo_Trinitas"
+      />
+           Brenda Sarahi Ortiz Solis
+      </span><br/>
+    <span class="estilo-texto">
+      Colaborador
+    </span>
+    </div><br/>
+    <div class="evaIcon">
+<span>
+      <img
+      src="assets/svg/evaluation.svg"
+      class="estilo-imagen "
+      alt="Logo_Trinitas"
+    />
+  </span>
+      <span class="estilo-title">Evaluaciones</span>
+    </div>
+    <div style="margin-top: 0%;">
+  <div class="center-container">
+
+    <span>Tienes &nbsp; </span><span style="color:green"> 4 evaluaciones </span> <span>&nbsp; pendientes</span>
+  </div>
+ <br/>
+  <div class="form-check form-switch mostrar">
+    Personal
+    <input class="form-check-input" id="idInp" name="nameinput" #isChekedModel="ngModel" (click)="onSwitchChange" type="checkbox" [(ngModel)]="isChecked" >
+    <label class="form-check-label" for="idInp">Colaboradores
+
+    </label> 
+  <br/>
+  </div>
+  <br/>
+  <app-Tables *ngIf="isChecked"></app-Tables>
+  <app-TablePersonal *ngIf="!isChecked"></app-TablePersonal>
+ <br/> <br/>
+</div>
+</div> 
+</div>

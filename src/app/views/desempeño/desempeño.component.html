@@ -1,0 +1,87 @@
+<div class="bgImageContainer2"></div>
+<div class="container main-container">
+  <main>
+    <!-- Contenedor -->
+    <div class="sub-contenedor-login">
+      <div *ngIf="start" class="contenedor-padre">
+        <div class="contenedor-form">
+          <div class="row justify-content-center">
+            <div class="col-md-10 center-div" style="width: 100%;">
+              <div >
+                <br/>
+                <span class="sd">{{ title }}</span>
+              </div>
+            </div>
+            <div class="col-md-10 center-div" style="width: 100%;">
+              <img src="assets/logo/logo_trinitas.jpg" style="width: 65%;" alt="Logo_Trinitas" />
+            </div>
+            <br/>
+            <span class="sdComienzo">{{ startText }}</span>  <br/> <br/> <br/>
+            <div class="cent">
+              <div class="btnEmpezar"><br/>
+                <button class="btn btn-success" (click)="FalseMark()">Comenzar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!start" class="contenedor-padre">
+        <div class="contenedor-form">
+          <!-- Imagen de Login -->
+          <div class="row justify-content-center" style="padding-bottom: 50px; padding-top: 20px;">
+            <div class="col-md-10 center-div">
+              <div>
+                <span class="sd">{{ title }}</span>
+              </div>
+            </div>
+            <br/>
+            <div [class.screen]="!showQuestion">
+              <div class="col-md-10 center-div">
+                <span class="sdPregunta">{{ ELEMENT_DATA[index].Name }} <span style="color:#b60b0b;font-size: 70%;">*{{ ELEMENT_DATA[index].Value }} pts</span></span>
+              </div>
+              <br/>
+              <div class="col-md-10 center-div">
+                <span class="sdDescripcion">{{ "*" + ELEMENT_DATA[index].Descripcion }}</span>
+              </div>
+              <br/>
+              <div >
+                <div class="cent" >
+                  <div class="container-fluid" >
+                    <div *ngFor="let respuesta of ELEMENT_DATA[index].Answers" class="row">
+                      <div class="col col-12 col-sm-6 col-md-4 " align="end">
+                        <input class="radio-button" type="radio" (click)="nextQuestion(ELEMENT_DATA[index], respuesta)" name="flexRadioDefault" id="flexRadioDefault1"  [checked]="isSelect(respuesta.Id,ELEMENT_DATA[index].Id)">
+                       
+                      </div>
+                      <div class="col col-12 col-sm-6 col-md-4  " align="start">
+                        <label>{{ respuesta.Name }}</label>
+                      </div>
+                      <div class="col col-12 col-sm-6 col-md-4 ">
+                        <span style="color:#b60b0b;font-weight: bold;font-size: 90%;">*{{ respuesta.Value }} pts</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br/>
+              <div class="cent">
+                <button class="btn" *ngIf="!finish" class="btn btn-success">Guardar</button>
+                <button class="btn" *ngIf="finish" class="btn btn-success">Terminar</button>
+              </div>
+            </div>
+          </div>
+          <div class="pregunta-container">
+            <span>Pregunta &nbsp;</span> {{ (index+1) + "/" + (size) }}
+          </div>
+       <div class="back" *ngIf="index>0">
+        <button class="btn btn-light" mat-button (click)="back()">
+          <img
+          src="assets/svg/back.svg"
+          style="color:white"
+          />
+         </button>
+       </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,6 +1,6 @@
 .sd{
   --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 50%))));
-  font-size: 200%;
+  font-size: 150%;
   line-height: calc(1.25*(var(--cover-title-font-size)));
   color: var(--sjs-primary-backcolor, var(--primary, #157722));
   font-family: var(--sjs-font-surveytitle-family, var(--font-family));
@@ -28,12 +28,12 @@
 }
 .sdPregunta{
   --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
-  font-size: 150%;
+  font-size: 100%;
   line-height: calc(1.25*(var(--cover-title-font-size)));
   color: var(--sjs-primary-backcolor, var(--primary, #6b6b6e));
   font-family: var(--sjs-font-surveytitle-family, var(--font-family));
   font-weight: var(--sjs-font-surveytitle-weight, 700);
-  margin-left: 15%;
+
 }
 .sdDescripcion{
   --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
@@ -42,7 +42,7 @@
   color: var(--sjs-primary-backcolor, var(--primary, #b60b0b));
   font-family: var(--sjs-font-surveytitle-family, var(--font-family));
   font-weight: var(--sjs-font-surveytitle-weight, 700);
-  margin-left: 15%;
+
 }
 .bgImageContainer2 {
   z-index: -1;
@@ -153,7 +153,7 @@ background: #4983CF;
   background-color: white;
   flex-direction: column;
   width: 60%;
-  height: 520px;
+  height: 100%;
   /* padding: 30px; */
   border-radius: 30px;
   box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
@@ -227,5 +227,7 @@ background: #FAF7F7;
 display: flex; /* Convierte el contenedor en un contenedor flexible */
 justify-content: center; /* Centra horizontalmente los elementos dentro del contenedor */
 align-items: center; /* Centra verticalmente los elementos dentro del contenedor */
-
+width: 100%;
+padding-left: 8%;
+padding-right: 8%;
 }

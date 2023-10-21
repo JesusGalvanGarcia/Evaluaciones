@@ -8,7 +8,10 @@ import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
+import {EvaluationService} from '../../services/EvaluationService';
+import {EvaluationTest} from  '../../models/TestDetails/EvaluationTest';
+import {Question} from  "../../models/TestDetails/QuestionModel";
+import { Answer } from 'src/app/models/TestDetails/AnswerModel';
 @Component({
   selector: 'app-desempeño',
   standalone: true,
@@ -21,80 +24,41 @@ export class SurveyComponent implements OnInit {
   protected title: string = "";
   showQuestion: boolean = true;
   start: boolean = true;
+   DesempenoTest: EvaluationTest;
   Answers: SendQuestions[] = [];
   sendInfo:SendQuestions;
-  protected startText:string="Esta es la encuesta de la evaluacion 2023 de octubre esperamos que puedas contestarla en medida de lo posible";
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private evaluationService :EvaluationService) {
     this.route.params.subscribe(params => {
       this.title = params['name']; //recibe los parametros del titulo de  la evaluacion
     });
   }
+  getTable(data:any)
+  {
+    this.evaluationService.GetEvaluation(data,"118")
+    .then((response:any) => {
 
+      this.DesempenoTest=response;
+      this.size = this.DesempenoTest.modules[0].questions.length
+     console.log(this.DesempenoTest)
+     
+    })
+    .catch((error:any) => {
+      console.error('Error in the request:', error);
+      // Handle errors here
+    });
+  }
   ngOnInit() 
   {
-    
+      let data = {
+      user_id: 67,
+      collaborators_id: [],
+      evaluations_id: []
+    };
+    this.getTable(data);
   }
 
-  ELEMENT_DATA: Questions[] = [
-    {
-      Name: "¿Como trabajo el colaborador?",
-      Descripcion: "Esta pregunta se refiere a la medida en la que el colaborador se esforzó en cumplir sus objetivos",
-      Value: 50,
-      Id: 1,
-      Answers: [
-        {
-          Name: "De acuerdo",
-          Value: 20,
-          Id: 1
-        },
-        {
-          Name: "Completamente De acuerdo",
-          Value: 20,
-          Id: 2
-        },
-        {
-          Name: "En desacuerdo",
-          Value: 20,
-          Id: 3
-        },
-        {
-          Name: "Neutral",
-          Value: 10,
-          Id: 4
-        }
-      ]
-    },
-    {
-      Name: "¿Como trabajo el colaborador 2?",
-      Value: 50,
-      Descripcion: "Esta pregunta se refiere a la medida en la que el colaborador se esforzó en cumplir sus objetivos",
-      Id: 2,
-      Answers: [
-        {
-          Name: "De acuerdo",
-          Value: 20,
-          Id: 1
-        },
-        {
-          Name: "Completamente De acuerdo",
-          Value: 20,
-          Id: 2
-        },
-        {
-          Name: "En desacuerdo",
-          Value: 20,
-          Id: 3
-        },
-        {
-          Name: "Neutral",
-          Value: 10,
-          Id: 4
-        }
-      ]
-    }
-  ];
 
-  size = this.ELEMENT_DATA.length; //Para saber el tamaño  del arreglo
+  size = 0; //Para saber el tamaño  del arreglo
 
   index = 0;
   finish = false;
@@ -115,7 +79,7 @@ export class SurveyComponent implements OnInit {
     return this.Answers.some(answer => answer.IdAnswer === AnswerId && answer.IdQuestion==QuestionId);
   }
   
-  nextQuestion(question: Questions, answer: Answers) {
+  nextQuestion(question: Question, answer: Answer) {
     if (this.index !== this.size) { // si las preguntas  no han terminado entonces avanzar
       this.index = this.index + 1;
       this.showQuestion = false; // Inicia la animación de desvanecimiento
@@ -128,10 +92,10 @@ export class SurveyComponent implements OnInit {
       this.finish = true; // Iniciar animación para terminar  la secuencia de preguntas
       this.index = this.index - 1;
     }
-    const questionIndex = this.Answers.findIndex(item => item.IdQuestion === question.Id);
+    const questionIndex = this.Answers.findIndex(item => item.IdQuestion === question.id);
     this.sendInfo = {
-      IdAnswer: answer.Id, 
-      IdQuestion: question.Id, 
+      IdAnswer: answer.id, 
+      IdQuestion: question.id, 
          
     };
     console.log(this.sendInfo)
@@ -147,20 +111,9 @@ export class SurveyComponent implements OnInit {
   }
 }
 
-export interface Questions {
-  Name: string;
-  Value: number;
-  Descripcion: string;
-  Answers: Answers[];
-  Id: number;
-}
+
 export interface SendQuestions {
 
   IdQuestion: number;
   IdAnswer: number;
-}
-export interface Answers {
-  Name: string;
-  Value: Number;
-  Id: number;
 }

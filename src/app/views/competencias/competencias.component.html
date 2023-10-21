@@ -9,7 +9,7 @@
             <div class="col-md-10 text-center" style="width: 100%;">
               <div>
                 <br/>
-                <span class="sd">{{ title }}</span>
+                <span class="sd">{{ DesempenoTest.name  }}</span>
               </div>
             </div>
             <div class="col-md-10 text-center">
@@ -18,11 +18,12 @@
            
             <div class="col-md-12 text-center" style="width: 95% !important;">
               <br/> <br/> 
-              <span class="sdComienzo">{{ startText }}</span>
+              <span class="sdComienzo">{{ DesempenoTest.introduction_text }}</span>
             </div>
             <br/>
             <div class="text-center btnEmpezar">     <br/>     <br/>
               <button class="btn btn-success" (click)="FalseMark()">Comenzar</button>
+              <br/>     <br/>
             </div>
           </div>
         </div>
@@ -35,7 +36,7 @@
               <div class="row justify-content-center" style="padding-bottom: 50px; padding-top: 20px; ">
                 <div class="col-md-10 center-div">
                   <div>
-                    <span class="sd">{{ title }}</span>
+                    <span class="sd">{{ DesempenoTest.name }}</span>
                   </div>
                 </div>
                 <div class="backModul" *ngIf="index!= 0 && showModule ==true">
@@ -49,14 +50,14 @@
                 <br/>
                 <div style="width: 100%;">
                   <div class="col-md-10 center-div" style="width: 100%;">  
-                    <span class="sdPregunta">{{ ELEMENT_DATA[index].Name }} </span>
+                    <span class="sdPregunta">{{ DesempenoTest.modules[index].name }} </span>
                   </div>
                   <br/>
                   <div class="col-md-10 text-center" style="width: 100%;">
                     <img src="assets/logo/logo_trinitas.jpg" style="width: 65%;" alt="Logo_Trinitas" class="mx-auto" />
                   </div>
                   <div class="col-md-10 center-div" style="width: 100%;">
-                    <span class="sdDescripcion">{{ "*" + ELEMENT_DATA[index].Description }}</span>
+                    <span class="sdDescripcion">{{ "*" + "Descripcion pendiente" }}</span>
                   </div>
                   <br/>
                   <br/>
@@ -76,7 +77,7 @@
             <div class="row justify-content-center" style="padding-bottom: 50px; padding-top: 20px;">
               <div class="col-md-10 center-div">
                 <div>
-                  <span class="sd">{{ title }}</span>
+                  <span class="sd">{{ DesempenoTest.name }}</span>
                 </div>
               </div>
               <br/>
@@ -90,25 +91,25 @@
                    </button>
                  </div>
                 <div class="col-md-10 center-div" style="width: 100%;">
-                  <span class="sdPregunta">{{ ELEMENT_DATA[index].Questions[indexQuestion].Name }}  <span style="color:#b60b0b;font-size: 70%;">*{{ ELEMENT_DATA[index].Questions[indexQuestion].Value }} pts</span></span>
+                  <span class="sdPregunta">{{ DesempenoTest.modules[index].questions[indexQuestion].description }}  <span style="color:#b60b0b;font-size: 70%;">*{{ DesempenoTest.modules[index].questions[indexQuestion].score }} pts</span></span>
                 </div>
                 <br/>
                 <div class="col-md-10 center-div" style="width: 100%;">
-                  <span class="sdDescripcion">{{ "*" + ELEMENT_DATA[index].Questions[indexQuestion].Description }}</span>
+                  <span class="sdDescripcion">{{ "*" + DesempenoTest.modules[index].questions[indexQuestion].description }}</span>
                 </div>
                 <br/>
                 <div style="margin-left: 25%;">
                   <div class="cent">
                     <div class="container">
-                      <div *ngFor="let respuesta of ELEMENT_DATA[index].Questions[indexQuestion].Answers" class="row">
+                      <div *ngFor="let respuesta of DesempenoTest.modules[index].questions[indexQuestion].answers" class="row">
                         <div class="col col-sm-1">
-                          <input class="radio-button" type="radio" (click)="nextQuestion(respuesta.Id, ELEMENT_DATA[index].Questions[indexQuestion].Id, ELEMENT_DATA[index].Id)" [checked]="isSelect(respuesta.Id, ELEMENT_DATA[index].Questions[indexQuestion].Id, ELEMENT_DATA[index].Id)"  [value]="respuesta.Id" >
+                          <input class="radio-button" type="radio" (click)="nextQuestion(respuesta.id, DesempenoTest.modules[index].questions[indexQuestion].id, DesempenoTest.modules[index].id)" [checked]="isSelect(respuesta.id, DesempenoTest.modules[index].questions[indexQuestion].id, DesempenoTest.modules[index].id)"  [value]="respuesta.id" >
                         </div>
                         <div class="col col-sm-5">
-                          <label for="respuesta{{respuesta.Id}}">{{ respuesta.Name }}</label>
+                          <label for="respuesta{{respuesta.id}}">{{ respuesta.description }}</label>
                         </div>
                         <div class="col col-sm-2">
-                          <span style="color:#b60b0b;font-weight: bold;font-size: 90%;">*{{ respuesta.Value }} pts</span>
+                          <span style="color:#b60b0b;font-weight: bold;font-size: 90%;">*{{ respuesta.score }} pts</span>
                         </div>
                       </div>
                       

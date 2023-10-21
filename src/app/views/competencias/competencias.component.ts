@@ -4,7 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import {EvaluationService} from '../../services/EvaluationService';
+import {EvaluationTest} from  '../../models/TestDetails/EvaluationTest';
+import {Question} from  "../../models/TestDetails/QuestionModel";
+import { Answer } from 'src/app/models/TestDetails/AnswerModel';
 @Component({
   selector: 'app-competencias',
   standalone: true,
@@ -13,17 +16,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./competencias.component.scss']
 })
 export class CompetenciasComponent implements OnInit {
-  protected title: string = "";
   showQuestion: boolean = true;
+  DesempenoTest: EvaluationTest;
   showModule: boolean = true;
   start: boolean = true;
   sendInfo:Competencias;
   ListsendInfo: Competencias[] = [];
-  protected startText:string="Esta es la encuesta de la evaluacion 2023 de octubre esperamos que puedas contestarla en medida de lo posible";
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe(params => {
-      this.title = params['name']; //recibe los parametros del titulo de  la evaluacion
-    });
+  constructor(private route: ActivatedRoute, private evaluationService :EvaluationService) {
+  
   }
   FalseMark()
   {
@@ -36,7 +36,7 @@ export class CompetenciasComponent implements OnInit {
 
   }
   back() { 
-    this.sizeQuestions = this.ELEMENT_DATA[this.index].Questions.length;
+    this.sizeQuestions = this.DesempenoTest.modules[this.index].questions.length;
     if (this.indexQuestion === 0 && this.index >= 0) {
       // Si la pregunta llegó al inicio del módulo y todavía no ha terminado
       this.indexQuestion = this.sizeQuestions - 1; // Retrocede a la última pregunta del módulo
@@ -72,7 +72,7 @@ export class CompetenciasComponent implements OnInit {
            }
            else{
             this.index--;
-            this.indexQuestion = this.ELEMENT_DATA[this.index].Questions.length - 1;
+            this.indexQuestion = this.DesempenoTest.modules[this.index].questions.length - 1;
             this.showModule = false;
            }
     } else {
@@ -91,10 +91,8 @@ export class CompetenciasComponent implements OnInit {
     return this.ListsendInfo.some(respuesta => respuesta.IdAnswer === respuestaId && respuesta.IdQuestion==preguntaId&&respuesta.Module==moduloId);
   }
   nextQuestion(idRespuesta:number,idPregunta:number,idModule:number) {
-    console.log("siguiente")
-  console.log(this.ListsendInfo)
-  console.log(this.finish)
-  if(this.ELEMENT_DATA[this.index].Questions.length-1 ==this.indexQuestion &&this.index==this.ELEMENT_DATA.length-1)
+
+  if(this.DesempenoTest.modules[this.index].questions.length-1 ==this.indexQuestion &&this.index==this.DesempenoTest.modules.length-1)
   {
     const preguntaIndex = this.ListsendInfo.findIndex(item => item.IdQuestion ===idPregunta && item.Module=== idModule);
     this.sendInfo = {
@@ -111,7 +109,7 @@ export class CompetenciasComponent implements OnInit {
     }
   }
     if (this.finish==false) {
-      this.sizeQuestions = this.ELEMENT_DATA[this.index].Questions.length;
+      this.sizeQuestions = this.DesempenoTest.modules[this.index].questions.length;
       // Guardar la respuesta actual
       //this.respuestas.push({ modulo }); 
       const preguntaIndex = this.ListsendInfo.findIndex(item => item.IdQuestion ===idPregunta && item.Module=== idModule);
@@ -130,8 +128,9 @@ export class CompetenciasComponent implements OnInit {
       }
       this.indexQuestion++;
  
-      if (this.index === this.sizeTotal-1) {
-        this.finish = true; //Termina cuando el index y el tamaño-1 son la misma cantidad
+      if (this.index === this.sizeTotal-1 && this.indexQuestion==this.sizeQuestions-1) {
+       
+        this.finish = true; //Termina cuando el index y el tamaño-1  del modulo y las preguntas son la misma cantidad
         
       }
       else{
@@ -157,128 +156,42 @@ export class CompetenciasComponent implements OnInit {
   {
     console.log(this.ListsendInfo)
   }
-  ngOnInit() {
-
-  }
-  ELEMENT_DATA:Modules[]=[
-    {
-      Name:"Cultura trinitas MOD1",
-      Id:1,
-      Description:"Este apartado es sobre la cultura trinitas y la medida en que se desarrolloMOD1",
-      Questions:[
-       { 
-        Name:"¿Que tanto comprendio el  colaborador la pregunta?MOD1",
-        Value:50,
-        Description:"Como el colaborador comprendio la cultura",
-        Id:1,
-        Answers:[
-          {
-            Name:"De acuerdo",
-            Value:20,
-            Id:1
-          },
-          {
-            Name:"Completamente de acuerdo",
-            Value:20,
-            Id:2
-          }
-        ]
-      },
-      { 
-        Name:"¿Que tanto comprendio el  colaborador la pregunta ?MOD1",
-        Value:50,
-        Description:"Como el colaborador comprendio la cultura MOD1",
-        Id:2,
-        Answers:[
-          {
-            Name:"De acuerdo",
-            Value:20,
-            Id:3
-          },
-          {
-            Name:"Completamente de acuerdo",
-            Value:20,
-            Id:4
-          }
-        ]
-      }
-
-      ]
-    },
+  getTable(data:any)
   {
-    Name:"Integracion y culturaMOD2",
-    Description:"Medida en la que se integro el  colaboradorMOD2",
-    Id:2,
-    Questions:[
-      { 
-       Name:"¿Que tanto comprendio el  colaborador la pregunta?MOD2",
-       Value:50,
-       Description:"Como el colaborador comprendio la cultura",
-       Id:3,
-       Answers:[
-         {
-           Name:"De acuerdo",
-           Value:20,
-           Id:5
-         },
-         {
-           Name:"Completamente de acuerdo",
-           Value:20,
-           Id:6
-         }
-       ]
-     },
-     { 
-       Name:"¿Que tanto comprendio el  colaborador la pregunta ?MOD2",
-       Value:50,
-       Description:"Como el colaborador comprendio la cultura",
-       Id:4,
-       Answers:[
-         {
-           Name:"De acuerdo",
-           Value:20,
-           Id:7
-         },
-         {
-           Name:"Completamente de acuerdo",
-           Value:20,
-           Id:8
-         }
-       ]
-     }
-    ]
-  }
+    this.evaluationService.GetEvaluation(data,"119")
+    .then((response:any) => {
+
+      this.DesempenoTest=response;
+      this.sizeTotal=this.DesempenoTest.modules.length;
+      this.sizeQuestions=this.DesempenoTest.modules[this.index].questions.length;
+     console.log(this.DesempenoTest)
      
-  ]
-  sizeTotal = this.ELEMENT_DATA.length; //Para saber el tamaño  del arreglo
+    })
+    .catch((error:any) => {
+      console.error('Error in the request:', error);
+      // Handle errors here
+    });
+  }
+  ngOnInit() {
+    let data = {
+      user_id: 67,
+  
+    };
+    this.getTable(data);
+  }
+
+  sizeTotal = 0; //Para saber el tamaño  del arreglo
 
   index = 0;
-  sizeQuestions=this.ELEMENT_DATA[this.index].Questions.length;;
+  sizeQuestions=0;;
 
   indexQuestion = 0;
   finish = false;
 }
-export interface Questions {
-  Name: string;
-  Value: number;
-  Description: string;
-  Answers: Answers[];
-  Id: number;
-}
-export interface Modules {
-  Name: string;
-  Description: string;
-  Questions:Questions[]
-  Id: number;
-}
+
 export interface Competencias {
   IdQuestion: number;
   IdAnswer: number;
   Module:number;
 
-}
-export interface Answers {
-  Name: string;
-  Value: Number;
-  Id: number;
 }

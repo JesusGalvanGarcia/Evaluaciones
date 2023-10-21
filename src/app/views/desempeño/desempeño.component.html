@@ -9,17 +9,18 @@
             <div class="col-md-10 center-div" style="width: 100%;">
               <div >
                 <br/>
-                <span class="sd">{{ title }}</span>
+                <span class="sd">{{DesempenoTest.name}}</span>
               </div>
             </div>
             <div class="col-md-10 center-div" style="width: 100%;">
               <img src="assets/logo/logo_trinitas.jpg" style="width: 65%;" alt="Logo_Trinitas" />
             </div>
             <br/>
-            <span class="sdComienzo">{{ startText }}</span>  <br/> <br/> <br/>
+            <span class="sdComienzo">{{DesempenoTest.introduction_text}}</span>  <br/> <br/> <br/>
             <div class="cent">
               <div class="btnEmpezar"><br/>
                 <button class="btn btn-success" (click)="FalseMark()">Comenzar</button>
+                <br/><br/>
               </div>
             </div>
           </div>
@@ -29,6 +30,14 @@
         <div class="contenedor-form">
           <!-- Imagen de Login -->
           <div class="row justify-content-center" style="padding-bottom: 50px; padding-top: 20px;">
+            <div  *ngIf="index>0" style="width: 30%;margin-right: 60%;">
+              <button class="btn btn-light" mat-button (click)="back()">
+                <img
+                src="assets/svg/back.svg"
+                style="color:white"
+                />
+               </button>
+             </div>
             <div class="col-md-10 center-div">
               <div>
                 <span class="sd">{{ title }}</span>
@@ -37,26 +46,26 @@
             <br/>
             <div [class.screen]="!showQuestion">
               <div class="col-md-10 center-div">
-                <span class="sdPregunta">{{ ELEMENT_DATA[index].Name }} <span style="color:#b60b0b;font-size: 70%;">*{{ ELEMENT_DATA[index].Value }} pts</span></span>
+                <span class="sdPregunta">{{DesempenoTest.modules[0].questions[index].description}} <span style="color:#b60b0b;font-size: 70%;">*{{ DesempenoTest.modules[0].questions[index].score}} pts</span></span>
               </div>
               <br/>
               <div class="col-md-10 center-div">
-                <span class="sdDescripcion">{{ "*" + ELEMENT_DATA[index].Descripcion }}</span>
+                <span class="sdDescripcion">{{ "*" + "Descripcion  pendiente"}}</span>
               </div>
               <br/>
               <div >
                 <div class="cent" >
                   <div class="container-fluid" >
-                    <div *ngFor="let respuesta of ELEMENT_DATA[index].Answers" class="row">
+                    <div *ngFor="let respuesta of DesempenoTest.modules[0].questions[index].answers" class="row">
                       <div class="col col-12 col-sm-6 col-md-4 " align="end">
-                        <input class="radio-button" type="radio" (click)="nextQuestion(ELEMENT_DATA[index], respuesta)" name="flexRadioDefault" id="flexRadioDefault1"  [checked]="isSelect(respuesta.Id,ELEMENT_DATA[index].Id)">
+                        <input class="radio-button" type="radio" (click)="nextQuestion(DesempenoTest.modules[0].questions[index], respuesta)" name="flexRadioDefault" id="flexRadioDefault1"  [checked]="isSelect(respuesta.id,DesempenoTest.modules[0].questions[index].id)">
                        
                       </div>
                       <div class="col col-12 col-sm-6 col-md-4  " align="start">
-                        <label>{{ respuesta.Name }}</label>
+                        <label>{{ respuesta.description }}</label>
                       </div>
                       <div class="col col-12 col-sm-6 col-md-4 ">
-                        <span style="color:#b60b0b;font-weight: bold;font-size: 90%;">*{{ respuesta.Value }} pts</span>
+                        <span style="color:#b60b0b;font-weight: bold;font-size: 90%;">*{{ respuesta.score }} pts</span>
                       </div>
                     </div>
                   </div>
@@ -72,14 +81,7 @@
           <div class="pregunta-container">
             <span>Pregunta &nbsp;</span> {{ (index+1) + "/" + (size) }}
           </div>
-       <div class="back" *ngIf="index>0">
-        <button class="btn btn-light" mat-button (click)="back()">
-          <img
-          src="assets/svg/back.svg"
-          style="color:white"
-          />
-         </button>
-       </div>
+      
         </div>
       </div>
     </div>

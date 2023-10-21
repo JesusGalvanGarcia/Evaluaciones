@@ -7,21 +7,22 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class EvaluationService {
-  private controllerUrl = 'user-tests/';
+export class ActionPlanService {
+  private controllerUrl = 'user-actionPlan/';
 
   constructor(private http: HttpClient) { }
-   GetEvaluation(data: any,id:string): Promise<any> {
+   GetAction(data: any,id:string): Promise<any> {
     
     return axios.get(environment.apiUrl+this.controllerUrl+id, {
       params: data
     })
     .then((response) => {
-      return response.data.test;
+      return response.data.action_plan;
       })      
     .catch(function (error: any) {
       return error;
     });
   }
-  
 }
+
+

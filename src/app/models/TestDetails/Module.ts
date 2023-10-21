@@ -1,4 +1,4 @@
-import { Question } from "survey-core";
+import { Question } from "./QuestionModel";
 export interface Module {
     id: number;
     name: string;

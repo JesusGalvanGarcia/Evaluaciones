@@ -20,65 +20,28 @@
     </div>
   </div>
   </div>
-  <article class="table-header">
-  </article>
-  <table mat-table [dataSource]="dataSource" >
-    <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema">
-      <th mat-header-cell *matHeaderCellDef [ngSwitch]="col.key" style="text-align: center;">
  
-        <span *ngSwitchCase="'isSelected'" >
-          <button class="btn btn-light" mat-button (click)="addRow()">
-           <img
-           src="assets/svg/add.svg"
-           style="color:white"
-           />
-          </button>
-        </span>
-        <span *ngSwitchDefault>{{ col.label }}</span>
-      </th>
- 
-      <td mat-cell *matCellDef="let element">
-
-        <div [ngSwitch]="col.type" *ngIf="!element.isEdit">
-       
-          
-          <span *ngSwitchDefault>
-            {{ element[col.key]  }}
-          </span>
-        </div>
-  
-        <div [ngSwitch]="col.type" *ngIf="'isSelected'" style="text-align: center; color: #117211;">
-          <span *ngSwitchCase="'isSelected'">
-          # {{ element.id }}
-          </span>
-       
-        </div>
-        <div [ngSwitch]="col.type" *ngIf="element.isEdit">
-          <div *ngSwitchCase="'isSelected'"></div>
-   
-          <div class="btn-edit" *ngSwitchCase="'isEdit'">
-           
-          </div>
-        
-       
-          <mat-form-field class="form-input" *ngSwitchDefault>
+  <div class="container-fluid" style="width: 90%; margin-left: 6%;">
+    <div class="d-flex flex-wrap">
+      <div *ngFor="let header of actionPlan.parameters" class="col-sm table-cell">
+        <b>{{header.description}}</b>
+        <div *ngFor="let item of values">
+          <div *ngIf="item.idParameter == header.id">
+            <mat-form-field class="form-input" >
             <textarea
-              matInput
-              [placeholder]="col.label === 'Fecha establecida' ? 'dd/mm/yyyy' : ''"
-              [required]="col.required"
-              [(ngModel)]="element[col.key]"
-              (change)="inputHandler($event, element.id, col.key)"
-            ></textarea>
-          </mat-form-field>
-          
-   
+            matInput
+            [placeholder]="header.description== 'Fecha establecida' ? 'dd/mm/yyyy' : ''"
+         
+            [(ngModel)]="item.value"
+            (change)="inputHandler($event, header.id, header.description)"
+          ></textarea>      
+        </mat-form-field>
+      </div>
         </div>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
- 
+      </div>
+    </div>
+  </div>
+  
 </div>
 <div  style="display: flex; justify-content: center; align-items: center; margin-top: 5%;">
   <button type="button" class="btn btn-success" (click)="save()">

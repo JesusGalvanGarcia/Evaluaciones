@@ -1,4 +1,4 @@
-import { Module } from "ag-grid-enterprise";
+import { Module } from "./Module";
 export interface EvaluationTest {
     id: number;
     evaluation_id: string;

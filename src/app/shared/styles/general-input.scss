@@ -1,0 +1,16 @@
+@import "variables";
+
+.input-form{
+    color: $color-font !important;
+    background-color: transparent !important;
+    height: calc(1.5em + 0.75rem + 7px)
+}
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: #FFFFFF66;
+    border-radius: 10em;
+    color: transparent;
+    opacity: 0.5;
+}
+.example-form-field{
+    background-color: #FFFFFF66;
+}

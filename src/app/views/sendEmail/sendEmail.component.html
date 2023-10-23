@@ -1,0 +1,81 @@
+
+
+<div class="bgImageContainer"></div>
+
+<div class="main-container">
+  <main>
+    <!-- Contenedor -->
+    <div class="sub-contenedor-login">
+      <div class="contenedor-form">
+        <!-- Imagen de Login -->
+        <div class="row justify-content-center"
+          style="padding-bottom: 50px; padding-top: 20px;">
+  
+          <div class="col-md-10 center-div ">
+            <img
+              src="assets/logo/logo_trinitas.jpg"
+              style="width: 65%;"
+              alt="Logo_Trinitas"
+            />
+        
+          </div>
+        </div>
+
+        <form
+          #formulario="ngForm"
+          (ngSubmit)="enviarFormulario(formulario)"
+          novalidate="novalidate"
+          class="form-no-background"
+        >
+
+          <div class="row justify-content-center">
+            <div class="col-md-10 content">
+              <h2 class="titulo">
+                  Cambia tu contraseña
+              </h2>
+              <p class="btext">Envia un  correo para un  cambio  de  contraseña</p>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-md-10">
+              <mat-form-field style="width: 100%;"
+                class="example-form-field">
+                <mat-label>Correo electrónico</mat-label>
+                <input
+                  type="username"
+                  matInput
+                  class="input-form"
+                  #email="ngModel"
+                  name="email"
+                  [(ngModel)]="emailRequest.email"
+                  placeholder="Escribe tu email"
+                  required="true"
+                  maxlength="50"
+                />
+                <mat-icon matPrefix class="my-icon">
+                  <img src="assets/svg/email.svg" class="icons"/>
+                </mat-icon>
+                <mat-error *ngIf="email.hasError('required')">
+                  El correo es <strong>requerido</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+                  <!-- Botón Enviar correo -->
+                  <div class="row justify-content-center">
+                    <div class="col-md-10 text-center">
+                      <button [disabled]="disableSubmit" type="submit" class="btn-ingresar">
+                        <b>Enviar</b>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                </form>
+      </div>
+    </div>
+  </main>
+</div>
+<app-loading *ngIf="isLoading"></app-loading>
+
+
+
+

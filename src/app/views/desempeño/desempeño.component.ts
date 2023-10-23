@@ -11,6 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 import {EvaluationService} from '../../services/EvaluationService';
 import {EvaluationTest} from  '../../models/TestDetails/EvaluationTest';
 import {Question} from  "../../models/TestDetails/QuestionModel";
+import{UserAnswer} from "../../models/TestDetails/TestIndividual";
+import { MensajeService } from '@http/mensaje.service';
 import { Answer } from 'src/app/models/TestDetails/AnswerModel';
 @Component({
   selector: 'app-desempeño',
@@ -23,11 +25,12 @@ import { Answer } from 'src/app/models/TestDetails/AnswerModel';
 export class SurveyComponent implements OnInit {
   protected title: string = "";
   showQuestion: boolean = true;
+  saveIndivisual:UserAnswer;
   start: boolean = true;
    DesempenoTest: EvaluationTest;
   Answers: SendQuestions[] = [];
   sendInfo:SendQuestions;
-  constructor(private route: ActivatedRoute, private evaluationService :EvaluationService) {
+  constructor(private route: ActivatedRoute, private evaluationService :EvaluationService,public message:MensajeService) {
     this.route.params.subscribe(params => {
       this.title = params['name']; //recibe los parametros del titulo de  la evaluacion
     });
@@ -78,8 +81,34 @@ export class SurveyComponent implements OnInit {
     // Verifica si la AnswerId existe en el arreglo de Answers
     return this.Answers.some(answer => answer.IdAnswer === AnswerId && answer.IdQuestion==QuestionId);
   }
-  
+  PostsaveAnswers(idRespuesta:number,idPregunta:number,score:string)
+  {
+      this.saveIndivisual={
+        user_id:67,
+        user_test_id: 119,
+        user_answer_id: idRespuesta,
+        question_id: idPregunta,
+        score: Number(score),
+        its_over: "no"
+      }
+      if(this.index === this.size-1 )
+      this.saveIndivisual.its_over="si";
+     console.log(this.saveIndivisual)
+    this.evaluationService.SendTestEvaluation(this.saveIndivisual)
+      .then((response:any) => {
+        
+       
+      })
+      .catch((error:any) => {
+        console.error('Error in the request:', error);
+        this.message.error('La pregunta no pudo ser enviada correctamente, intenta nuevamente. '+error);
+        this.index=this.index-1;
+        // Handle errors here
+      });
+  }
   nextQuestion(question: Question, answer: Answer) {
+    this.PostsaveAnswers(answer.id,question.id,answer.score)
+
     if (this.index !== this.size) { // si las preguntas  no han terminado entonces avanzar
       this.index = this.index + 1;
       this.showQuestion = false; // Inicia la animación de desvanecimiento

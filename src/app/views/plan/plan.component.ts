@@ -12,7 +12,10 @@ import { formatDate } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ActionPlan } from 'src/app/models/AccionPlan/ActionPlan';
 import { ActionPlanParameter } from 'src/app/models/AccionPlan/ActionPlanParameters';
-import { ActionPlanParameterValue } from 'src/app/models/AccionPlan/ActionPlanParameters';
+import { ActionPlanParameterValue,SaveAccionPlan } from 'src/app/models/AccionPlan/ActionPlanParameters';
+import { MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-plan',
@@ -24,6 +27,7 @@ export class PlanComponent implements OnInit {
   displayedColumns: string[] = []; // Inicializa con un arreglo vacío
   @ViewChild(MatTable) table: MatTable<User>;
   actionPlan: ActionPlan;
+  savePlan:SaveAccionPlan;
   saves: ActionPlanParameter[] = [];
   values:ActionPlanParameterValue[]=[];
   dataSource = new MatTableDataSource<ActionPlanParameter>();
@@ -38,6 +42,20 @@ export class PlanComponent implements OnInit {
       if (param !=undefined)
        this.page=true;  
        console.log(param,this.page)
+    });
+  }
+  
+  abrirDialogo() {
+    const dialogRef = this.dialog.open(ModalComponent, {
+      width: '50%',
+      height:'20%',
+      panelClass: 'custom-dialog-container', // Add a custom CSS class
+
+      data: { dialogText: '¿Deseas firmar este plan de acción?.' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Diálogo cerrado');
     });
   }
 isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
@@ -72,47 +90,27 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
   }
   }
   addRowAction(data:ActionPlanParameter) {
-    const newRow: ActionPlanParameter = {
-        id:data.id,
-        description:data.description,
-        value_type:data.value_type,
-        action_plan_id:data.action_plan_id
-    }
-    //Validar formulario
-    if (!this.areFieldsEmpty(this.dataSource.data[this.rowCount-1],this.rowCount-1)) {
-     // Incrementar el conteo y agregar los datos al dataSource
+    const filteredValues = this.values.filter((item) => item.parameter_id === data.id);
+    const newRow: ActionPlanParameterValue = {
+      id: this.rowCount,
+      parameter_id: data.id,
+      description: '',
+      line: filteredValues.length + 1, // Incrementa el número de línea
+    };
     this.rowCount++;
-    newRow.id=this.rowCount;
-    this.dataSource.data = [newRow, ...this.dataSource.data]
-    //Ordenar en base al numero  de  linea
-    this.sortDataById(); 
-  }
-  else
-  {
-    this.messageService.error('Algun campo de texto se encuentra vacio.');
-  }
+    this.values.push(newRow); // Agrega el nuevo campo al array 'values'
+    // Incrementa el contador de línea
   }
   inputHandler(e: any, id: number, key: string) {
-    const elemento = this.dataSource.data.find((item) => item.id === id);
+    const elemento = this.values.find((item) => item.id === id);
+    console.log( elemento )
     if (elemento) {
-      elemento.value_type = e.target.value; // Actualiza la propiedad en el elemento del arreglo
+      elemento.description = e.target.value; // Actualiza la propiedad en el elemento del arreglo
     }
 
     console.log( elemento )
   }
-  deleteRow(rowIndex: number) {
-    // Verifica si el índice es válido y está dentro del rango
-    if (rowIndex >= 0 && rowIndex < this.dataSource.data.length) {
-      // Copia el origen de datos actual
-      const data = [...this.dataSource.data];
-      
-      // Elimina la fila en el índice especificado
-      data.splice(rowIndex, 1);
-  
-      // Actualiza el origen de datos para reflejar el cambio
-      this.dataSource.data = data;
-    }
-  }
+
  
 
 
@@ -133,52 +131,20 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
       return false;
     }
   }
+  deleteRow(item: ActionPlanParameterValue) {
+    const index = this.values.indexOf(item);
+    if (index !== -1) {
+      this.values.splice(index, 1); // Elimina el elemento del array 'values'
+    }
+  }
+  
   getActionPlan(data: any) {
     this.actionPlanService.GetAction(data, "59")
       .then((response: any) => {
         this.actionPlan = response;
         this.displayedColumns = response.parameters.map((param: ActionPlanParameter) => param.description);
-        console.log(this.displayedColumns)
-        this.values=[
-          {
-            id:1,
-            idParameter:1,
-            value:"Area de op",
-            action_plan_id:1
-
-          },
-          {
-            id:2,
-            idParameter:2,
-            value:"obj",
-            action_plan_id:1
-
-          },
-          {
-            id:3,
-            idParameter:3,
-            value:"hab",
-            action_plan_id:1
-
-          }
-          ,
-          {
-            id:4,
-            idParameter:4,
-            value:"accion to",
-            action_plan_id:1
-
-          },
-          {
-            id:5,
-            idParameter:5,
-            value:"fecha",
-            action_plan_id:1
-
-          }
-        ]
-        console.log(this.actionPlan.parameters);
-        console.log(this.values)
+        console.log(this.actionPlan)
+    
       })
       .catch((error: any) => {
         console.error('Error in the request:', error);
@@ -187,8 +153,16 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
   }
   save()
   {
-    this.saves= this.dataSource.data;
-    console.log(this.saves)
+    //this.saves= this.dataSource.data;
+    console.log(this.values)
+    this.savePlan={
+      user_id: 67,
+      user_action_plan_id: 59,
+      save_type: 1,
+      agreements:this.values
+    };
+    console.log(this.savePlan);
+    this.abrirDialogo();
   }
   isAllSelected() {
     return this.dataSource.data.every((item) => item.description)

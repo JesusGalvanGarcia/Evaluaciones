@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TablesComponent } from './Tables.component';
+import { RouterModule, Routes } from '@angular/router';
 
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -11,7 +12,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 @NgModule({
   imports: [
-   
+    RouterModule,
     CommonModule,
     MatTableModule,
     MatPaginatorModule,

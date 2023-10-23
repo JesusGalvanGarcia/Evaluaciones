@@ -34,6 +34,7 @@
     "ngx-survey": "^0.2.0",
     "roboto-fontface": "^0.10.0",
     "rxjs": "~7.8.0",
+    "signature_pad": "^4.1.6",
     "survey-angular": "^1.9.112",
     "survey-angular-ui": "^1.9.112",
     "survey-core": "^1.9.112",

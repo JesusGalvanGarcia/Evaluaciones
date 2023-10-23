@@ -29,6 +29,38 @@ p {
     cursor: pointer;
     border: none; /* Quita el borde para hacerlo aún más redondo */
   }
+  .custom-dialog-container {
+    border-radius: 16px; /* Adjust the border radius as needed */
+  }
+  .textarea-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative; /* Permite la posición absoluta de elementos internos */
+  }
+  
+  .delete-icon {
+    position: absolute;
+    margin-left: 12%;
+    align-items: left;
+    z-index: 1; /* Asegura que el icono esté sobre el textarea */
+  }
+  
+  .textarea-container button {
+    align-self: flex-end;
+    margin-bottom: 4px; /* Espacio entre el botón y el textarea */
+  }
+  
+  .mat-form-field {
+    width: 100%; /* Ajusta el ancho según tus necesidades */
+  }
+  
+  .head{
+    border-top: 2px solid #d8d5d5; /* Línea arriba */
+    border-bottom: 2px solid #d8d5d5; /* Línea abajo */
+
+    color:#1a291c
+  }
   
   .button-round:hover {
     background-color: #005B9D; /* Cambia el color de fondo al pasar el cursor sobre el botón */

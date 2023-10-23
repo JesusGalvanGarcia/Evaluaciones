@@ -8,6 +8,8 @@ import { ColaboradorEvaluationService } from '../../services/ColaboradorEvaluati
 import { CollaboratorEvaluation } from 'src/app/models/ColaboradorEvaluation/ColaboradorEvaluation';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {TestService} from "../../services/TestService";
+import { Router } from '@angular/router';
+
 import { TestModel } from 'src/app/models/ColaboradorEvaluation/EvaluationDetail';
 @Component({
   selector: 'app-Tables',
@@ -33,7 +35,7 @@ export class TablesComponent implements OnInit {
   ListDetail: Details[];
    ELEMENT_DATA: EvaluationTable[] = []
   dataSource = new MatTableDataSource<EvaluationTable>([]);
-  constructor(private ColabluationService: ColaboradorEvaluationService,private testService:TestService) { }
+  constructor(    private router: Router,    private ColabluationService: ColaboradorEvaluationService,private testService:TestService) { }
 
   expandedElement: EvaluationTable | null | undefined;
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
@@ -99,6 +101,24 @@ getTable(data:any)
     console.error('Error in the request:', error);
     // Handle errors here
   });
+}
+sendPageEvaluation(process:string)
+{
+  console.log(process)
+  switch(process)
+  {
+    case "Evaluación de Desempeño":
+      this.router.navigate(['/desempeño/test']);
+    break
+    case "Plan de Acción":
+      this.router.navigate(['/plan']);
+    break
+    case "Evaluación de Aptitudes":
+      this.router.navigate(['/competencias/test']);
+    break
+  }
+
+  
 }
   ngOnInit() {
     this.ELEMENT_DATA=[]; //Limpiar los datos antes de entrar

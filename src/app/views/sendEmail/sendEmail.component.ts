@@ -57,7 +57,7 @@ export class SendEmailPasswordComponent implements OnInit {
       .then(() => {
         this.messageService.success('El correo se ha enviado con exito!');
         this.isLoading=false;
-        this.router.navigate(['/login']);
+        this.router.navigate(['login']);
             })
       .catch(error => {
         this.isLoading=false;

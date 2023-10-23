@@ -6,7 +6,14 @@ export class ActionPlanParameter {
   }
   export class ActionPlanParameterValue {
     id: number;
-    idParameter:number;
-    value: string;
-    action_plan_id: number;
+    parameter_id:number;
+    description: string;
+    line:number;
+  
+  }
+  export class SaveAccionPlan {
+    user_id: number;
+    user_action_plan_id:number;
+    save_type:number;
+    agreements:ActionPlanParameterValue[];
   }

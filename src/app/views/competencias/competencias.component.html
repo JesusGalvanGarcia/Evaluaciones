@@ -66,6 +66,7 @@
                   </div>
                   
                 </div>
+           
               </div>
             </div>
           </div>
@@ -103,7 +104,7 @@
                     <div class="container">
                       <div *ngFor="let respuesta of DesempenoTest.modules[index].questions[indexQuestion].answers" class="row">
                         <div class="col col-sm-1">
-                          <input class="radio-button" type="radio" (click)="nextQuestion(respuesta.id, DesempenoTest.modules[index].questions[indexQuestion].id, DesempenoTest.modules[index].id)" [checked]="isSelect(respuesta.id, DesempenoTest.modules[index].questions[indexQuestion].id, DesempenoTest.modules[index].id)"  [value]="respuesta.id" >
+                          <input class="radio-button" type="radio" (click)="nextQuestion(respuesta.id, DesempenoTest.modules[index].questions[indexQuestion].id, DesempenoTest.modules[index].id,respuesta.score)" [checked]="respuesta.user_answer_id === null? false:true"  [value]="respuesta.id" >
                         </div>
                         <div class="col col-sm-5">
                           <label for="respuesta{{respuesta.id}}">{{ respuesta.description }}</label>
@@ -116,15 +117,30 @@
                     </div>
                   </div>
                 </div>
+               
                 <br/>
                 <div class="cent">
-                  <button class="btn" *ngIf="!finish" class="btn btn-success">Guardar</button>
+                  <button class="btn" *ngIf="!finish" class="btn btn-success" (click)="send()">Guardar</button>
                   <button class="btn" *ngIf="finish" class="btn btn-success" (click)="send()">Terminar</button>
                 </div>
                
               </div>
+          
             </div>
-            
+            <div style="text-align: center;width: 90%;" *ngIf="(indexQuestion+1)==sizeQuestions">
+              <span style="color:#616161;font-weight: bold;">Pregunta final del modulo:</span><br/><br/>
+              <mat-form-field class="form-input" >
+              <textarea
+              matInput
+              style="width: 100%;"
+              [placeholder]="'Escribe una nota adicional acerca de este modulo...'"
+              [value]="notes"    
+              [(ngModel)]="notes" 
+              (change)="inputHandler($event)"
+
+            ></textarea>  <br/>
+              </mat-form-field>
+            </div> 
             <div class="pregunta-container">
               <span>Pregunta &nbsp;</span> {{ (indexQuestion+1) + "/" + (sizeQuestions) }}
             </div>

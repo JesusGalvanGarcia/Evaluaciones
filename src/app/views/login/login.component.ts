@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import * as Utilities from '@utils/utilities';
-import { LoginRequest } from 'src/app/shared/entities/models/login-request';
 import { LoginService } from '@services/login.service';
+import{UserLogin} from "../../models/Login/login";
 import { lastValueFrom } from 'rxjs';
 import { LoginResponse } from '@models/login-response';
 import { GeneralConstant } from '@utils/general-constant';
-
+import { UserService } from '../../services/UserService';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -26,13 +26,12 @@ import { GeneralConstant } from '@utils/general-constant';
   ]
 })
 export class LoginComponent implements OnInit {
-  protected loginRequest: LoginRequest = new LoginRequest();
+  protected loginRequest: UserLogin = new UserLogin();
   protected disableSubmit: any;
   protected hidePassword: boolean = true;
   constructor(
-    private loginService: LoginService,
     private router: Router,
-  
+   public loginServices:UserService,
   ) { }
 
   ngOnInit() {
@@ -59,14 +58,6 @@ export class LoginComponent implements OnInit {
    * Llama al método Authenticate de LoginService. Si es exitoso, guarda el LoginResponse Token en el localStorage y redirige a la página de pacientes.
    */
   public async authenticate() {
-    await lastValueFrom(this.loginService.authenticate(this.loginRequest))
-      .then((loginResponse: LoginResponse) => {
-        localStorage.setItem(GeneralConstant.TOKEN_KEY, loginResponse.token);
-        this.router.navigate(['/main']);
-      })
-      .catch(error => {
-        localStorage.removeItem(GeneralConstant.TOKEN_KEY);
-        this.disableSubmit = false;
-      });
+   this.loginServices.PostLogin(this.loginRequest)
   }
 }

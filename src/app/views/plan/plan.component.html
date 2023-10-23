@@ -20,22 +20,39 @@
     </div>
   </div>
   </div>
- 
-  <div class="container-fluid" style="width: 90%; margin-left: 6%;">
+  <br/>
+  <div class="container-fluid" style="width: 100%;background-color: #f8f7f7;">
     <div class="d-flex flex-wrap">
       <div *ngFor="let header of actionPlan.parameters" class="col-sm table-cell">
+<div  class="head">
+        <div align="start">
+        <button class="btn btn-light" mat-button (click)="addRowAction(header)">
+          <img
+          src="assets/svg/add.svg"
+          style="color:white"
+          />
+         </button>
         <b>{{header.description}}</b>
-        <div *ngFor="let item of values">
-          <div *ngIf="item.idParameter == header.id">
+      </div>
+    </div>
+      <br/>
+     
+
+      <div *ngFor="let item of values" >
+          <div *ngIf="item.parameter_id == header.id" style="margin-left: 10%;">
+            <button mat-icon-button class="delete-icon" (click)="deleteRow(item)">
+              <mat-icon>cancel</mat-icon>
+            </button>
             <mat-form-field class="form-input" >
             <textarea
             matInput
             [placeholder]="header.description== 'Fecha establecida' ? 'dd/mm/yyyy' : ''"
          
-            [(ngModel)]="item.value"
-            (change)="inputHandler($event, header.id, header.description)"
+            [(ngModel)]="item.description"
+            (change)="inputHandler($event, item.id, header.description)"
           ></textarea>      
         </mat-form-field>
+        
       </div>
         </div>
       </div>

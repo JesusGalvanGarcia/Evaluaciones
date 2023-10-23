@@ -7,13 +7,13 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class TestService {
-  private controllerUrl = 'user-evaluations/';
+export class UserService {
+  private controllerUrl = 'login';
 
   constructor(private http: HttpClient) { }
-   GetTest(data: any,id:string): Promise<any> {
+   PostLogin(data: any): Promise<any> {
     
-    return axios.get(environment.apiUrl+this.controllerUrl+id, {
+    return axios.get(environment.apiUrl+this.controllerUrl, {
       params: data
     })
     .then((response) => {

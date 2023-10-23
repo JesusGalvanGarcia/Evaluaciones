@@ -58,7 +58,7 @@
                   <div class="container-fluid" >
                     <div *ngFor="let respuesta of DesempenoTest.modules[0].questions[index].answers" class="row">
                       <div class="col col-12 col-sm-6 col-md-4 " align="end">
-                        <input class="radio-button" type="radio" (click)="nextQuestion(DesempenoTest.modules[0].questions[index], respuesta)" name="flexRadioDefault" id="flexRadioDefault1"  [checked]="isSelect(respuesta.id,DesempenoTest.modules[0].questions[index].id)">
+                        <input class="radio-button" type="radio" (click)="nextQuestion(DesempenoTest.modules[0].questions[index], respuesta)" name="flexRadioDefault" id="flexRadioDefault1"  [checked]="respuesta.user_answer_id === null? false:true"  [value]="respuesta.id">
                        
                       </div>
                       <div class="col col-12 col-sm-6 col-md-4  " align="start">

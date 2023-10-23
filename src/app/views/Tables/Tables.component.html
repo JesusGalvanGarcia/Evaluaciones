@@ -37,16 +37,12 @@
               </div>
               <div class="dato">{{ detalle.Clasificacion }}</div>
        
-              <div class="dato" *ngIf="detalle.Estatus  === 'Pendiente'">
+              <div class="dato" (click)="sendPageEvaluation(detalle.Evaluacion)">
                 <button class="btn btn-primary" >
-                  Comenzar
+                  {{detalle.Estatus  === 'Pendiente'?"Comenzar":detalle.Estatus=="Terminado"?"Ver":"Continuar"}}
                 </button>
               </div>
-              <div class="dato" *ngIf="detalle.Estatus  === 'Terminado'">
-                <label  style="color:green">
-                  Terminado
-                </label>
-              </div>
+             
             </div>
             <!-- Puedes agregar más filas y datos aquí -->
           </div>

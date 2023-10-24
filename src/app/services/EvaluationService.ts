@@ -10,53 +10,57 @@ import { environment } from 'src/environments/environment';
 })
 export class EvaluationService {
   private controllerUrl = 'user-tests/';
-  private api_conect:any;
-  constructor(private http: HttpClient, public messageService:MensajeService) 
-  {
-     this.api_conect = axios.create({
-      baseURL: environment.apiUrl,
+  private api_conect: any;
+  constructor(private http: HttpClient, public messageService: MensajeService) {
+    this.api_conect = axios.create({
+      baseURL: 'http://127.0.0.1:8000/api/',
       headers: {
         'Content-Type': 'application/json',
         // 'Authorization': 'Bearer ' + this.token
       },
     })
-   }
-   GetEvaluation(data: any,id:string): Promise<any> {
-    
-    return axios.get(environment.apiUrl+this.controllerUrl+id, {
-      params: data
-    })
-    .then((response) => {
-      return response.data.test;
-      })      
-    .catch(function (error: any) {
-      return error;
-    });
   }
-  SendTestEvaluation(data: any): Promise<any> {
-    
-    return this.api_conect.post("user-tests/saveAnswer",data)
-    .then((response:any) => {
-      console.log(response,data)
-      return response.data.tests;
-      })      
-    .catch(function (error: any) {
-      console.log(error)
 
-      return error;
-    });
+  GetEvaluation(data: any, id: number): Promise<any> {
+
+    return this.api_conect.get(this.controllerUrl + id, { params: data })
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
   }
+
+  async SendTestEvaluation(data: any): Promise<any> {
+
+    return this.api_conect.post(this.controllerUrl + "saveAnswer", data)
+      .then(({ data }: any) => {
+        console.log(data)
+        return data.tests;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
+  }
+
   SendTestNote(data: any): Promise<any> {
-    
-    return axios.post(environment.apiUrl+this.controllerUrl+"saveModuleNote", {
-      params: data
-    })
-    .then((response) => {
-      return response.data.tests;
-      })      
-    .catch(function (error: any) {
 
-      return error;
-    });
+    return this.api_conect.post(this.controllerUrl + "saveModuleNote", data)
+      .then(({ data }: any) => {
+        return data.tests;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+        console.log(data)
+        throw data;
+      });
   }
 }

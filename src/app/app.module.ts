@@ -13,19 +13,22 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SidenavComponent } from './views/sidenav/sidenav.component';
 import { SublevelMenuComponent } from './views/sidenav/sublevel-menu.component';
 import { MatIconModule } from '@angular/material/icon';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { SurveyModule } from "survey-angular-ui";
 import { TablesModule } from './views/plan/plan.module';
 import { SurveyComponent } from "../app/views/desempeño/desempeño.component";
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+
+
 @NgModule({
-  declarations: [	
+  declarations: [
     AppComponent,
-      SidenavComponent,
-      SublevelMenuComponent,
-      
-   ],
+    SidenavComponent,
+    SublevelMenuComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -41,12 +44,14 @@ import { SurveyComponent } from "../app/views/desempeño/desempeño.component";
     MatPaginatorModule,
     MatIconModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressBarModule
   ],
   providers: [
     LoginService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {hideRequiredMarker: true} }
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { hideRequiredMarker: true } },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent]
 })

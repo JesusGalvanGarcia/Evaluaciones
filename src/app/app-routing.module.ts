@@ -9,18 +9,18 @@ import { PlanComponent } from './views/plan/plan.component';
 const routes: Routes = [
   {
     path: '',
-    pathMatch:'full',
-    redirectTo: 'login'
+    pathMatch: 'full',
+    redirectTo: '/login'
   },
   {
     path: 'login',
     loadComponent: () => import('./views/login/login.component').then(m => m.LoginComponent)
   },
-    {
+  {
     path: 'dashboard',
     component: SidenavComponent,
     loadChildren: () => import('./views/sidenav/sidenav.module').then(m => m.SideNavModule),
-  
+
   },
 
   {
@@ -32,7 +32,7 @@ const routes: Routes = [
     loadComponent: () => import('./views/planForm/planForm.component').then(m => m.PlanFormComponent)
   },
   {
-    path: 'desempeño/:name',
+    path: 'desempeño/:user_test_id',
     loadComponent: () => import('./views/desempeño/desempeño.component').then(m => m.SurveyComponent)
   },
   {

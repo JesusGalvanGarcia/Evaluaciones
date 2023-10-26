@@ -8,6 +8,7 @@ use App\Http\Controllers\UserEvaluationController;
 use App\Http\Controllers\UserTestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Aws\S3\S3Client;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -39,6 +40,7 @@ Route::resource('/user-evaluations', UserEvaluationController::class, [
 // Route::post('/user-tests/saveAnswers', [UserTestController::class, 'saveAnswers'])->name('Guardar Respuestas del Usuario');
 Route::post('/user-tests/saveAnswer', [UserTestController::class, 'saveAnswer'])->name('Guardar Respuesta del Usuario');
 Route::post('/user-tests/saveModuleNote', [UserTestController::class, 'saveModuleNote'])->name('Guardar nota del modulo');
+Route::post('/user-tests/changeProcess', [UserTestController::class, 'changeProcess'])->name('Cambiar de proceso');
 Route::resource('/user-tests', UserTestController::class, [
     'names' => [
         'index' => 'Consultar Pruebas del Usuario',
@@ -49,6 +51,7 @@ Route::resource('/user-tests', UserTestController::class, [
     ]
 ]);
 
+Route::post('/user-actionPlan/confirmActionPlan', [UserActionPlanController::class, 'confirmActionPlan'])->name('Confirmar Plan de Acción');
 Route::post('/user-actionPlan/storeSignature', [UserActionPlanController::class, 'storeSignature'])->name('Guardar Firma del Usuario');
 Route::resource('/user-actionPlan', UserActionPlanController::class, [
     'names' => [

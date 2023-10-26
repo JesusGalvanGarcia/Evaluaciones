@@ -25,9 +25,9 @@ class Evaluation extends Model
         'deleted_by'
     ];
 
-    public function action_plan()
+    public function action_plans()
     {
-        return $this->hasOne(ActionPlan::class);
+        return $this->hasMany(ActionPlan::class);
     }
 
     public function user_evaluations()

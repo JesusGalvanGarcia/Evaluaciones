@@ -1,0 +1,272 @@
+<div class="container-fluid">
+
+
+    <mat-drawer-container class="example-container" autosize>
+
+        <mat-drawer #drawer class="example-sidenav" mode="over" [disableClose]="true">
+
+            <form autocomplete="off" [formGroup]="agreement_form" (ngSubmit)="evaluateForm()">
+                <div class="row row-cols-1 ">
+                    <div class="col col-12 mb-4">
+                        <div class="row row-cols-2">
+                            <div class="col col-8">
+                                <h2>{{ this.selected_agreement_id > 0 ? 'Actualización':'Alta'}} de Acuerdo</h2>
+                            </div>
+                            <div class="col col-4 text-end">
+                                <button type="button" mat-icon-button color="primary"
+                                    (click)="resetForm();closeDrawer()" [disabled]="loading">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                    </div>
+                    <div class="col col-12">
+                        <mat-form-field class="input-small">
+                            <mat-label>Área de oportunidad</mat-label>
+                            <input matInput formControlName="opportunity_area">
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-12">
+
+                        <mat-form-field class="input-small">
+                            <mat-label>Objetivo</mat-label>
+                            <textarea matInput formControlName="goal"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-12">
+
+                        <mat-form-field class="input-small">
+                            <mat-label>Habilidad a Desarrollar</mat-label>
+                            <input matInput formControlName="developed_skill">
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-12">
+
+                        <mat-form-field class="input-small">
+                            <mat-label>Acción a realizar</mat-label>
+                            <input matInput formControlName="action">
+                        </mat-form-field>
+                    </div>
+                    <div class="col col-12">
+                        <mat-form-field class="input-small">
+                            <mat-label>Fecha establecida</mat-label>
+                            <input type="date" matInput formControlName="established_date">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-progress-bar class="mt-2 mb-2" mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+                <div class="text-end">
+                    <button mat-button type="submit" [disabled]="loading">{{ this.selected_agreement_id > 0 ?
+                        'Actualizar':'Guardar'}}</button>
+                </div>
+            </form>
+
+        </mat-drawer>
+
+
+        <div class="example-sidenav-content">
+            <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
+                <div class="col col-12 col-md-4">
+                    <img src="../../../assets/logo/logo_trinitas.jpg" style="max-width: 250px;"
+                        class="img-fluid mx-auto d-block" alt="...">
+                </div>
+                <div class="col col-12 col-md-8">
+                    <h1 class="font-weight-bold text-center text-md-start">Evaluaciones de desempeño y competencias</h1>
+                    <h2 class="text-muted text-center text-md-start">Plan de Acción</h2>
+                </div>
+            </div>
+
+            <div class="row mb-4" *ngIf="!show_sign">
+                <div class="container-fluid text-center">
+                    <ol class="list-group-numbered list-unstyled d-inline-block custom-list">
+                        <li class="list-group-item">
+                            <b>RETADOR:</b> que emocionen y sean deseados, que sean desafiantes y nos saquen de nuestra
+                            zona
+                            de
+                            confort.
+                        </li>
+                        <li class="list-group-item">
+                            <b>MEDIBLE:</b> deben ser lo más cuantitativos posible y estar ligados a un límite de
+                            tiempo.
+                        </li>
+                        <li class="list-group-item">
+                            <b>ALCANZABLE:</b> El objeivo es no darse por vencido al buscar alcanzar la meta y que en el
+                            trayecto no
+                            se pierda el interés
+                        </li>
+                        <li class="list-group-item">
+                            <b>REALISTA:</b> Que las habilidades, destrezas, etc estén disponibles y al alcance para
+                            lograr
+                            el
+                            objetivo.
+                        </li>
+                        <li class="list-group-item">
+                            <b>FECHA DETERMINADA:</b> no necesariamente tiene que ser la duración del trimestre.
+                        </li>
+                        <li class="list-group-item">
+                            <b>ACCIÓN / VERBO:</b> Cada plan debe estar escrito empezando con un verbo en infinitivo:
+                            Desarrollar,
+                            Terminar, Iniciar, definir, etc.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 mb-2" style="margin: 0 auto; max-width: 85%;" *ngIf="!show_sign">
+                <div class="col col-12 col-md-4">
+                    <button type="button" mat-stroked-button (click)="redirectToPage();">
+                        Regresar
+                    </button>
+                </div>
+                <div class="col col-12 col-md-48 text-end">
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 text-end">
+                        <div class="col col-12 col-md-4">
+                            <button type="button" mat-raised-button color="primary"
+                                (click)="scrollToTop(); drawer.toggle();" *ngIf="!finished && responsable">
+                                Agregar Acuerdo
+                            </button>
+                        </div>
+                        <div class=" col col-12 col-md-4">
+                            <button type="button" mat-raised-button color="warn" (click)="confirmActionPlan();"
+                                *ngIf="!finished && responsable">
+                                Finalizar Plan de Acción
+                            </button>
+                        </div>
+                        <div class="col col-12 col-md-4">
+                            <button type="button" mat-raised-button color="primary" (click)="toSign();"
+                                *ngIf="finished">
+                                Firmar
+                            </button>
+                        </div>
+                        <div class="col col-12 col-md-4" *ngIf="finished">
+                            Finalizado : {{user_action_plan.finish_date | date: 'dd-MM-yyyy' }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row mb-4" style="margin: 0 auto; max-width: 85%;" *ngIf="!show_sign">
+
+                <div class="mat-elevation-z8">
+                    <div class="example-table-container">
+
+                        <div class="mt-2 animated fadeIn" align="center" *ngIf="loading">
+                            <mat-spinner></mat-spinner>
+                        </div>
+
+                        <table mat-table [dataSource]="dataSource" class="example-table" matSort *ngIf="!loading">
+
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="id">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                            </ng-container>
+
+                            <!-- Opportunity Area Column -->
+                            <ng-container matColumnDef="opportunity_area">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Área de oportunidad </th>
+                                <td mat-cell *matCellDef="let row"> {{row.opportunity_area}} </td>
+                            </ng-container>
+
+                            <!-- Goal Column -->
+                            <ng-container matColumnDef="goal">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Objetivo </th>
+                                <td mat-cell *matCellDef="let row"> {{row.goal}} </td>
+                            </ng-container>
+
+                            <!-- Developed Skill Column -->
+                            <ng-container matColumnDef="developed_skill">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Habilidad a Desarrollar </th>
+                                <td mat-cell *matCellDef="let row"> {{row.developed_skill}} </td>
+                            </ng-container>
+
+                            <!-- Action Column -->
+                            <ng-container matColumnDef="action">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Acción a realizar </th>
+                                <td mat-cell *matCellDef="let row"> {{row.action}} </td>
+                            </ng-container>
+
+                            <!-- Established Date Column -->
+                            <ng-container matColumnDef="established_date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha establecida </th>
+                                <td mat-cell *matCellDef="let row"> {{row.established_date}} </td>
+                            </ng-container>
+
+                            <!-- Actions Column -->
+                            <ng-container matColumnDef="actions" stickyEnd>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <div class="row">
+                                        <button mat-icon-button matTooltip="Editar Acuerdo"
+                                            (click)="editAgreement(row.id)" *ngIf="!finished && responsable">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                        <button mat-icon-button style="color: red;" matTooltip="Borrar Acuerdo"
+                                            *ngIf="!finished && responsable">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                            <!-- Row shown when there is no matching data. -->
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" colspan="4">No se han registrado acuerdos aun.</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                        aria-label="Select page of users"></mat-paginator>
+                </div>
+            </div>
+
+            <div class="container mb-4">
+                <div class="row">
+                    <div class="col col-12 col-md-6">
+                        <div class="firma-container">
+                            <div class="firma-canvas-container mb-4">
+                                <canvas #signatureCanvas [style.display]="show_sign && !is_signed ? 'block' : 'none'"></canvas>
+                            </div>
+                            <div class="d-grid gap-2 d-md-block" *ngIf="show_sign && !is_signed">
+                                <button class="btn btn-secondary" type="button" (click)="clearSignature()"
+                                    [disabled]="loading">
+                                    Limpiar Firma
+                                </button>
+                                <button class="btn btn-primary" type="button" (click)="confirmSignature()"
+                                    [disabled]="loading||firmaBase64">
+                                    Continuar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-12 col-md-6">
+                        <div *ngIf="firmaBase64">
+
+                            <h4>
+                                La firma se verá de esta forma, ¿Estas seguro de guardarla?
+                            </h4>
+                            <!-- Puedes mostrar la firma como una imagen base64 si es necesario -->
+                            <img [src]="firmaBase64">
+                            <button class="btn btn-primary mt-4" type="button" (click)="saveSignature()"
+                                [disabled]="loading">
+                                Guardar Firma
+                            </button>
+
+                            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <img >
+                </div>
+            </div>
+        </div>
+    </mat-drawer-container>
+</div>

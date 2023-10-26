@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LoginService } from '@services/login.service';
 import { TokenInterceptor } from '@http/token.interceptor';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { AgGridModule } from 'ag-grid-angular';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -21,6 +21,7 @@ import { TablesModule } from './views/plan/plan.module';
 import { SurveyComponent } from "../app/views/desempeño/desempeño.component";
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     AgGridModule,
     SurveyModule,
     AppRoutingModule,
@@ -45,7 +47,8 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatCardModule
   ],
   providers: [
     LoginService,

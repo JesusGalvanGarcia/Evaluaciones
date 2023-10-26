@@ -11,23 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_action_plans', function (Blueprint $table) {
+        Schema::create('user_agreements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('action_plan_id');
-            $table->date('finish_date')->nullable($value = true);
-            $table->unsignedBigInteger('responsable_id');
-            $table->integer('status_id');
+            $table->unsignedBigInteger('user_action_plan_id');
+            $table->string('opportunity_area', 200)->nullable($value = true);
+            $table->longText('goal')->nullable($value = true);
+            $table->string('developed_skill', 200)->nullable($value = true);
+            $table->longText('action', 200)->nullable($value = true);
+            $table->date('established_date')->nullable($value = true);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');
             $table->unsignedBigInteger('deleted_by')->nullable($value = true);
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
             $table->timestamp('deleted_at')->nullable($value = true);
-
-            // $table->foreign('user_id')->references('id')->on('users');
-            // $table->foreign('action_plan_id')->references('id')->on('action_plans');
-            // $table->foreign('action_plan_parameter_id')->references('id')->on('action_plan_parameters');
         });
     }
 
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_action_plans');
+        Schema::dropIfExists('user_agreements');
     }
 };

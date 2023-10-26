@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Process;
 use App\Models\Question;
 use App\Models\Test;
 use App\Models\UserAnswer;
+use App\Models\UserEvaluation;
 use App\Models\UserTest;
 use App\Models\UserTestModule;
 use App\Services\UserService;
@@ -86,12 +88,12 @@ class UserTestController extends Controller
                 'modular'
             )
                 ->with([
-                    'modules' => function ($query) use ($id) {
+                    'test_modules' => function ($query) use ($id) {
                         $query->select(
                             'id',
                             'name',
                             'test_id',
-                            DB::raw("(select note from user_test_modules as UTM where UTM.user_test_id = $id AND UTM.module_id = id AND deleted_at is null) AS 'note'")
+                            DB::raw("(select note from user_test_modules as UTM where UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at is null) AS 'note'")
                         );
 
                         $query->with([
@@ -115,6 +117,13 @@ class UserTestController extends Controller
                     }
                 ])
                 ->find($user_test->test_id);
+
+            $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
+
+            if ($user_evaluation->status_id == 1)
+                $user_evaluation->update([
+                    'status_id' => 2
+                ]);
 
             if (!$test)
                 return response()->json([
@@ -262,7 +271,7 @@ class UserTestController extends Controller
                 'user_answer_id' => 'Nullable|Integer|NotIn:0|Min:0',
                 'question_id' => 'Required|Integer|NotIn:0|Min:0',
                 'answer_id' => 'Required|Integer|NotIn:0|Min:0',
-                'score' => 'Required|Integer|NotIn:0|Min:0',
+                'score' => 'Required|Integer',
                 'its_over' => 'Required|In:si,no',
             ]);
 
@@ -331,8 +340,8 @@ class UserTestController extends Controller
             }
 
             $user_test->update([
-                'status_id' => $request->its_over == 'yes' ? 3 : 2,
-                'finish_date' => $request->its_over == 'yes' ? Carbon::now()->format('Y-m-d') : null,
+                'status_id' => $request->its_over == 'si' ? 3 : 2,
+                'finish_date' => $request->its_over == 'si' ? Carbon::now()->format('Y-m-d') : null,
                 'total_score' => (int)$total_score + (int)$request->score,
                 'updated_by' => $request->user_id
             ]);
@@ -341,7 +350,8 @@ class UserTestController extends Controller
 
             return response()->json([
                 'title' => 'Proceso terminado',
-                'message' => 'Respuesta guardada correctamente'
+                'message' => 'Respuesta guardada correctamente',
+                'actual_score' => (int)$total_score + (int)$request->score
             ]);
         } catch (Exception $e) {
 
@@ -436,6 +446,92 @@ class UserTestController extends Controller
                 'title' => 'Ocurrio un error en el servidor',
                 'message' => $e->getMessage() . ' -L:' . $e->getLine(),
                 'code' => $this->prefix . 'X799'
+            ], 500);
+        }
+    }
+
+
+    public function changeProcess(Request $request)
+    {
+        try {
+            // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            // if (!$this->checkPermissions(request()->route()->getName())) {
+
+            //     return response()->json([
+            //         'title' => 'Proceso cancelado',
+            //         'message' => 'No tienes permiso para hacer esto.',
+            //         'code' => 'P001'
+            //     ], 400);
+            // }
+
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|NotIn:0|Min:0',
+                'process_id' => 'Required|Integer|NotIn:0|Min:0',
+                'user_test_id' => 'Required|Integer|NotIn:0|Min:0',
+            ]);
+
+            if ($validator->fails()) {
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X801'
+                ], 400);
+            }
+
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X802'
+                ], 400);
+
+            // Se valida que el proceso sea correcto
+            if (!Process::find($request->process_id))
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Id de Proceso no valido.',
+                    'code' => $this->prefix . 'X803'
+                ], 400);
+
+            $user_evaluation  = UserTest::find($request->user_test_id)->user_evaluation;
+
+            if (!$user_evaluation)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'La evaluación no es valida.',
+                    'code' => $this->prefix . '804'
+                ], 400);
+
+            if ($user_evaluation->process_id <= $request->process_id)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Se debe continuar con el siguiente proceso.',
+                    'code' => $this->prefix . '804'
+                ], 400);
+
+            DB::beginTransaction();
+
+            $user_evaluation->update(
+                [
+                    'process_id' => $request->process_id
+                ]
+            );
+
+            DB::commit();
+
+            return response()->json([
+                'title' => 'Proceso completo',
+                'message' => 'Proceso actualizado correctamente.',
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X899'
             ], 500);
         }
     }

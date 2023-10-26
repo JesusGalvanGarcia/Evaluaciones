@@ -139,7 +139,7 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
   }
   
   getActionPlan(data: any) {
-    this.actionPlanService.GetAction(data, "59")
+    this.actionPlanService.GetAction(data, 59)
       .then((response: any) => {
         this.actionPlan = response;
         this.displayedColumns = response.parameters.map((param: ActionPlanParameter) => param.description);

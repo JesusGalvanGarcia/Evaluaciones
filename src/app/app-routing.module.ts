@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SidenavComponent } from './views/sidenav/sidenav.component';
 import { PlanComponent } from './views/plan/plan.component';
+import { ActionPlanComponent } from './views/action-plan/action-plan.component';
 
 
 const routes: Routes = [
@@ -47,6 +48,10 @@ const routes: Routes = [
     path: 'resetPassword/:id',
     loadComponent: () => import('./views/resetPassword/resetPassword.component').then(m => m.ResertPasswordComponent)
   },
+
+
+  { path: 'plan-accion/:user_action_plan_id', component: ActionPlanComponent, data: { routeName: 'Consultar Pagos TP' } },
+  { path: 'prueba/:user_test_id', component: ActionPlanComponent, data: { routeName: 'Consultar Prueba del usuario' } }
 
 ];
 

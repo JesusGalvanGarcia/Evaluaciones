@@ -17,6 +17,7 @@ class UserActionPlan extends Model
         'user_id',
         'action_plan_id',
         'finish_date',
+        'responsable_id',
         'status_id',
         'created_by',
         'updated_by',
@@ -30,6 +31,11 @@ class UserActionPlan extends Model
 
     public function agreements()
     {
-        return $this->hasMany(ActionPlanAgreement::class);
+        return $this->hasMany(UserAgreement::class);
+    }
+
+    public function singnatures()
+    {
+        return $this->hasMany(ActionPlanSignature::class);
     }
 }

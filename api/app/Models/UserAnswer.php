@@ -17,10 +17,7 @@ class UserAnswer extends Model
     protected $fillable = [
         'user_test_id',
         'question_id',
-        'answer_id',
-        'created_at',
-        'updated_at',
-        'deleted_at'
+        'answer_id'
     ];
 
     public function user_test()

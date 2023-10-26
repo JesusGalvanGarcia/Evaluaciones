@@ -4,5 +4,5 @@ export class Answer {
     score: string;
     question_id: string;
     answered: string;
-    user_answer_id:number;
+    user_answer_id:number|null;
   }

@@ -15,11 +15,13 @@ import { UserAnswer } from "../../models/TestDetails/TestIndividual";
 import { MensajeService } from '@http/mensaje.service';
 import { Answer } from 'src/app/models/TestDetails/AnswerModel';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { Router } from '@angular/router';
+import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'app-desempeño',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatProgressBarModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatProgressBarModule,MatIconModule,LoadingComponent],
   templateUrl: './desempeño.component.html',
   styleUrls: ['./desempeño.component.scss']
 })
@@ -31,6 +33,7 @@ export class SurveyComponent implements OnInit {
   showQuestion: boolean = true;
   saveIndivisual: any;
   start: boolean = true;
+  isLoading: boolean = true;
   DesempenoTest: EvaluationTest;
   Answers: SendQuestions[] = [];
   sendInfo: SendQuestions;
@@ -40,7 +43,7 @@ export class SurveyComponent implements OnInit {
   answers: any;
   modules: any;
 
-  constructor(private route: ActivatedRoute, private evaluationService: EvaluationService, public message: MensajeService) {
+  constructor(public router:Router,private route: ActivatedRoute, private evaluationService: EvaluationService, public message: MensajeService) {
     this.route.params.subscribe(params => {
       this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
     });
@@ -49,27 +52,40 @@ export class SurveyComponent implements OnInit {
   }
 
   getTable(data: any) {
+    console.log(data)
     this.evaluationService.GetEvaluation(data, this.user_test_id)
       .then(({ test, message, title }) => {
         console.log(test)
         this.title = test.name
         this.DesempenoTest = test;
-        this.size = this.DesempenoTest.modules[0].questions.length
+        this.isLoading=false;
+        this.size = this.DesempenoTest.test_modules[0].questions.length
       })
       .catch((error: any) => {
         console.error('Error in the request:', error);
+        this.isLoading=false;
         // Handle errors here
       });
   }
 
   ngOnInit() {
+
+    var user=localStorage.getItem("email");
+    if(user=="")
+    {
+      this.router.navigate(['/login']);
+      this.message.error("Tienes que iniciar sesion");
+
+    }
+
     let data = {
-      user_id: 67,
+      user_id: Number(localStorage.getItem("user_id")),
       collaborators_id: [],
       evaluations_id: []
     };
 
     this.getTable(data);
+  
   }
 
   size = 0; //Para saber el tamaño  del arreglo
@@ -95,26 +111,26 @@ export class SurveyComponent implements OnInit {
     return this.Answers.some(answer => answer.IdAnswer === AnswerId && answer.IdQuestion == QuestionId);
   }
 
-  PostsaveAnswers(question: Question, answer: Answer) {
+  PostsaveAnswers(question: Question, answer: Answer,idAnswer:number) {
     this.loading = true;
 
     this.saveIndivisual = {
-      user_id: 67,
+      user_id: Number(localStorage.getItem("user_id")),
       user_test_id: this.user_test_id,
       answer_id: answer.id,
       question_id: question.id,
       score: Number(answer.score),
       its_over: "no"
     }
-
-    if (this.index === this.size - 1)
+    console.log(this.index+1,this.size);
+    if (this.index+1 === this.size )
       this.saveIndivisual.its_over = "si";
-
+    console.log(this.saveIndivisual);
     this.evaluationService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
         this.loading = false;
 
-        this.nextQuestion(question, answer);
+        this.nextQuestion(question, answer,idAnswer);
       })
       .catch(({ title, message, code }) => {
         console.error(title, message, code);
@@ -125,10 +141,24 @@ export class SurveyComponent implements OnInit {
         // Handle errors here
       });
   }
+  finishEvaluation()
+  {
+    this.router.navigate(['/dashboard/evaluacion']);
+    this.message.success("¡Haz terminado la evaluacion de desempeño!")
+  }
+  home() 
+    {
+      this.router.navigate(['/dashboard/evaluacion']);
 
-  nextQuestion(question: Question, answer: Answer) {
+    }
+  nextQuestion(question: Question, answer: Answer,idAnswer:number) {
 
-    // this.PostsaveAnswers(answer.id, question.id, answer.score)
+     //this.PostsaveAnswers(question, answer)
+   //Actualizar la pregunta en  el array
+    this.DesempenoTest.test_modules[0].questions[this.index].answers.map((respuesta) => {
+      respuesta.user_answer_id=null;
+  });
+  this.DesempenoTest.test_modules[0].questions[this.index].answers[idAnswer].user_answer_id=answer.id;
 
     if (this.index !== this.size) { // si las preguntas  no han terminado entonces avanzar
       this.index = this.index + 1;
@@ -141,6 +171,7 @@ export class SurveyComponent implements OnInit {
     if (this.index === this.size) {
       this.finish = true; // Iniciar animación para terminar  la secuencia de preguntas
       this.index = this.index - 1;
+      this.finishEvaluation();
     }
     const questionIndex = this.Answers.findIndex(item => item.IdQuestion === question.id);
     this.sendInfo = {

@@ -35,15 +35,22 @@
               <div class="dato">
                {{ detalle.Calificacion===0?"Sin contestar": (detalle.Calificacion ===null?"No aplica":detalle.Calificacion)}}
               </div>
-              <div class="dato">{{ detalle.Clasificacion }}</div>
-       
-              <div class="dato" *ngIf="detalle.Estatus  === 'Pendiente'">
-                <label >
-                  No disponible
-                </label>
+              <div class="dato" [style.color]="getColorByClasification(detalle.Clasificacion)" >
+                <div class="row" style="margin-left: 20%;">
+              <div class="col col-sm-9">
+                {{ detalle.Clasificacion }}
               </div>
-              <div class="dato" *ngIf="detalle.Estatus  === 'Terminado'">
-                <button class="btn btn-primary" >
+              <div class="col col-sm-1">
+                <button  [style.color]="getColorByClasification(detalle.Clasificacion)" mat-button [matTooltip]="clasification(detalle.Clasificacion)"  *ngIf="detalle.Clasificacion!==''"><mat-icon>error</mat-icon>
+                </button>
+              </div>
+                </div>
+                  </div>
+           
+       
+      
+                  <div class="dato" (click)="sendPageEvaluation(detalle.Evaluacion,detalle.idTest,detalle.Estatus)">
+                    <button class="btn btn-primary" >
                   Ver
                 </button>
               </div>

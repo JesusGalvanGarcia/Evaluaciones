@@ -13,17 +13,22 @@ import { UserAnswer } from "../../models/TestDetails/TestIndividual";
 import { MensajeService } from '@http/mensaje.service';
 import { NoteUser } from "../../models/TestDetails/TestIndividual";
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { LoadingComponent } from '../loading/loading.component';
+import { Router } from '@angular/router';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-competencias',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatInputModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,LoadingComponent, MatInputModule,MatProgressBarModule,MatIconModule],
   templateUrl: './competencias.component.html',
   styleUrls: ['./competencias.component.scss']
 })
 export class CompetenciasComponent implements OnInit {
   showQuestion: boolean = true;
-
+  protected isLoading: boolean = false;
+  loading: boolean = false;
   noteUser: NoteUser;
   DesempenoTest: EvaluationTest;
   sendAnswered: Answered;
@@ -38,17 +43,22 @@ export class CompetenciasComponent implements OnInit {
       note: "",
       answers: []
     }
-  sendUserTest: UserTest =
-    {
-      user_id: 67,
-      user_test_id: 119,
-      modules: []
-    };
+
   showModule: boolean = true;
   start: boolean = true;
   sendInfo: Competencias;
+  user_test_id: number = 0;
+  sendUserTest: UserTest =
+    {
+      user_id: Number(localStorage.getItem("user_id")),
+      user_test_id: this.user_test_id,
+      modules: []
+    };
   ListsendInfo: Competencias[] = [];
-  constructor(private route: ActivatedRoute, private evaluationService: EvaluationService, public message: MensajeService) {
+  constructor(private router: Router,private route: ActivatedRoute, private evaluationService: EvaluationService, public message: MensajeService) {
+    this.route.params.subscribe(params => {
+      this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
+    });
 
   }
   FalseMark() {//marcar falso para retirar la ventana de empezar
@@ -61,7 +71,7 @@ export class CompetenciasComponent implements OnInit {
 
   }
   back() {
-    this.sizeQuestions = this.DesempenoTest.modules[this.index].questions.length;
+    this.sizeQuestions = this.DesempenoTest.test_modules[this.index].questions.length;
     if (this.indexQuestion === 0 && this.index >= 0) {
       // Si la pregunta llegó al inicio del módulo y todavía no ha terminado
       this.indexQuestion = this.sizeQuestions - 1; // Retrocede a la última pregunta del módulo
@@ -80,8 +90,7 @@ export class CompetenciasComponent implements OnInit {
 
   }
   backQuestion() {
-    console.log("retroceder")
-    console.log(this.ListsendInfo)
+
     if (this.finish == true) {
       this.finish = false;
     }
@@ -95,7 +104,7 @@ export class CompetenciasComponent implements OnInit {
       }
       else {
         this.index--;
-        this.indexQuestion = this.DesempenoTest.modules[this.index].questions.length - 1;
+        this.indexQuestion = this.DesempenoTest.test_modules[this.index].questions.length - 1;
         this.showModule = false;
       }
     } else {
@@ -108,54 +117,31 @@ export class CompetenciasComponent implements OnInit {
       this.showQuestion = true;
     }, 300);
   }
+  home() 
+    {
+      this.router.navigate(['/dashboard/evaluacion']);
 
-  isSelect(respuestaId: number, preguntaId: number, moduloId: number): boolean {
-    // Verifica si la respuestaId existe en el arreglo de respuestas
-
-    return this.ListsendInfo.some(respuesta => respuesta.IdAnswer === respuestaId && respuesta.IdQuestion == preguntaId && respuesta.Module == moduloId);
-  }
-  nextQuestion(idRespuesta: number, idPregunta: number, idModule: number, score: string) {
-    if ((this.indexQuestion + 1) == this.sizeQuestions)
-      this.PostsaveNote(idModule, score);
-    if (this.DesempenoTest.modules[this.index].questions.length - 1 == this.indexQuestion && this.index == this.DesempenoTest.modules.length - 1) {
-      const preguntaIndex = this.ListsendInfo.findIndex(item => item.IdQuestion === idPregunta && item.Module === idModule);
-      this.sendInfo = {
-        IdAnswer: idRespuesta,
-        IdQuestion: idPregunta,
-        Module: idModule,
-      };
-      if (preguntaIndex !== -1) {
-        // Si la pregunta ya está en el arreglo, reemplázala con la nueva pregunta y respuesta.
-        this.ListsendInfo[preguntaIndex] = this.sendInfo;
-      } else {
-        // Si la pregunta no está en el arreglo, agrégala.
-        this.ListsendInfo.push(this.sendInfo);
-      }
     }
+ 
+  nextQuestion(idRespuesta: number, idPregunta: number, idModule: number, score: string,indexAnswer:number) {
+   //Actualizar la pregunta en  el array
+    this.DesempenoTest.test_modules[this.index].questions[this.indexQuestion].answers.map((respuesta) => {
+      respuesta.user_answer_id=null;
+  });
+  this.DesempenoTest.test_modules[this.index].questions[this.indexQuestion].answers[indexAnswer].user_answer_id=idRespuesta;
+  
+
     if (this.finish == false) {
-      this.sizeQuestions = this.DesempenoTest.modules[this.index].questions.length;
+      this.sizeQuestions = this.DesempenoTest.test_modules[this.index].questions.length;
       // Guardar la respuesta actual
       //this.respuestas.push({ modulo }); 
-      const preguntaIndex = this.ListsendInfo.findIndex(item => item.IdQuestion === idPregunta && item.Module === idModule);
-      this.sendInfo = {
-        IdAnswer: idRespuesta,
-        IdQuestion: idPregunta,
-        Module: idModule,
-      };
 
-      if (preguntaIndex !== -1) {
-        // Si la pregunta ya está en el arreglo, reemplázala con la nueva pregunta y respuesta.
-        this.ListsendInfo[preguntaIndex] = this.sendInfo;
-      } else {
-        // Si la pregunta no está en el arreglo, agrégala.
-        this.ListsendInfo.push(this.sendInfo);
-      }
       this.indexQuestion++;
 
-      if (this.index === this.sizeTotal - 1 && this.indexQuestion == this.sizeQuestions - 1) {
+      if (this.index === this.sizeTotal - 1 && this.indexQuestion+1==this.sizeQuestions) {
 
-        this.finish = true; //Termina cuando el index y el tamaño-1  del modulo y las preguntas son la misma cantidad
-
+      //  this.finish = true; //Termina cuando el index y el tamaño-1  del modulo y las preguntas son la misma cantidad
+   
       }
       else {
         if (this.indexQuestion === this.sizeQuestions) {
@@ -166,11 +152,12 @@ export class CompetenciasComponent implements OnInit {
 
         }
       }
-
+  
       this.showQuestion = false; // Inicia la animación de desvanecimiento
 
-      this.PostsaveAnswers(idRespuesta, idModule, idPregunta, score);
-      console.log(this.indexQuestion + 1, this.sizeQuestions)
+     // this.PostsaveAnswers(idRespuesta, idModule, idPregunta, score);
+
+      //this.loading=false;
 
       setTimeout(() => {
         this.showQuestion = true;
@@ -182,28 +169,49 @@ export class CompetenciasComponent implements OnInit {
   }
   send() {
     console.log(this.sendUserTest)
+    this.router.navigate(['/dashboard/evaluacion']);
+    this.message.success("¡Haz terminado la evaluacion  de Competencias!")
   }
-  PostsaveAnswers(idRespuesta: number, idModule: number, idPregunta: number, score: string) {
+  PostsaveAnswers(idRespuesta: number, idModule: number, idPregunta: number, score: string,indexAnswer:number) {
+    this.loading = true;
+    if ((this.indexQuestion + 1) == this.sizeQuestions)
+    this.PostsaveNote(idModule, score);
+
     this.saveIndivisual = {
-      user_id: 67,
-      user_test_id: 119,
-      user_answer_id: idRespuesta,
+      user_id: Number(localStorage.getItem("user_id")),
+      user_test_id: Number(this.user_test_id),
+      //user_answer_id: idRespuesta,
+      answer_id:idRespuesta,
       question_id: idPregunta,
       score: Number(score),
       its_over: "no"
     }
-    if (this.index === this.sizeTotal - 1 && this.indexQuestion == this.sizeQuestions - 1)
+    
+
+    if (this.indexQuestion+1==this.sizeQuestions&&this.index === this.sizeTotal - 1 )
+
+    { 
+      console.log(this.indexQuestion+1,this.sizeQuestions,this.index,this.sizeTotal-1 )
+
       this.saveIndivisual.its_over = "si";
+ 
+      this.finish = true; //Termina cuando el index y el tamaño-1  del modulo y las preguntas son la misma cantidad
+
+    
+    }
     console.log(this.saveIndivisual)
     this.evaluationService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
-
-
+        this.loading=false;
+        if(this.finish==true)
+        this.send();
+        this.nextQuestion(idRespuesta,idPregunta,idModule,score,indexAnswer)
+        
       })
       .catch((error: any) => {
         console.error('Error in the request:', error);
         this.message.error('La pregunta no pudo ser enviada correctamente, intenta nuevamente. ' + error);
-        this.indexQuestion = this.indexQuestion - 1;
+       // this.indexQuestion = this.indexQuestion - 1;
         // Handle errors here
       });
   }
@@ -215,50 +223,61 @@ export class CompetenciasComponent implements OnInit {
     console.log(e.target.value)
   }
   PostsaveNote(idModule: number, score: string) {
+    console.log(this.DesempenoTest.test_modules[this.index]);
     this.noteUser = {
-      user_id: 67,
-      user_test_id: 119,
+      user_id: Number(localStorage.getItem("user_id")),
+      user_test_id: this.user_test_id,
       module_id: idModule,
-      note: this.notes
+      note:this.DesempenoTest.test_modules[this.index].note
 
     }
 
 
     this.evaluationService.SendTestNote(this.noteUser)
       .then((response: any) => {
-
-
+     
+        console.log("Nota Guardada",response);
       })
       .catch((error: any) => {
         console.error('Error in the request:', error);
         this.message.error('La pregunta no pudo ser enviada correctamente, intenta nuevamente. ' + error);
-        this.indexQuestion = this.indexQuestion - 1;
+        //this.indexQuestion = this.indexQuestion - 1;
         // Handle errors here
       });
   }
   getTable(data: any) {
-    this.evaluationService.GetEvaluation(data, 119)
+    console.log(data,this.user_test_id)
+    this.evaluationService.GetEvaluation(data, this.user_test_id)
       .then((response: any) => {
-
-        this.DesempenoTest = response;
-        this.sizeTotal = this.DesempenoTest.modules.length;
-        this.sizeQuestions = this.DesempenoTest.modules[this.index].questions.length;
-
-
+       console.log(response)
+        this.DesempenoTest = response.test;
+        this.sizeTotal = this.DesempenoTest.test_modules.length;
+        this.sizeQuestions = this.DesempenoTest.test_modules[this.index].questions.length;
+        
         console.log(this.DesempenoTest)
 
       })
       .catch((error: any) => {
         console.error('Error in the request:', error);
+        this.message.error("No se pudieron cargar las evaluaciones "+error);
         // Handle errors here
       });
   }
   ngOnInit() {
+    this.isLoading=true;
+    var user=localStorage.getItem("email");
+    if(user=="")
+    {
+      this.router.navigate(['/login']);
+      this.message.error("Tienes que iniciar sesion");
+
+    }
     let data = {
-      user_id: 67,
+      user_id: Number(localStorage.getItem("user_id")),
 
     };
     this.getTable(data);
+    this.isLoading=false;
   }
 
   sizeTotal = 0; //Para saber el tamaño  del arreglo

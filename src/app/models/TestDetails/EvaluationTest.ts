@@ -7,5 +7,5 @@ export interface EvaluationTest {
     max_score: string;
     min_score: string;
     modular: string;
-    modules: Module[];
+    test_modules: Module[];
   }

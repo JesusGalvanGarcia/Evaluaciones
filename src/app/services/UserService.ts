@@ -13,14 +13,13 @@ export class UserService {
   constructor(private http: HttpClient) { }
    PostLogin(data: any): Promise<any> {
     
-    return axios.get(environment.apiUrl+this.controllerUrl, {
-      params: data
-    })
-    .then((response) => {
-      return response.data.tests;
+    return axios.post(environment.apiUrl+this.controllerUrl,data
+    )
+    .then(({ data }: any) => {
+      return data;
       })      
     .catch(function (error: any) {
-      return error;
+      throw error;
     });
   }
   

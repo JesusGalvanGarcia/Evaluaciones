@@ -31,13 +31,26 @@
             <div class="fila" *ngFor="let detalle of element.Detail">
               <div class="dato">{{ detalle.Evaluacion }}</div>
           
-              <div class="dato">{{ detalle.Estatus }}</div>
               <div class="dato">
-               {{ detalle.Calificacion===0?"Sin contestar": (detalle.Calificacion ===null?"No aplica":detalle.Calificacion)}}
+                <div >{{ detalle.Estatus }}</div>
               </div>
-              <div class="dato">{{ detalle.Clasificacion }}</div>
+              <div class="dato">
+                &nbsp; &nbsp; {{ detalle.Calificacion===0?"Sin contestar": (detalle.Calificacion ===null?"No aplica":detalle.Calificacion)}}
+
+              </div>
+              <div class="dato" [style.color]="getColorByClasification(detalle.Clasificacion)" >
+            <div class="row" style="margin-left: 20%;">
+          <div class="col col-sm-9">
+            {{ detalle.Clasificacion }}
+          </div>
+          <div class="col col-sm-1">
+            <button  [style.color]="getColorByClasification(detalle.Clasificacion)" mat-button [matTooltip]="clasification(detalle.Clasificacion)"  *ngIf="detalle.Clasificacion!==''"><mat-icon>error</mat-icon>
+            </button>
+          </div>
+            </div>
+              </div>
        
-              <div class="dato" (click)="sendPageEvaluation(detalle.Evaluacion)">
+              <div class="dato" (click)="sendPageEvaluation(detalle.Evaluacion,detalle.idTest,detalle.Estatus)">
                 <button class="btn btn-primary" >
                   {{detalle.Estatus  === 'Pendiente'?"Comenzar":detalle.Estatus=="Terminado"?"Ver":"Continuar"}}
                 </button>

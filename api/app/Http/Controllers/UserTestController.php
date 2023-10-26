@@ -86,12 +86,12 @@ class UserTestController extends Controller
                 'modular'
             )
                 ->with([
-                    'modules' => function ($query) use ($id) {
+                    'test_modules' => function ($query) use ($id) {
                         $query->select(
                             'id',
                             'name',
                             'test_id',
-                            DB::raw("(select note from user_test_modules as UTM where UTM.user_test_id = $id AND UTM.module_id = id AND deleted_at is null) AS 'note'")
+                            DB::raw("(select note from user_test_modules as UTM where UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at is null) AS 'note'")
                         );
 
                         $query->with([
@@ -262,7 +262,7 @@ class UserTestController extends Controller
                 'user_answer_id' => 'Nullable|Integer|NotIn:0|Min:0',
                 'question_id' => 'Required|Integer|NotIn:0|Min:0',
                 'answer_id' => 'Required|Integer|NotIn:0|Min:0',
-                'score' => 'Required|Integer|NotIn:0|Min:0',
+                'score' => 'Required|Integer',
                 'its_over' => 'Required|In:si,no',
             ]);
 
@@ -331,8 +331,8 @@ class UserTestController extends Controller
             }
 
             $user_test->update([
-                'status_id' => $request->its_over == 'yes' ? 3 : 2,
-                'finish_date' => $request->its_over == 'yes' ? Carbon::now()->format('Y-m-d') : null,
+                'status_id' => $request->its_over == 'si' ? 3 : 2,
+                'finish_date' => $request->its_over == 'si' ? Carbon::now()->format('Y-m-d') : null,
                 'total_score' => (int)$total_score + (int)$request->score,
                 'updated_by' => $request->user_id
             ]);

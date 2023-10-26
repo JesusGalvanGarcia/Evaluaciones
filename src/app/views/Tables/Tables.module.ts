@@ -4,6 +4,8 @@ import { TablesComponent } from './Tables.component';
 import { RouterModule, Routes } from '@angular/router';
 
 import { BrowserModule } from '@angular/platform-browser';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { LoadingComponent } from '../loading/loading.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +19,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTooltipModule,
+    LoadingComponent
   ],
   declarations: [TablesComponent],
   bootstrap: [TablesComponent],

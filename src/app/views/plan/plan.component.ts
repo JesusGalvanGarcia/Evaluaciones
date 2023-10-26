@@ -24,7 +24,6 @@ import { ModalComponent } from '../modal/modal.component';
 })
 
 export class PlanComponent implements OnInit {
-  displayedColumns: string[] = []; // Inicializa con un arreglo vacío
   @ViewChild(MatTable) table: MatTable<User>;
   actionPlan: ActionPlan;
   savePlan:SaveAccionPlan;
@@ -137,12 +136,20 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
       this.values.splice(index, 1); // Elimina el elemento del array 'values'
     }
   }
-  
+  addLine()
+  {
+    for(let e of this.actionPlan.parameters)
+    {
+      this.addRowAction(e);
+    
+    }
+  }
   getActionPlan(data: any) {
     this.actionPlanService.GetAction(data, "59")
       .then((response: any) => {
         this.actionPlan = response;
-        this.displayedColumns = response.parameters.map((param: ActionPlanParameter) => param.description);
+        this.addLine();
+        this.saves=response.parameters;
         console.log(this.actionPlan)
     
       })

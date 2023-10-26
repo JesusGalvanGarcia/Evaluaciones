@@ -9,7 +9,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import{TablesModule} from '../Tables/Tables.module';
-
+import { Router } from '@angular/router';
+import { MensajeService } from '@http/mensaje.service';
 @Component({
   selector: 'app-evaluations',
   
@@ -24,14 +25,24 @@ import{TablesModule} from '../Tables/Tables.module';
 export class EvaluationsComponent implements OnInit {
 protected  isChecked: boolean = true;
 
-constructor(private http: HttpClient) {}
+constructor(private http: HttpClient,private router: Router,public message:MensajeService) {}
 
 
 
   ngOnInit() {
    
   }
+  getUser() {
+    var user=localStorage.getItem("email");
+    if(user=="")
+    {
+      this.router.navigate(['/login']);
+      this.message.error("Tienes que iniciar sesion");
 
+    }
+
+    return user;
+  }
   enviarFormulario(form: NgForm){
     this.onSwitchChange() 
   }

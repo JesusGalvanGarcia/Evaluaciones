@@ -25,7 +25,7 @@ class Test extends Model
         'deleted_by'
     ];
 
-    public function modules()
+    public function test_modules()
     {
         return $this->hasMany(TestModule::class);
     }

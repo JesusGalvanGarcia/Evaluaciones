@@ -24,7 +24,11 @@ const routes: Routes = [
   },
 
   {
-    path: 'plan',
+    path: 'plan-accion/:id',
+    loadComponent: () => import('./views/planForm/planForm.component').then(m => m.PlanFormComponent)
+  },
+  {
+    path: 'prueba/:id',
     loadComponent: () => import('./views/planForm/planForm.component').then(m => m.PlanFormComponent)
   },
   {
@@ -36,7 +40,7 @@ const routes: Routes = [
     loadComponent: () => import('./views/desempeño/desempeño.component').then(m => m.SurveyComponent)
   },
   {
-    path: 'competencias/:name',
+    path: 'competencias/:user_test_id',
     loadComponent: () => import('./views/competencias/competencias.component').then(m => m.CompetenciasComponent)
   },
   {

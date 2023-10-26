@@ -6,6 +6,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { PersonalEvaluationService } from '../../services/PersonalEvaluationService';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { PersonalEvaluationService } from '../../services/PersonalEvaluationServ
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,
-    
+    MatTooltipModule,
     MatButtonModule
   ],
   providers:[PersonalEvaluationService],

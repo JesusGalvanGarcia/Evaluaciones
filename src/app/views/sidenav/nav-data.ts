@@ -14,7 +14,7 @@ export const navbarData: INavbarData[] = [
         ]
     },
     {
-        routeLink: 'dashboard',
+        routeLink: 'logout',
         icon: 'fa-solid fa-arrow-left-long',
         label: 'Cerrar Sesion'
     },

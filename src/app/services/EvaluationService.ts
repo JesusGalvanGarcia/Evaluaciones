@@ -25,6 +25,7 @@ export class EvaluationService {
 
     return this.api_conect.get(this.controllerUrl + id, { params: data })
       .then(({ data }: any) => {
+        console.log(data)
         return data;
       })
       .catch(({ response }: any) => {
@@ -54,7 +55,7 @@ export class EvaluationService {
 
     return this.api_conect.post(this.controllerUrl + "saveModuleNote", data)
       .then(({ data }: any) => {
-        return data.tests;
+        return data;
       })
       .catch(({ response }: any) => {
 

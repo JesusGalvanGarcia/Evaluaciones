@@ -10,6 +10,11 @@ import { lastValueFrom } from 'rxjs';
 import { LoginResponse } from '@models/login-response';
 import { GeneralConstant } from '@utils/general-constant';
 import { UserService } from '../../services/UserService';
+import { MensajeService } from '@http/mensaje.service';
+import { ActivatedRoute } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { LoadingComponent } from '../loading/loading.component';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -18,20 +23,25 @@ import { UserService } from '../../services/UserService';
   imports: [
     CommonModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    LoadingComponent
   ],
   providers: [
-    LoginService,
-    Router
+    LoginService
+    
   ]
 })
 export class LoginComponent implements OnInit {
   protected loginRequest: UserLogin = new UserLogin();
   protected disableSubmit: any;
+  protected isLoading: boolean = false;
+
   protected hidePassword: boolean = true;
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
    public loginServices:UserService,
+   public messageService: MensajeService
   ) { }
 
   ngOnInit() {
@@ -44,6 +54,7 @@ export class LoginComponent implements OnInit {
    * @param formulario Formulario a validar.
    */
   public enviarFormulario(form: NgForm){
+    this.isLoading=true;
     this.disableSubmit = true;
     if(form.invalid){
       Utilities.validateRequiredFields(form);
@@ -59,5 +70,20 @@ export class LoginComponent implements OnInit {
    */
   public async authenticate() {
    this.loginServices.PostLogin(this.loginRequest)
+   .then(({ data, token, user_id  }) => {
+    this.isLoading=false;
+    localStorage.setItem("token", token);
+    localStorage.setItem("user_id", data.user_id);
+    localStorage.setItem("email", data.email);
+ 
+    this.router.navigate(['/dashboard/evaluacion']);
+
+   })
+   .catch((error:any) => {
+     console.error('Error in the request:', error);
+     this.messageService.error(error.message +" "+error.code);
+    
+     // Handle errors here
+   });
   }
 }

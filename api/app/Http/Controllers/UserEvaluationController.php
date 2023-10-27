@@ -71,10 +71,12 @@ class UserEvaluationController extends Controller
                 'user_evaluations.id as user_evaluation_id',
                 'user_evaluations.evaluation_id as evaluation_id',
                 'user_evaluations.user_id as collaborator_id',
+                'E.name as evaluation_name',
                 DB::raw("CONCAT(U.name, ' ', U.father_last_name, ' ', U.mother_last_name) as collaborator_name"),
                 DB::raw("CONCAT(R.name, ' ', R.father_last_name, ' ', R.mother_last_name) as responsable_name"),
                 'user_evaluations.process_id',
                 'P.description as actual_process',
+                'P.phase',
                 'user_evaluations.finish_date',
                 'S.description as status'
             )
@@ -103,10 +105,12 @@ class UserEvaluationController extends Controller
                 'user_evaluations.id as user_evaluation_id',
                 'user_evaluations.evaluation_id as evaluation_id',
                 'user_evaluations.user_id as collaborator_id',
+                'E.name as evaluation_name',
                 DB::raw("CONCAT(U.name, ' ', U.father_last_name, ' ', U.mother_last_name) as collaborator_name"),
                 DB::raw("CONCAT(R.name, ' ', R.father_last_name, ' ', R.mother_last_name) as responsable_name"),
                 'user_evaluations.process_id',
                 'P.description as actual_process',
+                'P.phase',
                 'user_evaluations.finish_date',
                 'S.description as status'
             )

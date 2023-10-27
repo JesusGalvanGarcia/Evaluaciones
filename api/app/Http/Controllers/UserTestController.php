@@ -9,6 +9,7 @@ use App\Models\UserAnswer;
 use App\Models\UserEvaluation;
 use App\Models\UserTest;
 use App\Models\UserTestModule;
+use App\Services\TestService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Exception;
@@ -132,10 +133,14 @@ class UserTestController extends Controller
                     'code' => $this->prefix . 'X204'
                 ], 400);
 
+            $clasification = TestService::getClasification($user_test->total_score);
+
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Detalle de la prueba del usuario consultado correctamente',
-                'test' => $test
+                'test' => $test,
+                'score' => $user_test->total_score,
+                'clasification' => $clasification
             ]);
         } catch (Exception $e) {
 
@@ -328,7 +333,7 @@ class UserTestController extends Controller
                     ]);
                 }
 
-                $total_score -= $last_user_answer->answer->score;
+                $total_score -= (int)$last_user_answer->answer->score;
             } else {
 
                 // Si no se tenia respuesta guardada de la pregunta se crea
@@ -339,19 +344,24 @@ class UserTestController extends Controller
                 ]);
             }
 
+            $total_score += (int)$request->score;
+
             $user_test->update([
                 'status_id' => $request->its_over == 'si' ? 3 : 2,
                 'finish_date' => $request->its_over == 'si' ? Carbon::now()->format('Y-m-d') : null,
-                'total_score' => (int)$total_score + (int)$request->score,
+                'total_score' => $total_score,
                 'updated_by' => $request->user_id
             ]);
 
             DB::commit();
 
+            $clasification = TestService::getClasification($total_score);
+
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Respuesta guardada correctamente',
-                'actual_score' => (int)$total_score + (int)$request->score
+                'actual_score' => $total_score,
+                'clasification' => $clasification
             ]);
         } catch (Exception $e) {
 
@@ -505,12 +515,12 @@ class UserTestController extends Controller
                     'code' => $this->prefix . '804'
                 ], 400);
 
-            if ($user_evaluation->process_id <= $request->process_id)
-                return response()->json([
-                    'title' => 'Consulta Cancelada',
-                    'message' => 'Se debe continuar con el siguiente proceso.',
-                    'code' => $this->prefix . '804'
-                ], 400);
+            // if ($user_evaluation->process_id >= $request->process_id)
+            //     return response()->json([
+            //         'title' => 'No se puede regresar',
+            //         'message' => 'Se debe continuar con el siguiente paso.',
+            //         'code' => $this->prefix . '804'
+            //     ], 400);
 
             DB::beginTransaction();
 

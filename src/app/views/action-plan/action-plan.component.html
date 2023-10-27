@@ -1,6 +1,4 @@
 <div class="container-fluid">
-
-
     <mat-drawer-container class="example-container" autosize>
 
         <mat-drawer #drawer class="example-sidenav" mode="over" [disableClose]="true">
@@ -72,7 +70,8 @@
                         class="img-fluid mx-auto d-block" alt="...">
                 </div>
                 <div class="col col-12 col-md-8">
-                    <h1 class="font-weight-bold text-center text-md-start">Evaluaciones de desempeño y competencias</h1>
+                    <h1 class="font-weight-bold text-center text-md-start"> {{user_action_plan ?
+                        user_action_plan.evaluation_name : 'Evaluaciones de desempeño y competencias'}} </h1>
                     <h2 class="text-muted text-center text-md-start">Plan de Acción</h2>
                 </div>
             </div>
@@ -123,13 +122,14 @@
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 text-end">
                         <div class="col col-12 col-md-4">
                             <button type="button" mat-raised-button color="primary"
-                                (click)="scrollToTop(); drawer.toggle();" *ngIf="!finished && responsable">
+                                (click)="scrollToTop(); drawer.toggle();" *ngIf="!finished && responsable"
+                                [disabled]="loading">
                                 Agregar Acuerdo
                             </button>
                         </div>
                         <div class=" col col-12 col-md-4">
                             <button type="button" mat-raised-button color="warn" (click)="confirmActionPlan();"
-                                *ngIf="!finished && responsable">
+                                *ngIf="!finished && responsable" [disabled]="loading">
                                 Finalizar Plan de Acción
                             </button>
                         </div>
@@ -149,7 +149,7 @@
 
             <div class="row mb-4" style="margin: 0 auto; max-width: 85%;" *ngIf="!show_sign">
 
-                <div class="mat-elevation-z8">
+                <div class="pre-table-container mat-elevation-z8">
                     <div class="example-table-container">
 
                         <div class="mt-2 animated fadeIn" align="center" *ngIf="loading">
@@ -200,13 +200,14 @@
                                 <td mat-cell *matCellDef="let row">
                                     <div class="row">
                                         <button mat-icon-button matTooltip="Editar Acuerdo"
-                                            (click)="editAgreement(row.id)" *ngIf="!finished && responsable">
+                                            (click)="editAgreement(row.id)" *ngIf="!finished && responsable"
+                                            [disabled]="loading">
                                             <mat-icon>edit</mat-icon>
                                         </button>
-                                        <button mat-icon-button style="color: red;" matTooltip="Borrar Acuerdo"
-                                            *ngIf="!finished && responsable">
+                                        <!-- <button mat-icon-button style="color: red;" matTooltip="Borrar Acuerdo"
+                                            *ngIf="!finished && responsable" [disabled]="loading">
                                             <mat-icon>delete</mat-icon>
-                                        </button>
+                                        </button> -->
                                     </div>
                                 </td>
                             </ng-container>
@@ -228,44 +229,80 @@
 
             <div class="container mb-4">
                 <div class="row">
+                    <!-- Columna izquierda: Captura de firma -->
                     <div class="col col-12 col-md-6">
                         <div class="firma-container">
+                            <h2 class="text-center mb-4" *ngIf="show_sign && !is_signed">Captura de Firma</h2>
+
                             <div class="firma-canvas-container mb-4">
-                                <canvas #signatureCanvas [style.display]="show_sign && !is_signed ? 'block' : 'none'"></canvas>
+                                <canvas #signatureCanvas
+                                    [style.display]="show_sign && !is_signed ? 'block' : 'none'"></canvas>
                             </div>
+
                             <div class="d-grid gap-2 d-md-block" *ngIf="show_sign && !is_signed">
-                                <button class="btn btn-secondary" type="button" (click)="clearSignature()"
+                                <button class="btn btn-basic mb-4" type="button"
+                                    (click)="clearSignature();show_sign = false" [disabled]="loading">
+                                    Cancelar
+                                </button>
+                                <button class="btn btn-secondary mb-4" type="button" (click)="clearSignature()"
                                     [disabled]="loading">
                                     Limpiar Firma
                                 </button>
-                                <button class="btn btn-primary" type="button" (click)="confirmSignature()"
-                                    [disabled]="loading||firmaBase64">
+                                <button class="btn btn-primary mb-4" type="button" (click)="confirmSignature()"
+                                    [disabled]="loading || firmaBase64">
                                     Continuar
                                 </button>
                             </div>
+
                         </div>
                     </div>
-                    <div class="col col-12 col-md-6">
-                        <div *ngIf="firmaBase64">
 
-                            <h4>
-                                La firma se verá de esta forma, ¿Estas seguro de guardarla?
-                            </h4>
+                    <!-- Columna derecha: Confirmación y Guardado -->
+                    <div class="col col-12 col-md-6 mt-4" *ngIf="firmaBase64">
+                        <h2 class="text-center mb-4">Confirmación de Firma</h2>
+
+                        <div class="text-center">
+                            <h4>La firma se verá de esta forma. ¿Estás seguro de guardarla?</h4>
                             <!-- Puedes mostrar la firma como una imagen base64 si es necesario -->
-                            <img [src]="firmaBase64">
-                            <button class="btn btn-primary mt-4" type="button" (click)="saveSignature()"
+                            <img [src]="firmaBase64" class="mb-4">
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-primary w-100 btn-sm-md" type="button" (click)="saveSignature()"
                                 [disabled]="loading">
                                 Guardar Firma
                             </button>
+                        </div>
 
-                            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+                        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+                    </div>
 
+                </div>
+
+                <div class="container" *ngIf="show_sign && is_signed">
+                    <div class="row text-center text-md-start mb-4">
+                        <h2 class="text-center">Firmas de los Responsables</h2>
+                    </div>
+                    <button mat-fab color="primary" (click)="show_sign = false">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <div class="row mt-4">
+                        <div *ngFor="let signature of signatures" class="col-12 col-sm-4">
+                            <div class="signature d-flex flex-column align-items-center text-center">
+                                <div class="signature-image-container mb-2">
+                                    <img [src]="signature.url" alt="{{ signature.collaborator_name }}"
+                                        class="signature-image img-fluid" *ngIf="signature.url">
+                                    <p class="signature-name text-center" *ngIf="!signature.url">Firma pendiente</p>
+                                </div>
+                                <mat-divider *ngIf="signature.url"></mat-divider>
+                                <!-- Línea de separación para pantallas pequeñas -->
+                                <p class="signature-name" *ngIf="signature.url">{{ signature.collaborator_name }}</p>
+                                <p class="signature-name" *ngIf="!signature.url">{{ signature.collaborator_name }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <img >
-                </div>
+
             </div>
         </div>
     </mat-drawer-container>

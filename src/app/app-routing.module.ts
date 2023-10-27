@@ -5,14 +5,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { SidenavComponent } from './views/sidenav/sidenav.component';
 import { PlanComponent } from './views/plan/plan.component';
 import { ActionPlanComponent } from './views/action-plan/action-plan.component';
+import { UserTestComponent } from './views/user-test/user-test.component';
 
 
 const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: '/login'
-  },
   {
     path: 'login',
     loadComponent: () => import('./views/login/login.component').then(m => m.LoginComponent)
@@ -24,14 +20,6 @@ const routes: Routes = [
 
   },
 
-  {
-    path: 'plan-accion/:id',
-    loadComponent: () => import('./views/planForm/planForm.component').then(m => m.PlanFormComponent)
-  },
-  {
-    path: 'prueba/:id',
-    loadComponent: () => import('./views/planForm/planForm.component').then(m => m.PlanFormComponent)
-  },
   {
     path: 'planFirma/:id/:firm',
     loadComponent: () => import('./views/planForm/planForm.component').then(m => m.PlanFormComponent)
@@ -53,9 +41,9 @@ const routes: Routes = [
     loadComponent: () => import('./views/resetPassword/resetPassword.component').then(m => m.ResertPasswordComponent)
   },
 
-
   { path: 'plan-accion/:user_action_plan_id', component: ActionPlanComponent, data: { routeName: 'Consultar Pagos TP' } },
-  { path: 'prueba/:user_test_id', component: ActionPlanComponent, data: { routeName: 'Consultar Prueba del usuario' } }
+  { path: 'prueba/:user_test_id', component: UserTestComponent, data: { routeName: 'Consultar Prueba del Usuario' } },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 
 ];
 

@@ -148,14 +148,17 @@ class UserActionPlanController extends Controller
                 ], 400);
 
             $user_action_plan = UserActionPlan::select(
+                'user_action_plans.id',
                 'user_action_plans.user_id',
                 'user_action_plans.action_plan_id',
                 'user_action_plans.finish_date',
                 'user_action_plans.responsable_id',
                 'user_action_plans.status_id',
-                'AP.name as action_plan_name'
+                'AP.name as action_plan_name',
+                'E.name as evaluation_name'
             )
                 ->join('action_plans as AP', 'AP.id', 'user_action_plans.action_plan_id')
+                ->join('evaluations as E', 'E.id', 'AP.evaluation_id')
                 ->find($id);
 
             if (!$user_action_plan)
@@ -165,12 +168,11 @@ class UserActionPlanController extends Controller
                     'code' => $this->prefix . 'X203'
                 ], 400);
 
-            // $action_plan = ActionPlan::select(
-            //     'id',
-            //     'name'
-            // )
-            //     ->with('parameters:id,description,value_type,action_plan_id')
-            //     ->find($user_action_plan->action_plan_id);
+            if ($user_action_plan->status_id == 1)
+                UserActionPlan::where('id', $user_action_plan->id)->update(
+                    ['status_id' => 2],
+                    ['updated_by' => request('user_id')]
+                );
 
             $action_plan_agreements = UserAgreement::select(
                 'id',
@@ -193,7 +195,6 @@ class UserActionPlanController extends Controller
                 ->join('users as U', 'U.id', 'action_plan_signatures.responsable_id')
                 ->get();
 
-
             if (!$signatures->firstWhere('responsable_id', request('user_id')))
                 return response()->json([
                     'title' => 'No estás autorizado.',
@@ -211,9 +212,10 @@ class UserActionPlanController extends Controller
                     'code' => $this->prefix . 'X205'
                 ], 400);
 
-            $user_evaluation->update([
-                'process_id' => 4
-            ]);
+            if ($user_evaluation->process_id != 5)
+                $user_evaluation->update([
+                    'process_id' => 4
+                ]);
 
             return response()->json([
                 'title' => 'Proceso terminado',
@@ -519,7 +521,7 @@ class UserActionPlanController extends Controller
             ]);
 
             // La evaluación pasa a estar en el proceso de firmas
-            UserEvaluation::find($user_evaluation->id)->update([
+            UserEvaluation::where('id', $user_evaluation->id)->update([
                 'process_id' => 5,
                 'updated_by' => $request->user_id
             ]);

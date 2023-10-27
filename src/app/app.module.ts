@@ -22,13 +22,18 @@ import { SurveyComponent } from "../app/views/desempeño/desempeño.component";
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-
+import { UserTestComponent } from './views/user-test/user-test.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
     AppComponent,
     SidenavComponent,
     SublevelMenuComponent,
+    UserTestComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +53,11 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatTooltipModule,
     MatProgressBarModule,
-    MatCardModule
+    MatCardModule,
+    MatTabsModule,
+    MatListModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     LoginService,

@@ -14,6 +14,7 @@ class Process extends Model
 
     protected $fillable = [
         'description',
+        'phase',
         'created_by',
         'updated_by',
         'deleted_by'

@@ -5,8 +5,9 @@
     height: 100%;
 }
 
-.example-container {
+.pre-table-container {
     position: relative;
+    overflow-x: auto;
 }
 
 .example-table-container {
@@ -16,7 +17,10 @@
 }
 
 table {
-    width: 100%;
+    width: auto;
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
 }
 
 .mat-mdc-form-field {
@@ -27,6 +31,34 @@ table {
 td,
 th {
     width: 25%;
+}
+
+.mat-column-id {
+    width: 5% !important;
+}
+
+.mat-column-opportunity_area {
+    width: 10% !important;
+}
+
+.mat-column-goal {
+    width: 20% !important;
+}
+
+.mat-column-developed_skill {
+    width: 15% !important;
+}
+
+.mat-column-action {
+    width: 20% !important;
+}
+
+.mat-column-established_date {
+    width: 15% !important;
+}
+
+.mat-column-actions {
+    width: 15% !important;
 }
 
 // Alineación de la lista
@@ -48,6 +80,8 @@ th {
 
 // Estilo para firmas
 
+
+//*** Creación de firmas
 canvas {
     border: 2px solid #3498db;
     background-color: #f5f5f5;
@@ -69,6 +103,30 @@ canvas {
     width: 300px;
     /* Ancho fijo para el canvas */
 }
+
+
+//******* Consulta de firmas
+
+.image-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; // Espaciado uniforme entre las imágenes
+    align-items: center; // Centra verticalmente las imágenes
+
+    .signature {
+        text-align: center; // Centra el nombre de la persona
+
+        .signature-image {
+            max-width: 100%; // Hace que la imagen sea responsiva
+            max-height: 150px; // Altura máxima de la imagen
+        }
+
+        .signature-name {
+            margin-top: 10px; // Espaciado entre el nombre y la imagen
+        }
+    }
+}
+
 
 /* Estilo para pantallas pequeñas (hasta 600px de ancho) */
 @media (max-width: 600px) {

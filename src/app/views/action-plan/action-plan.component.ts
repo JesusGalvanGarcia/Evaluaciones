@@ -49,6 +49,7 @@ export class ActionPlanComponent {
 
   // Signature
   @ViewChild('signatureCanvas') signatureCanvas: ElementRef;
+  @ViewChild('drawer') drawer: MatDrawer;
   private signaturePad: SignaturePad;
   firmaBase64: string;
   canvas: any;
@@ -65,7 +66,7 @@ export class ActionPlanComponent {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('drawer') drawer: MatDrawer;
+
 
   loading: boolean = true;
   finished: boolean = false;
@@ -87,10 +88,9 @@ export class ActionPlanComponent {
     public system_message: MensajeService
   ) {
 
-    // this.user_id = Number(localStorage.getItem('user_id')!);
-    this.user_id = 18;
+    this.user_id = Number(localStorage.getItem('user_id')!);
     this.route.params.subscribe(params => {
-      this.user_action_plan_id = params['user_action_plan_id']; //recibe los parametros del titulo de  la evaluacion
+      this.user_action_plan_id = params['user_action_plan_id'];
     });
 
     this.agreement_form = this.formBuilder.group({

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('processes', function (Blueprint $table) {
             $table->id();
             $table->string('description', 50);
+            $table->string('phase', 50);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');
             $table->unsignedBigInteger('deleted_by')->nullable($value = true);

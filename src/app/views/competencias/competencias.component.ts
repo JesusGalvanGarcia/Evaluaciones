@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { LoadingComponent } from '../loading/loading.component';
 import { Router } from '@angular/router';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
+import {ProcessModel} from "../../models/TestDetails/ProcessModel";
 @Component({
   selector: 'app-competencias',
   standalone: true,
@@ -27,9 +27,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 })
 export class CompetenciasComponent implements OnInit {
   showQuestion: boolean = true;
-  protected isLoading: boolean = false;
+   isLoading: boolean = false;
   loading: boolean = false;
   noteUser: NoteUser;
+  changeProcess:ProcessModel;
+  totalScore:number=0;
   DesempenoTest: EvaluationTest;
   sendAnswered: Answered;
   saveIndivisual: UserAnswer;
@@ -47,6 +49,7 @@ export class CompetenciasComponent implements OnInit {
   showModule: boolean = true;
   start: boolean = true;
   sendInfo: Competencias;
+  end:boolean=false;
   user_test_id: number = 0;
   sendUserTest: UserTest =
     {
@@ -59,7 +62,7 @@ export class CompetenciasComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
     });
-
+  this.isLoading=false;
   }
   FalseMark() {//marcar falso para retirar la ventana de empezar
     this.start = false;
@@ -118,8 +121,10 @@ export class CompetenciasComponent implements OnInit {
     }, 300);
   }
   home() 
-    {
-      this.router.navigate(['/dashboard/evaluacion']);
+    { 
+          this.isLoading=true;
+          this.changeProcessFunc(4);
+    
 
     }
  
@@ -172,9 +177,31 @@ export class CompetenciasComponent implements OnInit {
     this.router.navigate(['/dashboard/evaluacion']);
     this.message.success("¡Haz terminado la evaluacion  de Competencias!")
   }
+  changeProcessFunc(process:number)
+  {
+  
+       this.changeProcess=
+       {
+        user_id: Number(localStorage.getItem("user_id")),
+        user_test_id: this.user_test_id,
+        process_id:process,   
+       }
+       this.evaluationService.SendChangeProcess(this.changeProcess)
+       .then((response: any) => {
+        console.log(response);
+         this.send();
+      })
+          .catch((error: any) => {
+        console.error('Error in the request:', error);
+        this.message.error('El proceso no pudo continuar, intenta nuevamente. ' + error);
+       // this.indexQuestion = this.indexQuestion - 1;
+        // Handle errors here
+      });
+    this.isLoading=false;
+  }
   PostsaveAnswers(idRespuesta: number, idModule: number, idPregunta: number, score: string,indexAnswer:number) {
     this.loading = true;
-    if ((this.indexQuestion + 1) == this.sizeQuestions)
+    if ((this.indexQuestion + 1) == this.sizeQuestions&&this.DesempenoTest.test_modules[this.index].note!=null)
     this.PostsaveNote(idModule, score);
 
     this.saveIndivisual = {
@@ -196,16 +223,22 @@ export class CompetenciasComponent implements OnInit {
       this.saveIndivisual.its_over = "si";
  
       this.finish = true; //Termina cuando el index y el tamaño-1  del modulo y las preguntas son la misma cantidad
-
+      this.end=true;
     
     }
     console.log(this.saveIndivisual)
     this.evaluationService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
+        console.log(response)
         this.loading=false;
-        if(this.finish==true)
-        this.send();
+     
+        if(this.finish!=true)
+        {
+        //  this.changeProcessFunc(response.actual_score,3);
+        //  this.send();
         this.nextQuestion(idRespuesta,idPregunta,idModule,score,indexAnswer)
+
+        }
         
       })
       .catch((error: any) => {
@@ -253,7 +286,7 @@ export class CompetenciasComponent implements OnInit {
         this.DesempenoTest = response.test;
         this.sizeTotal = this.DesempenoTest.test_modules.length;
         this.sizeQuestions = this.DesempenoTest.test_modules[this.index].questions.length;
-        
+        this.isLoading=false;
         console.log(this.DesempenoTest)
 
       })
@@ -264,7 +297,8 @@ export class CompetenciasComponent implements OnInit {
       });
   }
   ngOnInit() {
-    this.isLoading=true;
+   // this.changeProcessFunc(75,3);
+
     var user=localStorage.getItem("email");
     if(user=="")
     {
@@ -277,7 +311,7 @@ export class CompetenciasComponent implements OnInit {
 
     };
     this.getTable(data);
-    this.isLoading=false;
+  
   }
 
   sizeTotal = 0; //Para saber el tamaño  del arreglo

@@ -10,6 +10,73 @@
   display: flex;
   margin-top: -15%;
 }
+.checkbox-container {
+    /* display: block; */
+    position: relative;
+    padding-left: 35px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    font-family: 'Open Sans';
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #f4f4f4;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.scores{
+  --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 50%))));
+  font-size: 100%;
+  line-height: calc(1.25*(var(--cover-title-font-size)));
+  color: var(--sjs-primary-backcolor, var(--primary, #a02c2c));
+  font-family: var(--sjs-font-surveytitle-family, var(--font-family));
+  font-weight: var(--sjs-font-surveytitle-weight, 700);
+  text-align: center;
+  align-items: center;
+
+}
 .contenedor-padre {
   display: flex;
   justify-content: center; /* Centra horizontalmente */
@@ -231,4 +298,59 @@ align-items: center; /* Centra verticalmente los elementos dentro del contenedor
 width: 100%;
 padding-left: 8%;
 padding-right: 8%;
+}
+.result-container {
+  text-align: center;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 60%;
+}
+
+.result-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.result-score {
+  font-size: 18px;
+  color: #555;
+  font-weight: bold;
+}
+
+.result-text {
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+
+.result-description {
+  font-size: 16px;
+  color: #333;
+  margin-top: 10px;
+}
+
+.next-evaluation-label,
+.back-to-evaluations-label {
+  font-size: 16px;
+  color: #555;
+}
+
+.next-evaluation-button,
+.back-to-evaluations-button {
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.next-evaluation-button:hover,
+.back-to-evaluations-button:hover {
+  background-color: #45a049;
 }

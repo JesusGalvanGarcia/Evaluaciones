@@ -1,4 +1,5 @@
 import { EmailRequest } from 'src/app/shared/entities/models/email-request';
+import { EvaluationService } from '../../services/EvaluationService';
 
 import {  OnInit } from '@angular/core';
 import { Component, ViewChild } from '@angular/core';
@@ -11,6 +12,7 @@ import {TestService} from "../../services/TestService";
 import { Router } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoadingComponent } from '../loading/loading.component';
+import {ProcessModel} from "../../models/TestDetails/ProcessModel";
 
 import { TestModel } from 'src/app/models/ColaboradorEvaluation/EvaluationDetail';
 @Component({
@@ -32,20 +34,23 @@ export class TablesComponent implements OnInit {
   color:string="red";
   ListPersonal:CollaboratorEvaluation[];
   ListTest:TestModel[];
+  changeProcess:ProcessModel;
+
   mappedList: EvaluationTable[];
   //Columns names, table data from datasource, pagination and sorting
   columnsToDisplay: string[] = ['Evaluacion', 'Estatus', 'Avance', 'Colaborador'];
   obj: EvaluationTable;
   objDetail: Details;
   ListDetail: Details[];
-   ELEMENT_DATA: EvaluationTable[] = []
+  ELEMENT_DATA: EvaluationTable[] = []
   dataSource = new MatTableDataSource<EvaluationTable>([]);
-  constructor(    private router: Router,    private ColabluationService: ColaboradorEvaluationService,private testService:TestService) { }
+  constructor(  private evaluationService: EvaluationService,  private router: Router,    private ColabluationService: ColaboradorEvaluationService,private testService:TestService) { }
 
   expandedElement: EvaluationTable | null | undefined;
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   getTest(data:any)
 { 
+
   this.user=localStorage.getItem("user_id");
   //this.testService.GetTest(data,this.user)
   //.then((response:any) => {
@@ -92,7 +97,7 @@ getTestUser(data:any,userid:any,element: CollaboratorEvaluation)
     this.ELEMENT_DATA.push(this.obj);
      console.log(this.ELEMENT_DATA);
      this.dataSource = new MatTableDataSource<EvaluationTable>(this.ELEMENT_DATA);
-
+     this.isLoading=true;
   }).catch((error:any) => {
     console.error('Error in the request:', error);
   });
@@ -154,7 +159,22 @@ transformList(data:any) {
   console.log(this.ELEMENT_DATA);
 }
 
+changeProcessFunc(process:number,user_test_id:number)
+{
 
+     this.changeProcess=
+     {
+      user_id: Number(localStorage.getItem("user_id")),
+      user_test_id: user_test_id,
+      process_id:process,   
+     }
+     this.evaluationService.SendChangeProcess(this.changeProcess)
+     .then((response: any) => {
+      console.log(response);
+    
+    })
+  
+}
 getTable(data:any)
 {
   this.ColabluationService.GetColaboradorEvaluationsWithParams(data)
@@ -197,9 +217,11 @@ getTable(data:any)
     // Handle errors here
   });
 }
-sendPageEvaluation(process:string,id:string,status:string)
-{
-  console.log(process)
+
+sendPageEvaluation(process:string,id:string,status:string,calificacion:number,index:number)
+{   
+   localStorage.setItem("score", calificacion.toString());
+
   switch(process)
   {
     case "Evaluación de Desempeño":
@@ -213,6 +235,7 @@ sendPageEvaluation(process:string,id:string,status:string)
       }
     break
     case "Plan de Acción":
+      this.changeProcessFunc(4,Number(id)); //Cambiar el proceso al darle click
       this.router.navigate(['/plan-accion/'+id]);
     break
     case "Evaluación de Aptitudes":
@@ -230,6 +253,7 @@ sendPageEvaluation(process:string,id:string,status:string)
         this.router.navigate(['/competencias/'+id]);
       }
       else{
+        this.changeProcessFunc(2,Number(id)); //Cambiar el proceso al darle click
         this.router.navigate(['/competencias/'+id]);
       }
     break
@@ -238,7 +262,7 @@ sendPageEvaluation(process:string,id:string,status:string)
   
 }
   ngOnInit() {
-    this.isLoading=true;
+  
     this.ELEMENT_DATA=[]; //Limpiar los datos antes de entrar
     let data = {
       user_id: Number(localStorage.getItem("user_id")),
@@ -247,7 +271,7 @@ sendPageEvaluation(process:string,id:string,status:string)
     };
  
   this.getTest(data);
-  this.isLoading=false;
+ 
 
  
 }
@@ -275,4 +299,3 @@ export interface Details {
 
 
   
-

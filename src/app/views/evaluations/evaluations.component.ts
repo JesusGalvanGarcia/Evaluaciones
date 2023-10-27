@@ -11,12 +11,16 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import{TablesModule} from '../Tables/Tables.module';
 import { Router } from '@angular/router';
 import { MensajeService } from '@http/mensaje.service';
+import { MatTableModule } from '@angular/material/table';
+import { CdkTableModule } from '@angular/cdk/table';
+
+
 @Component({
   selector: 'app-evaluations',
   
   standalone:true,
   imports: [
-    CommonModule, FormsModule,AgGridModule,MatIconModule,TablesModule,TablePersonalModule],
+    CommonModule, FormsModule,CdkTableModule,AgGridModule,MatIconModule,TablesModule,TablePersonalModule,MatTableModule],
   templateUrl: './evaluations.component.html',
   styleUrls: ['./evaluations.component.scss'],
  

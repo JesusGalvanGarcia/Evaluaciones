@@ -521,6 +521,12 @@ class UserTestController extends Controller
             //         'message' => 'Se debe continuar con el siguiente paso.',
             //         'code' => $this->prefix . '804'
             //     ], 400);
+            if ($user_evaluation->process_id >= $request->process_id)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Se debe continuar con el siguiente proceso.',
+                    'code' => $this->prefix . '804'
+                ], 400);
 
             DB::beginTransaction();
 

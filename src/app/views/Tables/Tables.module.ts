@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TablesComponent } from './Tables.component';
 import { RouterModule, Routes } from '@angular/router';
+import { CdkTableModule } from '@angular/cdk/table';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -16,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     RouterModule,
     CommonModule,
+    CdkTableModule,
     MatTableModule,
     MatPaginatorModule,
     MatIconModule,

@@ -19,6 +19,8 @@ import { CommonModule } from '@angular/common';
 import SignaturePad from 'signature_pad';
 import { MensajeService } from '@http/mensaje.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {ProcessModel} from "../../models/TestDetails/ProcessModel";
+import { EvaluationService } from '../../services/EvaluationService';
 
 
 @Component({
@@ -56,6 +58,7 @@ export class ActionPlanComponent {
   selected_signature: any;
   show_sign: boolean = false;
   is_signed: boolean = false;
+  changeProcess:ProcessModel;
 
   // Form Agreements
   agreement_form: FormGroup | any;
@@ -85,7 +88,8 @@ export class ActionPlanComponent {
     private router: Router,
     private route: ActivatedRoute,
     private _actionPlanService: ActionPlanService,
-    public system_message: MensajeService
+    public system_message: MensajeService,
+    private evaluationService: EvaluationService,
   ) {
 
     this.user_id = Number(localStorage.getItem('user_id')!);
@@ -116,7 +120,22 @@ export class ActionPlanComponent {
       maxWidth: 3,
     });
   }
-
+  changeProcessFunc(process:number,user_test_id:number)
+  {
+  
+       this.changeProcess=
+       {
+        user_id: Number(localStorage.getItem("user_id")),
+        user_test_id: user_test_id,
+        process_id:process,   
+       }
+       this.evaluationService.SendChangeProcess(this.changeProcess)
+       .then((response: any) => {
+        console.log(response);
+      
+      })
+    
+  }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -255,6 +274,7 @@ export class ActionPlanComponent {
       then(({ }) => {
 
         this.getAgreements();
+        this.changeProcessFunc(5,this.user_action_plan_id);
       })
       .catch(({ title, message, code }) => {
         console.log(message)

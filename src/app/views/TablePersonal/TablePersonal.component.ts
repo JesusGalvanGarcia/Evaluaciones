@@ -229,7 +229,7 @@ getTestUser(data:any,userid:any,element: PersonalEvaluation)
 }
   ngOnInit() {
     let data = {
-      user_id: 18,
+      user_id: Number(localStorage.getItem("user_id")),
       collaborators_id: [],
       evaluations_id: []
     };

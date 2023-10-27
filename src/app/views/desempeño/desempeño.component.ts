@@ -17,6 +17,7 @@ import { Answer } from 'src/app/models/TestDetails/AnswerModel';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../loading/loading.component';
+import {ProcessModel} from "../../models/TestDetails/ProcessModel";
 
 @Component({
   selector: 'app-desempeño',
@@ -32,17 +33,22 @@ export class SurveyComponent implements OnInit {
   protected user_test_id: number = 0;
   showQuestion: boolean = true;
   saveIndivisual: any;
+  changeProcess:ProcessModel;
+  score:number=0;
+  end:boolean=false;
+  isChecked: boolean = false;
+  submit:boolean=true;
   start: boolean = true;
   isLoading: boolean = true;
   DesempenoTest: EvaluationTest;
   Answers: SendQuestions[] = [];
   sendInfo: SendQuestions;
   loading: boolean = false;
-
+  scoreTotal:number=0;
   questions: any;
   answers: any;
   modules: any;
-
+  FinalEvalution:End;
   constructor(public router:Router,private route: ActivatedRoute, private evaluationService: EvaluationService, public message: MensajeService) {
     this.route.params.subscribe(params => {
       this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
@@ -60,12 +66,19 @@ export class SurveyComponent implements OnInit {
         this.DesempenoTest = test;
         this.isLoading=false;
         this.size = this.DesempenoTest.test_modules[0].questions.length
+        
+        this.submit=false;
       })
       .catch((error: any) => {
         console.error('Error in the request:', error);
         this.isLoading=false;
         // Handle errors here
       });
+  }
+  onCheckboxChange() {
+    // Este método se ejecuta cuando cambia el estado de la casilla de verificación
+   this.isChecked=!this.isChecked;
+   console.log(this.isChecked);
   }
 
   ngOnInit() {
@@ -105,7 +118,11 @@ export class SurveyComponent implements OnInit {
     }, 300);
 
   }
+goCompetencias()
+{
+  this.router.navigate(['/competencias/'+this.user_test_id]);
 
+}
   isSelect(AnswerId: number, QuestionId: number): boolean {
     // Verifica si la AnswerId existe en el arreglo de Answers
     return this.Answers.some(answer => answer.IdAnswer === AnswerId && answer.IdQuestion == QuestionId);
@@ -113,7 +130,7 @@ export class SurveyComponent implements OnInit {
 
   PostsaveAnswers(question: Question, answer: Answer,idAnswer:number) {
     this.loading = true;
-
+   
     this.saveIndivisual = {
       user_id: Number(localStorage.getItem("user_id")),
       user_test_id: this.user_test_id,
@@ -129,8 +146,8 @@ export class SurveyComponent implements OnInit {
     this.evaluationService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
         this.loading = false;
-
-        this.nextQuestion(question, answer,idAnswer);
+        this.score =response.actual_score;
+        this.nextQuestion(question, answer,idAnswer,response.actual_score,response);
       })
       .catch(({ title, message, code }) => {
         console.error(title, message, code);
@@ -148,10 +165,47 @@ export class SurveyComponent implements OnInit {
   }
   home() 
     {
-      this.router.navigate(['/dashboard/evaluacion']);
+      this.isLoading=true;
+     // this.router.navigate(['/dashboard/evaluacion']);
+     if (this.score > 75 && this.isChecked) {
+      this.changeProcessFunc(2);
+    } 
+    else{
+      if(this.score<=75)
+      this.changeProcessFunc(2);
+      else
+      {
+        this.changeProcessFunc(4);
 
+      }
     }
-  nextQuestion(question: Question, answer: Answer,idAnswer:number) {
+    }
+  changeProcessFunc(id:number)
+  {
+    this.changeProcess=
+    {
+     user_id: Number(localStorage.getItem("user_id")),
+     user_test_id: this.user_test_id,
+     process_id:id,   
+    }
+    this.evaluationService.SendChangeProcess(this.changeProcess)
+    .then((response: any) => {
+     console.log(response);
+    // this.finishEvaluation();
+    this.isLoading=false;
+    localStorage.setItem("score", "0.0");
+
+    this.finishEvaluation();
+  })
+  .catch((error: any) => {
+    console.error('Error in the request:', error);
+    // Handle errors here
+    this.message.error("Hubo un  error al terminar  la evaluacion:"+error)
+    this.isLoading=false;
+
+  });
+  }
+  nextQuestion(question: Question, answer: Answer,idAnswer:number,actual_score:number,response:any) {
 
      //this.PostsaveAnswers(question, answer)
    //Actualizar la pregunta en  el array
@@ -171,7 +225,15 @@ export class SurveyComponent implements OnInit {
     if (this.index === this.size) {
       this.finish = true; // Iniciar animación para terminar  la secuencia de preguntas
       this.index = this.index - 1;
-      this.finishEvaluation();
+
+      this.end=true; 
+      console.log(response);
+      this.FinalEvalution={
+      description:response.clasification.description,
+      text:response.clasification.clasification,
+      color:"#000"
+      }
+     
     }
     const questionIndex = this.Answers.findIndex(item => item.IdQuestion === question.id);
     this.sendInfo = {
@@ -195,4 +257,10 @@ export interface SendQuestions {
 
   IdQuestion: number;
   IdAnswer: number;
+}
+export interface End
+{
+  text:string;
+  description:string;
+  color:string;
 }

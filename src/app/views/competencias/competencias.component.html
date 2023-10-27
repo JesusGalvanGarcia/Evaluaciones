@@ -82,7 +82,41 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!showModule">
+        <div *ngIf="end" >            
+          <div >
+              <!-- Imagen de Login -->
+          
+       
+              <div class="row justify-content-center" style="padding-bottom: 50px; padding-top: 20px;">
+     
+          
+                  <div class="result-container">
+                      <div class="result-header">
+                          <app-loading *ngIf="isLoading==true"></app-loading>                            
+
+                        <span class="result-title">¡Has terminado de contestar la encuesta!</span><br/><br/>
+                      </div>
+
+                      <div class="result-evaluation">
+                        <span class="result-text" color="#000">Las evaluaciones han finalizado ya puedes continuar</span><br/><br/>
+                        <span class="result-description">¡El siguiente paso es realizar el feedback y plan acción junto con el colaborador!</span><br/><br/>
+                      </div>
+          <div style="width: 100%;">
+              <div class="back-to-evaluations">
+                  <button class="btn btn-success back-to-evaluations-button" (click)="home()">Volver</button><br/><br/>
+              </div>
+          </div>
+                    </div>
+                    
+                  <br />
+                 
+               
+             
+           
+              </div>
+          </div>
+      </div>
+        <div *ngIf="!showModule&&end==false">
           <div>
           <div class="contForm">
             <!-- Imagen de Login -->
@@ -109,14 +143,12 @@
                    </button>
                  </div>
                 <div class="col-md-10 center-div" style="width: 100%;">
-                  <span class="sdPregunta">{{ DesempenoTest.test_modules[index].questions[indexQuestion].description }}  <span style="color:#b60b0b;font-size: 70%;">*{{ DesempenoTest.test_modules[index].questions[indexQuestion].score }} pts</span></span>
+                  <span class="sdPregunta">{{ DesempenoTest.test_modules[index].questions[indexQuestion].description }}  </span>
                 </div>
                 <br/>
-                <div class="col-md-10 center-div" style="width: 100%;margin-top: -5%;">
-                  <span class="sdDescripcion">{{ "*" + DesempenoTest.test_modules[index].questions[indexQuestion].description }}</span>
-                </div>
+          
                 <br/>
-                <div style="margin-left: 15%;">
+                <div style="margin-left: 20%;">
                   <div class="cent">
                     <div class="container">
                       <div *ngFor="let respuesta of DesempenoTest.test_modules[index].questions[indexQuestion].answers; let i = index" class="row">
@@ -131,7 +163,7 @@
                           <label for="respuesta{{respuesta.id}}">{{ respuesta.description }}</label>
                         </div>
                         <div class="col col-sm-2">
-                          <span style="color:#b60b0b;font-weight: bold;font-size: 90%;">*{{ respuesta.score }} pts</span>
+                          <span style="color:#b60b0b;font-weight: bold;font-size: 90%;"></span>
                         </div>
                       </div>
                       
@@ -150,7 +182,7 @@
        
             <div style="text-align: center;width: 90%;" *ngIf="(indexQuestion+1)==sizeQuestions">
               <span style="color:#616161;font-weight: bold;">Nota final del modulo:</span><br/><br/>
-              <mat-form-field class="form-input" >
+              <mat-form-field class="form-input" style="width: 80% !important;" >
               <textarea
               matInput
               style="width: 100%;"

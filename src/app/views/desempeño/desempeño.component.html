@@ -7,11 +7,12 @@
                 <div class="contenedor-form">
                     <div class="row justify-content-center">
                         <div>
-                            
+                            <app-loading *ngIf="isLoading==true"></app-loading>                            
                            <button style="width:100%" class="btn btn-light" (click)="home()">
                             <mat-icon>home</mat-icon>
                            </button><br/>
                         </div><br/>
+                 
                         <div class="col-md-10 center-div" style="width: 100%;">
                             <div>
                                 <br /><br/><br/>
@@ -25,24 +26,71 @@
                         <span class="sdComienzo">{{DesempenoTest.introduction_text}}</span> <br /> <br /> <br />
                         <div class="cent">
                             <div class="btnEmpezar"><br />
-                                <button class="btn btn-success" (click)="FalseMark()">Comenzar</button>
+                                <button [disabled]="submit" class="btn btn-success" (click)="FalseMark()">Comenzar</button>
                                 <br /><br />
                             </div>
                         </div>
                     </div>
                 </div>
-                <app-loading *ngIf="isLoading==true"></app-loading>
+              
 
             </div>
-            <div *ngIf="!start" class="contenedor-padre">
+            <div *ngIf="end" >            
+                <div >
+                    <!-- Imagen de Login -->
+                
+             
+                    <div class="row justify-content-center" style="padding-bottom: 50px; padding-top: 20px;">
+           
+                
+                        <div class="result-container">
+                            <div class="result-header">
+                                <app-loading *ngIf="isLoading==true"></app-loading>                            
+
+                              <span class="result-title">¡Has terminado de contestar la encuesta!</span><br/><br/>
+                            </div>
+                            <div class="result-info">
+                              <span class="result-score">Puntuación total:
+                                <br/>
+                              <span style="color:#b60b0b">{{ score }}</span>  </span><br/><br/>
+                            </div>
+                            <div class="result-evaluation">
+                              <span class="result-text" [style.color]="FinalEvalution.color">{{ FinalEvalution.text }}</span><br/><br/>
+                              <span class="result-description">{{ FinalEvalution.description }}</span><br/><br/>
+                            </div>
+                <div style="width: 100%;">
+                    <label class="checkbox-container" *ngIf=" score>75 ">
+                        ¿Deseas continuar a la evaluación de competencias?
+                        <input type="checkbox" [(ngModel)]="isChecked"  (click)="onCheckboxChange()">
+                        <span class="checkmark"></span>
+                    </label>
+                    <div class="back-to-evaluations">
+                        <button class="btn btn-success back-to-evaluations-button" (click)="home()">Volver</button><br/><br/>
+                    </div>
+                </div>
+                          </div>
+                          
+                        <br />
+                       
+                     
+                   
+                 
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!start&&end==false" class="contenedor-padre">
                 <div class="contenedor-form">
                     <!-- Imagen de Login -->
+                 
                     <div>
                             
                         <button style="width:100%" class="btn btn-light" (click)="home()">
                          <mat-icon>home</mat-icon>
                         </button>
-                     </div>
+                     </div><br />
+                     <div class="scores">
+                        <span>Puntos acumulados: {{score}}</span>
+                     </div> 
                     <div class="row justify-content-center" style="padding-bottom: 50px; padding-top: 20px;">
            
                         <div *ngIf="index>0" style="width: 30%;margin-right: 60%;">
@@ -106,6 +154,8 @@
 
                 </div>
             </div>
+  
+       
         </div>
     </main>
     

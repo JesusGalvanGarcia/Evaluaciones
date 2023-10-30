@@ -296,6 +296,11 @@ export class CompetenciasComponent implements OnInit {
         // Handle errors here
       });
   }
+  goIndex()
+  {
+    this.router.navigate(['/dashboard/evaluacion']);
+    this.message.success("¡Se ha suspendido la evaluacion!")
+  }
   ngOnInit() {
    // this.changeProcessFunc(75,3);
 

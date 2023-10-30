@@ -163,6 +163,11 @@ goCompetencias()
     this.router.navigate(['/dashboard/evaluacion']);
     this.message.success("¡Haz terminado la evaluacion de desempeño!")
   }
+  goIndex()
+  {
+    this.router.navigate(['/dashboard/evaluacion']);
+    this.message.success("¡Se ha suspendido la evaluacion!")
+  }
   home() 
     {
       this.isLoading=true;

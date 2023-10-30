@@ -1,49 +1,159 @@
-<div class="bgImageContainer2">
- 
-</div><br/><br/>
+<div class="bgImageContainer2"></div><br/><br/>
 
-<div class="posi bgImageContainer" >
-
-  <div class="container ">
+<div class="posi bgImageContainer">
+  <div class="container">
     <br/>
     <div class="colabora">
-      <span >
+      <span>
         <img
-        src="assets/svg/users.svg"
-        style="width: 2%;"
-        alt="Logo_Trinitas"
-      />
-          {{getUser()}}
+          src="assets/svg/users.svg"
+          style="width: 2%;"
+          alt="Logo_Trinitas"
+        />
+        {{ getUser() }}
       </span><br/>
     </div><br/>
     <div class="evaIcon">
-<span>
-      <img
-      src="assets/svg/evaluation.svg"
-      class="estilo-imagen "
-      alt="Logo_Trinitas"
-    />
-  </span>
+      <span>
+        <img
+          src="assets/svg/evaluation.svg"
+          class="estilo-imagen"
+          alt="Logo_Trinitas"
+        />
+      </span>
       <span class="estilo-title">Evaluaciones</span>
     </div>
     <div style="margin-top: 0%;">
-  <div class="center-container">
+      <div class="center-container"></div>
+      <br/>
+      <div class="form-check form-switch mostrar">
+        Personal
+        <input class="form-check-input" id="idInp" name="nameinput" #isChekedModel="ngModel" (click)="onSwitchChange()" type="checkbox" [(ngModel)]="isChecked">
+        <label class="form-check-label" for="idInp">Colaboradores</label>
+        <br/>
+      </div>
+      <br/>
 
-  </div>
- <br/>
-  <div class="form-check form-switch mostrar">
-    Personal
-    <input class="form-check-input" id="idInp" name="nameinput" #isChekedModel="ngModel" (click)="onSwitchChange" type="checkbox" [(ngModel)]="isChecked" >
-    <label class="form-check-label" for="idInp">Colaboradores
+      <mat-table [dataSource]="dataSource" class="example-table" multiTemplateDataRows matSort>
+        <!-- Header Row -->
+   
 
-    </label> 
-  <br/>
+
+        <!-- Evaluation Name Column -->
+        <ng-container matColumnDef="evaluation_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de Evaluación</th>
+          <td mat-cell *matCellDef="let row"> {{ row.evaluation_name }} </td>
+        </ng-container>
+
+        <!-- Collaborator Name Column -->
+        <ng-container matColumnDef="collaborator_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de Colaborador </th>
+          <td mat-cell *matCellDef="let row"> {{ row.collaborator_name }} </td>
+        </ng-container>
+
+        <!-- Actual Process Column -->
+        <ng-container matColumnDef="actual_process">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Proceso Actual </th>
+          <td mat-cell *matCellDef="let row"> {{ row.actual_process }} </td>
+        </ng-container>
+
+        <!-- Phase Column -->
+        <ng-container matColumnDef="phase">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fase </th>
+          <td mat-cell *matCellDef="let row"> {{ row.phase }} </td>
+        </ng-container>
+
+
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+          <td mat-cell *matCellDef="let row"> {{ row.status }} </td>
+        </ng-container>
+
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="action" >
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="row" style="width: 90%;"><br/>
+              <button class="btn btn-light "        mat-icon-button aria-label="expand row" 
+                (click)="toggleRow(row)">
+                <mat-icon *ngIf="row.isExpanded ">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="!row.isExpanded ">keyboard_arrow_up</mat-icon>
+              </button>
+              
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Row for Detail Expansion -->
+        <ng-container matColumnDef="detail-row">
+          <td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
+            <div *ngIf="row.isExpanded &&mostrar==true">
+              <!-- Contenido de las filas adicionales -->
+              <div class="example-element-description">
+                <div class="tabla">
+                  <div class="encabezados">
+                    <div class="encabezado">Evaluación</div>
+                    <div class="encabezado">Estatus</div>
+                    <div class="encabezado">Calificación</div>
+                    <div class="encabezado">Clasificación</div>
+                    <div class="encabezado">Acción</div>
+                  </div>
+                  <div class="fila" *ngFor="let detalle of row.detail;let i =index">
+                
+                    <div class="dato">{{ detalle.name }}</div>
+                
+                    <div class="dato">
+                      <div >{{ detalle.status }}</div>
+                    </div>
+                    <div class="dato">
+                      &nbsp; &nbsp; {{ detalle.total_score===""?"": (detalle.total_score ===null?"No aplica":detalle.total_score)}}
+      
+                    </div>
+                    <div class="dato" [style.color]="getColorByClasification(detalle.rank)" >
+                  <div class="row" style="margin-left: 20%;">
+                <div class="col col-sm-9">
+                  {{ detalle.rank }}
+                </div>
+                <div class="col col-sm-1">
+                  <span   [style.color]="getColorByClasification(detalle.rank)" mat-button [matTooltip]="clasification(detalle.rank)"  *ngIf="detalle.rank!==''">
+                    <mat-icon>warning</mat-icon>
+
+                  </span>
+                </div>
+                  </div>
+                    </div>
+                 
+                    <div class="dato" *ngIf="isChecked ==true" >
+                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.rank,i)">
+                        {{detalle.status  === 'Pendiente'?"Comenzar":detalle.status=="Terminado"?"Ver":"Continuar"}}
+                      </button>
+                    </div>
+                    <div class="dato" *ngIf="isChecked ==false" >
+                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.rank,i)">
+                        Ver
+                      </button>
+                    </div>
+                  </div>
+              
+                  <!-- Puedes agregar más filas y datos aquí -->
+                </div>
+                
+               
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['detail-row']" class="example-detail-row"></tr>
+
+      </mat-table>
+      <br/>     <br/>
+    </div>
   </div>
-  <br/>
-  
-  <app-Tables *ngIf="isChecked"></app-Tables>
-  <app-TablePersonal *ngIf="!isChecked"></app-TablePersonal>
- <br/> <br/>
 </div>
-</div> 
-</div>
+<app-loading *ngIf="isLoading"></app-loading>
+

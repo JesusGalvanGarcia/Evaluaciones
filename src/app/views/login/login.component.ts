@@ -54,9 +54,10 @@ export class LoginComponent implements OnInit {
    * @param formulario Formulario a validar.
    */
   public enviarFormulario(form: NgForm){
-    this.isLoading=true;
     this.disableSubmit = true;
+   
     if(form.invalid){
+
       Utilities.validateRequiredFields(form);
       this.disableSubmit = false;
       return;
@@ -69,6 +70,8 @@ export class LoginComponent implements OnInit {
    * Llama al método Authenticate de LoginService. Si es exitoso, guarda el LoginResponse Token en el localStorage y redirige a la página de pacientes.
    */
   public async authenticate() {
+    this.isLoading=true;
+  
    this.loginServices.PostLogin(this.loginRequest)
    .then(({ data, token, user_id  }) => {
     this.isLoading=false;
@@ -81,8 +84,8 @@ export class LoginComponent implements OnInit {
    })
    .catch((error:any) => {
      console.error('Error in the request:', error);
-     this.messageService.error(error.message +" "+error.code);
-    
+     this.messageService.error("El  usuario o la contraseña son  incorrectos ");
+     this.isLoading=false;
      // Handle errors here
    });
   }

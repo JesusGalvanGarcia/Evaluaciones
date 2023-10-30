@@ -17,7 +17,7 @@ export class ColaboradorEvaluationService {
       params: data
     })
     .then((response) => {
-      return response.data.collaborators_evaluations;
+      return response.data;
       })      
     .catch(function (error: any) {
       return error;

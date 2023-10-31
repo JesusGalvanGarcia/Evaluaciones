@@ -113,6 +113,14 @@ changeList()
   console.log(this.ListColaborator);
 }
   ngOnInit() {
+    var user=localStorage.getItem("email");
+    if(user=="")
+    {
+      this.router.navigate(['/login']);
+      this.message.error("Tienes que iniciar sesion");
+
+    }
+
     this.getTable();
   }
   toggleRow(row: any) {

@@ -121,7 +121,10 @@
                         &nbsp; &nbsp; {{ detalle.total_score===""?"": (detalle.total_score ===null?"No aplica":detalle.total_score)}}    
                       </ng-container>
                       <ng-template #elseTemplate>
-                      
+                        <svg *ngIf="detalle.status=='Terminado'"  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                          <path d="m381-240 424-424-57-56-368 367-169-170-57 57 227 226Z" fill="green" />
+                        </svg>
+                        
                       </ng-template>
       
                     </div>
@@ -168,8 +171,9 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: ['detail-row']" class="example-detail-row"></tr>
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4" style="text-align: center;">No se han encontrado resultados con:"{{input.value}}"</td>
+          <td class="mat-cell" colspan="4" style="text-align: center;">No se han encontrado resultados {{input.value}}</td>
         </tr>
+      
       </mat-table>
       <br/>     <br/>
     </div>

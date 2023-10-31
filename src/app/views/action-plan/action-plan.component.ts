@@ -110,6 +110,14 @@ export class ActionPlanComponent {
   }
 
   ngAfterViewInit() {
+    var user=localStorage.getItem("email");
+    if(user=="")
+    {
+      this.router.navigate(['/login']);
+      this.system_message.error("Tienes que iniciar sesion");
+
+    }
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 

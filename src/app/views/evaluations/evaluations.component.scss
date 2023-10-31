@@ -26,6 +26,12 @@ tr.example-detail-row {
 tr.example-element-row:not(.example-expanded-row):hover {
   background: whitesmoke;
 }
+.custom-input {
+width: 50%;
+display: flex;
+justify-content: center;
+margin-left: 25%;
+}
 .btn-light {
 
   --bs-btn-color: #000;

@@ -30,7 +30,7 @@
                 class="example-form-field">
                 <mat-label>Correo electrónico</mat-label>
                 <input
-                  type="username"
+                  type="email"
                   matInput
                   class="input-form colorinp"
                   #email="ngModel"
@@ -44,6 +44,9 @@
                 </mat-icon>
                 <mat-error *ngIf="email.hasError('required')">
                   El correo es <strong>requerido</strong>
+                </mat-error>
+                 <mat-error *ngIf="email.hasError('email')">
+                  El formato de correo es <strong>incorrecto</strong>
                 </mat-error>
               </mat-form-field>
             </div>

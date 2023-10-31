@@ -20,6 +20,7 @@ import {ProcessModel} from "../../models/TestDetails/ProcessModel";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoadingComponent } from '../loading/loading.component';
 import { PersonalEvaluation } from 'src/app/models/PersonalEvaluation/PersonalEvaluation';
+import { MatInputModule } from '@angular/material/input';
 
 import { PersonalEvaluationService } from '../../services/PersonalEvaluationService';
 
@@ -28,7 +29,7 @@ import { PersonalEvaluationService } from '../../services/PersonalEvaluationServ
   
   standalone:true,
   imports: [
-    CommonModule,MatTooltipModule, LoadingComponent,FormsModule,CdkTableModule,AgGridModule,MatIconModule,MatTableModule],
+    CommonModule,MatTooltipModule,MatInputModule, LoadingComponent,FormsModule,CdkTableModule,AgGridModule,MatIconModule,MatTableModule],
   templateUrl: './evaluations.component.html',
   styleUrls: ['./evaluations.component.scss'],
   animations: [
@@ -226,7 +227,7 @@ sendPageEvaluation(process:string,id:string,status:string,calificacion:number,de
         this.router.navigate(['/desempeño/'+id]);
       }
     break
-    case "Plan de Acción":
+    case "Feedback y Plan de Acción":
  
       const elemento = detalle.find((item:any) => item.name === "Evaluación de Competencias");
       console.log(elemento)
@@ -258,6 +259,10 @@ sendPageEvaluation(process:string,id:string,status:string,calificacion:number,de
   }
 
   
+}
+applyFilter(event: Event) {
+  const filterValue = (event.target as HTMLInputElement).value;
+  this.dataSource.filter = filterValue.trim().toLowerCase();
 }
 
 changeProcessFunc(process:number,user_test_id:number)

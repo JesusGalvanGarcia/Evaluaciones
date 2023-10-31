@@ -55,11 +55,12 @@ export class LoginComponent implements OnInit {
    */
   public enviarFormulario(form: NgForm){
     this.disableSubmit = true;
-   
+    console.log(this.disableSubmit)
     if(form.invalid){
 
       Utilities.validateRequiredFields(form);
       this.disableSubmit = false;
+      console.log(this.disableSubmit)
       return;
     }
     this.authenticate();
@@ -86,6 +87,7 @@ export class LoginComponent implements OnInit {
      console.error('Error in the request:', error);
      this.messageService.error("El  usuario o la contraseña son  incorrectos "+error);
      this.isLoading=false;
+     
      // Handle errors here
    });
   }

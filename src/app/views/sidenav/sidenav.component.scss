@@ -54,6 +54,60 @@
     }
 }
 
+.sidenavC {
+    background: #ffffff;
+    transition: all .5s ease;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    width: 5rem;
+    height: 100vh;
+    box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
+
+    .logo-containerC {
+        display: flex;
+        align-items: center;
+        padding: 0.938rem 0.938rem 0 0.938rem;
+        width: 100%;
+
+        .logoC {
+            background: #fff;
+            text-align: center;
+            width: 3rem;
+            min-width: 3rem;
+            border-radius: 0.313rem;
+            padding: 0.313rem;
+            margin-left: 8%;
+            margin-top: 12%;
+            font-size: 24px;
+            font-weight: 900;
+            cursor: pointer;
+            border: none;
+        }
+
+        .logo-textC {
+            margin-left: 1.5rem;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .btn-closeC {
+            margin-left: auto;
+            cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background-color: transparent;
+            border: none;
+
+            .fa-times {
+                color: #fff;
+                font-size: 24px;
+            }
+        }
+    }
+}
 .sidenav-collapsed {
     width: 16.5625rem;
 }
@@ -188,7 +242,7 @@
 
 // works on chrome, edge and safari
 .scrollwrap::-webkit-scrollbar {
-    width: 10pxz;
+    width: 100%;
 }
 
 .scrollwrap::-webkit-scrollbar-track {
@@ -208,19 +262,48 @@
 /* Estilos para dispositivos móviles */
 @media (max-width: 768px) {
     .sidenav {
-        width: 100%;
+        width: 50%;
     }
     
     .sidenav-collapsed {
-        width: 8%;
+      
+        width: 13%;
+        height: 100%;
     }
-    
+    .sidenav[_ngcontent-ng-c3523761634] .logo-container[_ngcontent-ng-c3523761634] .logo[_ngcontent-ng-c3523761634] {
+        background: #fff;
+        text-align: center;
+        width: 3rem;
+        min-width: 3rem;
+        border-radius: 0.313rem;
+        padding: 0.313rem;
+        margin-left: -10%;
+        margin-top: 12%;
+        font-size: 24px;
+        font-weight: 900;
+        cursor: pointer;
+        border: none;
+    }
+    .sidenavC[_ngcontent-ng-c3523761634] .logo-containerC[_ngcontent-ng-c3523761634] .logoC[_ngcontent-ng-c3523761634] {
+        background: #fff;
+        text-align: center;
+        width: 3rem;
+        min-width: 3rem;
+        border-radius: 0.313rem;
+        padding: 0.313rem;
+        margin-left: 0%;
+        margin-top: 12%;
+        font-size: 24px;
+        font-weight: 900;
+        cursor: pointer;
+        border: none;
+    }
     .sidenav .logo-container {
         padding: 0.938rem;
     }
     
     .sidenav .logo .logo-text {
-        font-size: 20px;
+        font-size: 100%;
     }
     
     .sidenav .sidenav-nav {

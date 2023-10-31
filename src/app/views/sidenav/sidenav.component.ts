@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { fadeInOut, INavbarData } from './helper';
 import { navbarData } from './nav-data';
 
+
 interface SideNavToggle {
   screenWidth: number;
   collapsed: boolean;
@@ -30,7 +31,7 @@ interface SideNavToggle {
 export class SidenavComponent implements OnInit {
 
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
-  collapsed = false;
+  collapsed = true;
   screenWidth = 0;
   navData = navbarData;
   multiple: boolean = false;
@@ -38,38 +39,52 @@ export class SidenavComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = window.innerWidth;
+  
     if(this.screenWidth <= 768 ) {
       this.collapsed = false;
+   
       this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
     }
   }
 
-  constructor(public router: Router) {}
+  constructor(public router: Router) {
+    this.collapsed=true;
+    console.log(this.collapsed)
+  }
 
   ngOnInit(): void {
+ 
       this.screenWidth = window.innerWidth;
+      if(this.screenWidth >= 768 ) {
+        this.toggleCollapse();
+      }
   }
 
   toggleCollapse(): void {
     this.collapsed = !this.collapsed;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+      console.log(this.collapsed)
   }
 
   closeSidenav(): void {
     this.collapsed = false;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+    console.log(this.collapsed)
   }
 
   handleClick(item: INavbarData): void {
     this.shrinkItems(item);
     item.expanded = !item.expanded
+    console.log(this.collapsed)
   }
 
   getActiveClass(data: INavbarData): string {
+    console.log(this.collapsed)
     return this.router.url.includes(data.routeLink) ? 'active' : '';
   }
 
   shrinkItems(item: INavbarData): void {
+      console.log(this.collapsed)
     if (!this.multiple) {
       for(let modelItem of this.navData) {
         if (item !== modelItem && modelItem.expanded) {

@@ -1,15 +1,15 @@
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''">
   <div class="logo-container">
-      <div class="logo-text" @fadeInOut *ngIf="collapsed">
+      <div class="logo-text" @fadeInOut >
         <img
         src="assets/logo/logo_trinitas.jpg"
-        style="width: 120%;margin-left: -15%;"
+        style="width: 80%;margin-left: -7%;"
         alt="Logo_Trinitas"
       />
 
     </div>
-    <button class="logo" (click)="toggleCollapse()"><i class="fa-solid fa-bars"></i></button>
-  
+    <button class="logo" style="margin-left: -40px "  (click)="toggleCollapse()"><i class="fa-solid fa-bars"></i></button>
+
   </div>
   <div class="scrollwrap scrollwrap_delayed">
       <ul class="sidenav-nav">
@@ -19,10 +19,10 @@
                   [ngClass]="getActiveClass(data)"
               >
                   <i class="sidenav-link-icon" [class]="data.icon"></i>
-                  <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+                  <span class="sidenav-link-text" @fadeInOut >
                       {{data.label}}
                   </span>
-                  <i *ngIf="data.items && collapsed" class="menu-collapse-icon"
+                  <i *ngIf="data.items d" class="menu-collapse-icon"
                       [ngClass]="!data.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'"
                   ></i>
               </a>
@@ -35,11 +35,11 @@
                   (click)="shrinkItems(data)"
                   >
                   <i class="sidenav-link-icon" [class]="data.icon"></i>
-                  <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+                  <span class="sidenav-link-text" @fadeInOut >
                       {{data.label}}
                   </span>
               </a>
-              <div *ngIf="collapsed && data.items && data.items.length > 0">
+              <div *ngIf=" data.items && data.items.length > 0">
                 <app-sublevel-menu
                     [data]="data"
                     [collapsed]="collapsed"

@@ -210,7 +210,7 @@ getColorByClasification(clasification: string) {
   }
 }
 
-sendPageEvaluation(process:string,id:string,status:string,calificacion:number,index:number)
+sendPageEvaluation(process:string,id:string,status:string,calificacion:number,detalle:any)
 {   
    localStorage.setItem("score", calificacion.toString());
 
@@ -220,33 +220,39 @@ sendPageEvaluation(process:string,id:string,status:string,calificacion:number,in
       this.router.navigate(['/desempeño/'+id]);
       if(status=="Terminado")
       {
-        this.router.navigate(['/desempeño/'+id]);
+        this.router.navigate(['/prueba/'+id]);
       }
       else{
         this.router.navigate(['/desempeño/'+id]);
       }
     break
     case "Plan de Acción":
-      this.changeProcessFunc(4,Number(id)); //Cambiar el proceso al darle click
-      this.router.navigate(['/plan-accion/'+id]);
-    break
-    case "Evaluación de Aptitudes":
-      if(status=="Terminado")
+ 
+      const elemento = detalle.find((item:any) => item.name === "Evaluación de Competencias");
+      console.log(elemento)
+      if(elemento.status!="Terminado")
       {
-        this.router.navigate(['/competencias/'+id]);
+        this.message.error("La evaluación de competencias no se ha terminado de contestar.");
       }
-      else{
-        this.router.navigate(['/competencias/'+id]);
+      else
+      {
+        this.router.navigate(['/plan-accion/'+id]);
       }
     break
     case "Evaluación de Competencias":
       if(status=="Terminado")
       {
-        this.router.navigate(['/competencias/'+id]);
+        this.router.navigate(['/prueba/'+id]);
       }
       else{
-        this.changeProcessFunc(2,Number(id)); //Cambiar el proceso al darle click
-        this.router.navigate(['/competencias/'+id]);
+        const elemento = detalle.find((item:any) => item.name === "Evaluación de Desempeño");
+        console.log(elemento)
+        if(elemento.status!="Terminado")     
+          this.message.error("La evaluación de desempeño no se ha terminado de contestar.");  
+        else
+          this.router.navigate(['/competencias/'+id]);
+        
+
       }
     break
   }

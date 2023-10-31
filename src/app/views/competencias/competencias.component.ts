@@ -27,7 +27,7 @@ import {ProcessModel} from "../../models/TestDetails/ProcessModel";
 })
 export class CompetenciasComponent implements OnInit {
   showQuestion: boolean = true;
-   isLoading: boolean = false;
+   isLoading: boolean = true;
   loading: boolean = false;
   noteUser: NoteUser;
   changeProcess:ProcessModel;
@@ -62,7 +62,7 @@ export class CompetenciasComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
     });
-  this.isLoading=false;
+
   }
   FalseMark() {//marcar falso para retirar la ventana de empezar
     this.start = false;
@@ -291,6 +291,8 @@ export class CompetenciasComponent implements OnInit {
 
       })
       .catch((error: any) => {
+        this.isLoading=false;
+
         console.error('Error in the request:', error);
         this.message.error("No se pudieron cargar las evaluaciones "+error);
         // Handle errors here
@@ -303,7 +305,7 @@ export class CompetenciasComponent implements OnInit {
   }
   ngOnInit() {
    // this.changeProcessFunc(75,3);
-
+  // this.isLoading=true;
     var user=localStorage.getItem("email");
     if(user=="")
     {

@@ -6,6 +6,8 @@
       <div *ngIf="start" class="contenedor-padre">
         <div class="contenedor-form">
           <div class="row justify-content-center">
+            <app-loading *ngIf="isLoading==true"></app-loading>
+
             <div>
                             
               <button style="width:100%" class="btn btn-light" (click)="home()">
@@ -33,7 +35,6 @@
             </div>
           </div>
         </div>
-        <app-loading *ngIf="isLoading"></app-loading>
       </div>
       <div *ngIf="!start" class="contenedor-padre">
         <div *ngIf="showModule">
@@ -48,7 +49,7 @@
                   </button><br/>
                </div><br/>
                 <div class="col-md-10 center-div">
-                  <div>
+                  <div style="text-align: center;">
                     <span class="sd">{{ DesempenoTest.name }}</span><br/>
                   </div>
                 </div>
@@ -127,14 +128,14 @@
                  <mat-icon>home</mat-icon>
                 </button><br/>
              </div><br/>
-              <div class="col-md-10 center-div">
-                <div>
+              <div class="col-md-10 center-div" >
+                <div style="text-align: center;">
                   <span class="sd">{{ DesempenoTest.name }}</span>
                 </div>
               </div>
               <br/>
               <div [class.screen]="!showQuestion">
-                <div class="back" ><br/>
+                <br/>         <div class="back" ><br/>
                   <button class="btn btn-light" mat-button (click)="backQuestion()">
                     <img
                     src="assets/svg/back.svg"

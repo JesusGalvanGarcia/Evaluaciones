@@ -6,7 +6,7 @@ import { fadeInOut, INavbarData } from './helper';
 @Component({
   selector: 'app-sublevel-menu',
   template: `
-    <ul *ngIf="collapsed && data.items && data.items.length > 0"
+    <ul *ngIf="data.items && data.items.length > 0"
     [@submenu]="expanded
       ? {value: 'visible', 
           params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)', height: '*'}}
@@ -22,8 +22,8 @@ import { fadeInOut, INavbarData } from './helper';
           >
             <i class="sublevel-link-icon fa fa-circle"></i>
             <span class="sublevel-link-text" @fadeInOut 
-                *ngIf="collapsed">{{item.label}}</span>
-            <i *ngIf="item.items && collapsed" class="menu-collapse-icon"
+                >{{item.label}}</span>
+            <i *ngIf="item.items " class="menu-collapse-icon"
               [ngClass]="!item.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'"
             ></i>
           </a>
@@ -35,7 +35,7 @@ import { fadeInOut, INavbarData } from './helper';
           >
             <i class="sublevel-link-icon fa fa-circle"></i>
             <span class="sublevel-link-text" @fadeInOut 
-               *ngIf="collapsed">{{item.label}}</span>
+               >{{item.label}}</span>
           </a>
           <div *ngIf="item.items && item.items.length > 0">
             <app-sublevel-menu
@@ -73,7 +73,7 @@ export class SublevelMenuComponent implements OnInit {
     label: '',
     items: []
   }
-  @Input() collapsed = false;
+  @Input() collapsed = true;
   @Input() animating: boolean | undefined;
   @Input() expanded: boolean | undefined;
   @Input() multiple: boolean = false;

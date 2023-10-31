@@ -26,7 +26,23 @@ tr.example-detail-row {
 tr.example-element-row:not(.example-expanded-row):hover {
   background: whitesmoke;
 }
+.btn-light {
 
+  --bs-btn-color: #000;
+  --bs-btn-bg: #fff !important; 
+  --bs-btn-border-color: #f8f9fa;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #d3d4d5;
+  --bs-btn-hover-border-color: #c6c7c8;
+  --bs-btn-focus-shadow-rgb: 211,212,213;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #c6c7c8;
+  --bs-btn-active-border-color: #babbbc;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #000;
+  --bs-btn-disabled-bg: #f8f9fa;
+  --bs-btn-disabled-border-color: #f8f9fa;
+}
 /* Efecto de selección al hacer clic en filas */
 tr.example-element-row:not(.example-expanded-row):active {
   background: #efefef;
@@ -87,6 +103,10 @@ tr.example-element-row:not(.example-expanded-row):active {
   margin: 0;
   padding: 0;
 }
+.ranks
+{
+  margin-left: 15%;
+}
 .encabezado, .dato {
   display: table-cell;
   padding: 8px 12px;
@@ -121,6 +141,7 @@ tr.example-element-row:not(.example-expanded-row):active {
   box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f;  background-color: white;
   border-bottom: 1px solid lightgray;
   padding: 5px;
+  overflow-x: auto;
 }
 .example-table-container {
   position: relative;
@@ -129,6 +150,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 .mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table .mat-mdc-header-cell {
   background: inherit;
+  width: 30%;
 }
 
 .bgImageContainer {
@@ -145,7 +167,19 @@ tr.example-element-row:not(.example-expanded-row):active {
     width: 100%;
     border-radius: 0; /* Quitar el radio de borde */
   }
+    .ventana {
+    width: 90%;
+    height: 90%;
+    margin-top: 5%;
+    margin-left: 5%;
+    padding: 10%;
+  }
+  .ranks
+  {
+    margin-left: -10%;
+  }
 }
+
 .estilo-texto {
   margin-left: 5%;
   font-weight: bold;
@@ -199,7 +233,10 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .colabora {
 }
-
+.checks
+{
+  margin-left: 0%;
+}
 .ventana {
   width: 100%;
   height: 100%;
@@ -214,21 +251,21 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 /* Añadir estilos para dispositivos móviles */
-@media (max-width: 768px) {
-  .ventana {
-    width: 90%;
-    height: 90%;
-    margin-top: 5%;
-    margin-left: 5%;
-    padding: 10%;
-  }
-}
 
+.mostrar {
+  display: flex;
+  margin-left: 10%;
+  justify-content: space-between;
+}
 .expanded-row {
   font-size: 16px;
   line-height: 2;
   height: 500px;
   /* Otros estilos según tus preferencias */
+}
+.checks
+{
+  margin-left: 15%;
 }
 
 /* Estilos específicos para pantallas pequeñas (menos de 600px) */

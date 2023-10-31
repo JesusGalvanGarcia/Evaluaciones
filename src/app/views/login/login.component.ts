@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit {
    })
    .catch((error:any) => {
      console.error('Error in the request:', error);
-     this.messageService.error("El  usuario o la contraseña son  incorrectos ");
+     this.messageService.error("El  usuario o la contraseña son  incorrectos "+error);
      this.isLoading=false;
      // Handle errors here
    });

@@ -68,8 +68,8 @@
                   <div style="text-align: center;">
                     <span class="sd">{{ DesempenoTest.name }}</span><br/>
                   </div>
-                </div><br/>
-                <div class="backModul" *ngIf="index!= 0 && showModule ==true">
+                </div><br/>  <br/>
+                <div class="backModul" *ngIf="index!= 0 "><br/>  <br/>
                   <button class="btn btn-light" mat-button (click)="backQuestion()">
                     <img
                     src="assets/svg/back.svg"
@@ -93,6 +93,64 @@
                     <button class="btn btn-success"  (click)="FalseMarkMoodulo()">Siguiente</button>
                   </div>
                   
+                </div>
+           
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="showNote">
+          <div class="contenedor-padreMod">
+            <div class="contenedor-form">
+          
+              <div class="row justify-content-center" style="padding-bottom: 50px; ">
+                <div>
+                            
+                  <button style="width:100%" class="btn btn-light" (click)="goIndex()">
+                   <mat-icon>home</mat-icon>
+                  </button><br/>
+               </div><br/>
+                <div class="col-md-10 center-div">
+                  <div style="text-align: center;">
+                    <span class="sd">{{ DesempenoTest.test_modules[index].name }}</span><br/>
+                  </div>
+                </div><br/>
+                <div class="backModul" ><br/>
+                  <button class="btn btn-light" mat-button (click)="backQuestion()">
+                    <img
+                    src="assets/svg/back.svg"
+                    style="color:white"
+                    />
+                   </button>
+                 </div>
+                <br/>
+                <div style="width: 100%;">
+                  <div style="text-align: center" >
+                    <span class="sdPregunta">{{ DesempenoTest.test_modules[index].name }} </span><br/>
+                    <span style="color:rgb(156, 16, 16);font-weight: bold;">Estas notas nos ayudan a tener un mejor entendimiento y seguimiento de la evaluación</span><br/><br/>
+                    <span style="color:#616161;font-weight: bold;">Nota final del modulo:</span><br/><br/>
+                    <mat-form-field class="form-input" style="width: 80% !important;" >
+                    <textarea
+                    matInput
+                    style="width: 100%;"
+                    [placeholder]="'Escribe una nota adicional acerca de este modulo...'"
+                    [value]="DesempenoTest.test_modules[index].note"    
+                    [(ngModel)]="DesempenoTest.test_modules[index].note" 
+                    required
+      
+                  ></textarea>  <br/>
+                    </mat-form-field>
+                  </div> 
+               
+                  <br/>
+             
+                  <div class="text-center btnEmpezarMod">
+                    <button class="btn btn-success"  (click)="sendNote(DesempenoTest.test_modules[index].id)">Siguiente</button>
+                  </div>     <br/>
+                  <div class="cent">
+                    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+                    <!-- <button class="btn" *ngIf="!finish" class="btn btn-success">Guardar</button> -->
+                </div>   
                 </div>
            
               </div>
@@ -133,7 +191,7 @@
               </div>
           </div>
       </div>
-        <div *ngIf="!showModule&&end==false">
+        <div *ngIf="!showModule&&end==false&&showNote==false">
           <div>
           <div class="contForm">
             <!-- Imagen de Login -->
@@ -146,7 +204,7 @@
              </div><br/>
               <div class="col-md-10 center-div" >
                 <div style="text-align: center;">
-                  <span class="sd">{{ DesempenoTest.name }}</span>
+                  <span class="sd">{{ DesempenoTest.test_modules[index].name }}</span>
                 </div>
               </div>
               <br/>
@@ -165,23 +223,21 @@
                 <br/>
           
                 <br/>
-                <div style="margin-left: 20%;">
+                <div style="margin-left: 15%;">
                   <div class="cent">
                     <div class="container">
                       <div *ngFor="let respuesta of DesempenoTest.test_modules[index].questions[indexQuestion].answers; let i = index" class="row">
-                        <div class="col col-sm-1">
+                        <div class="col-1">
                           <input class="radio-button" type="radio" [disabled]="loading"
                           (click)="PostsaveAnswers(respuesta.id,DesempenoTest.test_modules[index].id, DesempenoTest.test_modules[index].questions[indexQuestion].id,respuesta.score,i )" 
                           name="flexRadioDefault" id="flexRadioDefault1"
                           [checked]="respuesta.user_answer_id === null? false:true"
                           [value]="respuesta.user_answer_id">
                         </div>
-                        <div class="col col-sm-8">
+                        <div class="col-10">
                           <label for="respuesta{{respuesta.id}}">{{ respuesta.description }}</label>
                         </div>
-                        <div class="col col-sm-2">
-                          <span style="color:#b60b0b;font-weight: bold;font-size: 90%;"></span>
-                        </div>
+                     
                       </div>
                       
                     </div>
@@ -197,20 +253,7 @@
             </div>   
             </div>
        
-            <div style="text-align: center;width: 90%;" *ngIf="(indexQuestion+1)==sizeQuestions">
-              <span style="color:#616161;font-weight: bold;">Nota final del modulo:</span><br/><br/>
-              <mat-form-field class="form-input" style="width: 80% !important;" >
-              <textarea
-              matInput
-              style="width: 100%;"
-              [placeholder]="'Escribe una nota adicional acerca de este modulo...'"
-              [value]="DesempenoTest.test_modules[index].note"    
-              [(ngModel)]="DesempenoTest.test_modules[index].note" 
-             
-
-            ></textarea>  <br/>
-              </mat-form-field>
-            </div> 
+  
             <div class="pregunta-container">
               <span>Pregunta &nbsp;</span> {{ (indexQuestion+1) + "/" + (sizeQuestions) }}
             </div>

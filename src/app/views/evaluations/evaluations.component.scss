@@ -166,13 +166,58 @@ tr.example-element-row:not(.example-expanded-row):active {
   background-position: center center;
   background-size: cover;
 }
+@media screen and (min-width: 1000px) {
+  /* Estilos específicos para pantallas de 1000 píxeles o más de ancho */
+  .posi {
+    margin-top: 0%;
+    /* padding: 5px; */
+    margin-left: 8%;
+  }
+  .mostrar {
+    display: flex;
+    margin-left: 20%;
+    justify-content: space-between;
+  }
+  /* Agrega más estilos específicos aquí según tus necesidades */
+}
 
 /* Añadir estilos para dispositivos móviles */
 @media (max-width: 768px) {
-  .bgImageContainer {
-    width: 100%;
-    border-radius: 0; /* Quitar el radio de borde */
+  
+.mostrar {
+  display: flex;
+  margin-left: 0%;
+  justify-content: space-between;
+}
+  .bgImageContainer2 {
+    margin-top: -6%;
+   /* width: 100%; */
+   border-radius: 0;
   }
+  .colabora {
+    text-align: center;
+  }
+
+  .custom-input {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    margin-left: 15%;
+    }
+  .bgImageContainer {
+    background: #fff;
+    width: 90%;
+    border-radius: 15px !important;
+    background-position: center center;
+    background-size: cover;
+  }
+  
+  .posi {
+    margin-top: 5%;
+    /* padding: 5px; */
+    margin-left: 5%;
+  }
+  
     .ventana {
     width: 90%;
     height: 90%;
@@ -201,10 +246,7 @@ tr.example-element-row:not(.example-expanded-row):active {
   width: 3%;
   margin-top: -1%;
 }
-.posi {
-  margin-top: 0%;
-  margin-left: 8%;
-}
+
 
 .center-container {
   display: flex;
@@ -214,7 +256,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 .evaIcon {
   margin-top:-5%;
-  margin-left:40% 
+  text-align: center;
 }
 .imgs {
   width: 50%;
@@ -225,11 +267,7 @@ tr.example-element-row:not(.example-expanded-row):active {
   margin-top: 4%;
 }
 
-.mostrar {
-  display: flex;
-  margin-left: 20%;
-  justify-content: space-between;
-}
+
 
 .alado {
   display: flex;
@@ -258,11 +296,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 /* Añadir estilos para dispositivos móviles */
 
-.mostrar {
-  display: flex;
-  margin-left: 10%;
-  justify-content: space-between;
-}
+
 .expanded-row {
   font-size: 16px;
   line-height: 2;

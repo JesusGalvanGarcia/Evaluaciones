@@ -81,3 +81,16 @@ background: #FAF7F7;
   align-items: center; /* Centra verticalmente los elementos dentro del contenedor */
 
 }
+@media (max-width: 768px) {
+  .contenedor-form {
+    background-color: white;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    margin-top: -10%;
+    padding: 10%;
+    border-radius: 30px;
+    box-shadow: 0 0 0px rgba(128, 124, 124, 0.5);
+  }
+
+}

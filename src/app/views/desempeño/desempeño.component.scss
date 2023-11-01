@@ -354,3 +354,71 @@ padding-right: 8%;
 .back-to-evaluations-button:hover {
   background-color: #45a049;
 }
+@media (max-width: 768px) {
+  .btn {
+    width: 50%;
+}
+  .contForm{
+    background-color: white;
+    width: 95%;
+    height: 100%;
+    /* padding: 30px; */
+    border-radius: 30px;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+    /* padding: 30px; */
+    display: flex;
+    flex-direction: column; /* Alinea verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin-left: 2%;
+  }
+  .contenedor-form {
+    background-color: white;
+    flex-direction: column;
+    width: 95%;
+    height: 100%;
+    /* padding: 30px; */
+    border-radius: 30px;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+  }
+  .sd{
+    --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 50%))));
+    font-size: 100%;
+    line-height: calc(1.25*(var(--cover-title-font-size)));
+    color: var(--sjs-primary-backcolor, var(--primary, #157722));
+    font-family: var(--sjs-font-surveytitle-family, var(--font-family));
+    font-weight: var(--sjs-font-surveytitle-weight, 700);
+    text-align: center;
+    align-items: center;
+
+}
+.sdDescripcion{
+  --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
+  font-size: 90%;
+  line-height: calc(1.25*(var(--cover-title-font-size)));
+  color: var(--sjs-primary-backcolor, var(--primary, #b60b0b));
+  font-family: var(--sjs-font-surveytitle-family, var(--font-family));
+  font-weight: var(--sjs-font-surveytitle-weight, 700);
+  }
+  .sdComienzo{
+    --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
+    font-size: 90%;
+    width: 80%;
+    line-height: calc(1.25*(var(--cover-title-font-size)));
+    color: var(--sjs-primary-backcolor, var(--primary, #57575a));
+    font-family: var(--sjs-font-surveytitle-family, var(--font-family));
+    font-weight: var(--sjs-font-surveytitle-weight, 700);
+   
+  }
+  .sdPregunta{
+    --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
+    font-size: 90%;
+    line-height: calc(1.25*(var(--cover-title-font-size)));
+    color: var(--sjs-primary-backcolor, var(--primary, #6b6b6e));
+    font-family: var(--sjs-font-surveytitle-family, var(--font-family));
+    font-weight: var(--sjs-font-surveytitle-weight, 700);
+    text-align: center;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}

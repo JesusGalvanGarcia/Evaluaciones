@@ -30,6 +30,7 @@ export class CompetenciasComponent implements OnInit {
    isLoading: boolean = true;
   loading: boolean = false;
   noteUser: NoteUser;
+  showNote:boolean=false;
   changeProcess:ProcessModel;
   totalScore:number=0;
   DesempenoTest: EvaluationTest;
@@ -71,7 +72,7 @@ export class CompetenciasComponent implements OnInit {
 
   FalseMarkMoodulo() {//marcar falso para desaparecer el modulo
     this.showModule = false;
-
+  
   }
   back() {
     this.sizeQuestions = this.DesempenoTest.test_modules[this.index].questions.length;
@@ -102,13 +103,22 @@ export class CompetenciasComponent implements OnInit {
       this.indexQuestion--;
     } else if (this.index > 0) {
       // Retroceder al módulo anterior
-      if (this.showModule == false) {
-        this.showModule = true;
+      if (this.showNote == false&&this.showModule==false) {
+          this.showModule = true;
+              
       }
       else {
-        this.index--;
-        this.indexQuestion = this.DesempenoTest.test_modules[this.index].questions.length - 1;
-        this.showModule = false;
+            if(this.showModule==false&&this.showNote==true)
+            {
+              this.showNote = false;
+              this.index--;
+              this.indexQuestion = this.DesempenoTest.test_modules[this.index].questions.length - 1;
+            }else{
+               if(this.showNote==false&&this.showModule==true)
+                {  this.showModule = false;
+                  this.showNote = true;
+                }
+            }
       }
     } else {
       // Estás en la primera pregunta del primer módulo, vuelve a mostrar el módulo
@@ -127,7 +137,15 @@ export class CompetenciasComponent implements OnInit {
     
 
     }
- 
+ sendNote(idModule:number)
+ {
+
+  if (this.DesempenoTest.test_modules[this.index].note!=null&&this.DesempenoTest.test_modules[this.index].note!="")
+  this.PostsaveNote(idModule);
+  else
+  this.message.error("La nota es requerida para continuar");
+
+ }
   nextQuestion(idRespuesta: number, idPregunta: number, idModule: number, score: string,indexAnswer:number) {
    //Actualizar la pregunta en  el array
     this.DesempenoTest.test_modules[this.index].questions[this.indexQuestion].answers.map((respuesta) => {
@@ -150,7 +168,7 @@ export class CompetenciasComponent implements OnInit {
       }
       else {
         if (this.indexQuestion === this.sizeQuestions) {
-          this.showModule = true;
+          this.showNote = true;
 
           this.index = this.index + 1;
           this.indexQuestion = 0; // Reiniciar para el nuevo módulo y las preguntas
@@ -201,9 +219,7 @@ export class CompetenciasComponent implements OnInit {
   }
   PostsaveAnswers(idRespuesta: number, idModule: number, idPregunta: number, score: string,indexAnswer:number) {
     this.loading = true;
-    if ((this.indexQuestion + 1) == this.sizeQuestions&&this.DesempenoTest.test_modules[this.index].note!=null)
-    this.PostsaveNote(idModule, score);
-
+ 
     this.saveIndivisual = {
       user_id: Number(localStorage.getItem("user_id")),
       user_test_id: Number(this.user_test_id),
@@ -255,7 +271,8 @@ export class CompetenciasComponent implements OnInit {
 
     console.log(e.target.value)
   }
-  PostsaveNote(idModule: number, score: string) {
+  PostsaveNote(idModule: number) {
+    this.loading=true;
     console.log(this.DesempenoTest.test_modules[this.index]);
     this.noteUser = {
       user_id: Number(localStorage.getItem("user_id")),
@@ -268,7 +285,10 @@ export class CompetenciasComponent implements OnInit {
 
     this.evaluationService.SendTestNote(this.noteUser)
       .then((response: any) => {
-     
+        this.showModule=true;
+        this.showNote=false;
+        this.loading=false;
+
         console.log("Nota Guardada",response);
       })
       .catch((error: any) => {

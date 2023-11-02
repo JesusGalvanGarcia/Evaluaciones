@@ -419,7 +419,7 @@ class UserActionPlanController extends Controller
             // Si ya se han realizado todas las firmas se actualiza el estado de la evaluación
             $pending_signatures = ActionPlanSignature::where([
                 ['user_action_plan_id', $request->user_action_plan_id],
-                ['url', '']
+                ['url', null]
             ])->get();
 
             if ($pending_signatures->count() == 0) {
@@ -429,6 +429,8 @@ class UserActionPlanController extends Controller
                     'status_id' => 3,
                     'updated_by' => $request->user_id
                 ]);
+
+                ActionPlanService::sendConfirmSignaturesMail($user_evaluation, $user_evaluation->evaluation->name);
             }
 
             DB::commit();
@@ -527,6 +529,9 @@ class UserActionPlanController extends Controller
             ]);
 
             DB::commit();
+
+            // Se envía el correo de confirmación del plan de acción.
+            ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name);
 
             return response()->json([
                 'title' => 'Proceso terminado',

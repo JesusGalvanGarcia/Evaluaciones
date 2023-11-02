@@ -30,6 +30,11 @@ class Test extends Model
         return $this->hasMany(TestModule::class);
     }
 
+    public function user_tests()
+    {
+        return $this->hasMany(UserTest::class);
+    }
+
     public function evaluation()
     {
         return $this->belongsTo(Evaluation::class);

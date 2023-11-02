@@ -173,7 +173,7 @@
                       </div>
 
                       <div class="result-evaluation">
-                        <span class="result-text" color="#000">Las evaluaciones han finalizado ya puedes continuar</span><br/><br/>
+                        <span class="result-text" color="#000">Las evaluaciones han finalizado, ya puedes continuar</span><br/><br/>
                         <span class="result-description">¡El siguiente paso es realizar el feedback y plan acción junto con el colaborador!</span><br/><br/>
                       </div>
           <div style="width: 100%;">
@@ -226,8 +226,8 @@
                 <div style="margin-left: 15%;">
                   <div class="cent">
                     <div class="container">
-                      <div *ngFor="let respuesta of DesempenoTest.test_modules[index].questions[indexQuestion].answers; let i = index" class="row">
-                        <div class="col-1">
+                      <div *ngFor="let respuesta of DesempenoTest.test_modules[index].questions[indexQuestion].answers; let i = index" class="row mt-2">
+                        <div class="col col-sm-1">
                           <input class="radio-button" type="radio" [disabled]="loading"
                           (click)="PostsaveAnswers(respuesta.id,DesempenoTest.test_modules[index].id, DesempenoTest.test_modules[index].questions[indexQuestion].id,respuesta.score,i )" 
                           name="flexRadioDefault" id="flexRadioDefault1"

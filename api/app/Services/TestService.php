@@ -2,9 +2,15 @@
 
 namespace App\Services;
 
+use App\Mail\Evaluations\CompetenciesEvaluation;
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
+use App\Mail\PerformanceEvaluation as MailPerformanceEvaluation;
+use App\Models\Process;
+use App\Models\UserCollaborator;
+use Illuminate\Support\Facades\DB;
 
 class TestService extends ServiceProvider
 {
@@ -71,5 +77,29 @@ class TestService extends ServiceProvider
         }
 
         return $clasification;
+    }
+
+    static function sendTestMail($evaluation_data)
+    {
+
+        // Se obtiene el nombre de
+        $evaluated_user = User::find($evaluation_data['user_evaluation']->user_id);
+
+        $responsable_user = User::find($evaluation_data['user_evaluation']->responsable_id);
+
+        $responsable_leader_id = UserCollaborator::where('collaborator_id', $evaluation_data['user_evaluation']->responsable_id)->first();
+        $responsable_leader = User::find($responsable_leader_id?->user_id);
+
+        $process = Process::find($evaluation_data['user_evaluation']->process_id);
+
+        if ($evaluation_data['test']->modular == 0) {
+
+            $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+            // $mail = Mail::to($evaluated_user->email)->cc($responsable_leader?->email)->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+        } else {
+
+            $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+            // $mail = Mail::to($evaluated_user->email)->cc($responsable_leader?->email)->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+        }
     }
 }

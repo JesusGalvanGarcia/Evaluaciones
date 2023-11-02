@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Process;
-use App\Models\Question;
 use App\Models\Test;
 use App\Models\UserAnswer;
 use App\Models\UserEvaluation;
@@ -16,7 +15,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Ramsey\Uuid\Type\Integer;
 
 class UserTestController extends Controller
 {
@@ -353,9 +351,22 @@ class UserTestController extends Controller
                 'updated_by' => $request->user_id
             ]);
 
-            DB::commit();
 
             $clasification = TestService::getClasification($total_score);
+
+            if ($request->its_over == 'si') {
+
+                TestService::sendTestMail([
+                    "clasification" => $clasification['clasification'],
+                    "clasification_description" => $clasification['description'],
+                    "total_score" => $total_score,
+                    "user_evaluation" => $user_test->user_evaluation,
+                    "evaluation_name" => $user_test->user_evaluation->evaluation->name,
+                    "test" => $user_test->test
+                ]);
+            }
+
+            DB::commit();
 
             return response()->json([
                 'title' => 'Proceso terminado',
@@ -521,7 +532,7 @@ class UserTestController extends Controller
             //         'message' => 'Se debe continuar con el siguiente paso.',
             //         'code' => $this->prefix . '804'
             //     ], 400);
-            if ($user_evaluation->process_id >= $request->process_id)
+            if ($user_evaluation->process_id > $request->process_id)
                 return response()->json([
                     'title' => 'Consulta Cancelada',
                     'message' => 'Se debe continuar con el siguiente proceso.',
@@ -535,6 +546,17 @@ class UserTestController extends Controller
                     'process_id' => $request->process_id
                 ]
             );
+
+            if ($request->process_id == 4) {
+                UserTest::where([
+                    ['user_evaluation_id', $user_evaluation->id],
+                    ['test_id', 2],
+                    ['status_id', '!=', 3]
+                ])->update([
+                    'status_id' => 3,
+                    'finish_date' => Carbon::now()->format('Y-m-d')
+                ]);
+            }
 
             DB::commit();
 

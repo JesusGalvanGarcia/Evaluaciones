@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import * as Utilities from '@utils/utilities';
 import { LoginService } from '@services/login.service';
-import{UserLogin} from "../../models/Login/login";
+import { UserLogin } from "../../models/Login/login";
 import { lastValueFrom } from 'rxjs';
 import { LoginResponse } from '@models/login-response';
 import { GeneralConstant } from '@utils/general-constant';
@@ -28,7 +28,7 @@ import { LoadingComponent } from '../loading/loading.component';
   ],
   providers: [
     LoginService
-    
+
   ]
 })
 export class LoginComponent implements OnInit {
@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-   public loginServices:UserService,
-   public messageService: MensajeService
+    public loginServices: UserService,
+    public messageService: MensajeService
   ) { }
 
   ngOnInit() {
@@ -53,14 +53,13 @@ export class LoginComponent implements OnInit {
    * Si es exitoso, llama al método autenticar.
    * @param formulario Formulario a validar.
    */
-  public enviarFormulario(form: NgForm){
+  public enviarFormulario(form: NgForm) {
+    this.isLoading = true;
     this.disableSubmit = true;
-    console.log(this.disableSubmit)
-    if(form.invalid){
-
+    if (form.invalid) {
       Utilities.validateRequiredFields(form);
       this.disableSubmit = false;
-      console.log(this.disableSubmit)
+      this.isLoading = false;
       return;
     }
     this.authenticate();
@@ -71,24 +70,21 @@ export class LoginComponent implements OnInit {
    * Llama al método Authenticate de LoginService. Si es exitoso, guarda el LoginResponse Token en el localStorage y redirige a la página de pacientes.
    */
   public async authenticate() {
-    this.isLoading=true;
-  
-   this.loginServices.PostLogin(this.loginRequest)
-   .then(({ data, token, user_id  }) => {
-    this.isLoading=false;
-    localStorage.setItem("token", token);
-    localStorage.setItem("user_id", data.user_id);
-    localStorage.setItem("email", data.email);
- 
-    this.router.navigate(['/dashboard/evaluacion']);
+    this.loginServices.PostLogin(this.loginRequest)
+      .then(({ data, token, user_id }) => {
+        this.isLoading = false;
+        localStorage.setItem("token", token);
+        localStorage.setItem("user_id", data.user_id);
+        localStorage.setItem("email", data.email);
 
-   })
-   .catch((error:any) => {
-     console.error('Error in the request:', error);
-     this.messageService.error(error.response.data.message+" "+error.response.data.code);
-     this.isLoading=false;
-     
-     // Handle errors here
-   });
+        this.router.navigate(['/dashboard/evaluacion']);
+
+      })
+      .catch((error: any) => {
+        console.error('Error in the request:', error);
+        this.messageService.error(error.message + " " + error.code);
+        this.isLoading = false;
+        // Handle errors here
+      });
   }
 }

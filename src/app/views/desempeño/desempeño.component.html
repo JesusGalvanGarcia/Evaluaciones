@@ -128,8 +128,8 @@
                                 <div class="cent">
                                     <div class="container-fluid">
                                         <div *ngFor="let respuesta of DesempenoTest.test_modules[0].questions[index].answers;let i=index"
-                                            class="row">
-                                            <div class="col-1 " align="end">
+                                            class="row mt-2">
+                                            <div class="col col-12 col-sm-6 col-md-4 " align="end">
                                                 <input class="radio-button" type="radio" [disabled]="loading"
                                                     (click)="PostsaveAnswers(DesempenoTest.test_modules[0].questions[index], respuesta,i)"
                                                     name="flexRadioDefault" id="flexRadioDefault1"

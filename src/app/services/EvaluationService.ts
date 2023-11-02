@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MensajeService } from '@http/mensaje.service';
+import { environment as env } from 'src/environments/environment';
 
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
@@ -13,7 +14,7 @@ export class EvaluationService {
   private api_conect: any;
   constructor(private http: HttpClient, public messageService: MensajeService) {
     this.api_conect = axios.create({
-      baseURL: 'http://127.0.0.1:8000/api/',
+      baseURL: env.apiUrl,
       headers: {
         'Content-Type': 'application/json',
         // 'Authorization': 'Bearer ' + this.token

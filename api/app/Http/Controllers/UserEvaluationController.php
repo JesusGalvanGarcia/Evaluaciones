@@ -88,9 +88,12 @@ class UserEvaluationController extends Controller
                     return $status_join->on('S.status_id', 'user_evaluations.status_id')
                         ->where('S.table_name', 'user_evaluations');
                 })
-                ->where([
-                    ['responsable_id', request('user_id')]
-                ])
+                ->when(request('user_id') != 88 && request('user_id') != 19, function ($when) use ($collaborators_id) {
+
+                    return $when->where([
+                        ['responsable_id', request('user_id')]
+                    ]);
+                })
                 ->when(count($collaborators_id) > 0, function ($when) use ($collaborators_id) {
 
                     return $when->whereIn('user_evaluations.user_id', $collaborators_id);
@@ -124,8 +127,8 @@ class UserEvaluationController extends Controller
                 })
                 ->where([
                     ['user_id', request('user_id')],
-                    ['user_evaluations.process_id', 4]
                 ])
+                ->whereIn('user_evaluations.process_id', [4, 5])
                 ->get();
 
             return response()->json([
@@ -231,7 +234,7 @@ class UserEvaluationController extends Controller
                 'user_tests.total_score',
                 'user_tests.finish_date',
                 'S.description as status',
-                DB::raw("(CASE WHEN user_tests.status_id != 3 THEN 'Sin clasificación' ELSE (CASE when user_tests.total_score < 70 THEN 'En Riesgo' WHEN user_tests.total_score >=70 AND user_tests.total_score < 80 THEN 'Regular' WHEN user_tests.total_score >=80 AND user_tests.total_score < 91 THEN 'Buena' WHEN user_tests.total_score >=91 AND user_tests.total_score < 101 THEN 'Regular' WHEN user_tests.total_score > 100 THEN 'Máxima' END) END) as 'rank'"),
+                DB::raw("(CASE WHEN user_tests.status_id != 3 THEN 'Sin clasificación' ELSE (CASE when user_tests.total_score < 70 THEN 'En Riesgo' WHEN user_tests.total_score >= 70 AND user_tests.total_score < 80 THEN 'Baja' WHEN user_tests.total_score >= 80 AND user_tests.total_score < 90 THEN 'Regular' WHEN user_tests.total_score >= 90 AND user_tests.total_score < 100 THEN 'Buena' WHEN user_tests.total_score >= 100 AND user_tests.total_score < 120 THEN 'Excelente' WHEN user_tests.total_score = 120 THEN 'Máxima' END) END) as 'rank'"),
                 DB::raw("1 as type")
             )
                 ->join('user_evaluations as UE', function ($join) use ($id) {
@@ -258,7 +261,7 @@ class UserEvaluationController extends Controller
 
                 if (count($user_action_plans) > 0) {
 
-                    $user_action_plan = $user_action_plans->where('user_id', $user_evaluation->user_id)->first();
+                    $user_action_plan = $user_action_plans->where('user_id', $user_evaluation->user_id)->where('responsable_id',  $user_evaluation->responsable_id)->first();
 
                     if ($user_action_plan)
                         $user_tests->push([

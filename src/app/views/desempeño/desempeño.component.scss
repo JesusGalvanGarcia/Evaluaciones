@@ -97,10 +97,12 @@
 .sdPregunta{
   --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
   font-size: 100%;
-  line-height: calc(1.25*(var(--cover-title-font-size)));
+  /* line-height: calc(1.25 * (var(--cover-title-font-size))); */
   color: var(--sjs-primary-backcolor, var(--primary, #6b6b6e));
   font-family: var(--sjs-font-surveytitle-family, var(--font-family));
-  font-weight: var(--sjs-font-surveytitle-weight, 700);
+  font-weight: var(--sjs-font-surveytitle-weight,800);
+  /* width: 100%; */
+  text-align: justify;
 
 }
 .sdDescripcion{
@@ -338,7 +340,10 @@ padding-right: 8%;
   font-size: 16px;
   color: #555;
 }
-
+.texts
+{
+  margin-left: 20%;
+}
 .next-evaluation-button,
 .back-to-evaluations-button {
   margin-top: 10px;
@@ -371,6 +376,10 @@ padding-right: 8%;
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
     margin-left: 2%;
+  }
+  .texts
+  {
+    margin-left: 5%;
   }
   .contenedor-form {
     background-color: white;

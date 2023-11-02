@@ -33,7 +33,7 @@ export class ActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+       
         throw data;
       });
   }
@@ -47,7 +47,7 @@ export class ActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+      
         throw data;
       });
   }
@@ -61,7 +61,7 @@ export class ActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+       
         throw data;
       });
   }
@@ -75,7 +75,7 @@ export class ActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+      
         throw data;
       });
   }
@@ -89,7 +89,7 @@ export class ActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+      
         throw data;
       });
   }
@@ -103,7 +103,7 @@ export class ActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+      
         throw data;
       });
   }

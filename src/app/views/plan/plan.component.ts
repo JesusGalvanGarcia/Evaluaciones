@@ -40,7 +40,7 @@ export class PlanComponent implements OnInit {
       var param= params['firm']; //recibe los parametros 
       if (param !=undefined)
        this.page=true;  
-       console.log(param,this.page)
+     
     });
   }
   
@@ -54,7 +54,7 @@ export class PlanComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Diálogo cerrado');
+    
     });
   }
 isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
@@ -102,12 +102,11 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
   }
   inputHandler(e: any, id: number, key: string) {
     const elemento = this.values.find((item) => item.id === id);
-    console.log( elemento )
+
     if (elemento) {
       elemento.description = e.target.value; // Actualiza la propiedad en el elemento del arreglo
     }
 
-    console.log( elemento )
   }
 
  
@@ -121,7 +120,7 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
     return false
   }
   areFieldsEmpty(element: ActionPlanParameter, indice: number): boolean {
-    console.log(indice);
+    
     
     // Verifica si el índice no es -1 y si alguno de los campos en el elemento es vacío
     if (indice !== -1) {
@@ -150,7 +149,7 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
         this.actionPlan = response;
         this.addLine();
         this.saves=response.parameters;
-        console.log(this.actionPlan)
+        
     
       })
       .catch((error: any) => {
@@ -161,14 +160,14 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
   save()
   {
     //this.saves= this.dataSource.data;
-    console.log(this.values)
+  
     this.savePlan={
       user_id: 67,
       user_action_plan_id: 59,
       save_type: 1,
       agreements:this.values
     };
-    console.log(this.savePlan);
+   
     this.abrirDialogo();
   }
   isAllSelected() {

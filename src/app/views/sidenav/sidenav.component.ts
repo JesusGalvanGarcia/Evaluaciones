@@ -49,7 +49,7 @@ export class SidenavComponent implements OnInit {
 
   constructor(public router: Router) {
     this.collapsed=true;
-    console.log(this.collapsed)
+   
   }
 
   ngOnInit(): void {
@@ -63,28 +63,28 @@ export class SidenavComponent implements OnInit {
   toggleCollapse(): void {
     this.collapsed = !this.collapsed;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
-      console.log(this.collapsed)
+     
   }
 
   closeSidenav(): void {
     this.collapsed = false;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
-    console.log(this.collapsed)
+   
   }
 
   handleClick(item: INavbarData): void {
     this.shrinkItems(item);
     item.expanded = !item.expanded
-    console.log(this.collapsed)
+
   }
 
   getActiveClass(data: INavbarData): string {
-    console.log(this.collapsed)
+   
     return this.router.url.includes(data.routeLink) ? 'active' : '';
   }
 
   shrinkItems(item: INavbarData): void {
-      console.log(this.collapsed)
+    
     if (!this.multiple) {
       for(let modelItem of this.navData) {
         if (item !== modelItem && modelItem.expanded) {

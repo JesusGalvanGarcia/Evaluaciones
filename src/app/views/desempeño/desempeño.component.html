@@ -124,12 +124,12 @@
                             <br />
                             
                             <br />
-                            <div style="margin-left: 20%;">
+                            <div class="texts">
                                 <div class="cent">
                                     <div class="container-fluid">
                                         <div *ngFor="let respuesta of DesempenoTest.test_modules[0].questions[index].answers;let i=index"
                                             class="row mt-2">
-                                            <div class="col col-12 col-sm-6 col-md-4 " align="end">
+                                            <div class="col col-1 col-sm-6 col-md-1 " align="start">
                                                 <input class="radio-button" type="radio" [disabled]="loading"
                                                     (click)="PostsaveAnswers(DesempenoTest.test_modules[0].questions[index], respuesta,i)"
                                                     name="flexRadioDefault" id="flexRadioDefault1"
@@ -137,10 +137,10 @@
                                                     [value]="respuesta.id">
 
                                             </div>
-                                            <div class="col-6  " align="start">
+                                            <div class="col col-8 col-sm-8 col-md-6 " align="start">
                                                 <label>{{ respuesta.description }}</label>
                                             </div>
-                                            <div class="col-4 ">
+                                            <div class="col col-3 col-sm-3 col-md-4">
                                                 <span style="color:#b60b0b;font-weight: bold;font-size: 90%;">*{{
                                                     respuesta.score }} pts</span>
                                             </div>

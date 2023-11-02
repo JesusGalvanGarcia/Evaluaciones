@@ -32,7 +32,7 @@ export class EvaluationService {
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+       
         throw data;
       });
   }
@@ -41,13 +41,13 @@ export class EvaluationService {
 
     return this.api_conect.post(this.controllerUrl + "saveAnswer", data)
       .then(({ data }: any) => {
-        console.log(data)
+        
         return data;
       })
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+      
         throw data;
       });
   }
@@ -55,13 +55,13 @@ export class EvaluationService {
 
     return this.api_conect.post(this.controllerUrl + "changeProcess", data)
       .then(({ data }: any) => {
-        console.log(data)
+      
         return data.tests;
       })
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+       
         throw data;
       });
   }
@@ -74,7 +74,7 @@ export class EvaluationService {
       .catch(({ response }: any) => {
 
         const { data } = response
-        console.log(data)
+      
         throw data;
       });
   }

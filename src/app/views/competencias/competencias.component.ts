@@ -191,7 +191,7 @@ export class CompetenciasComponent implements OnInit {
 
   }
   send() {
-    console.log(this.sendUserTest)
+   
     this.router.navigate(['/dashboard/evaluacion']);
     this.message.success("¡Haz terminado la evaluacion  de Competencias!")
   }
@@ -206,7 +206,7 @@ export class CompetenciasComponent implements OnInit {
        }
        this.evaluationService.SendChangeProcess(this.changeProcess)
        .then((response: any) => {
-        console.log(response);
+       
          this.send();
       })
           .catch((error: any) => {
@@ -234,7 +234,7 @@ export class CompetenciasComponent implements OnInit {
     if (this.indexQuestion+1==this.sizeQuestions&&this.index === this.sizeTotal - 1 )
 
     { 
-      console.log(this.indexQuestion+1,this.sizeQuestions,this.index,this.sizeTotal-1 )
+    
 
       this.saveIndivisual.its_over = "si";
  
@@ -242,10 +242,10 @@ export class CompetenciasComponent implements OnInit {
       this.end=true;
     
     }
-    console.log(this.saveIndivisual)
+   
     this.evaluationService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
-        console.log(response)
+   
         this.loading=false;
      
         if(this.finish!=true)
@@ -269,11 +269,11 @@ export class CompetenciasComponent implements OnInit {
 
     this.notes = e.target.value; // Actualiza la propiedad en el elemento del arreglo
 
-    console.log(e.target.value)
+  
   }
   PostsaveNote(idModule: number) {
     this.loading=true;
-    console.log(this.DesempenoTest.test_modules[this.index]);
+  
     this.noteUser = {
       user_id: Number(localStorage.getItem("user_id")),
       user_test_id: this.user_test_id,
@@ -289,7 +289,7 @@ export class CompetenciasComponent implements OnInit {
         this.showNote=false;
         this.loading=false;
 
-        console.log("Nota Guardada",response);
+   
       })
       .catch((error: any) => {
         console.error('Error in the request:', error);
@@ -299,15 +299,15 @@ export class CompetenciasComponent implements OnInit {
       });
   }
   getTable(data: any) {
-    console.log(data,this.user_test_id)
+ 
     this.evaluationService.GetEvaluation(data, this.user_test_id)
       .then((response: any) => {
-       console.log(response)
+  
         this.DesempenoTest = response.test;
         this.sizeTotal = this.DesempenoTest.test_modules.length;
         this.sizeQuestions = this.DesempenoTest.test_modules[this.index].questions.length;
         this.isLoading=false;
-        console.log(this.DesempenoTest)
+     
 
       })
       .catch((error: any) => {

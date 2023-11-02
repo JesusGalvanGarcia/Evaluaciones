@@ -139,7 +139,7 @@ export class ActionPlanComponent {
        }
        this.evaluationService.SendChangeProcess(this.changeProcess)
        .then((response: any) => {
-        console.log(response);
+     
       
       })
     
@@ -186,7 +186,7 @@ export class ActionPlanComponent {
         this.system_message.error(title + message);
 
         this.dataSource = new MatTableDataSource([]);
-        console.log(message)
+       
       });
   }
 
@@ -220,7 +220,7 @@ export class ActionPlanComponent {
         this.closeDrawer();
       })
       .catch(({ title, message, code }) => {
-        console.log(message)
+      
       });
   }
 
@@ -264,7 +264,7 @@ export class ActionPlanComponent {
         this.selected_agreement_id = 0;
       })
       .catch(({ title, message, code }) => {
-        console.log(message)
+      
         this.loading = false;
       });
   }
@@ -285,7 +285,7 @@ export class ActionPlanComponent {
         this.changeProcessFunc(5,this.user_action_plan_id);
       })
       .catch(({ title, message, code }) => {
-        console.log(message)
+       
         this.loading = false;
       });
   }
@@ -333,7 +333,7 @@ export class ActionPlanComponent {
         this.getAgreements();
       })
       .catch(({ title, message, code }) => {
-        console.log(message)
+     
         this.loading = false;
       });
   }

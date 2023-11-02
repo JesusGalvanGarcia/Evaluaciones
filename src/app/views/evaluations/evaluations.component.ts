@@ -89,12 +89,12 @@ getTestUser(data:any,userid:any,array:number)
 {
   this.testService.GetTest(data,userid)
   .then((response:any) => {
-    console.log(response)
+   
     this.mostrar=true;
     this.isLoading=false;
 
     this.ListColaborator[array].detail=response;
-    console.log(this.ListColaborator);
+    
  
   }).catch((error:any) => {
     console.error('Error in the request:', error);
@@ -110,7 +110,7 @@ changeList()
   }
   this.dataSource = new MatTableDataSource(this.ListColaborator);
 
-  console.log(this.ListColaborator);
+  
 }
   ngOnInit() {
     var user=localStorage.getItem("email");
@@ -154,7 +154,7 @@ changeList()
     this.PersonalList=response.personal_evaluations;
     this.ListChangeColaborator=response.collaborators_evaluations;
     this.isLoading=false;
-    console.log(this.ListColaborator)
+ 
     this.dataSource = new MatTableDataSource(this.ListColaborator);
 
   })
@@ -194,7 +194,7 @@ changeList()
     case "Máxima":
       return "El colaborador tiene un desempeño excepcionalmente destacado en todas las áreas. Ha hecho contribuciones significativas que impactan positivamente en el equipo y en la organización en general, el colaborador muestra competencias que refieren estar listo para ser promovido."
      default:
-         return"Sin clasificacioes"
+         return"Sin clasificacion"
     }
  
 }
@@ -238,7 +238,7 @@ sendPageEvaluation(process:string,id:string,status:string,calificacion:number,de
     case "Feedback y Plan de Acción":
  
       const elemento = detalle.find((item:any) => item.name === "Evaluación de Competencias");
-      console.log(elemento)
+    
       if(elemento.status!="Terminado")
       {
         this.message.error("La evaluación de competencias no se ha terminado de contestar.");
@@ -255,7 +255,7 @@ sendPageEvaluation(process:string,id:string,status:string,calificacion:number,de
       }
       else{
         const elemento = detalle.find((item:any) => item.name === "Evaluación de Desempeño");
-        console.log(elemento)
+    
         if(elemento.status!="Terminado")     
           this.message.error("La evaluación de desempeño no se ha terminado de contestar.");  
         else
@@ -284,7 +284,7 @@ changeProcessFunc(process:number,user_test_id:number)
      }
      this.evaluationService.SendChangeProcess(this.changeProcess)
      .then((response: any) => {
-      console.log(response);
+    
       this.message.error("Hace falta contestar una evaluación o este proceso ya esta terminado");
     })
   
@@ -295,7 +295,7 @@ changeProcessFunc(process:number,user_test_id:number)
   onSwitchChange() {
     // Acciones a realizar cuando cambia el estado del switch
     this.isChecked=!this.isChecked;
-    console.log(this.isChecked)
+   
     this.changeList();
   }
 }

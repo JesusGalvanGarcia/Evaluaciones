@@ -17,7 +17,7 @@ export class PersonalEvaluationService {
       params: data
     })
     .then((response) => {
-      console.log(response);
+    
       return response.data.personal_evaluations;
       })      
     .catch(function (error: any) {

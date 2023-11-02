@@ -54,14 +54,14 @@ export class SurveyComponent implements OnInit {
       this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
     });
 
-    console.log(this.user_test_id)
+ 
   }
 
   getTable(data: any) {
-    console.log(data)
+   
     this.evaluationService.GetEvaluation(data, this.user_test_id)
       .then(({ test, message, title }) => {
-        console.log(test)
+    
         this.title = test.name
         this.DesempenoTest = test;
         this.isLoading=false;
@@ -78,7 +78,7 @@ export class SurveyComponent implements OnInit {
   onCheckboxChange() {
     // Este método se ejecuta cuando cambia el estado de la casilla de verificación
    this.isChecked=!this.isChecked;
-   console.log(this.isChecked);
+  
   }
 
   ngOnInit() {
@@ -139,10 +139,10 @@ goCompetencias()
       score: Number(answer.score),
       its_over: "no"
     }
-    console.log(this.index+1,this.size);
+  
     if (this.index+1 === this.size )
       this.saveIndivisual.its_over = "si";
-    console.log(this.saveIndivisual);
+   
     this.evaluationService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
         this.loading = false;
@@ -195,7 +195,7 @@ goCompetencias()
     }
     this.evaluationService.SendChangeProcess(this.changeProcess)
     .then((response: any) => {
-     console.log(response);
+     
     // this.finishEvaluation();
     this.isLoading=false;
     localStorage.setItem("score", "0.0");
@@ -232,7 +232,7 @@ goCompetencias()
       this.index = this.index - 1;
 
       this.end=true; 
-      console.log(response);
+    
       this.FinalEvalution={
       description:response.clasification.description,
       text:response.clasification.clasification,

@@ -58,7 +58,7 @@ export class UserTestComponent {
         this.loading = false;
 
         this.system_message.error(title + message);
-        console.log(message)
+     
       });
   }
 

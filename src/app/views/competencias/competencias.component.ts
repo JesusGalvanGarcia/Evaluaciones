@@ -33,6 +33,7 @@ export class CompetenciasComponent implements OnInit {
   showNote:boolean=false;
   changeProcess:ProcessModel;
   totalScore:number=0;
+  score:number=0;
   DesempenoTest: EvaluationTest;
   sendAnswered: Answered;
   saveIndivisual: UserAnswer;
@@ -245,7 +246,7 @@ export class CompetenciasComponent implements OnInit {
    
     this.evaluationService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
-   
+        this.score =response.actual_score;
         this.loading=false;
      
         if(this.finish!=true)

@@ -117,7 +117,7 @@
                       <div >{{ detalle.status }}</div>
                     </div>
                     <div class="dato">
-                      <ng-container *ngIf="detalle.name =='Evaluación de Desempeño'; else elseTemplate">
+                      <ng-container *ngIf="detalle.name !='Feedback y Plan de Acción'; else elseTemplate">
                         &nbsp; &nbsp; {{ detalle.total_score===""?"": (detalle.total_score ===null?"No aplica":detalle.total_score)}}    
                       </ng-container>
                       <ng-template #elseTemplate>

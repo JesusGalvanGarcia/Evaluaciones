@@ -171,7 +171,11 @@
 
                         <span class="result-title">¡Has terminado de contestar la encuesta!</span><br/><br/>
                       </div>
-
+                      <div class="result-info">
+                        <span class="result-score">Puntuación total:
+                          <br/>
+                        <span style="color:#b60b0b">{{ score }}</span>  </span><br/><br/>
+                      </div>
                       <div class="result-evaluation">
                         <span class="result-text" color="#000">Las evaluaciones han finalizado, ya puedes continuar</span><br/><br/>
                         <span class="result-description">¡El siguiente paso es realizar el feedback y plan acción junto con el colaborador!</span><br/><br/>
@@ -202,6 +206,9 @@
                  <mat-icon>home</mat-icon>
                 </button><br/>
              </div><br/>
+                 <div class="scores">
+                 <span>Puntos acumulados: {{score}}</span>
+                 </div> 
               <div class="col-md-10 center-div" >
                 <div style="text-align: center;">
                   <span class="sd">{{ DesempenoTest.test_modules[index].name }}</span>
@@ -223,20 +230,23 @@
                 <br/>
           
                 <br/>
-                <div style="margin-left: 15%;">
+                <div class="descripcion">
                   <div class="cent">
                     <div class="container">
                       <div *ngFor="let respuesta of DesempenoTest.test_modules[index].questions[indexQuestion].answers; let i = index" class="row mt-2">
-                        <div class="col col-sm-1">
+                        <div class="col col-1 col-sm-6 col-md-1 " align="start">
                           <input class="radio-button" type="radio" [disabled]="loading"
                           (click)="PostsaveAnswers(respuesta.id,DesempenoTest.test_modules[index].id, DesempenoTest.test_modules[index].questions[indexQuestion].id,respuesta.score,i )" 
                           name="flexRadioDefault" id="flexRadioDefault1"
                           [checked]="respuesta.user_answer_id === null? false:true"
                           [value]="respuesta.user_answer_id">
                         </div>
-                        <div class="col-10">
+                        <div class="col col-8 col-sm-8 col-md-6 " align="start">
                           <label for="respuesta{{respuesta.id}}">{{ respuesta.description }}</label>
                         </div>
+                        <div class="col col-3 col-sm-3 col-md-4">
+                          <span style="color:#b60b0b;font-weight: bold;font-size: 90%;">*{{respuesta.score }} pts</span>
+                      </div>
                      
                       </div>
                       

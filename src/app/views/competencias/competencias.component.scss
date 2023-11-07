@@ -391,10 +391,49 @@ align-items: center; /* Centra verticalmente los elementos dentro del contenedor
 .back-to-evaluations-button:hover {
   background-color: #45a049;
 }
+.descripcion{
+margin-left: 20%;
+}
+.result-container {
+  text-align: center;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 60%;
+}
+
+.result-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.result-score {
+  font-size: 18px;
+  color: #555;
+  font-weight: bold;
+}
+
+.result-text {
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+
+.result-description {
+  font-size: 16px;
+  color: #333;
+  margin-top: 10px;
+}
 @media (max-width: 768px) {
   .btn {
     width: 50%;
 }
+.descripcion{
+  margin-left: 5%;
+  }
   .contForm{
     background-color: white;
     width: 95%;

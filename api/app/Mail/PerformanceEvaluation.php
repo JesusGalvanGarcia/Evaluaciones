@@ -37,7 +37,7 @@ class PerformanceEvaluation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('yunuen.vejar@trinitas.mx', 'Yunuen Vejar Badillo'),
+            from: new Address($this->responsable_user->email, $this->responsable_user->name . ' ' . $this->responsable_user->father_last_name . ' ' . $this->responsable_user->mother_last_name),
             replyTo: [
                 new Address('yunuen.vejar@trinitas.mx', 'Yunuen Vejar Badillo'),
             ],

@@ -27,6 +27,16 @@
             </div>
             <mat-tab-group>
                 <mat-tab *ngFor="let module of modules" [label]="module.name">
+                    <mat-card *ngIf="test.modular == 1">
+                        <mat-card-header>
+                            <mat-card-title>Notas:</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p>
+                                {{ module.note }}
+                            </p>
+                        </mat-card-content>
+                    </mat-card>
                     <ul class="list-group list-group-flush mt-4">
                         <li class="list-group-item" *ngFor="let question of module.questions">
                             <h5>

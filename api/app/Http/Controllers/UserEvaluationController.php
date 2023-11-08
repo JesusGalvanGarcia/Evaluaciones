@@ -252,7 +252,7 @@ class UserEvaluationController extends Controller
             $user_evaluation = UserEvaluation::find($id);
 
             // Evalua si la evaluación tiene relacionado un plan de acción
-            $action_plan = ActionPlan::where('evaluation_id', $user_evaluation->evaluation_id)->first();
+            $action_plan = ActionPlan::where('evaluation_id', $user_evaluation?->evaluation_id)->first();
 
             if ($action_plan) {
 

@@ -43,7 +43,7 @@ class TestService extends ServiceProvider
             case $actual_score > 79 && $actual_score < 90:
                 $clasification = [
                     "clasification" => "Regular",
-                    "description" => "El colaborador ha tenido un cumplimiento básico de responsabilidades y expectativas, muestra competencias en algunas áreas pero con espacio para mejora. Cumple con las expectativas mínimas pero hay oportunidades para el crecimiento."
+                    "description" => "El colaborador ha tenido un cumplimiento básico de responsabilidades y expectativas, muestra competencias en algunas áreas pero con espacio para mejora. Cumple con las expectativas pero hay oportunidades para el crecimiento."
                 ];
 
                 break;
@@ -92,14 +92,16 @@ class TestService extends ServiceProvider
 
         $process = Process::find($evaluation_data['user_evaluation']->process_id);
 
-        if ($evaluation_data['test']->modular == 0) {
+        if ($responsable_leader) {
+            if ($evaluation_data['test']->modular == 0) {
 
-            $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
-            // $mail = Mail::to($evaluated_user->email)->cc($responsable_leader?->email)->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
-        } else {
+                // $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+                $mail = Mail::to($responsable_leader?->email)->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+            } else {
 
-            $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
-            // $mail = Mail::to($evaluated_user->email)->cc($responsable_leader?->email)->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+                // $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+                $mail = Mail::to($responsable_leader?->email)->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+            }
         }
     }
 }

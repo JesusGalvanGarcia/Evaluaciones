@@ -351,7 +351,6 @@ class UserTestController extends Controller
                 'updated_by' => $request->user_id
             ]);
 
-
             $clasification = TestService::getClasification($total_score);
 
             if ($request->its_over == 'si') {

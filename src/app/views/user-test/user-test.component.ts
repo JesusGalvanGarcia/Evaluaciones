@@ -30,7 +30,6 @@ export class UserTestComponent {
   ) {
 
     this.user_id = Number(localStorage.getItem('user_id')!);
-    // this.user_id = 18;
     this.route.params.subscribe(params => {
       this.user_test_id = params['user_test_id'];
     });

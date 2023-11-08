@@ -11,18 +11,22 @@ export class UserService {
   private controllerUrl = 'login';
 
   constructor(private http: HttpClient) { }
-   PostLogin(data: any): Promise<any> {
-    
-    return axios.post(environment.apiUrl+this.controllerUrl,data
-    )
-    .then(({ data }: any) => {
-      return data;
-      })      
-    .catch(function (error: any) {
-      throw error;
-    });
-  }
   
+  PostLogin(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl + this.controllerUrl, data
+    )
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+
+        throw data;
+      });
+  }
+
 }
 
 

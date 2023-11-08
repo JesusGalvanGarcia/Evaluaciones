@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-   
+
   }
 
   /**
@@ -80,9 +80,9 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/dashboard/evaluacion']);
 
       })
-      .catch((error: any) => {
-        console.error('Error in the request:', error);
-        this.messageService.error(error.message + " " + error.code);
+      .catch(({ message, title, code }) => {
+        console.error('Error in the request:', message, title);
+        this.messageService.error(message + " " + code);
         this.isLoading = false;
         // Handle errors here
       });

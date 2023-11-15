@@ -14,6 +14,11 @@ export const navbarData: INavbarData[] = [
         ]
     },
     {
+        routeLink: 'exam',
+        icon: 'fa-regular fa-newspaper',
+        label: 'PLD',
+    },
+    {
         routeLink: 'logout',
         icon: 'fa-solid fa-arrow-left-long',
         label: 'Cerrar Sesion'

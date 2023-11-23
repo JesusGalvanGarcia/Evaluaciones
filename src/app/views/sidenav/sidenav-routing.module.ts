@@ -1,3 +1,4 @@
+import { PLDComponent } from './../PLD/PLD.component';
 import { SidenavComponent } from '../../../sidenav/sidenav.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -18,6 +19,10 @@ const routes: Routes = [
     {
         path: 'logout',
         component: LogOutComponent
+    },
+    {
+        path: 'exam',
+        component: PLDComponent
     }
 ];
 

@@ -1,0 +1,14 @@
+
+.Editar{
+    // background-image: url('../../../assets/svg-actions/pen-to-square-solid.svg');
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  .action{
+    cursor: pointer;
+  }
+  
+  .deshabilitado {
+    opacity: 0.3;
+    cursor:default;
+  }

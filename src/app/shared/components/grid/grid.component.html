@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-12 text-end">
+    <i (click)="onCsvExport()" class="download-icon fa-solid fa-file-csv"></i>
+  </div>
+</div>
+<div class="row">
+  <ag-grid-angular
+      style="width: 100%; height: 100%;"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefs"
+      [autoGroupColumnDef]="autoGroupColumnDef"
+      [defaultColDef]="defaultColDef"
+      [suppressRowClickSelection]="suppressRowClickSelection"
+      [groupSelectsChildren]="groupSelectsChildren"
+      [rowSelection]="rowSelection"
+      [rowGroupPanelShow]="rowGroupPanelShow"
+      [pivotPanelShow]="pivotPanelShow"
+      [domLayout]="'autoHeight'"
+      [pagination]="pagination"
+      [rowData]="rowData"
+      [animateRows]="animateRows"
+      [paginationPageSize]="paginationPageSize"
+      [localeText]="localeText"
+      [components]="frameworkComponents"
+      (gridReady)="onGridReady($event)"
+    ></ag-grid-angular>
+</div>

@@ -1,0 +1,149 @@
+.containerx {
+    background-color: #FFFFFF;
+
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Right Card */
+.card {
+    background-color: #F0F0F0;
+    max-width: 350px;
+    min-width: 250px;
+    min-height: 400px;
+}
+
+.card-text {
+    margin-top: 45px;
+    margin-bottom: 50px;
+}
+
+.card-footer {
+    font-size: 12px;
+}
+
+/* Left Card */
+.example-label {
+    display: table-cell;
+    font-size: 14px;
+    margin-left: 8px;
+    min-width: 120px;
+}
+
+.mat-label {
+    display: table-cell;
+    font-size: 10px;
+    margin-left: 8px;
+    min-width: 120px;
+}
+
+.header-1 {
+    color: #707070;
+    font-family: 'Roboto-Regular';
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.header-2 {
+    color: #0055B8;
+    font: normal normal bold 65px/68px Kommon Grotesk;
+}
+
+.small-1 {
+    color: #707070;
+    font-family: 'Roboto-Regular';
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+.small-2 {
+    color: #707070;
+    font: normal normal normal 20px/23px Kommon Grotesk;
+    padding-bottom: 10px;
+}
+
+mat-card {
+    width: calc(100%);
+    height: calc(100%);
+}
+
+/* Exam Card*/
+
+.containerz {
+    background-color: #FFFFFF;
+    background-size: contain;
+    background-image: url('../../../assets/img/fondo.jpg'); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.example-card {
+    background-color: #F0F0F0;
+    margin-top: 8px;
+    max-width: 1600px;
+    margin-bottom: 8px;
+    min-height: 400px;
+}
+
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+}
+
+.example-radio-button {
+    margin: 5px;
+}
+
+.example-h2 {
+    margin: 10px;
+}
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.example-margin {
+    margin: 0 10px;
+}
+
+.wrap-mat-radio-label {
+    width: 100%;
+    vertical-align: middle;
+    display: inline-flex;
+    white-space: normal;
+}
+
+.header-3 {
+    color: #707070;
+    font: normal normal bold 40px/43px Kommon Grotesk;
+}
+
+.header-4 {
+    color: #0055B8;
+    font: normal normal bold 40px/43px Kommon Grotesk;
+}
+
+.obtained_score_fail {
+    color: #D60812;
+    font: normal normal bold 120px/68px Kommon Grotesk;
+}
+
+.obtained_score_correct {
+    color: #80BC00;
+    font: normal normal bold 120px/68px Kommon Grotesk;
+}
+
+.max_score {
+    color: #707070;
+    font: normal normal bold 120px/68px Kommon Grotesk;
+}

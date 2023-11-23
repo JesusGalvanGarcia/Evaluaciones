@@ -17,12 +17,12 @@ import { Answer } from 'src/app/models/TestDetails/AnswerModel';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
 import { LoadingComponent } from '../loading/loading.component';
-import {ProcessModel} from "../../models/TestDetails/ProcessModel";
+import { ProcessModel } from "../../models/TestDetails/ProcessModel";
 
 @Component({
   selector: 'app-desempeño',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatProgressBarModule,MatIconModule,LoadingComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatProgressBarModule, MatIconModule, LoadingComponent],
   templateUrl: './desempeño.component.html',
   styleUrls: ['./desempeño.component.scss']
 })
@@ -30,62 +30,64 @@ import {ProcessModel} from "../../models/TestDetails/ProcessModel";
 export class SurveyComponent implements OnInit {
 
   protected title: string = "";
+  evaluatedUserName: string = "";
   protected user_test_id: number = 0;
   showQuestion: boolean = true;
   saveIndivisual: any;
-  changeProcess:ProcessModel;
-  score:number=0;
-  end:boolean=false;
+  changeProcess: ProcessModel;
+  score: number = 0;
+  end: boolean = false;
   isChecked: boolean = false;
-  submit:boolean=true;
+  submit: boolean = true;
   start: boolean = true;
   isLoading: boolean = true;
   DesempenoTest: EvaluationTest;
   Answers: SendQuestions[] = [];
   sendInfo: SendQuestions;
   loading: boolean = false;
-  scoreTotal:number=0;
+  scoreTotal: number = 0;
   questions: any;
   answers: any;
   modules: any;
-  FinalEvalution:End;
-  constructor(public router:Router,private route: ActivatedRoute, private evaluationService: EvaluationService, public message: MensajeService) {
+  FinalEvalution: End;
+  constructor(public router: Router, private route: ActivatedRoute, private evaluationService: EvaluationService, public message: MensajeService) {
     this.route.params.subscribe(params => {
       this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
     });
 
- 
+
   }
 
   getTable(data: any) {
-   
+
     this.evaluationService.GetEvaluation(data, this.user_test_id)
-      .then(({ test, message, title }) => {
-    
+      .then(({ test, evaluated_user_name, title }) => {
+
+        this.evaluatedUserName = evaluated_user_name;
         this.title = test.name
         this.DesempenoTest = test;
-        this.isLoading=false;
+        this.isLoading = false;
         this.size = this.DesempenoTest.test_modules[0].questions.length
-        
-        this.submit=false;
+
+        this.submit = false;
       })
       .catch((error: any) => {
         console.error('Error in the request:', error);
-        this.isLoading=false;
+        this.isLoading = false;
         // Handle errors here
       });
   }
+
   onCheckboxChange() {
     // Este método se ejecuta cuando cambia el estado de la casilla de verificación
-   this.isChecked=!this.isChecked;
-  
+    this.isChecked = !this.isChecked;
+
   }
 
   ngOnInit() {
 
-    var user=localStorage.getItem("email");
-    if(user=="")
-    {
+    var user = localStorage.getItem("email");
+    if (user == "") {
       this.router.navigate(['/login']);
       this.message.error("Tienes que iniciar sesion");
 
@@ -98,7 +100,7 @@ export class SurveyComponent implements OnInit {
     };
 
     this.getTable(data);
-  
+
   }
 
   size = 0; //Para saber el tamaño  del arreglo
@@ -118,19 +120,20 @@ export class SurveyComponent implements OnInit {
     }, 300);
 
   }
-goCompetencias()
-{
-  this.router.navigate(['/competencias/'+this.user_test_id]);
 
-}
+  goCompetencias() {
+    this.router.navigate(['/competencias/' + this.user_test_id]);
+
+  }
+
   isSelect(AnswerId: number, QuestionId: number): boolean {
     // Verifica si la AnswerId existe en el arreglo de Answers
     return this.Answers.some(answer => answer.IdAnswer === AnswerId && answer.IdQuestion == QuestionId);
   }
 
-  PostsaveAnswers(question: Question, answer: Answer,idAnswer:number) {
+  PostsaveAnswers(question: Question, answer: Answer, idAnswer: number) {
     this.loading = true;
-   
+
     this.saveIndivisual = {
       user_id: Number(localStorage.getItem("user_id")),
       user_test_id: this.user_test_id,
@@ -139,15 +142,15 @@ goCompetencias()
       score: Number(answer.score),
       its_over: "no"
     }
-  
-    if (this.index+1 === this.size )
+
+    if (this.index + 1 === this.size)
       this.saveIndivisual.its_over = "si";
-   
+
     this.evaluationService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
         this.loading = false;
-        this.score =response.actual_score;
-        this.nextQuestion(question, answer,idAnswer,response.actual_score,response);
+        this.score = response.actual_score;
+        this.nextQuestion(question, answer, idAnswer, response.actual_score, response);
       })
       .catch(({ title, message, code }) => {
         console.error(title, message, code);
@@ -158,66 +161,66 @@ goCompetencias()
         // Handle errors here
       });
   }
-  finishEvaluation()
-  {
+
+  finishEvaluation() {
     this.router.navigate(['/dashboard/evaluacion']);
     this.message.success("¡Haz terminado la evaluacion de desempeño!")
   }
-  goIndex()
-  {
+
+  goIndex() {
     this.router.navigate(['/dashboard/evaluacion']);
     this.message.success("¡Se ha suspendido la evaluacion!")
   }
-  home() 
-    {
-      this.isLoading=true;
-     // this.router.navigate(['/dashboard/evaluacion']);
-     if (this.score > 75 && this.isChecked) {
+
+  home() {
+    this.isLoading = true;
+    // this.router.navigate(['/dashboard/evaluacion']);
+    if (this.score > 75 && this.isChecked) {
       this.changeProcessFunc(2);
-    } 
-    else{
-      if(this.score<=75)
-      this.changeProcessFunc(2);
-      else
-      {
+    }
+    else {
+      if (this.score <= 75)
+        this.changeProcessFunc(2);
+      else {
         this.changeProcessFunc(4);
 
       }
     }
-    }
-  changeProcessFunc(id:number)
-  {
-    this.changeProcess=
+  }
+
+  changeProcessFunc(id: number) {
+    this.changeProcess =
     {
-     user_id: Number(localStorage.getItem("user_id")),
-     user_test_id: this.user_test_id,
-     process_id:id,   
+      user_id: Number(localStorage.getItem("user_id")),
+      user_test_id: this.user_test_id,
+      process_id: id,
     }
     this.evaluationService.SendChangeProcess(this.changeProcess)
-    .then((response: any) => {
-     
-    // this.finishEvaluation();
-    this.isLoading=false;
-    localStorage.setItem("score", "0.0");
+      .then((response: any) => {
 
-    this.finishEvaluation();
-  })
-  .catch((error: any) => {
-    console.error('Error in the request:', error);
-    // Handle errors here
-    this.message.error("Hubo un  error al terminar  la evaluacion:"+error)
-    this.isLoading=false;
+        // this.finishEvaluation();
+        this.isLoading = false;
+        localStorage.setItem("score", "0.0");
 
-  });
+        this.finishEvaluation();
+      })
+      .catch((error: any) => {
+        console.error('Error in the request:', error);
+        // Handle errors here
+        this.message.error("Hubo un  error al terminar  la evaluacion:" + error)
+        this.isLoading = false;
+
+      });
   }
-  nextQuestion(question: Question, answer: Answer,idAnswer:number,actual_score:number,response:any) {
 
-     //this.PostsaveAnswers(question, answer)
-   //Actualizar la pregunta en  el array
+  nextQuestion(question: Question, answer: Answer, idAnswer: number, actual_score: number, response: any) {
+
+    //this.PostsaveAnswers(question, answer)
+    //Actualizar la pregunta en  el array
     this.DesempenoTest.test_modules[0].questions[this.index].answers.map((respuesta) => {
-      respuesta.user_answer_id=null;
-  });
-  this.DesempenoTest.test_modules[0].questions[this.index].answers[idAnswer].user_answer_id=answer.id;
+      respuesta.user_answer_id = null;
+    });
+    this.DesempenoTest.test_modules[0].questions[this.index].answers[idAnswer].user_answer_id = answer.id;
 
     if (this.index !== this.size) { // si las preguntas  no han terminado entonces avanzar
       this.index = this.index + 1;
@@ -231,14 +234,14 @@ goCompetencias()
       this.finish = true; // Iniciar animación para terminar  la secuencia de preguntas
       this.index = this.index - 1;
 
-      this.end=true; 
-    
-      this.FinalEvalution={
-      description:response.clasification.description,
-      text:response.clasification.clasification,
-      color:"#000"
+      this.end = true;
+
+      this.FinalEvalution = {
+        description: response.clasification.description,
+        text: response.clasification.clasification,
+        color: "#000"
       }
-     
+
     }
     const questionIndex = this.Answers.findIndex(item => item.IdQuestion === question.id);
     this.sendInfo = {
@@ -263,9 +266,8 @@ export interface SendQuestions {
   IdQuestion: number;
   IdAnswer: number;
 }
-export interface End
-{
-  text:string;
-  description:string;
-  color:string;
+export interface End {
+  text: string;
+  description: string;
+  color: string;
 }

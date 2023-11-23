@@ -41,6 +41,7 @@ export class CompetenciasComponent implements OnInit {
   sendModulo: Moduled[] = [];
   indexModule: number = 0;
   notes: string = "";
+  evaluatedUserName: string = "";
   newModulo: Moduled =
     {
       id: 0,
@@ -305,6 +306,7 @@ export class CompetenciasComponent implements OnInit {
       .then((response: any) => {
   
         this.DesempenoTest = response.test;
+        this.evaluatedUserName = response.evaluated_user_name;
         this.sizeTotal = this.DesempenoTest.test_modules.length;
         this.sizeQuestions = this.DesempenoTest.test_modules[this.index].questions.length;
         this.isLoading=false;

@@ -34,4 +34,9 @@ class UserEvaluation extends Model
     {
         return $this->belongsTo(Evaluation::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

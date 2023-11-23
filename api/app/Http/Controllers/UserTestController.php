@@ -124,6 +124,8 @@ class UserTestController extends Controller
                     'status_id' => 2
                 ]);
 
+            $user_evaluated = $user_evaluation?->user;
+
             if (!$test)
                 return response()->json([
                     'title' => 'Prueba no encontrada',
@@ -136,9 +138,10 @@ class UserTestController extends Controller
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Detalle de la prueba del usuario consultado correctamente',
+                'evaluated_user_name' => $user_evaluated?->name . ' ' . $user_evaluated?->father_last_name . ' ' . $user_evaluated?->mother_last_name,
                 'test' => $test,
                 'score' => $user_test->total_score,
-                'clasification' => $clasification
+                'clasification' => $clasification,
             ]);
         } catch (Exception $e) {
 

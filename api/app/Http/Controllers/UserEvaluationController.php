@@ -88,7 +88,7 @@ class UserEvaluationController extends Controller
                     return $status_join->on('S.status_id', 'user_evaluations.status_id')
                         ->where('S.table_name', 'user_evaluations');
                 })
-                ->when(request('user_id') != 88 && request('user_id') != 19, function ($when) use ($collaborators_id) {
+                ->when(request('user_id') != 88 && request('user_id') != 19 && request('user_id') != 12, function ($when) use ($collaborators_id) {
 
                     return $when->where([
                         ['responsable_id', request('user_id')]
@@ -128,7 +128,7 @@ class UserEvaluationController extends Controller
                 ->where([
                     ['user_id', request('user_id')],
                 ])
-                ->whereIn('user_evaluations.process_id', [4, 5])
+                ->whereIn('user_evaluations.process_id', [5])
                 ->get();
 
             return response()->json([

@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(Test::class);
     }
 
+    public function evaluations()
+    {
+        return $this->hasMany(UserEvaluation::class);
+    }
+
     public function area()
     {
         return $this->belongsTo(Area::class, 'area_id');

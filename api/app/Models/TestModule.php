@@ -14,6 +14,7 @@ class TestModule extends Model
     protected $table = "test_modules";
 
     protected $fillable = [
+        'id',
         'test_id',
         'name',
         'created_by',

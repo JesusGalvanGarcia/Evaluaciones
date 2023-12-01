@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use App\Mail\PerformanceEvaluation as MailPerformanceEvaluation;
 use App\Models\Process;
+use App\Models\Test;
 use App\Models\UserCollaborator;
+use App\Models\UserEvaluation;
+use App\Models\UserTest;
 use Illuminate\Support\Facades\DB;
 
 class TestService extends ServiceProvider
@@ -104,4 +107,77 @@ class TestService extends ServiceProvider
             }
         }
     }
+
+    static function createPldTest($test, $user_id, $assigned_users){
+        // Convertir $test a un objeto si no lo es
+        $test = is_array($test) ? (object) $test : $test;
+    
+        $test->evaluation_id = 2;
+        $test->max_score = 100;
+        $createUpdateTest = self::createUpdateTest($test, $user_id);
+        $test_module = TestModuleService::createTestModule($createUpdateTest->id, $test->name, $user_id);
+        foreach ($test->test_modules as $module) {
+            QuestionService::createOrUpdateQuestionsAndAnswers($module, $test_module->id, $user_id);
+        }
+    
+        if($assigned_users){
+            foreach ($assigned_users as $user) {
+                UserEvaluationService::createUserEvaluationAndTests($user, $createUpdateTest, $user_id);
+            }
+        }
+        return $createUpdateTest;
+    }
+    
+    static function updatePldTest($test, $user_id, $assigned_users){
+        $test = (object)$test;
+        $test->evaluation_id = 2;
+        $test->max_score = 100;
+        $createUpdateTest = TestService::createUpdateTest($test, $user_id);
+        // $test_module = TestModuleService::updateTestModule($test->id, $test['name'], $user_id);
+        foreach ($test->test_modules as $module) {
+            QuestionService::createOrUpdateQuestionsAndAnswers($module, $module->id, $user_id);
+        }
+
+        UserEvaluationService::updateUserEvaluationAndTests($assigned_users, $test, $user_id);
+        return $createUpdateTest;
+    }
+
+    static function createUpdateTest($test, $user_id){
+        $test = collect($test);
+    if($test-> has('id')){
+        $createdUpdatedTest = Test::where(['id' => $test->get('id')])
+            ->update( 
+            [
+                'evaluation_id' => $test->get('evaluation_id'),
+                'name' => $test->get('name'),
+                'introduction_text' => $test->get('introduction_text'),
+                'max_score' => $test->get('max_score'),
+                'min_score' => $test->get('min_score'),
+                'modular' => 0,
+                'end_date' => $test->get('end_date'),
+                'created_by' => $user_id,
+                'updated_by' => $user_id,
+                'max_attempts' => $test->get('max_attempts')
+            ]
+        );
+    }
+    else{
+        $createdUpdatedTest = Test::create(
+            [
+                'evaluation_id' => $test->get('evaluation_id'),
+                'name' => $test->get('name'),
+                'introduction_text' => $test->get('introduction_text'),
+                'max_score' => $test->get('max_score'),
+                'min_score' => $test->get('min_score'),
+                'modular' => 0,
+                'end_date' => $test->get('end_date'),
+                'created_by' => $user_id,
+                'updated_by' => $user_id,
+                'max_attempts' => $test->get('max_attempts')
+            ]
+        );
+    }
+        return $createdUpdatedTest;
+    }
+    
 }

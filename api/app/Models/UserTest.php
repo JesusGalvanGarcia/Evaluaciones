@@ -20,6 +20,7 @@ class UserTest extends Model
         'finish_date',
         'status_id',
         'created_at',
+        'attempts',
         'updated_at',
         'deleted_at'
     ];

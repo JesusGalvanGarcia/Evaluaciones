@@ -16,6 +16,7 @@ class UserEvaluation extends Model
     protected $fillable = [
         'user_id',
         'evaluation_id',
+        'actual_attempt',
         'process_id',
         'responsable_id',
         'finish_date',

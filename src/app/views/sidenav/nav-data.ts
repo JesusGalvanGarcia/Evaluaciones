@@ -9,14 +9,23 @@ export const navbarData: INavbarData[] = [
             {
                 routeLink: 'evaluacion',
                 label: 'Desempeño',
-             
             },
         ]
     },
     {
-        routeLink: 'exam',
-        icon: 'fa-regular fa-newspaper',
+        routeLink: 'dashboard',
         label: 'PLD',
+        icon: 'fa-regular fa-newspaper',
+        items: [
+            {
+                routeLink: 'pld',
+                label: 'PLD',
+            },
+            {
+                routeLink: 'pld/adminPld',
+                label: 'Administración de PLD',
+            },
+        ]
     },
     {
         routeLink: 'logout',

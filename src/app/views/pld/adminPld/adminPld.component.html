@@ -1,0 +1,21 @@
+<div class="bgImageContainer2"></div><br/><br/>
+
+<div class="posi bgImageContainer">
+  <div class="container">
+    <h1>Exámenes</h1>
+    <button type="button" class="btn btn-primary btn-sm" (click)="openAddForm()">
+      Agregar Examen
+    </button>
+    <app-grid
+      [rowData]="testsPldList"
+      [columnDefs]="columnDefs"
+      [enableDelete]="true"
+      [enableEdit]="true"
+      (actionEvent)="onActionEvent($event)"
+    >
+
+    </app-grid>
+  </div>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>

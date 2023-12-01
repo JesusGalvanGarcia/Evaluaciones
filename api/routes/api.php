@@ -6,6 +6,8 @@ use App\Http\Controllers\ToolsController;
 use App\Http\Controllers\UserActionPlanController;
 use App\Http\Controllers\UserEvaluationController;
 use App\Http\Controllers\UserTestController;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Aws\S3\S3Client;
@@ -15,6 +17,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+
+Route::get('/user', [UserController::class, 'index'])->name('Consultar Usuarios');
 
 Route::resource('/evaluations', EvaluationController::class, [
     'names' => [
@@ -50,6 +54,12 @@ Route::resource('/user-tests', UserTestController::class, [
         'destroy' => 'Borrar Pruebas del Usuario'
     ]
 ]);
+Route::get('/test/pld', [TestController::class, 'showPLD'])->name('Mostrar los Tests de PLD');
+Route::get('/test/pldForm/{id_test}', [TestController::class, 'indexPLD'])->name('Mostrar el formulario del Test de PLD');
+Route::put('/test/pldForm/{id_test}', [TestController::class, 'updatePLD'])->name('Actualizar formulario Test de PLD');
+Route::post('/test/pld', [TestController::class, 'storePLD'])->name('Registrar Test PLD');
+Route::delete('/test/pld/{id}', [TestController::class, 'destroy'])->name('Borrar el Test');
+
 
 Route::post('/user-actionPlan/confirmActionPlan', [UserActionPlanController::class, 'confirmActionPlan'])->name('Confirmar Plan de Acción');
 Route::post('/user-actionPlan/storeSignature', [UserActionPlanController::class, 'storeSignature'])->name('Guardar Firma del Usuario');

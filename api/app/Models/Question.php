@@ -13,6 +13,7 @@ class Question extends Model
     protected $table = "questions";
 
     protected $fillable = [
+        'id',
         'module_id',
         'description',
         'score',

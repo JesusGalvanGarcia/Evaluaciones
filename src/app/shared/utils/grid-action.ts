@@ -4,6 +4,9 @@ export class GridActions{
     public static readonly ADD='Agregar';
     public static readonly EDIT='Editar';
     public static readonly DELETE='Eliminar';
+    public static readonly Continue='Continuar';
+    public static readonly Start='Empezar';
+    public static readonly Seen='Ver';
 
 
     public static readonly DEFAULT_COLUMN: ColDef = 

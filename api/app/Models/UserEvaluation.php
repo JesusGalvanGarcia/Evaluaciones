@@ -18,6 +18,7 @@ class UserEvaluation extends Model
         'evaluation_id',
         'process_id',
         'responsable_id',
+        'actual_attempt',
         'finish_date',
         'status_id',
         'created_by',

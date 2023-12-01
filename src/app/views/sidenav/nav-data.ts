@@ -9,13 +9,13 @@ export const navbarData: INavbarData[] = [
             {
                 routeLink: 'evaluacion',
                 label: 'Desempeño',
-             
+                icon:'fa-solid fa-pen-to-square'
             },
         ]
     },
     {
         routeLink: 'exam',
-        icon: 'fa-regular fa-newspaper',
+        icon: 'fa-solid fa-money-bill',
         label: 'PLD',
     },
     {

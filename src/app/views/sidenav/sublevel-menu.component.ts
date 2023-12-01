@@ -16,9 +16,9 @@ import { fadeInOut, INavbarData } from './helper';
     >
       <li *ngFor="let item of data.items" class="sublevel-nav-item">
           <a class="sublevel-nav-link"
-          (click)="handleClick(item)"
+        
             *ngIf="item.items && item.items.length > 0"
-            [ngClass]="getActiveClass(item)"
+          
           >
             <i class="sublevel-link-icon fa fa-circle"></i>
             <span class="sublevel-link-text" @fadeInOut 
@@ -31,20 +31,14 @@ import { fadeInOut, INavbarData } from './helper';
             *ngIf="!item.items || (item.items && item.items.length === 0)"
             [routerLink]="[item.routeLink]"
             routerLinkActive="active-sublevel"
+         
             [routerLinkActiveOptions]="{exact: true}"
           >
             <i class="sublevel-link-icon fa fa-circle"></i>
-            <span class="sublevel-link-text" @fadeInOut 
-               >{{item.label}}</span>
+            <span class="sublevel-link-text" @fadeInOut    
+               (click)="test()">{{item.label}} </span>
           </a>
-          <div *ngIf="item.items && item.items.length > 0">
-            <app-sublevel-menu
-              [data]="item"
-              [collapsed]="collapsed"
-              [multiple]="multiple"
-              [expanded]="item.expanded"
-            ></app-sublevel-menu>
-          </div>
+       
       </li>
     </ul>
   `,
@@ -77,29 +71,19 @@ export class SublevelMenuComponent implements OnInit {
   @Input() animating: boolean | undefined;
   @Input() expanded: boolean | undefined;
   @Input() multiple: boolean = false;
+@Input() close: () => void;
 
   constructor(public router: Router) {}
+test()
+{
+  console.log("d")
+  console.log(this.collapsed)
+  this.collapsed=!this.collapsed;
 
+}
   ngOnInit(): void {
+    console.log("jd")
   }
 
-  handleClick(item: any): void {
-    if (!this.multiple) {
-      if (this.data.items && this.data.items.length > 0) {
-        for(let modelItem of this.data.items) {
-          if (item !==modelItem && modelItem.expanded) {
-            modelItem.expanded = false;
-          }
-        }
-      }
-    }
-    item.expanded = !item.expanded;
-  }
-
-  getActiveClass(item: INavbarData): string {
-    return item.expanded && this.router.url.includes(item.routeLink) 
-      ? 'active-sublevel' 
-      : '';
-  }
 
 }

@@ -41,50 +41,53 @@ export class SidenavComponent implements OnInit {
     this.screenWidth = window.innerWidth;
   
     if(this.screenWidth <= 768 ) {
-      this.collapsed = false;
+      this.collapsed = true;
    
       this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
     }
   }
 
   constructor(public router: Router) {
-    this.collapsed=true;
+    this.collapsed=false;
    
   }
 
   ngOnInit(): void {
  
       this.screenWidth = window.innerWidth;
-      if(this.screenWidth >= 768 ) {
-        this.toggleCollapse();
+      if(this.screenWidth <= 768 ) {
+        this.collapsed = true;
       }
   }
 
   toggleCollapse(): void {
+ 
     this.collapsed = !this.collapsed;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
      
   }
 
   closeSidenav(): void {
+
     this.collapsed = false;
     this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
    
   }
 
   handleClick(item: INavbarData): void {
+
     this.shrinkItems(item);
     item.expanded = !item.expanded
-
+    
   }
 
   getActiveClass(data: INavbarData): string {
-   
+
     return this.router.url.includes(data.routeLink) ? 'active' : '';
   }
 
   shrinkItems(item: INavbarData): void {
-    
+ 
     if (!this.multiple) {
       for(let modelItem of this.navData) {
         if (item !== modelItem && modelItem.expanded) {
@@ -92,5 +95,8 @@ export class SidenavComponent implements OnInit {
         }
       }
     }
+    if(item.routeLink !="dashboard"&&this.collapsed==true)
+    this.toggleCollapse()
+ 
   }
 }

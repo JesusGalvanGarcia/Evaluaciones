@@ -7,6 +7,12 @@
     align-items: center;
     min-height: 100vh;
 }
+.evaIcon
+{
+    text-align: center;
+   
+    align-items: center;
+}
 
 /* Right Card */
 .card {
@@ -46,7 +52,17 @@
     font-size: 30px;
     font-weight: bold;
 }
+.estilo-title {
+    color: rgb(155, 155, 155);
+    font-weight: bold;
+    font-size: 150%;
+    width: 100%;
+    /* margin-top: -20%; */
+    padding: 5%;
+    text-align: center;
 
+    
+  }
 .header-2 {
     color: #0055B8;
     font: normal normal bold 65px/68px Kommon Grotesk;
@@ -122,7 +138,12 @@ mat-card {
     display: inline-flex;
     white-space: normal;
 }
-
+.card{
+    color: #1ebd60 !important;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
 .header-3 {
     color: #707070;
     font: normal normal bold 40px/43px Kommon Grotesk;

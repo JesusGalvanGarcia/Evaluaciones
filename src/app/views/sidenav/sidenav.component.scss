@@ -170,8 +170,11 @@
 }
 
 .active-sublevel {
-    color: #1ebd60 !important;
     // opacity: 1 !important;
+    color: #1ebd60 !important;
+    display: flex;
+    text-align: center;
+    justify-content: center;
 }
 
 .menu-collapse-icon {
@@ -181,6 +184,13 @@
     margin: auto 0.5rem auto auto;
     text-align: center;
     color: #141313;
+}
+.actives
+{
+    color: #1ebd60 !important;
+    display: flex;
+    text-align: center;
+    justify-content: center;
 }
 /*Acomodo de sub niveles*/
 

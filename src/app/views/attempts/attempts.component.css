@@ -1,0 +1,74 @@
+/* Estilos generales */
+.history-container {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.attempt-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 30%;
+}
+
+.attempt-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.attempt-table th, .attempt-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.attempt-table th {
+  background-color: #f2f2f2;
+}
+
+.attempt-item td {
+  font-size: 0.9em;
+}
+
+.details-container {
+  margin-top: 20px;
+  display: flex;
+  gap: 2%;
+}
+.detail-info
+{
+  color: green;
+  font-weight: bold;
+}
+.detail-item {
+  margin-bottom: 10px;
+}
+
+.detail-title {
+  font-weight: bold;
+}
+
+/* Estilos adicionales */
+.no-records {
+  margin-top: 20px;
+  font-style: italic;
+  color: #888;
+}
+/* Estilos para dispositivos móviles */
+@media screen and (max-width: 600px) {
+  .attempt-table {
+    overflow-x: auto;
+  }
+
+  .attempt-table th, .attempt-table td {
+    min-width: 100px;
+  }
+  .details-container {
+    margin-top: 20px;
+    display: block;
+    
+  }
+  
+}

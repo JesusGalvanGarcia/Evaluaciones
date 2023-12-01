@@ -11,6 +11,7 @@ use App\Mail\PerformanceEvaluation as MailPerformanceEvaluation;
 use App\Models\Process;
 use App\Models\UserCollaborator;
 use Illuminate\Support\Facades\DB;
+use App\Mail\sendCertificate as sendEmails;
 
 class TestService extends ServiceProvider
 {
@@ -78,7 +79,7 @@ class TestService extends ServiceProvider
 
         return $clasification;
     }
-
+    
     static function sendTestMail($evaluation_data)
     {
 
@@ -103,5 +104,14 @@ class TestService extends ServiceProvider
                 $mail = Mail::to($responsable_leader?->email)->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
             }
         }
+    }
+    static function sendCertificateMail($name,$email,$emailLid,$path,$file)
+    {
+
+    
+        // $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+        //$mail = Mail::to("")->send(new Certificate($evaluated_user));
+        Mail::to($email)->send(new sendEmails($name,$emailLid,$path,$file));
+
     }
 }

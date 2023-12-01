@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
+use App\Models\Files;
 use App\Models\Process;
 use App\Models\Test;
 use App\Models\UserAnswer;
@@ -77,6 +78,7 @@ class UserTestController extends Controller
                 ], 400);
 
             // Se consulta la prueba que tiene asignada el usuario y se valida que exista
+
             $test = Test::select(
                 'id',
                 'evaluation_id',
@@ -106,6 +108,7 @@ class UserTestController extends Controller
                                             'description',
                                             'score',
                                             'question_id',
+                                          
                                             DB::raw("(SELECT id from user_answers UA where user_test_id = $id AND UA.question_id = answers.question_id AND UA.answer_id = answers.id AND deleted_at is null) as 'user_answer_id'")
                                         )
                                             ->orderBy('score', 'desc');
@@ -319,7 +322,7 @@ class UserTestController extends Controller
                 ['user_test_id', $request->user_test_id],
                 ['question_id', $request->question_id],
             ])->first();
-
+            
             if ($last_user_answer) {
 
                 if ($last_user_answer->answer_id != $request->answer_id) {
@@ -429,7 +432,7 @@ class UserTestController extends Controller
 
             //Se valida el estado de la prueba
             $user_test = UserTest::whereIn('status_id', [1, 2])->find($request->user_test_id);
-
+     
             if (!$user_test)
                 return response()->json([
                     'title' => 'Prueba Invalida',

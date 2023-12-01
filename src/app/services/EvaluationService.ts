@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MensajeService } from '@http/mensaje.service';
-import { environment as env } from 'src/environments/environment';
+
 
 import axios from 'axios';
 import { environment } from 'src/environments/environment';
@@ -13,18 +13,12 @@ export class EvaluationService {
   private controllerUrl = 'user-tests/';
   private api_conect: any;
   constructor(private http: HttpClient, public messageService: MensajeService) {
-    this.api_conect = axios.create({
-      baseURL: env.apiUrl,
-      headers: {
-        'Content-Type': 'application/json',
-        // 'Authorization': 'Bearer ' + this.token
-      },
-    })
+ 
   }
 
   GetEvaluation(data: any, id: number): Promise<any> {
 
-    return this.api_conect.get(this.controllerUrl + id, { params: data })
+    return axios.get(environment.apiUrl+this.controllerUrl+ id, { params: data })
       .then(({ data }: any) => {
 
         return data;
@@ -36,10 +30,26 @@ export class EvaluationService {
         throw data;
       });
   }
+  GetExam(data: any, id: number): Promise<any> {
+  
+    return axios.get(environment.apiUrl+this.controllerUrl+  id,  {
+      params: data
+    })
+    .then((data) => {
+       
+        return data;
+      })
+      .catch((response) => {
+
+        const { data } = response
+       
+        throw data;
+      });
+  }
 
   async SendTestEvaluation(data: any): Promise<any> {
 
-    return this.api_conect.post(this.controllerUrl + "saveAnswer", data)
+    return axios.post(environment.apiUrl +this.controllerUrl+  "saveAnswer", data)
       .then(({ data }: any) => {
         
         return data;
@@ -51,9 +61,10 @@ export class EvaluationService {
         throw data;
       });
   }
+ 
   async SendChangeProcess(data: any): Promise<any> {
 
-    return this.api_conect.post(this.controllerUrl + "changeProcess", data)
+    return axios.post(environment.apiUrl +this.controllerUrl+  "changeProcess", data)
       .then(({ data }: any) => {
       
         return data.tests;
@@ -67,7 +78,7 @@ export class EvaluationService {
   }
   SendTestNote(data: any): Promise<any> {
 
-    return this.api_conect.post(this.controllerUrl + "saveModuleNote", data)
+    return axios.post(environment.apiUrl +this.controllerUrl+  "saveModuleNote", data)
       .then(({ data }: any) => {
         return data;
       })

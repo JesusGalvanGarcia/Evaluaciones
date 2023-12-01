@@ -39,8 +39,9 @@ export class GridActionButtonComponent implements ICellRendererAngularComp {
       this.disabled = true;
       this.deshabilitar = 'deshabilitado';
     }
-    
+    console.log(this.action)
     switch (this.action) {
+      
       case GridActions.EDIT:
         this.title = 'Editar';
         this.faIconClass = 'fa-solid fa-pen-to-square';
@@ -49,6 +50,14 @@ export class GridActionButtonComponent implements ICellRendererAngularComp {
         this.title = 'Eliminar';
         this.faIconClass = 'fa-solid fa-trash';
         break;
+        case GridActions.Start:
+          this.title = 'Ir al examen';
+          this.faIconClass = 'fa-solid fa-arrow-right';
+          break;
+          case GridActions.Seen:
+            this.title = 'Ver';
+            this.faIconClass = 'fa-solid fa-eye';
+            break;
       default:
         this.title = this.action;
         this.faIconClass = this.icon;

@@ -70,7 +70,13 @@ html, body { height: 100%; }
     padding: 0;
     box-sizing: border-box;
 }
-
+.active-sublevel {
+    // opacity: 1 !important;
+    color: #1ebd60 !important;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
 body {
     position: relative;
     font-family: 'Roboto', sans-serif;

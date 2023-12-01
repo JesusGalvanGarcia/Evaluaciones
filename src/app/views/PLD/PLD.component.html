@@ -2,7 +2,32 @@
   <div class="container">
   
       <mat-card class="card-body">
-        <div class="row row-cols-1 row-cols-md-2 mt-2">
+        <div class="evaIcon">
+          <div class="col-md-12 center-div" >
+            <img
+              src="assets/logo/logo_trinitas.jpg"
+              style="width: 25%;"
+              alt="Logo_Trinitas"
+            />
+       
+          </div><br>
+          <i class="fas fa-file"></i>
+          <span class="estilo-title">Examen De Prevencion de lavado de dinero</span>
+        </div>
+    
+      <div *ngIf="start==false" style="padding:3%">
+        
+        <app-grid
+        [columnDefs]="columnDefs"
+        [rowData]="PLDData"
+        [enableDelete]="false"
+        [enableEdit]="false"
+        (actionEvent)="onActionEvent($event)"
+        exportTitle="Examenes"
+      ></app-grid>
+      </div>
+      <div *ngIf="start==true">
+        <div class="row row-cols-1  mt-2" >
           <div class="col">
               <p>
                   <img mat-card-image src="./assets/img/trinitas-logo.png" style="max-width: 150px;">
@@ -41,7 +66,9 @@
         </small>
     </p>
   </div>
+</div>
       </mat-card>
    
   </div>
+  
 </div>

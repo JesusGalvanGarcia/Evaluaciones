@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ToolsController;
 use App\Http\Controllers\UserActionPlanController;
 use App\Http\Controllers\UserEvaluationController;
+use App\Http\Controllers\PLDUsersController;
 use App\Http\Controllers\UserTestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+//Route::get('/PLDUser', [PLDUserController::class, 'index'])->name('index');
+Route::resource('/PLDUser', PLDUsersController::class, [
+    'names' => [
+        'index' => 'Consultar examenes pld del Usuario',
+        'show' => 'Consultar Detalle de las Evaluaciones del Usuario',
+
+    ]
+]);
 
 Route::resource('/evaluations', EvaluationController::class, [
     'names' => [
@@ -39,6 +48,8 @@ Route::resource('/user-evaluations', UserEvaluationController::class, [
 
 // Route::post('/user-tests/saveAnswers', [UserTestController::class, 'saveAnswers'])->name('Guardar Respuestas del Usuario');
 Route::post('/user-tests/saveAnswer', [UserTestController::class, 'saveAnswer'])->name('Guardar Respuesta del Usuario');
+Route::post('/PLDUser/saveAnswerPLD', [PLDUsersController::class, 'saveAnswerPLD'])->name('Guardar Respuesta del Usuario');
+
 Route::post('/user-tests/saveModuleNote', [UserTestController::class, 'saveModuleNote'])->name('Guardar nota del modulo');
 Route::post('/user-tests/changeProcess', [UserTestController::class, 'changeProcess'])->name('Cambiar de proceso');
 Route::resource('/user-tests', UserTestController::class, [

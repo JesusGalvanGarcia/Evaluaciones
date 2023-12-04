@@ -87,7 +87,6 @@ export class SidenavComponent implements OnInit {
   }
 
   shrinkItems(item: INavbarData): void {
- 
     if (!this.multiple) {
       for(let modelItem of this.navData) {
         if (item !== modelItem && modelItem.expanded) {
@@ -95,8 +94,5 @@ export class SidenavComponent implements OnInit {
         }
       }
     }
-    if(item.routeLink !="dashboard"&&this.collapsed==true)
-    this.toggleCollapse()
- 
   }
 }

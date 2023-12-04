@@ -9,6 +9,7 @@ export const navbarData: INavbarData[] = [
             {
                 routeLink: 'evaluacion',
                 label: 'Desempeño',
+                icon: 'fa-solid fa-pen-to-square'
             },
         ]
     },
@@ -18,10 +19,12 @@ export const navbarData: INavbarData[] = [
         label: 'PLD',
         items: [
             {
+                icon: 'fa-solid fa-file-invoice',
                 routeLink: 'exam',
                 label: 'PLD',
             },
             {
+                icon: 'fa-solid fa-toolbox',
                 routeLink: 'exam/adminPld',
                 label: 'Administración de PLD',
             },

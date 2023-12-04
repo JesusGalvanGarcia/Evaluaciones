@@ -130,7 +130,7 @@ export class PldFormComponent implements OnInit {
         await this.getTestFormDTO(this.idPldTest);
 
         if (!this.testFormDTO) {
-            await this.router.navigate(['/dashboard/pld/adminPld/form']);
+            await this.router.navigate(['/dashboard/exam/adminPld/form']);
         } else {
             this.accion = 'Edición';
         }
@@ -301,7 +301,7 @@ export class PldFormComponent implements OnInit {
         this.isLoading = true;
         this.testsService.postPldTest(this.testFormDTO).then(() => {
             this.mensajeService.success('El examen se agregó con éxito');
-            this.router.navigate(['/dashboard/pld/adminPld']);
+            this.router.navigate(['/dashboard/exam/adminPld']);
             this.isLoading = false;
             this.disableSubmit = false;
         });
@@ -314,7 +314,7 @@ export class PldFormComponent implements OnInit {
         this.isLoading = true;
         this.testsService.putPldTest(this.testFormDTO).then(() => {
             this.mensajeService.success('El examen se modificó con éxito');
-            this.router.navigate(['/dashboard/pld/adminPld']);
+            this.router.navigate(['/dashboard/exam/adminPld']);
             this.isLoading = false;
         });
     }
@@ -336,6 +336,6 @@ export class PldFormComponent implements OnInit {
     }
 
     protected goBack() {
-        this.router.navigate(['/dashboard/pld/adminPld']);
+        this.router.navigate(['/dashboard/exam/adminPld']);
     }
 }

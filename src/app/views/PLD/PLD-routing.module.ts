@@ -4,11 +4,16 @@ import { CommonModule } from '@angular/common';
 import { PLDComponent } from './PLD.component';
 import { AdminPldComponent } from './adminPld/adminPld.component';
 import { PldFormComponent } from './adminPld/pldForm/pldForm.component';
+import { PLDExamComponent } from '../PLDExam/PLDExam.component';
 
 const routes: Routes = [
     {
         path: '', 
         component: PLDComponent
+    },
+    {
+        path: 'exams/:id/:attempts',
+        component: PLDExamComponent,
     },
     {
         path: 'adminPld',

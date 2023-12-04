@@ -39,7 +39,6 @@ export class GridActionButtonComponent implements ICellRendererAngularComp {
       this.disabled = true;
       this.deshabilitar = 'deshabilitado';
     }
-    console.log(this.action)
     switch (this.action) {
       
       case GridActions.EDIT:

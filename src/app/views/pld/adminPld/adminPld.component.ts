@@ -68,11 +68,11 @@ export class AdminPldComponent implements OnInit {
   }
 
   protected openAddForm(){
-    this.router.navigate(['/dashboard/pld/adminPld/form']);
+    this.router.navigate(['/dashboard/exam/adminPld/form']);
   }
 
   private openEditForm(idTest: number){
-    this.router.navigate(['/dashboard/pld/adminPld/form/', idTest]);
+    this.router.navigate(['/dashboard/exam/adminPld/form/', idTest]);
   }
 
   private delete(test: TestPldGridDTO){

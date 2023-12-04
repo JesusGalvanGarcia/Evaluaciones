@@ -9,6 +9,9 @@ import { EvaluationsComponent } from '../evaluations/evaluations.component';
 import{LogOutComponent} from "../logOut/logOut.component";
 
 import { SurveyComponent } from '../desempeño/desempeño.component';;
+import { AdminPldComponent } from '../PLD/adminPld/adminPld.component';
+import { PldFormComponent } from '../PLD/adminPld/pldForm/pldForm.component';
+import { PLDRoutingModule } from '../PLD/PLD-routing.module';
 const routes: Routes = [
     {
         path: '',
@@ -24,11 +27,7 @@ const routes: Routes = [
     },
     {
         path: 'exam',
-        component: PLDComponent
-    },
-    {
-        path: 'exams/:id/:attempts',
-        component: PLDExamComponent
+        loadChildren: () => import('../PLD/PLD.module').then(m => m.PLDModule)
     }
 ];
 

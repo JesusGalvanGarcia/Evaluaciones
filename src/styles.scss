@@ -48,9 +48,11 @@ $adelanto-theme: mat.define-light-theme((
 // Estilos personalizados
 @import '../src/app/shared/styles/general-input.scss';
 @import '../src/app/shared/styles/variables.scss';
+@import '../src/app/shared/styles/generic-screen.scss';
 @import "~ag-grid-community/styles/ag-grid.css";
 @import "~ag-grid-community/styles/ag-theme-alpine.css";
 @import url("survey-core/defaultV2.min.css");
+
 
 
 // NG-Select
@@ -100,4 +102,33 @@ body {
     .card-body {
         padding: 1rem 1.5rem; 
     }
+}
+
+mat-form-field {
+    width: 100%;
+}
+/* Importing Bootstrap SCSS file. */
+@import "./node_modules/bootstrap/scss/bootstrap";
+
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";
+
+.bs-datepicker-body table td.week span 
+{
+    color: mat.get-color-from-palette($adelanto-primary, 600) !important;
+}
+
+.datepicker-80{
+    min-height: 80%;
+}
+
+.bs-datepicker-body table td span.selected,
+.bs-datepicker-head,
+.bs-datepicker-head, .bs-datepicker button:active,
+.bs-datepicker-body table td.selected span,
+.bs-datepicker-body table td span[class*="select-"]:after,
+.bs-datepicker-body table td[class*="select-"] span:after,
+.bs-datepicker-body table td.active-week span:hover 
+{
+    background-color: mat.get-color-from-palette($adelanto-primary, 600) !important;
 }

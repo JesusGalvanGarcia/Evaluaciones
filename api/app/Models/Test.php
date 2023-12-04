@@ -14,6 +14,7 @@ class Test extends Model
     protected $table = "tests";
 
     protected $fillable = [
+        'id',
         'evaluation_id',
         'name',
         'introduction_text',
@@ -25,7 +26,13 @@ class Test extends Model
         'modular',
         'created_by',
         'updated_by',
-        'deleted_by'
+        'deleted_by',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'start_date',
+        'end_date',
+        'max_attempts'
     ];
 
     public function test_modules()

@@ -86,7 +86,7 @@ export class TestsService {
         let data = {
             user_id: Number(localStorage.getItem('user_id')),
         };
-        return this.api_conect.delete(this.controllerUrl + 'pld/' + id, data)
+        return this.api_conect.delete(this.controllerUrl + 'pld/' + id, {data: data})
         .then(({ data }: any) => {
             return data;
         })

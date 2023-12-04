@@ -383,7 +383,7 @@ class TestController extends Controller
 
         return response()->json([
             'title' => 'Proceso terminado',
-            'message' => 'Prueba creada exitosamente',
+            'message' => 'Prueba actualizada exitosamente',
             'test' => $test
         ]);
         
@@ -407,7 +407,7 @@ class TestController extends Controller
     {
         try{
             $validator = Validator::make(request()->all(), [
-                'user_id' => 'Required|Integer|NotIn:0|Min:0'
+                'user_id' => 'Required|Integer|NotIn:0|Min:0',
             ]);
 
             if ($validator->fails()) {
@@ -429,20 +429,23 @@ class TestController extends Controller
                 ], 400);
 
             DB::beginTransaction();
+            
+            $test = Test::find($id);
     
-            $test = Test::
-                find($id)
-                -> where('evaluation_id', '=', 2);
-    
-            if ($test) {
-                $test->delete(); // SoftDelete
-            } else {
+            if (!$test) {
                 return response()->json([
                     'title' => 'La Prueba no fue encontrado',
                     'message' => 'La Prueba con ID ' . $id . ' no existe.',
                     'code' => $this->prefix . 'X203'
                 ], 404);
             }
+            $userEvaluationIds = UserEvaluation::select('user_evaluation_id')
+            ->join('user_tests', 'user_tests.user_evaluation_id', 'user_evaluations.id')
+            ->where('user_tests.test_id', $id)
+            ->pluck('user_evaluation_id')
+            ->toArray();
+            UserEvaluation::whereIn('id', $userEvaluationIds)->delete();
+            $test->delete(); // SoftDelete
     
             DB::commit();
 

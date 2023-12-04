@@ -129,13 +129,13 @@ class TestService extends ServiceProvider
     }
     
     static function updatePldTest($test, $user_id, $assigned_users){
-        $test = (object)$test;
+        $test = is_array($test) ? (object) $test : $test;
         $test->evaluation_id = 2;
         $test->max_score = 100;
         $createUpdateTest = TestService::createUpdateTest($test, $user_id);
         // $test_module = TestModuleService::updateTestModule($test->id, $test['name'], $user_id);
         foreach ($test->test_modules as $module) {
-            QuestionService::createOrUpdateQuestionsAndAnswers($module, $module->id, $user_id);
+            QuestionService::createOrUpdateQuestionsAndAnswers($module, $module['id'], $user_id);
         }
 
         UserEvaluationService::updateUserEvaluationAndTests($assigned_users, $test, $user_id);
@@ -155,6 +155,7 @@ class TestService extends ServiceProvider
                 'min_score' => $test->get('min_score'),
                 'modular' => 0,
                 'end_date' => $test->get('end_date'),
+                'start_date' => $test->get('start_date'),
                 'created_by' => $user_id,
                 'updated_by' => $user_id,
                 'max_attempts' => $test->get('max_attempts')
@@ -170,6 +171,7 @@ class TestService extends ServiceProvider
                 'max_score' => $test->get('max_score'),
                 'min_score' => $test->get('min_score'),
                 'modular' => 0,
+                'start_date' => $test->get('start_date'),
                 'end_date' => $test->get('end_date'),
                 'created_by' => $user_id,
                 'updated_by' => $user_id,

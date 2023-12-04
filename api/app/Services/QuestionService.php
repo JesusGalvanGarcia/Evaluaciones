@@ -15,7 +15,7 @@ class QuestionService extends ServiceProvider
             $newQuestion = self::createOrUpdateQuestion($question, $moduleId, $maxScore, $userId);
 
             foreach ($question['answers'] as $answer) {
-                self::createOrUpdateAnswer($answer, $newQuestion->id, $userId);
+                self::createOrUpdateAnswer($answer, $newQuestion['id'], $userId);
             }
         }
     }
@@ -23,9 +23,8 @@ class QuestionService extends ServiceProvider
     private static function createOrUpdateQuestion($questionData, $moduleId, $maxScore, $userId)
     {
         $newQuestion = collect($questionData);
-
-        if ($newQuestion->has('id')) {
-            return Question::where('id', $newQuestion['id'])
+        if ($newQuestion->get('id') > 0) {
+            Question::where('id', $newQuestion->get('id'))
                 ->update([
                     'module_id' => $moduleId,
                     'description' => $questionData['description'],
@@ -34,7 +33,7 @@ class QuestionService extends ServiceProvider
                     'updated_by' => $userId,
                 ]);
         } else {
-            return Question::create([
+            $newQuestion = Question::create([
                 'module_id' => $moduleId,
                 'description' => $questionData['description'],
                 'score' => $maxScore,
@@ -42,6 +41,7 @@ class QuestionService extends ServiceProvider
                 'updated_by' => $userId,
             ]);
         }
+        return $newQuestion;
     }
 
     private static function createOrUpdateAnswer($answerData, $questionId, $userId)

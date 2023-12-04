@@ -9,6 +9,7 @@ export class TestFormDTO {
     max_attempts: number;
     evaluation_id: number;
     end_date: Date;
+    start_date: Date;
     test_modules: TestModuleFormDTO[] = [];
     assigned_users: string[];
 }

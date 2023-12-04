@@ -80,6 +80,7 @@ class TestController extends Controller
                     'min_score',
                     'max_attempts',
                     'evaluation_id',
+                    'start_date',
                     'end_date',
                 )
                 ->with([
@@ -148,6 +149,7 @@ class TestController extends Controller
                 'introduction_text' => 'required|string',
                 'min_score' => 'required|integer|min:0',
                 'max_attempts' => 'required|integer|not_in:0|min:0',
+                'start_date' => 'required|date',
                 'end_date' => 'required|date',
                 'test_modules.*.questions.*.description' => 'required|string',
                 'test_modules.*.questions.*.answers.*.description' => 'required|string',
@@ -339,6 +341,7 @@ class TestController extends Controller
                 'introduction_text' => 'required|string',
                 'min_score' => 'required|integer|min:0',
                 'max_attempts' => 'required|integer|not_in:0|min:0',
+                'start_date' => 'required|date',
                 'end_date' => 'required|date',
                 'test_modules.*.questions.*.description' => 'required|string',
                 'test_modules.*.questions.*.answers.*.description' => 'required|string',

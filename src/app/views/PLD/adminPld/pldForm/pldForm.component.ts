@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { CommonModule, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -142,7 +143,10 @@ export class PldFormComponent implements OnInit {
             this.isLoading = true;
             const data = await this.testsService.getPldFormDTO(idPldTest);
             this.testFormDTO = data.test;
+            
             this.testFormDTO.end_date = new Date(data.test.end_date);
+            this.testFormDTO.start_date = new Date(data.test.start_date);
+            console.log(this.testFormDTO);
             this.questions = data.test.test_modules[0].questions;
 
             this.questions.forEach((question) => {

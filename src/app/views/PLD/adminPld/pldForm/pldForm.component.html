@@ -64,7 +64,7 @@
             </div>
           <div class="row" style="width:100%">
             <!-- Número de Intentos -->
-            <div class="col-md-6">
+            <div class="col-sm-6">
               <mat-form-field>
                 <mat-label>Número de intentos</mat-label>
                 <input
@@ -83,8 +83,19 @@
                 </mat-error>
               </mat-form-field>
             </div>
+            <!-- Fecha de Inicio  -->
+              <div class="col-sm-3">
+                <input 
+                  type="text"
+                  name="startDateName"
+                  placeholder="Fecha de Inicio"
+                  class="form-control datepicker-80"
+                  bsDatepicker
+                  [(ngModel)]="testFormDTO.start_date"
+                >
+              </div>
             <!-- Fecha de Vencimiento  -->
-              <div class="col-md-6">
+              <div class="col-sm-3">
                 <input 
                   type="text"
                   name="endDateName"

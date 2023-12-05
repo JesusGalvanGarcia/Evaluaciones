@@ -1,21 +1,13 @@
-import { ActionPlanService } from './../../services/ActionPlanService';
-import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/models/user';
-import { MatDialog } from '@angular/material/dialog'
-import { MatTableDataSource } from '@angular/material/table'
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSort } from '@angular/material/sort';
-import { ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
-import { MensajeService } from '@http/mensaje.service';
-import { formatDate } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { ActionPlan } from 'src/app/models/AccionPlan/ActionPlan';
-import { ActionPlanParameter } from 'src/app/models/AccionPlan/ActionPlanParameters';
-import { ActionPlanParameterValue,SaveAccionPlan } from 'src/app/models/AccionPlan/ActionPlanParameters';
-import { MatDialogModule} from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
+import { MensajeService } from '@http/mensaje.service';
+import { ActionPlan } from '@models/actionPlan/actionPlan';
+import { ActionPlanParameter, ActionPlanParameterValue, SaveAccionPlan } from '@models/actionPlan/actionPlanParameters';
+import { User } from '@models/user';
 import { ModalComponent } from '../modal/modal.component';
+import { UserActionPlanService } from '@services/userActionPlan.service';
 
 @Component({
   selector: 'app-plan',
@@ -34,7 +26,12 @@ export class PlanComponent implements OnInit {
   rowCount: number = 0;
   page: boolean = false;
 
-  constructor(public actionPlanService:ActionPlanService,public dialog: MatDialog, public messageService: MensajeService,private route: ActivatedRoute) 
+  constructor(
+    public userActionPlanService:UserActionPlanService,
+    public dialog: MatDialog, 
+    public messageService: MensajeService,
+    private route: ActivatedRoute
+    ) 
   {
     this.route.params.subscribe(params => {
       var param= params['firm']; //recibe los parametros 
@@ -144,7 +141,7 @@ isValidDateFormat(dateString: string,user :ActionPlanParameter): boolean {
     }
   }
   getActionPlan(data: any) {
-    this.actionPlanService.GetAction(data, 59)
+    this.userActionPlanService.GetAction(data, 59)
       .then((response: any) => {
         this.actionPlan = response;
         this.addLine();

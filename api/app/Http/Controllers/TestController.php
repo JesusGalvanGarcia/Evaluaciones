@@ -445,6 +445,7 @@ class TestController extends Controller
             ->pluck('user_evaluation_id')
             ->toArray();
             UserEvaluation::whereIn('id', $userEvaluationIds)->delete();
+            UserTest::whereIn('user_evaluation_id', $userEvaluationIds)->delete();
             $test->delete(); // SoftDelete
     
             DB::commit();

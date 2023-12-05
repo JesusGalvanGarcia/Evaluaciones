@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import * as Utilities from '@utils/utilities';
 import { EmailRequest } from 'src/app/shared/entities/models/email-request'
-import { EmailService } from '@services/email.service';
+import { EmailService } from '@http/email.service';
 import { lastValueFrom } from 'rxjs';
 import { MensajeService } from '@http/mensaje.service';
 import { LoadingComponent } from '../loading/loading.component';

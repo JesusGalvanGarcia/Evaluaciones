@@ -1,19 +1,14 @@
-import { Router } from '@angular/router';
-import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import * as Utilities from '@utils/utilities';
-import { LoginService } from '@services/login.service';
-import { UserLogin } from "../../models/Login/login";
-import { lastValueFrom } from 'rxjs';
-import { LoginResponse } from '@models/login-response';
-import { GeneralConstant } from '@utils/general-constant';
-import { UserService } from '../../services/UserService';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from '@http/login.service';
 import { MensajeService } from '@http/mensaje.service';
-import { ActivatedRoute } from '@angular/router';
-import { RouterModule, Routes } from '@angular/router';
+import * as Utilities from '@utils/utilities';
+import { UserService } from '../../shared/services/login.service';
 import { LoadingComponent } from '../loading/loading.component';
+import { UserLogin } from '@models/login/login';
 
 @Component({
   selector: 'app-login',

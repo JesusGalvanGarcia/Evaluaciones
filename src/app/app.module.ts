@@ -17,18 +17,18 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginService } from '@http/login.service';
 import { TokenInterceptor } from '@http/token.interceptor';
-import { LoginService } from '@services/login.service';
 import { AgGridModule } from 'ag-grid-angular';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { SurveyModule } from "survey-angular-ui";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LoadingComponent } from './views/loading/loading.component';
 import { TablesModule } from './views/plan/plan.module';
 import { SidenavComponent } from './views/sidenav/sidenav.component';
 import { SublevelMenuComponent } from './views/sidenav/sublevel-menu.component';
 import { UserTestComponent } from './views/user-test/user-test.component';
-import { LoadingComponent } from './views/loading/loading.component';
 
 export function getDatepickerConfig(): BsDatepickerConfig {
   return Object.assign(new BsDatepickerConfig(), {
@@ -40,8 +40,6 @@ export function getDatepickerConfig(): BsDatepickerConfig {
 }
 
 
-import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
 @NgModule({
   declarations: [
     AppComponent,

@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ActionPlanService {
+export class UserActionPlanService {
 
   private controllerUrl = 'user-actionPlan';
   private api_conect: any;

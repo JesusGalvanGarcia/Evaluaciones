@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MensajeService } from '@http/mensaje.service';
-import { EvaluationService } from 'src/app/services/EvaluationService';
-import { User } from '../../models/user';
+import { UserTestService } from '@services/userTest.service';
 
 @Component({
   selector: 'app-user-test',
@@ -23,7 +22,7 @@ export class UserTestComponent {
   clasification: any;
 
   constructor(
-    private _evaluationService: EvaluationService,
+    private userTestService: UserTestService,
     private route: ActivatedRoute,
     public system_message: MensajeService,
     private router: Router
@@ -43,7 +42,7 @@ export class UserTestComponent {
       user_id: this.user_id
     }
 
-    this._evaluationService.GetEvaluation(searchData, this.user_test_id).
+    this.userTestService.GetEvaluation(searchData, this.user_test_id).
       then(({ test, score, clasification }) => {
 
         this.score = score;

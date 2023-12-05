@@ -1,14 +1,32 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { LoginRequest } from '@models/login-request';
 import { Observable } from 'rxjs';
-import { LoginResponse } from '@models/login-response';
-@Injectable()
-export class LoginService {
-  private controllerUrl = 'login';
-  constructor(private http: HttpClient) { }
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-  public authenticate(loginRequest: LoginRequest): Observable<LoginResponse>{
-    return this.http.post<LoginResponse>(this.controllerUrl + '/authenticate', loginRequest);
+import axios from 'axios';
+import { environment } from 'src/environments/environment';
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  private controllerUrl = 'login';
+
+  constructor(private http: HttpClient) { }
+  
+  PostLogin(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl + this.controllerUrl, data
+    )
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+
+        throw data;
+      });
   }
+
 }
+
+

@@ -1,24 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { ThemePalette } from '@angular/material/core';
-import { ProgressBarMode } from '@angular/material/progress-bar';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatBadgeModule } from '@angular/material/badge';
-import{GridModule} from '@sharedComponents/grid/grid.module';
-import { Router } from '@angular/router';
-import { MatDialogModule } from '@angular/material/dialog'; 
-import {PLDUser} from '../../models/PLDUser/PLDUser';
-import {PLDUserService} from '../../services/PLDUserService';
-import { MensajeService } from '@http/mensaje.service';
-import { LoadingComponent } from '../loading/loading.component';
-import { ColDef, Grid } from 'ag-grid-community';
-import { CommonModule } from '@angular/common';
-import{GridActions} from '@utils/grid-action';
-import { MatDialog } from '@angular/material/dialog';
-import {AttemptsComponent} from '../attempts/attempts.component';
-import { Injectable, EventEmitter } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, OnInit } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { Router } from '@angular/router';
+import { MensajeService } from '@http/mensaje.service';
+import { GridModule } from '@sharedComponents/grid/grid.module';
+import { GridActions } from '@utils/grid-action';
+import { ColDef } from 'ag-grid-community';
+import { PLDUser } from '../../shared/entities/models/pldUser/pldUser';
+import { PLDUserService } from '@services/pldUser.service';
+import { AttemptsComponent } from '../attempts/attempts.component';
 
 @Component({
   selector: 'app-PLD',
@@ -40,7 +35,6 @@ export class PLDComponent implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Start,
-          icon: 'fa-solid fa-hippo'
         }
       };
       return component;
@@ -97,7 +91,12 @@ export class PLDComponent implements OnInit {
   
   ]
 ​
-  constructor(private breakpointObserver: BreakpointObserver,public dialog: MatDialog,public router:Router,private PLDService:  PLDUserService,public message: MensajeService ) { }
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    public dialog: MatDialog,
+    public router:Router,
+    private PLDService:  PLDUserService,
+    public message: MensajeService) { }
   startModal = true; // o false, dependiendo de tu lógica
   modalOpen = false;
   closeModalEvent: EventEmitter<void> = new EventEmitter<void>();

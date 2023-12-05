@@ -1,4 +1,5 @@
-import { Answer } from "./AnswerModel";
+import { Answer } from "./answer";
+
 export interface Question {
     id: number;
     description: string;

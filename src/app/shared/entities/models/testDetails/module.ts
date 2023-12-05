@@ -1,4 +1,5 @@
-import { Question } from "./QuestionModel";
+import { Question } from "./question";
+
 export interface Module {
     id: number;
     name: string;

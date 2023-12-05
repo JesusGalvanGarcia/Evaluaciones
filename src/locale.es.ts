@@ -1,13 +1,18 @@
 export const AG_GRID_LOCALE_ES = {
   selectAll: 'Seleccionar todo',
   selectAllSearchResults: 'Seleccionar todos los resultados de búsqueda',
+  addCurrentSelectionToFilter: 'Añadir selección actual al filtro',
   searchOoo: 'Buscar...',
-  blanks: 'Vacíos',
+  blanks: '(Vacíos)',
   noMatches: 'Sin coincidencias',
 
   filterOoo: 'Filtro...',
   equals: 'Igual',
   notEqual: 'Diferente',
+  blank: '(Vacío)',
+  notBlank: '(No Vacío)',
+  empty: 'Selecciona uno',
+
 
   // Number Filter
   lessThan: 'Menor que',
@@ -26,6 +31,8 @@ export const AG_GRID_LOCALE_ES = {
 
   // Date Filter
   dateFormatOoo: 'dd-mm-Yyyy',
+  before: 'Antes de',
+  after: 'Después de',
 
   // Filter Conditions
   andCondition: 'y',
@@ -40,6 +47,13 @@ export const AG_GRID_LOCALE_ES = {
   // Side Bar
   columns: 'Columnas',
   filters: 'Filtros',
+
+  // Filter Titles
+  textFilter: 'Filtro de texto',
+  numberFilter: 'Filtro numérico',
+  dateFilter: 'Filtro de fechas',
+  setFilter: 'Filtro de conjuntos',
+  
 
   // columns tool panel
   pivotMode: 'Modo Pivote',

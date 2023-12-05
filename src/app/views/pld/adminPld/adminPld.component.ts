@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { TestPldGridDTO } from '@dtos/catalog/test-pld-grid-dto';
-import { TestsService } from 'src/app/services/TestsService';
+import { TestsService } from '@services/test.service';
 import { GridActions } from '@utils/grid-action';
 import { ConfirmationModalComponent } from '@sharedComponents/confirmation-modal/confirmation-modal.component';
 import { lastValueFrom } from 'rxjs';

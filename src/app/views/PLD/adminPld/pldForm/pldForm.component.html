@@ -18,7 +18,7 @@
         Regresar
       </button>
       <h3>{{accion}} Examen</h3>
-      <mat-tab-group [selectedIndex]="selectedIndex">
+      <mat-tab-group [selectedIndex]="selectedIndex" dynamicHeight>
         <!-- Información General -->
         <mat-tab label="Información General" style="width:100%">
           <div class="row" style="width:100%">
@@ -75,6 +75,7 @@
                   #maxAttempts="ngModel"
                   name="maxAttempts"
                   [(ngModel)]="testFormDTO.max_attempts"
+                  [disabled]="disableMaxAttempts"
                   placeholder="Número de intentos"
                   required
                   min="0"
@@ -130,10 +131,15 @@
           </div>
         </mat-tab>
         <!-- Área Preguntas -->
-        <mat-tab label="Preguntas">
+        <mat-tab label="Preguntas" #preguntasTab>
           <p>
             <button type="button" class="btn btn-primary btn-sm" (click)="addQuestion()">
-              Agregar Pregunta
+              <i class="fa-solid fa-plus"></i>
+              Pregunta
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="removeQuestion()">
+              <i class="fa-solid fa-minus"></i>
+              Pregunta
             </button>
           </p>
           
@@ -237,6 +243,7 @@
             [autoGroupColumnDef]="autoGroupColumnDef"
             [groupSelectsChildren]="true"
             [suppressAggFuncInHeader]="true"
+            [localeText]="localeText"
             (gridReady)="onGridReady($event)"
           ></ag-grid-angular>
           <div style="float:left">

@@ -1,28 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { Model } from "survey-core";
-import { FormsModule, NgForm } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { AgGridModule } from 'ag-grid-angular';
-import { HttpClient } from '@angular/common/http';
-import { FormGroup, FormControl } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { EvaluationService } from '../../services/EvaluationService';
-import { EvaluationTest } from '../../models/TestDetails/EvaluationTest';
-import { Question } from "../../models/TestDetails/QuestionModel";
-import { UserAnswer } from "../../models/TestDetails/TestIndividual";
-import { MensajeService } from '@http/mensaje.service';
-import { Answer } from 'src/app/models/TestDetails/AnswerModel';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MensajeService } from '@http/mensaje.service';
+import { Answer } from '@models/testDetails/answer';
+import { EvaluationTest } from '../../shared/entities/models/testDetails/evaluationTest';
 import { LoadingComponent } from '../loading/loading.component';
-import { ProcessModel } from "../../models/TestDetails/ProcessModel";
+import { ProcessModel } from '@models/testDetails/processModel';
+import { UserTestService } from '@services/userTest.service';
+import { Question } from '@models/testDetails/question';
 
 @Component({
   selector: 'app-desempeño',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatProgressBarModule, MatIconModule, LoadingComponent],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    ReactiveFormsModule, 
+    MatProgressBarModule, 
+    MatIconModule, 
+    LoadingComponent
+  ],
   templateUrl: './desempeño.component.html',
   styleUrls: ['./desempeño.component.scss']
 })
@@ -50,7 +50,12 @@ export class SurveyComponent implements OnInit {
   answers: any;
   modules: any;
   FinalEvalution: End;
-  constructor(public router: Router, private route: ActivatedRoute, private evaluationService: EvaluationService, public message: MensajeService) {
+  constructor(
+    public router: Router, 
+    private route: ActivatedRoute, 
+    private userTestService: UserTestService, 
+    public message: MensajeService
+    ) {
     this.route.params.subscribe(params => {
       this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
     });
@@ -60,7 +65,7 @@ export class SurveyComponent implements OnInit {
 
   getTable(data: any) {
 
-    this.evaluationService.GetEvaluation(data, this.user_test_id)
+    this.userTestService.GetEvaluation(data, this.user_test_id)
       .then(({ test, evaluated_user_name, title }) => {
 
         this.evaluatedUserName = evaluated_user_name;
@@ -146,7 +151,7 @@ export class SurveyComponent implements OnInit {
     if (this.index + 1 === this.size)
       this.saveIndivisual.its_over = "si";
 
-    this.evaluationService.SendTestEvaluation(this.saveIndivisual)
+    this.userTestService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
         this.loading = false;
         this.score = response.actual_score;
@@ -195,7 +200,7 @@ export class SurveyComponent implements OnInit {
       user_test_id: this.user_test_id,
       process_id: id,
     }
-    this.evaluationService.SendChangeProcess(this.changeProcess)
+    this.userTestService.SendChangeProcess(this.changeProcess)
       .then((response: any) => {
 
         // this.finishEvaluation();

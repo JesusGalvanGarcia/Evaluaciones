@@ -1,26 +1,23 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { CommonModule, NgIf, ViewportScroller } from '@angular/common';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ViewportScroller } from '@angular/common';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatDrawer } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ActionPlanService } from 'src/app/services/ActionPlanService';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CommonModule } from '@angular/common';
-import SignaturePad from 'signature_pad';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MensajeService } from '@http/mensaje.service';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {ProcessModel} from "../../models/TestDetails/ProcessModel";
-import { EvaluationService } from '../../services/EvaluationService';
+import { UserActionPlanService } from '@services/userActionPlan.service';
+import SignaturePad from 'signature_pad';
+import { ProcessModel } from "../../shared/entities/models/testDetails/processModel";
+import { UserTestService } from '@services/userTest.service';
 
 
 @Component({
@@ -87,9 +84,9 @@ export class ActionPlanComponent {
     private viewportScroller: ViewportScroller,
     private router: Router,
     private route: ActivatedRoute,
-    private _actionPlanService: ActionPlanService,
+    private userActionPlanService: UserActionPlanService,
     public system_message: MensajeService,
-    private evaluationService: EvaluationService,
+    private userTestService: UserTestService,
   ) {
 
     this.user_id = Number(localStorage.getItem('user_id')!);
@@ -137,7 +134,7 @@ export class ActionPlanComponent {
         user_test_id: user_test_id,
         process_id:process,   
        }
-       this.evaluationService.SendChangeProcess(this.changeProcess)
+       this.userTestService.SendChangeProcess(this.changeProcess)
        .then((response: any) => {
      
       
@@ -159,7 +156,7 @@ export class ActionPlanComponent {
       user_id: this.user_id
     }
 
-    this._actionPlanService.GetAction(searchData, this.user_action_plan_id).
+    this.userActionPlanService.GetAction(searchData, this.user_action_plan_id).
       then(({ user_action_plan, agreements, signatures }) => {
 
         this.user_action_plan = user_action_plan;
@@ -212,7 +209,7 @@ export class ActionPlanComponent {
 
     this.loading = true;
 
-    this._actionPlanService.SaveAgreement(data).
+    this.userActionPlanService.SaveAgreement(data).
       then(({ }) => {
 
         this.resetForm();
@@ -255,7 +252,7 @@ export class ActionPlanComponent {
 
     this.loading = true;
 
-    this._actionPlanService.UpdateAgreement(data, this.selected_agreement_id).
+    this.userActionPlanService.UpdateAgreement(data, this.selected_agreement_id).
       then(({ }) => {
 
         this.resetForm();
@@ -278,7 +275,7 @@ export class ActionPlanComponent {
 
     this.loading = true;
 
-    this._actionPlanService.confirmActionPlan(data).
+    this.userActionPlanService.confirmActionPlan(data).
       then(({ }) => {
 
         this.getAgreements();
@@ -325,7 +322,7 @@ export class ActionPlanComponent {
 
     this.loading = true;
 
-    this._actionPlanService.saveSignature(data).
+    this.userActionPlanService.saveSignature(data).
       then(({ }) => {
 
         this.clearSignature();

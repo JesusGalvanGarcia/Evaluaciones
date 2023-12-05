@@ -17,13 +17,14 @@ import * as Utilities from '@utils/utilities';
 import { AgGridModule } from 'ag-grid-angular';
 import { ColDef, GridApi, GridReadyEvent, IRowNode } from 'ag-grid-community';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { TestsService } from 'src/app/services/TestsService';
-import { UsersService } from 'src/app/services/UsersService';
+import { TestsService } from '@services/test.service';
+import { UsersService } from '@services/user.service';
 import { QuestionFormDTO } from '../../../../shared/entities/dtos/catalog/question-form-dto';
 import { TestFormDTO } from '../../../../shared/entities/dtos/catalog/tests-form-dto';
 import { TestModuleFormDTO } from '@dtos/catalog/test-modules-form-dto';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { LoadingComponent } from 'src/app/views/loading/loading.component';
+import { AG_GRID_LOCALE_ES } from 'src/locale.es';
 
 // import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 
@@ -57,11 +58,13 @@ export class PldFormComponent implements OnInit {
     protected assigned_users: string[] = [];
     protected disableSubmit: boolean = false;
     protected isLoading: boolean = false;
+    protected disableMaxAttempts = false;
 
     public autoGroupColumnDef: ColDef = {
         headerName: 'Nombre',
         field: 'complete_name',
         filter: true,
+        floatingFilter: true,
         headerCheckboxSelection: true,
         headerCheckboxSelectionFilteredOnly: true,
         checkboxSelection: true,
@@ -70,9 +73,13 @@ export class PldFormComponent implements OnInit {
         flex: 1,
     };
 
+    public localeText: {
+        [key: string]: string;
+    } = AG_GRID_LOCALE_ES;
+
     public columnDefs: ColDef[] = [
         { headerName: 'id', field: 'id', hide: true },
-        { headerName: 'Área', field: 'area_name', sortable:true, filter: true, rowGroup: true },
+        { headerName: 'Área', field: 'area_name', filter: 'agTextColumnFilter',  floatingFilter: true, sortable:true, rowGroup: true },
     ];
 
     protected usersList: UserPldGridDTO[];
@@ -146,7 +153,6 @@ export class PldFormComponent implements OnInit {
             
             this.testFormDTO.end_date = new Date(data.test.end_date);
             this.testFormDTO.start_date = new Date(data.test.start_date);
-            console.log(this.testFormDTO);
             this.questions = data.test.test_modules[0].questions;
 
             this.questions.forEach((question) => {
@@ -165,6 +171,9 @@ export class PldFormComponent implements OnInit {
             });
 
             this.assigned_users = data.assigned_users;
+            if(data.assigned_users.length > 0){
+                this.disableMaxAttempts = true;
+            }
             this.isLoading = false;
         } catch (error) {
             // Handle the error appropriately (logging, notifying the user, etc.)
@@ -201,13 +210,26 @@ export class PldFormComponent implements OnInit {
      */
     protected addQuestion(): void {
         this.questions.push(new QuestionFormDTO());
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
+
+    /**
+     * Adds a Question to the end of the array
+     */
+    protected removeQuestion(): void {
+        if (this.questions.length > 1) {
+            this.questions.pop();
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    }
+
     /**
      * Adds an answer to the end of the array
      */
     protected addAnswer(questionIndex: number): void {
         this.questions[questionIndex].answers.push(new AnswerFormDTO());
     }
+
     /**
      * Removes the last answer of the array
      */

@@ -1,35 +1,39 @@
-import { Component, OnInit ,ViewChild} from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { CdkTableModule } from '@angular/cdk/table';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
-import { AgGridModule } from 'ag-grid-angular';
-import { HttpClient } from '@angular/common/http';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { MensajeService } from '@http/mensaje.service';
-import { MatTableModule } from '@angular/material/table';
-import { CdkTableModule } from '@angular/cdk/table';
-import { ColaboradorEvaluationService } from '../../services/ColaboradorEvaluationService';
-import { CollaboratorEvaluation } from 'src/app/models/ColaboradorEvaluation/ColaboradorEvaluation';
-import {TestService} from "../../services/TestService";
-import { EvaluationService } from '../../services/EvaluationService';
-import { TestModel } from 'src/app/models/ColaboradorEvaluation/EvaluationDetail';
-import {ProcessModel} from "../../models/TestDetails/ProcessModel";
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { AgGridModule } from 'ag-grid-angular';
+import { CollaboratorEvaluation } from '@models/colaboradorEvaluation/colaboradorEvaluation';
+import { TestModel } from '@models/colaboradorEvaluation/evaluationDetail';
+import { ProcessModel } from "../../shared/entities/models/testDetails/processModel";
+import { UserEvaluationService } from "../../shared/services/userEvaluation.service";
 import { LoadingComponent } from '../loading/loading.component';
-import { PersonalEvaluation } from 'src/app/models/PersonalEvaluation/PersonalEvaluation';
-import { MatInputModule } from '@angular/material/input';
+import { UserTestService } from '@services/userTest.service';
 
-import { PersonalEvaluationService } from '../../services/PersonalEvaluationService';
 
 @Component({
   selector: 'app-evaluations',
   
   standalone:true,
   imports: [
-    CommonModule,MatTooltipModule,MatInputModule, LoadingComponent,FormsModule,CdkTableModule,AgGridModule,MatIconModule,MatTableModule],
+    CommonModule,
+    MatTooltipModule,
+    MatInputModule, 
+    LoadingComponent,
+    FormsModule,
+    CdkTableModule,
+    AgGridModule,
+    MatIconModule,
+    MatTableModule
+  ],
   templateUrl: './evaluations.component.html',
   styleUrls: ['./evaluations.component.scss'],
   animations: [
@@ -83,11 +87,16 @@ protected isLoading: boolean = false;
 
 displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name', 'actual_process', 'phase', 'status',"action"];
 dataSource: MatTableDataSource<TestModel> | any = [];
-constructor(private http: HttpClient,private personalEvaluationService: PersonalEvaluationService,private evaluationService: EvaluationService,  private router: Router,    private ColabluationService: ColaboradorEvaluationService,private testService:TestService,public message:MensajeService) {}
+constructor(private http: HttpClient,
+  private userEvaluationService: UserEvaluationService,
+  private router: Router,    
+  public message:MensajeService,
+  public userTestService: UserTestService
+  ) {}
 
 getTestUser(data:any,userid:any,array:number)
 {
-  this.testService.GetTest(data,userid)
+  this.userEvaluationService.GetTest(data,userid)
   .then((response:any) => {
    
     this.mostrar=true;
@@ -148,7 +157,7 @@ changeList()
     collaborators_id: [],
     evaluations_id: []
   };
-  this.ColabluationService.GetColaboradorEvaluationsWithParams(data)
+  this.userEvaluationService.GetColaboradorEvaluationsWithParams(data)
   .then((response:any) => {
     this.ListColaborator=response.collaborators_evaluations;
     this.PersonalList=response.personal_evaluations;
@@ -282,7 +291,7 @@ changeProcessFunc(process:number,user_test_id:number)
       user_test_id: user_test_id,
       process_id:process,   
      }
-     this.evaluationService.SendChangeProcess(this.changeProcess)
+     this.userTestService.SendChangeProcess(this.changeProcess)
      .then((response: any) => {
     
       this.message.error("Hace falta contestar una evaluación o este proceso ya esta terminado");

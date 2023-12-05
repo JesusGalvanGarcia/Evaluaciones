@@ -1,23 +1,18 @@
 
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormsModule, NgForm } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { EvaluationService } from '../../services/EvaluationService';
-import { EvaluationTest } from '../../models/TestDetails/EvaluationTest';
-import { Question } from "../../models/TestDetails/QuestionModel";
-import { Answer } from 'src/app/models/TestDetails/AnswerModel';
-import { UserTest, Moduled, Answered } from "../../models/TestDetails/SaveTest";
-import { UserAnswer } from "../../models/TestDetails/TestIndividual";
-import { MensajeService } from '@http/mensaje.service';
-import { NoteUser } from "../../models/TestDetails/TestIndividual";
-import { MatInputModule } from '@angular/material/input';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { LoadingComponent } from '../loading/loading.component';
-import { Router } from '@angular/router';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {ProcessModel} from "../../models/TestDetails/ProcessModel";
+import { ActivatedRoute, Router } from '@angular/router';
+import { MensajeService } from '@http/mensaje.service';
+import { EvaluationTest } from '../../shared/entities/models/testDetails/evaluationTest';
+import { ProcessModel } from "../../shared/entities/models/testDetails/processModel";
+import { Answered, Moduled, UserTest } from "../../shared/entities/models/testDetails/saveTest";
+import { UserTestService } from '../../shared/services/userTest.service';
+import { LoadingComponent } from '../loading/loading.component';
+import { NoteUser, UserAnswer } from '@models/testDetails/testIndividual';
 @Component({
   selector: 'app-competencias',
   standalone: true,
@@ -61,7 +56,10 @@ export class CompetenciasComponent implements OnInit {
       modules: []
     };
   ListsendInfo: Competencias[] = [];
-  constructor(private router: Router,private route: ActivatedRoute, private evaluationService: EvaluationService, public message: MensajeService) {
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private userTestService: UserTestService, 
+    public message: MensajeService) {
     this.route.params.subscribe(params => {
       this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
     });
@@ -206,7 +204,7 @@ export class CompetenciasComponent implements OnInit {
         user_test_id: this.user_test_id,
         process_id:process,   
        }
-       this.evaluationService.SendChangeProcess(this.changeProcess)
+       this.userTestService.SendChangeProcess(this.changeProcess)
        .then((response: any) => {
        
          this.send();
@@ -245,7 +243,7 @@ export class CompetenciasComponent implements OnInit {
     
     }
    
-    this.evaluationService.SendTestEvaluation(this.saveIndivisual)
+    this.userTestService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
         this.score =response.actual_score;
         this.loading=false;
@@ -285,7 +283,7 @@ export class CompetenciasComponent implements OnInit {
     }
 
 
-    this.evaluationService.SendTestNote(this.noteUser)
+    this.userTestService.SendTestNote(this.noteUser)
       .then((response: any) => {
         this.showModule=true;
         this.showNote=false;
@@ -302,7 +300,7 @@ export class CompetenciasComponent implements OnInit {
   }
   getTable(data: any) {
  
-    this.evaluationService.GetEvaluation(data, this.user_test_id)
+    this.userTestService.GetEvaluation(data, this.user_test_id)
       .then((response: any) => {
   
         this.DesempenoTest = response.test;

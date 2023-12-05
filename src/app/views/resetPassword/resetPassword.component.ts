@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import * as Utilities from '@utils/utilities';
-import { PassWordService } from '@services/password.service';
+import { PassWordService } from '@http/password.service';
 import { lastValueFrom } from 'rxjs';
 import { MensajeService } from '@http/mensaje.service';
 

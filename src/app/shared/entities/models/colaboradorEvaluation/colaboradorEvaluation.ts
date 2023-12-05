@@ -1,4 +1,4 @@
-import {TestModel} from '../ColaboradorEvaluation/EvaluationDetail';
+import {TestModel} from './evaluationDetail';
 export class CollaboratorEvaluation {
     user_evaluation_id: string;
     evaluation_id: string;

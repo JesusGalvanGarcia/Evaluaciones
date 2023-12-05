@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Injectable, EventEmitter } from '@angular/core';
-import { PLDUserService } from 'src/app/services/PLDUserService';
+import { PLDUserService } from '@services/pldUser.service';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../loading/loading.component';
 
-import { UserTest } from 'src/app/models/TestDetails/SaveTest';
+import { UserTest } from '@models/testDetails/saveTest';
 @Component({
   selector: 'app-attempts',
   standalone:true,

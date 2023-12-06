@@ -144,7 +144,8 @@ export class PldFormComponent implements OnInit {
         await this.getTestFormDTO(this.idPldTest);
 
         if (!this.testFormDTO) {
-            await this.router.navigate(['/dashboard/exam/adminPld/form']);
+            this.mensajeService.error('No se encontró el examen, por favor reintente de nuevo');
+            await this.router.navigate(['/dashboard/exam/adminPld']);
         } else {
             this.accion = GridActions.EDIT;
         }

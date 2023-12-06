@@ -25,6 +25,10 @@ import { TestModuleFormDTO } from '@dtos/catalog/test-modules-form-dto';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { LoadingComponent } from 'src/app/views/loading/loading.component';
 import { AG_GRID_LOCALE_ES } from 'src/locale.es';
+import { ConfirmationModalComponent } from '@sharedComponents/confirmation-modal/confirmation-modal.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { GeneralConstant } from '@utils/general-constant';
+import { GridActions } from '@utils/grid-action';
 
 // import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 
@@ -47,13 +51,15 @@ import { AG_GRID_LOCALE_ES } from 'src/locale.es';
         LoadingComponent
         // RowGroupingModule
     ],
+    providers:
+    [
+        BsModalService
+    ]
 })
 export class PldFormComponent implements OnInit {
     private idPldTest: number;
     protected testFormDTO = new TestFormDTO();
-    public end_date: Date;
-    protected today = new Date();
-    protected accion: string = 'Alta';
+    protected accion: string = GridActions.ADD;
     protected questions: QuestionFormDTO[] = [];
     protected assigned_users: string[] = [];
     protected disableSubmit: boolean = false;
@@ -92,6 +98,7 @@ export class PldFormComponent implements OnInit {
         private testsService: TestsService,
         private usersService: UsersService,
         private mensajeService: MensajeService,
+        private modalService: BsModalService,
         private activatedRoute: ActivatedRoute,
         private router: Router
     ) { }
@@ -139,7 +146,7 @@ export class PldFormComponent implements OnInit {
         if (!this.testFormDTO) {
             await this.router.navigate(['/dashboard/exam/adminPld/form']);
         } else {
-            this.accion = 'Edición';
+            this.accion = GridActions.EDIT;
         }
     }
     /**
@@ -150,6 +157,7 @@ export class PldFormComponent implements OnInit {
             this.isLoading = true;
             const data = await this.testsService.getPldFormDTO(idPldTest);
             this.testFormDTO = data.test;
+            this.disableMaxAttempts = data.disable_attempts;
             
             this.testFormDTO.end_date = new Date(data.test.end_date);
             this.testFormDTO.start_date = new Date(data.test.start_date);
@@ -171,9 +179,6 @@ export class PldFormComponent implements OnInit {
             });
 
             this.assigned_users = data.assigned_users;
-            if(data.assigned_users.length > 0){
-                this.disableMaxAttempts = true;
-            }
             this.isLoading = false;
         } catch (error) {
             // Handle the error appropriately (logging, notifying the user, etc.)
@@ -288,7 +293,22 @@ export class PldFormComponent implements OnInit {
         this.ensureTestModuleExists();
         this.calculateScores();
         // Executes the update or add method
-        this.testFormDTO.id > 0 ? this.update() : this.add();
+        const TITULO_MODAL: string = this.accion + ' examen';
+        const MENSAJE_CONFIRMACION: string = 
+        'Una vez que un colaborador haya respondido el examen o la fecha de vigencia haya comenzado, '+
+        'no se podrán realizar modificaciones en los intentos. <b> ¿Está seguro de que desea continuar?</b>';
+        const modal = this.modalService.show(ConfirmationModalComponent);
+        
+        (<ConfirmationModalComponent>modal.content).showConfirmationModal(
+        TITULO_MODAL,
+        MENSAJE_CONFIRMACION
+        );
+
+        (<ConfirmationModalComponent>modal.content).onClose.subscribe(result => {
+            if (result === true) {
+                this.testFormDTO.id > 0 ? this.update() : this.add();
+            } 
+        });
     }
 
     /**

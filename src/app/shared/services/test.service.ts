@@ -37,7 +37,7 @@ export class TestsService {
             });
     }
 
-    public getPldFormDTO(idPldTest: number): Promise<{test: TestFormDTO, assigned_users: string[]}> {
+    public getPldFormDTO(idPldTest: number): Promise<{test: TestFormDTO, assigned_users: string[], disable_attempts: boolean}> {
         let data = {
             user_id: Number(localStorage.getItem('user_id')),
         };

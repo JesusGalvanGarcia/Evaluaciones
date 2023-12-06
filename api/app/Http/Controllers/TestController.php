@@ -13,6 +13,7 @@ use App\Services\TestModuleService;
 use App\Services\TestService;
 use App\Services\UserEvaluationService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -84,14 +85,14 @@ class TestController extends Controller
                     'end_date',
                 )
                 ->with([
-                    'test_modules' => function ($query) use ($id_test) {
+                    'test_modules' => function ($query) {
                         $query->select(
                             'id', 
                             'test_id'
                         );
                 
                         $query->with([
-                            'questions' => function ($query) use ($id_test) {
+                            'questions' => function ($query) {
                                 $query->select(
                                     'id', 
                                     'description', 
@@ -99,7 +100,7 @@ class TestController extends Controller
                                     'module_id'
                                 );
                                 $query->with([
-                                    'answers' => function ($query) use ($id_test) {
+                                    'answers' => function ($query) {
                                         $query->select(
                                             'id',
                                             'description',
@@ -120,11 +121,24 @@ class TestController extends Controller
                     'message' => 'Verifica la información.',
                     'code' => $this->prefix . 'X203'
                 ], 400);
+            $test->start_date = Carbon::parse($test->start_date)->toDateTimeString();
+            $test->end_date = Carbon::parse($test->end_date)->toDateTimeString();
+
+            // El siguiente apartado es para deshabilitar la modificación de los intentos
+            $has_user_evaluations_started = UserEvaluation::select('user_evaluation_id')
+            ->join('user_tests', 'user_tests.user_evaluation_id', 'user_evaluations.id')
+            ->where('user_tests.test_id', $test->id)
+            ->where('user_evaluations.status_id', '>', 1)
+            ->pluck('user_evaluation_id')
+            ->isNotEmpty();
+            $is_test_in_dates = Carbon::today() < $test->end_date && Carbon::today() > $test->start_date;
+
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Detalle de la prueba consultado correctamente',
+                'disable_attempts' => $has_user_evaluations_started || $is_test_in_dates,
+                'assigned_users' => $assigned_users,
                 'test' => $test,
-                'assigned_users' => $assigned_users
             ]);
         } catch (Exception $e) {
 
@@ -439,15 +453,11 @@ class TestController extends Controller
                     'code' => $this->prefix . 'X203'
                 ], 404);
             }
-            $userEvaluationIds = UserEvaluation::select('user_evaluation_id')
-            ->join('user_tests', 'user_tests.user_evaluation_id', 'user_evaluations.id')
-            ->where('user_tests.test_id', $id)
-            ->pluck('user_evaluation_id')
-            ->toArray();
-            UserEvaluation::whereIn('id', $userEvaluationIds)->delete();
-            UserTest::whereIn('user_evaluation_id', $userEvaluationIds)->delete();
+            
+            UserEvaluationService::deleteUserEvaluationAndTests($id, $user->id);
+
+            $test->update(['deleted_by'=> $user->id]);
             $test->delete(); // SoftDelete
-    
             DB::commit();
 
             

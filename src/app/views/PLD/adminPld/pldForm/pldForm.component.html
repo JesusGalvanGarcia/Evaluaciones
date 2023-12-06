@@ -94,6 +94,7 @@
                   class="form-control datepicker-80"
                   bsDatepicker
                   [(ngModel)]="testFormDTO.start_date"
+                  [maxDate]="testFormDTO.end_date"
                 >
               </div>
             <!-- Fecha de Vencimiento  -->
@@ -104,7 +105,7 @@
                   placeholder="Fecha de vencimiento"
                   class="form-control datepicker-80"
                   bsDatepicker
-                  [minDate]="today"
+                  [minDate]="testFormDTO.start_date"
                   [(ngModel)]="testFormDTO.end_date"
                 >
               </div>

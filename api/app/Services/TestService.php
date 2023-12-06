@@ -15,6 +15,7 @@ use App\Models\UserEvaluation;
 use App\Models\UserTest;
 use Illuminate\Support\Facades\DB;
 use App\Mail\sendCertificate as sendEmails;
+use Carbon\Carbon;
 
 class TestService extends ServiceProvider
 {
@@ -148,7 +149,22 @@ class TestService extends ServiceProvider
             QuestionService::createOrUpdateQuestionsAndAnswers($module, $module['id'], $user_id);
         }
 
-        UserEvaluationService::updateUserEvaluationAndTests($assigned_users, $test, $user_id);
+        // El siguiente apartado es para deshabilitar la modificación de los intentos
+        $has_user_evaluations_started = UserEvaluation::select('user_evaluation_id')
+        ->join('user_tests', 'user_tests.user_evaluation_id', 'user_evaluations.id')
+        ->where('user_tests.test_id', $test->id)
+        ->where('user_evaluations.status_id', '>', 1)
+        ->pluck('user_evaluation_id')
+        ->isNotEmpty();
+        $is_test_in_dates = Carbon::today() < $test->end_date && Carbon::today() > $test->start_date;
+        if(!($has_user_evaluations_started || $is_test_in_dates)){
+            UserEvaluationService::deleteUserEvaluationAndTests($test->id, $user_id);
+            if($assigned_users){
+                foreach ($assigned_users as $user) {
+                    UserEvaluationService::createUserEvaluationAndTests($user, $test, $user_id);
+                }
+            }
+        }
         return $createUpdateTest;
     }
 

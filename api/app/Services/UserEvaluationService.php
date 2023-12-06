@@ -33,6 +33,31 @@ class UserEvaluationService extends ServiceProvider
         }
     }
 
+    public static function deleteUserEvaluationAndTests($test_id, $requestUserId){
+        $userEvaluationIds = UserEvaluation::select('user_evaluation_id')
+            ->join('user_tests', 'user_tests.user_evaluation_id', 'user_evaluations.id')
+            ->where('user_tests.test_id', $test_id)
+            ->pluck('user_evaluation_id')
+            ->toArray();
+
+        $user_tests=UserTest::whereIn('user_evaluation_id', $userEvaluationIds)->get();
+            $user_tests->each(function ($user_test) use($requestUserId) {
+                $user_test->update(['deleted_by'=> $requestUserId]);
+                $user_test->delete();
+            });
+
+        $user_evaluations = UserEvaluation::whereIn('id', $userEvaluationIds)->get();
+            $user_evaluations->each(function ($user_evaluation) use($requestUserId) {
+                $user_evaluation->update(['deleted_by'=> $requestUserId]);
+                $user_evaluation->delete();
+            });
+    }
+
+    /**
+     * @deprecated 0
+     * El siguiente método no se utiliza, pero se deja como idea. Mantiene los usuarios que ya están dados
+     * de alta y modifica los que se agregan y eliminan, pero sin actualizar los existentes.
+     */
     public static function updateUserEvaluationAndTests($assigned_users, $testData, $requestUserId)
     {
         $userIdsExistent = UserEvaluation::select('user_id')
@@ -40,15 +65,12 @@ class UserEvaluationService extends ServiceProvider
             ->where('user_tests.test_id', $testData->id)
             ->pluck('user_id')
             ->toArray();
-        if($userIdsExistent->isNotEmpty()){
-        }
 
         $userEvaluationIdsExistent = UserEvaluation::select('user_evaluation_id')
             ->join('user_tests', 'user_tests.user_evaluation_id', 'user_evaluations.id')
             ->where('user_tests.test_id', $testData->id)
             ->pluck('user_evaluation_id')
             ->toArray();
-
         
         $userEvaluationIdsPersistent = UserEvaluation::select('user_evaluation_id')
             ->join('user_tests', 'user_tests.user_evaluation_id', 'user_evaluations.id')
@@ -61,10 +83,17 @@ class UserEvaluationService extends ServiceProvider
         $evaluationIdsToDelete = array_diff($userEvaluationIdsExistent, $userEvaluationIdsPersistent);
         $userToBeAdded = array_diff($assigned_users, $userIdsExistent);
 
-        UserTest::whereIn('user_evaluation_id', $evaluationIdsToDelete)->delete();
+        $user_tests=UserTest::whereIn('user_evaluation_id', $evaluationIdsToDelete)->get();
+            $user_tests->each(function ($user_test) use($requestUserId) {
+                $user_test->update(['deleted_by'=> $requestUserId]);
+                $user_test->delete();
+            });
 
-        // Eliminar user_evaluation_id que no están en assigned_users
-        UserEvaluation::whereIn('id', $evaluationIdsToDelete)->delete();
+        $user_evaluations = UserEvaluation::whereIn('id', $evaluationIdsToDelete)->get();
+            $user_evaluations->each(function ($user_evaluation) use($requestUserId) {
+                $user_evaluation->update(['deleted_by'=> $requestUserId]);
+                $user_evaluation->delete();
+            });
 
         // Actualizar UserTest existentes y agregar nuevos según sea necesario
         foreach ($userToBeAdded as $user) { 

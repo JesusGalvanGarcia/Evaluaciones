@@ -64,4 +64,5 @@ export interface Evaluation {
   max_score: string;
   min_score: string;
   correct_answers_count:string;
+  detalle:boolean;
 }

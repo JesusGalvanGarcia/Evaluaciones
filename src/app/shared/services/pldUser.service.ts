@@ -56,6 +56,20 @@ export class PLDUserService {
         throw data;
       });
   }
+  GetListExams(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl +this.controllerUrl+  "/showExams", data)
+    .then(({ data }: any) => {
+      
+      return data;
+    })
+    .catch(({ response }: any) => {
+
+      const { data } = response
+    
+      throw data;
+    });
+  }
 
 }
 

@@ -23,7 +23,8 @@ class UserTest extends Model
         'created_at',
         'attempts',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
+     
     ];
 
     public function user_evaluation()

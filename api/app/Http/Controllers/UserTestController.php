@@ -69,7 +69,7 @@ class UserTestController extends Controller
 
             // Se valida si el usuario tiene asignada la prueba y si existe.
             $user_test = UserTest::find($id);
-
+          
             if (!$user_test)
                 return response()->json([
                     'title' => 'Prueba no encontrada',
@@ -121,7 +121,7 @@ class UserTestController extends Controller
                 ->find($user_test->test_id);
 
             $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
-
+           
             if ($user_evaluation->status_id == 1)
                 $user_evaluation->update([
                     'status_id' => 2

@@ -35,6 +35,7 @@ export class PLDComponent implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Start,
+       
         }
       };
       return component;

@@ -283,15 +283,74 @@ class PLDUsersController extends Controller
     /**
      * Display the specified resource.
      */
+    public function showExams(Request $request)
+    {
+      
+        $user_test2 = UserEvaluation::select(
+            'user_evaluations.id as user_evaluation_id',
+            'user_evaluations.evaluation_id',
+            'user_evaluations.user_id as collaborator_id',
+            DB::raw("CONCAT(users.name, ' ', users.father_last_name, ' ', users.mother_last_name) as collaborator_name"),
+            'evaluations.name as evaluation_name',
+            'tests.name as test_name', 
+            'tests.start_date as start_date', 
+            'tests.end_date as end_date', 
+            'user_evaluations.finish_date',
+            'status.description as status',
+            'user_tests.id as user_test_id',
+            'user_tests.total_score',
+            'user_tests.attempts'
+        )
+        ->from('user_evaluations')
+        ->join('users', 'user_evaluations.user_id', '=', 'users.id')
+        ->join('evaluations', 'user_evaluations.evaluation_id', '=', 'evaluations.id')
+        ->join('tests', 'user_evaluations.evaluation_id', '=', 'tests.evaluation_id') 
+        ->join('status', function ($join) {
+            $join->on('user_evaluations.status_id', '=', 'status.status_id')
+                ->where('status.table_name', '=', 'user_evaluations');
+        })
+        ->leftJoin('user_tests', 'user_evaluations.id', '=', 'user_tests.user_evaluation_id')
+        ->where([
+            ['user_evaluations.evaluation_id', '=', 2],
+            ['user_tests.attempts', '=', DB::raw('user_evaluations.actual_attempt')],
+            ['user_tests.test_id', '=', DB::raw('tests.id')],
+            ['user_tests.test_id', '=', $request->test_id] // Nueva condición para filtrar cuando test_id sea 101
+        ])
+        ->get();
+     
+        $test = Test::find($request->test_id);
+
+        if ($user_test2->count() == 0) {
+            // Create a default UserTest instance with additional properties
+            $user_test = new UserTest(); 
+            $user_test->max_attempts = $test->max_attempts;
+            $user_test->min_score = $test->min_score;
+            $user_test->detalle = false; // Set detalle to false for the default case
+            $user_test2->push($user_test);
+        } else {
+            // Set detalle to true and update max_attempts and min_score for each item in $user_test2
+            $user_test2->each(function ($item) use ($test) {
+                $item->detalle = true;
+                $item->max_attempts = $test->max_attempts;
+                $item->min_score = $test->min_score;
+            });
+        }
+        
+        
+        
+
+        return response()->json([
+            'title' => 'Proceso terminado',
+            'message' => 'Examenes consultados correctamente',
+          
+            'test'=>$user_test2
+        ]);
+    }
     public function show(string $user_evaluation_id)
     {
         //
         try{ //Traer los datos del detalle de examen
-            $user_test = UserTest::select('user_tests.*', 'tests.max_attempts', 'tests.max_score', 'tests.min_score')
-            ->leftJoin('tests', 'user_tests.test_id', '=', 'tests.id')
-            ->where('user_evaluation_id', $user_evaluation_id)
-            ->whereNotNull('finish_date')
-            ->get();
+        
             $user_test2 = UserTest::select(
                 'user_tests.*',
                 'tests.max_attempts',
@@ -307,8 +366,27 @@ class PLDUsersController extends Controller
             ->where('user_evaluation_id', $user_evaluation_id)
             ->whereNotNull('finish_date')
             ->get();
-        
-        
+            if ($user_test2->count() == 0) {
+                // Create a default UserTest instance with additional properties
+                $userTest = UserTest::where('user_evaluation_id', $user_evaluation_id)->first();
+                $test= Test::find($userTest->test_id);
+               
+                $user_test = new UserTest();
+                $user_test->max_attempts = $test->max_attempts;
+                $user_test->min_score = $test->min_score;
+                $user_test->total_score = 0;
+                $user_test->detalle = false;
+                $user_test2->push($user_test);
+            } else {
+    
+                $user_test2->each(function ($item) {
+                    $item->detalle = true;
+                });
+                
+            
+            }
+            
+            
             return $user_test2;
     
 
@@ -332,7 +410,10 @@ class PLDUsersController extends Controller
     {
         //
     }
-
+    public function getExam(string $id)
+    {
+        //
+    }
     /**
      * Update the specified resource in storage.
      */

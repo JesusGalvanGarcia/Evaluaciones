@@ -6,7 +6,7 @@ import { SidenavComponent } from './views/sidenav/sidenav.component';
 import { PlanComponent } from './views/plan/plan.component';
 import { ActionPlanComponent } from './views/action-plan/action-plan.component';
 import { UserTestComponent } from './views/user-test/user-test.component';
-
+import { UserExamComponent } from './views/user-exam/user-exam.component';
 
 const routes: Routes = [
   {
@@ -43,6 +43,8 @@ const routes: Routes = [
 
   { path: 'plan-accion/:user_action_plan_id', component: ActionPlanComponent, data: { routeName: 'Consultar Pagos TP' } },
   { path: 'prueba/:user_test_id', component: UserTestComponent, data: { routeName: 'Consultar Prueba del Usuario' } },
+  { path: 'exam/:user_test_id', component: UserExamComponent, data: { routeName: 'Consultar Examen del Usuario' } },
+
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 
 ];

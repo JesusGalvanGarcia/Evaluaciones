@@ -1,12 +1,12 @@
 <!-- template.component.html -->
 
-<div class="history-container">
+<div class="history-container" >
   <app-loading *ngIf="isLoading==true"></app-loading>                            
 
   <div style="text-align: center;">
     <span class="attempt-title">Historial de intentos realizados en el examen</span>
   </div>
-  <div *ngIf="test.length !== 0" style="text-align: center;">
+  <div *ngIf="test[0].detalle " style="text-align: center;">
     <div class="table-responsive">
       <table class="table attempt-table">
         <thead>
@@ -35,29 +35,31 @@
         </tbody>
       </table>
     </div>
-    <div *ngIf="test.length !== 0">
-      <span class="attempt-title">Detalles</span>
-      <div class="details-container">
-        <div class="detail-item">
-          <span class="detail-title">Intentos disponibles en este examen:</span>&nbsp; 
-          <span class="detail-info" *ngIf="((test.length )!=getNumber(test[0].max_attempts))&&max < getNumber(test[0].min_score)">{{getNumber(test[0].max_attempts)-(test.length ) }}</span>&nbsp; 
-          <span class="detail-info" *ngIf="((test.length )==getNumber(test[0].max_attempts))||max >= getNumber(test[0].min_score) ">0</span>&nbsp; 
 
-        </div>
-        <div class="detail-item">
-          <span class="detail-title">Estatus:</span>&nbsp; 
-          <span class="detail-info" style="color:green" *ngIf="max >= getNumber(test[0].min_score)">Acreditado</span>
-          <span class="detail-info" style="color:red" *ngIf="max < getNumber(test[0].min_score)">Sin  acreditar</span>&nbsp; 
 
-        </div>
-        <div class="detail-item">
-          <span class="detail-title">Calificación mínima:</span>&nbsp; 
-          <span class="detail-info">{{ test[0].min_score }}</span>&nbsp; 
-        </div>
+  </div>
+  <div *ngIf="!test[0].detalle " class="no-records">
+    <span style="text-align: center;">No hay registros disponibles aún.</span>
+  </div>
+  <div style="text-align: center;" >
+    <span class="attempt-title">Detalles</span>
+    <div class="details-container">
+      <div class="detail-item">
+        <span class="detail-title">Intentos disponibles:</span>&nbsp; 
+        <span class="detail-info" *ngIf="((test.length )!=getNumber(test[0].max_attempts))&&max < getNumber(test[0].min_score)">{{getNumber(test[0].max_attempts)-(test[0].detalle==false?0:test.length) }}</span>&nbsp; 
+        <span class="detail-info" *ngIf="((test.length )==getNumber(test[0].max_attempts))||max >= getNumber(test[0].min_score) ">0</span>&nbsp; 
+
+      </div>
+      <div class="detail-item">
+        <span class="detail-title">Estatus:</span>&nbsp; 
+        <span class="detail-info" style="color:green" *ngIf="max >= getNumber(test[0].min_score)">Acreditado</span>
+        <span class="detail-info" style="color:red" *ngIf="max < getNumber(test[0].min_score)">Sin  acreditar</span>&nbsp; 
+
+      </div>
+      <div class="detail-item">
+        <span class="detail-title">Calificación mínima:</span>&nbsp; 
+        <span class="detail-info">{{ test[0].min_score }}</span>&nbsp; 
       </div>
     </div>
-  </div>
-  <div *ngIf="test.length === 0" class="no-records">
-    <span>No hay registros disponibles aún.</span>
   </div>
 </div>

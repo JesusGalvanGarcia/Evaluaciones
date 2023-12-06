@@ -34,6 +34,8 @@
 
 .details-container {
   margin-top: 20px;
+  text-align: center;
+  justify-content: center;
   display: flex;
   gap: 2%;
 }
@@ -48,6 +50,7 @@
 
 .detail-title {
   font-weight: bold;
+  text-align: center;
 }
 
 /* Estilos adicionales */
@@ -55,6 +58,7 @@
   margin-top: 20px;
   font-style: italic;
   color: #888;
+  text-align: center;
 }
 /* Estilos para dispositivos móviles */
 @media screen and (max-width: 600px) {

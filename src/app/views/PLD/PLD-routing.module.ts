@@ -1,3 +1,4 @@
+import { UserExamComponent } from './../user-exam/user-exam.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,7 +8,7 @@ import { PldFormComponent } from './adminPld/pldForm/pldForm.component';
 import { PLDExamComponent } from '../PLDExam/PLDExam.component';
 
 const routes: Routes = [
-    {
+   {
         path: '', 
         component: PLDComponent
     },
@@ -26,6 +27,10 @@ const routes: Routes = [
     {
         path: 'adminPld/form',
         component: PldFormComponent
+    },
+    {
+        path: 'review/:id',
+        component: UserExamComponent
     },
 ];
 

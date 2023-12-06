@@ -1,0 +1,87 @@
+<div class="containerz">
+<div class="container mt-4 mb-4">
+  
+    <mat-card class="exam-card" *ngIf="!loading; else loadingSpinner">
+        <mat-card-header class="exam-header">
+            <div class="header-content">
+              <mat-card-title>
+               <div>
+                {{ test.name }}
+               </div>
+            </mat-card-title>
+            
+            </div>
+          </mat-card-header>
+          
+          <mat-card-content class="exam-content">
+            <div *ngIf="test.modular == 0" class="row">
+                <div class="col-md-4 mb-4 result-info">
+                  <table class="info-table">
+                    <tr>
+                        <th colspan="2">Detalles del exámen <br/></th>
+                      </tr>
+                    <tr>
+                      <td>Calificación Máxima:</td>
+                      <td>{{ test.max_score }}</td>
+                    </tr>
+                    <tr>
+                      <td>Calificación Obtenida:</td>
+                      <td>{{ score }}</td>
+                    </tr>
+                    <tr>
+                    <td>Minimo para acreditar:</td>
+                    <td>{{ test.min_score }}</td>
+                      </tr>
+                      <tr>
+                        <td>Estatus:</td>
+                        <td *ngIf="score<test.min_score" style="color:green">Acreditado</td>
+                        <td *ngIf="score>=test.min_score" style="color:red">No  acreditado</td>
+
+                          </tr>
+                  </table>
+                </div>
+              </div>
+        <div class="row mt-4 mb-4">
+          <div class="col-md-12">
+            <button type="button" mat-stroked-button (click)="redirectToPage();">Regresar</button>
+          </div>
+        </div>
+  
+        <mat-tab-group>
+          <mat-tab *ngFor="let module of modules" [label]="module.name">
+            <mat-card *ngIf="test.modular == 1" class="module-card">
+              <mat-card-header>
+                <mat-card-title>Notas:</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <p>{{ module.note }}</p>
+              </mat-card-content>
+            </mat-card>
+            <ul class="question-list mt-4">
+                <li class="question-item" *ngFor="let question of module.questions">
+                  <div class="question-header">
+                    <h5 class="question-title">{{ question.description.split('.')[0] }}</h5>
+                    <p class="question-subtitle">{{ question.description.split('.')[1] }}</p>
+                  </div>
+                  <mat-selection-list [multiple]="false" class="answer-list">
+                    <mat-list-option *ngFor="let answer of question.answers" [selected]="answer.user_answer_id" readonly>
+                      {{ answer.description }}
+                    </mat-list-option>
+                  </mat-selection-list>
+                </li>
+              </ul>
+              
+              
+              
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
+  
+    <ng-template #loadingSpinner>
+      <div class="loading-spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use App\Mail\PerformanceEvaluation as MailPerformanceEvaluation;
 use App\Models\Process;
+use App\Models\Files;
+
 use App\Models\Test;
 use App\Models\UserCollaborator;
 use App\Models\UserEvaluation;
@@ -135,6 +137,25 @@ class TestService extends ServiceProvider
             foreach ($assigned_users as $user) {
                 UserEvaluationService::createUserEvaluationAndTests($user, $createUpdateTest, $user_id);
             }
+        }
+        //agregando registros para  files
+        $users = User::all();
+        foreach($users as $user)
+        {
+            $file = new Files();
+
+            // Establecer los valores para cada columna
+            $file->name = $user->name." ".$user->father_last_name.".pdf";
+            $file->path = 'PLD/Certificados/';   
+            $file->user_id = $user->id;          
+            $file->evaluation_id = 2;          
+            $file->test_id = $createUpdateTest->id;                 
+            $file->created_by = $user_id;      
+            $file->updated_by = $user_id;        
+            $file->created_at=Carbon::now()->format('Y-m-d');
+            $file->updated_at=Carbon::now()->format('Y-m-d');
+            // Guardar el registro en la base de datos
+            $file->save();
         }
         return $createUpdateTest;
     }

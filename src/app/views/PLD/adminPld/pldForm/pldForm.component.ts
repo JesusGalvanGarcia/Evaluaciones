@@ -297,7 +297,7 @@ export class PldFormComponent implements OnInit {
         const TITULO_MODAL: string = this.accion + ' examen';
         const MENSAJE_CONFIRMACION: string = 
         'Una vez que un colaborador haya respondido el examen o la fecha de vigencia haya comenzado, '+
-        'no se podrán realizar modificaciones en los intentos. <b> ¿Está seguro de que desea continuar?</b>';
+        'no se podrán realizar modificaciones en los intentos.  ¿Está seguro de que desea continuar?';
         const modal = this.modalService.show(ConfirmationModalComponent);
         
         (<ConfirmationModalComponent>modal.content).showConfirmationModal(

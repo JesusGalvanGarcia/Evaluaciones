@@ -85,7 +85,7 @@ class TestService extends ServiceProvider
 
         return $clasification;
     }
-    
+
     static function sendTestMail($evaluation_data)
     {
 
@@ -114,7 +114,7 @@ class TestService extends ServiceProvider
     static function sendCertificateMail($name,$email,$emailLid,$path,$file)
     {
 
-    
+
         // $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
         //$mail = Mail::to("")->send(new Certificate($evaluated_user));
         Mail::to($email)->send(new sendEmails($name,$emailLid,$path,$file));
@@ -124,7 +124,7 @@ class TestService extends ServiceProvider
     static function createPldTest($test, $user_id, $assigned_users){
         // Convertir $test a un objeto si no lo es
         $test = is_array($test) ? (object) $test : $test;
-    
+
         $test->evaluation_id = 2;
         $test->max_score = 100;
         $createUpdateTest = self::createUpdateTest($test, $user_id);
@@ -132,7 +132,7 @@ class TestService extends ServiceProvider
         foreach ($test->test_modules as $module) {
             QuestionService::createOrUpdateQuestionsAndAnswers($module, $test_module->id, $user_id);
         }
-    
+
         if($assigned_users){
             foreach ($assigned_users as $user) {
                 UserEvaluationService::createUserEvaluationAndTests($user, $createUpdateTest, $user_id);
@@ -146,12 +146,12 @@ class TestService extends ServiceProvider
 
             // Establecer los valores para cada columna
             $file->name = $user->name." ".$user->father_last_name.".pdf";
-            $file->path = 'PLD/Certificados/';   
-            $file->user_id = $user->id;          
-            $file->evaluation_id = 2;          
-            $file->test_id = $createUpdateTest->id;                 
-            $file->created_by = $user_id;      
-            $file->updated_by = $user_id;        
+            $file->path = 'PLD/Certificados/';
+            $file->user_id = $user->id;
+            $file->evaluation_id = 2;
+            $file->test_id = $createUpdateTest->id;
+            $file->created_by = $user_id;
+            $file->updated_by = $user_id;
             $file->created_at=Carbon::now()->format('Y-m-d');
             $file->updated_at=Carbon::now()->format('Y-m-d');
             // Guardar el registro en la base de datos
@@ -159,7 +159,7 @@ class TestService extends ServiceProvider
         }
         return $createUpdateTest;
     }
-    
+
     static function updatePldTest($test, $user_id, $assigned_users){
         $test = is_array($test) ? (object) $test : $test;
         $test->evaluation_id = 2;
@@ -186,6 +186,11 @@ class TestService extends ServiceProvider
                 }
             }
         }
+        else{
+            if($assigned_users){
+                UserEvaluationService::updateUserEvaluationAndTests($assigned_users, $test, $user_id);
+            }
+        }
         return $createUpdateTest;
     }
 
@@ -193,7 +198,7 @@ class TestService extends ServiceProvider
         $test = collect($test);
     if($test-> has('id')){
         $createdUpdatedTest = Test::where(['id' => $test->get('id')])
-            ->update( 
+            ->update(
             [
                 'evaluation_id' => $test->get('evaluation_id'),
                 'name' => $test->get('name'),
@@ -228,5 +233,5 @@ class TestService extends ServiceProvider
     }
         return $createdUpdatedTest;
     }
-    
+
 }

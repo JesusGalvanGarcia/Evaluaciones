@@ -307,15 +307,15 @@ export class PldFormComponent implements OnInit {
         });
      /*   question.answers.forEach((answer) => {
             if(!answer.description){
-                debugger
+                
                 return;
             }
             if (answer.description == event.value) {
                 answer.checked = true;
-                debugger
+                
             } else {
                 answer.checked = false;
-                debugger
+                
             }
         });*/
     }
@@ -331,12 +331,12 @@ export class PldFormComponent implements OnInit {
         
         // Validate required fields
         if (form.invalid) {
-            debugger
+            
             Utilities.validateRequiredFields(form);
-            debugger
+            
             return;
         }
-        debugger
+        
         // Calculates Scores per question
         this.ensureTestModuleExists();
     

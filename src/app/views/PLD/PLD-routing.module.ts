@@ -6,11 +6,12 @@ import { PLDComponent } from './PLD.component';
 import { AdminPldComponent } from './adminPld/adminPld.component';
 import { PldFormComponent } from './adminPld/pldForm/pldForm.component';
 import { PLDExamComponent } from '../PLDExam/PLDExam.component';
-
+import{AuthGuardService} from '../../shared/http/auth.service';
 const routes: Routes = [
    {
         path: '', 
-        component: PLDComponent
+        component: PLDComponent,
+       
     },
     {
         path: 'exams/:id/:attempts',
@@ -18,7 +19,7 @@ const routes: Routes = [
     },
     {
         path: 'adminPld',
-        component: AdminPldComponent
+        component: AdminPldComponent,
     },
     {
         path: 'adminPld/form/:idPldTest',

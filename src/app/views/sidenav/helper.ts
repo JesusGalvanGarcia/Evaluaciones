@@ -5,6 +5,7 @@ export interface INavbarData {
     icon?: string;
     label: string;
     expanded?: boolean;
+    active?: boolean;
     items?: INavbarData[];
 }
 

@@ -3,6 +3,7 @@ import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/
 import { Router } from '@angular/router';
 import { fadeInOut, INavbarData } from './helper';
 import { navbarData } from './nav-data';
+import { navbarDataAdmin } from './nav-data';
 
 
 interface SideNavToggle {
@@ -34,6 +35,11 @@ export class SidenavComponent implements OnInit {
   collapsed = true;
   screenWidth = 0;
   navData = navbarData;
+   
+  navDataCopy = navbarDataAdmin;
+  
+        
+  user:number;
   multiple: boolean = false;
 
   @HostListener('window:resize', ['$event'])
@@ -53,13 +59,17 @@ export class SidenavComponent implements OnInit {
   }
 
   ngOnInit(): void {
- 
+      this.user=Number(localStorage.getItem("user_id"));
+      if(this.user==16||this.user==67)
+      this.navData=this.navDataCopy;
+      
+
       this.screenWidth = window.innerWidth;
       if(this.screenWidth <= 768 ) {
         this.collapsed = true;
       }
   }
-
+  
   toggleCollapse(): void {
  
     this.collapsed = !this.collapsed;

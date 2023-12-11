@@ -63,19 +63,22 @@
                       [routerLinkActiveOptions]="{exact: true}"
                     >
                     <div *ngIf="collapsed" class="active-sublevel">
+                     
                         <i class="sidenav-link-icon" [class]="item.icon"></i> &nbsp;
                         <span class="sublevel-link-text" @fadeInOut (click)="toggleCollapse()">
+                       
                           {{ item.label }}
+                       
                         </span>
-                      </div>
-                      
+                     
+                    </div>
                       <div *ngIf="!collapsed && screenWidth>700" class="active-sublevel">
                         <i class="sidenav-link-icon" [class]="item.icon"></i> &nbsp;
                       </div>
                       <div *ngIf="!collapsed && screenWidth<700" class="active-sublevel">
                         <i class="sidenav-link-icon" [class]="item.icon"></i> &nbsp;
                         <span class="sublevel-link-text" @fadeInOut (click)="toggleCollapse()">
-                          {{ item.label }}
+                          {{ item.label }} 
                         </span>&nbsp;
                       </div>
                       

@@ -105,7 +105,6 @@ export class PldFormComponent implements OnInit {
     ) { }
 
     async ngOnInit() {
-        console.log(this.testFormDTO)
         await this.getUrlParams();
         if (this.idPldTest > 0) {
             this.loadTestForEditing();
@@ -300,10 +299,12 @@ export class PldFormComponent implements OnInit {
      * and assigns the checked attribute to true
      */
     protected onAnswerChange(event: MatRadioChange, question: QuestionFormDTO,index:number) {
-       console.log(index)
-       question.answers.forEach((answer, i) => {
+        if(event.value==undefined){
+            return;
+        }
+        question.answers.forEach((answer, i) => {
         answer.checked = (i === index); 
-      });       console.log(question.answers)
+        });
      /*   question.answers.forEach((answer) => {
             if(!answer.description){
                 debugger
@@ -317,7 +318,6 @@ export class PldFormComponent implements OnInit {
                 debugger
             }
         });*/
-        console.log(question);
     }
 
     /**

@@ -102,6 +102,7 @@ class UserEvaluationController extends Controller
 
                     return $when->whereIn('user_evaluations.evaluation_id', $evaluations_id);
                 })
+                ->where("user_evaluations.evaluation_id","!=",2)
                 ->get();
 
             $personal_evaluations = UserEvaluation::select(

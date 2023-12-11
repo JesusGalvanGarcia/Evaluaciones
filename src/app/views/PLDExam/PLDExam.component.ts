@@ -175,6 +175,7 @@ export class PLDExamComponent implements OnInit {
     response: any
   ) {
     this.exam_progress = Number(((this.index + 1) * 100) / this.size);
+    this.exam_progress=Number(this.exam_progress.toFixed(0));
     console.log(this.exam_progress);
     //this.PostsaveAnswers(question, answer)
     //Actualizar la pregunta en  el array

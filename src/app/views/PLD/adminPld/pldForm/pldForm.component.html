@@ -20,11 +20,12 @@
       <h3>{{accion}} Examen</h3>
       <mat-tab-group [selectedIndex]="selectedIndex" dynamicHeight>
         <!-- Información General -->
-        <mat-tab label="Información General" style="width:100%">
+        <mat-tab label="Información General" style="width:100%" [disabled]="true">
           <div class="row" style="width:100%">
             <!-- Nombre del Examen -->
             <div class="col-md-6">
               <mat-form-field>
+                
                 <mat-label>Nombre del Examen</mat-label>
                 <input
                   matInput
@@ -93,6 +94,7 @@
                   placeholder="Fecha de Inicio"
                   class="form-control datepicker-80"
                   bsDatepicker
+                  required
                   [(ngModel)]="testFormDTO.start_date"
                   [maxDate]="testFormDTO.end_date"
                 >
@@ -105,6 +107,7 @@
                   placeholder="Fecha de vencimiento"
                   class="form-control datepicker-80"
                   bsDatepicker
+                  required
                   [minDate]="testFormDTO.start_date"
                   [(ngModel)]="testFormDTO.end_date"
                 >
@@ -118,6 +121,7 @@
                 <textarea 
                   matInput  
                   name="introductionText"
+                  required
                   [(ngModel)]="testFormDTO.introduction_text"
                   placeholder="Breve descripción del examen">
                 </textarea>
@@ -126,13 +130,13 @@
             </div>
           </div>
           <div style="float:right">
-            <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">
+            <button type="submit" class="btn btn-primary btn-sm" (click)="nextStep(form)">
               Continuar
             </button>
           </div>
         </mat-tab>
         <!-- Área Preguntas -->
-        <mat-tab label="Preguntas" #preguntasTab>
+        <mat-tab label="Preguntas" #preguntasTab [disabled]="true">
           <p>
             <button type="button" class="btn btn-primary btn-sm" (click)="addQuestion()">
               <i class="fa-solid fa-plus"></i>
@@ -154,6 +158,7 @@
                       style="height: 100%;" 
                       cdkTextareaAutosize 
                       matInput 
+                      required
                       name="'pregunta'+{{i}}" 
                       [(ngModel)]="question.description" 
                       placeholder="Texto"
@@ -182,7 +187,7 @@
                       required
                       class="example-radio-button" 
                       name="correctAnswer{{i}}{{j}}"
-                      (change)="onAnswerChange($event, question)"
+                      (change)="onAnswerChange($event, question,j)"
                       [value]="answer.description"
                       [checked]="answer.checked">
                         <mat-form-field>
@@ -210,14 +215,14 @@
             </button>
           </div>
           <div style="float:right">
-            <button type="button" class="btn btn-primary btn-sm" (click)="nextStep()">
+            <button type="button" class="btn btn-primary btn-sm" (click)="nextStep(form)">
               Continuar
             </button>
           </div>
 
         </mat-tab>
         <!-- Área de los Colaboradores -->
-        <mat-tab label="Colaboradores">
+        <mat-tab label="Colaboradores" [disabled]="true">
           <div style="padding-bottom:2%">
             <ng-container *ngIf="disableSubmit; else elseTemplate">
               <div class="d-flex justify-content-center">

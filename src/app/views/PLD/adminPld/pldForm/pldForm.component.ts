@@ -29,6 +29,7 @@ import { ConfirmationModalComponent } from '@sharedComponents/confirmation-modal
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { GeneralConstant } from '@utils/general-constant';
 import { GridActions } from '@utils/grid-action';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 
@@ -104,6 +105,7 @@ export class PldFormComponent implements OnInit {
     ) { }
 
     async ngOnInit() {
+        console.log(this.testFormDTO)
         await this.getUrlParams();
         if (this.idPldTest > 0) {
             this.loadTestForEditing();
@@ -247,14 +249,46 @@ export class PldFormComponent implements OnInit {
     /**
      * To move through the Card
      */
-    protected nextStep() {
-        if (this.selectedIndex != 3) {
+    protected nextStep(form: NgForm) {
+     
+        if (this.selectedIndex == 0&&this.isFormValidDate()==true) {
             this.selectedIndex = this.selectedIndex + 1;
+        }
+        else
+        {
+            if (form.invalid) {
+                
+                Utilities.validateRequiredFields(form);
+                 if(this.selectedIndex==1)
+                 this.mensajeService.error('Falta llenar campos de preguntas y respuestas.');
+                return;
+            }
+            else
+            {
+                this.selectedIndex = this.selectedIndex + 1;
+
+            }
         }
     }
     /**
      * To move through the Card
      */
+    private isFormValidDate() {
+        
+        if(this.testFormDTO.name!=undefined&&this.testFormDTO.min_score!=undefined&&this.testFormDTO.max_attempts!=undefined&&this.testFormDTO.start_date!=undefined&&this.testFormDTO.end_date!=undefined&&this.testFormDTO.introduction_text!=undefined)
+        {
+          if(this.selectedIndex==0)
+                return true;
+                else
+                return false;
+            
+        }
+        else    
+        return false   
+      }
+  
+      // Helper function to mark all form fields as touched
+   
     protected previousStep() {
         if (this.selectedIndex != 0) {
             this.selectedIndex = this.selectedIndex - 1;
@@ -265,17 +299,25 @@ export class PldFormComponent implements OnInit {
      * that has the same description as the checked answer
      * and assigns the checked attribute to true
      */
-    protected onAnswerChange(event: MatRadioChange, question: QuestionFormDTO) {
-        question.answers.forEach((answer) => {
+    protected onAnswerChange(event: MatRadioChange, question: QuestionFormDTO,index:number) {
+       console.log(index)
+       question.answers.forEach((answer, i) => {
+        answer.checked = (i === index); 
+      });       console.log(question.answers)
+     /*   question.answers.forEach((answer) => {
             if(!answer.description){
+                debugger
                 return;
             }
             if (answer.description == event.value) {
                 answer.checked = true;
+                debugger
             } else {
                 answer.checked = false;
+                debugger
             }
-        });
+        });*/
+        console.log(question);
     }
 
     /**
@@ -283,16 +325,23 @@ export class PldFormComponent implements OnInit {
      */
     protected sendForm(form: NgForm) {
         // Gets the selected users
+      if(this.selectedIndex==2)
+      {
         this.postAssignedUsers();
-
+        
         // Validate required fields
         if (form.invalid) {
+            debugger
             Utilities.validateRequiredFields(form);
+            debugger
             return;
         }
+        debugger
         // Calculates Scores per question
         this.ensureTestModuleExists();
+    
         this.calculateScores();
+      
         // Executes the update or add method
         const TITULO_MODAL: string = this.accion + ' examen';
         const MENSAJE_CONFIRMACION: string = 
@@ -310,6 +359,7 @@ export class PldFormComponent implements OnInit {
                 this.testFormDTO.id > 0 ? this.update() : this.add();
             } 
         });
+    }
     }
 
     /**
@@ -374,6 +424,7 @@ export class PldFormComponent implements OnInit {
         ) {
             this.testFormDTO.assigned_users = assigned_users_ids as string[];
         } else {
+            if(this.selectedIndex==3)
             this.mensajeService.warning('No se asignó a ningún usuario');
         }
     }

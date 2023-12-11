@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'adelanto-app'`, () => {
+  it(`should have as title 'intranet-app'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('adelanto-app');
+    expect(app.title).toEqual('intranet-app');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('adelanto-app app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('intranet-app app is running!');
   });
 });

@@ -34,8 +34,8 @@
                       </tr>
                       <tr>
                         <td>Estatus:</td>
-                        <td *ngIf="score<test.min_score" style="color:green">Acreditado</td>
-                        <td *ngIf="score>=test.min_score" style="color:red">No  acreditado</td>
+                        <td *ngIf="(+score)>=(+test.min_score)" style="color:green">Acreditado</td>
+                        <td *ngIf="(+score)<(+test.min_score)" style="color:red">No  acreditado</td>
 
                           </tr>
                   </table>

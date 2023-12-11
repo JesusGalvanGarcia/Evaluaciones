@@ -26,7 +26,7 @@ export class UserExamComponent  {
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   modules: any;
   test: any;
-  score: any;
+  score: number;
   clasification: any;
 
   constructor(

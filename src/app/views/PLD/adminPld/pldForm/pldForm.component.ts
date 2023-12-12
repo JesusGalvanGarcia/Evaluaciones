@@ -299,9 +299,7 @@ export class PldFormComponent implements OnInit {
      * and assigns the checked attribute to true
      */
     protected onAnswerChange(event: MatRadioChange, question: QuestionFormDTO,index:number) {
-        if(event.value==undefined){
-            return;
-        }
+     
         question.answers.forEach((answer, i) => {
         answer.checked = (i === index); 
         });

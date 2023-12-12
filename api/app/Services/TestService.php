@@ -178,7 +178,7 @@ class TestService extends ServiceProvider
         ->pluck('user_evaluation_id')
         ->isNotEmpty();
         $is_test_in_dates = Carbon::today() < $test->end_date && Carbon::today() > $test->start_date;
-        if(!($has_user_evaluations_started || $is_test_in_dates)){
+        if(!$has_user_evaluations_started && $is_test_in_dates){
             UserEvaluationService::deleteUserEvaluationAndTests($test->id, $user_id);
             if($assigned_users){
                 foreach ($assigned_users as $user) {
@@ -186,11 +186,11 @@ class TestService extends ServiceProvider
                 }
             }
         }
-        else{
+  /*      else{
             if($assigned_users){
                 UserEvaluationService::updateUserEvaluationAndTests($assigned_users, $test, $user_id);
             }
-        }
+        }*/
         return $createUpdateTest;
     }
 

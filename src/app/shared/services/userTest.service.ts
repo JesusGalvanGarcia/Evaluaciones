@@ -20,11 +20,9 @@ export class UserTestService {
 
     return axios.get(environment.apiUrl+this.controllerUrl+ id, { params: data })
       .then(({ data }: any) => {
-        console.log(data)
         return data;
       })
       .catch(({ response }: any) => {
-        console.log(response)
         const { data } = response
        
         throw data;

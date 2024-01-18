@@ -116,7 +116,6 @@ export class ExamsComponent implements OnInit {
    {
     this.pld.GetListExams(data)
     .then((data) => {
-       console.log(data)  //Obtener detalles
      this.test=data.test;
      let maxValue = this.test.reduce((max, item) => Math.max(max, Number(item.total_score)), -Infinity);
      this.max=maxValue;

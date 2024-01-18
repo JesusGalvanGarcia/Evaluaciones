@@ -116,7 +116,6 @@ export class PLDComponent implements OnInit {
     });
     
     dialogRef.afterClosed().subscribe(result => {
-      console.log('El modal se cerró');
     });
     this.closeModalEvent.subscribe(() => {
       dialogRef.close();
@@ -135,12 +134,9 @@ export class PLDComponent implements OnInit {
   }
   getExamns(data: any) {
  
-    console.log(data)
     this.PLDService.GetExamns(data)  //Cargar examen
       .then((response: any) => {
-        console.log(response)
         this.PLDData = response.test;
-        console.log(this.PLDData)
 
         this.isLoading=false;
      

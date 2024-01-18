@@ -36,7 +36,6 @@ export class AttemptsComponent implements OnInit {
    {
     this.pld.GetDetail(data, Number(localStorage.getItem("evaluation_id")))
     .then((data) => {
-       console.log(data)  //Obtener detalles
      this.test=data;
      let maxValue = this.test.reduce((max, item) => Math.max(max, Number(item.total_score)), -Infinity);
      this.max=maxValue;

@@ -8,49 +8,49 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class UserEvaluationService {
-  private controllerUrl = 'user-evaluations/';
+  private controllerUrl = 'user-evaluations';
 
   constructor(private http: HttpClient) { }
-  GetTest(data: any,id:string): Promise<any> {
-    
-    return axios.get(environment.apiUrl+this.controllerUrl+id, {
+  GetTest(data: any, id: string): Promise<any> {
+
+    return axios.get(environment.apiUrl + this.controllerUrl + '/' + id, {
       params: data
     })
-    .then((response) => {
-      return response.data.tests;
-      })      
-    .catch(function (error: any) {
-      return error;
-    });
+      .then((response) => {
+        return response.data.tests;
+      })
+      .catch(function (error: any) {
+        return error;
+      });
   }
 
   GetColaboradorEvaluationsWithParams(data: any): Promise<any> {
-    
-    return axios.get(environment.apiUrl+this.controllerUrl, {
+
+    return axios.get(environment.apiUrl + this.controllerUrl, {
       params: data
     })
-    .then((response) => {
-      return response.data;
-      })      
-    .catch(function (error: any) {
-      return error;
-    });
+      .then((response) => {
+        return response.data;
+      })
+      .catch(function (error: any) {
+        return error;
+      });
   }
 
   GetPersonalEvaluationsWithParams(data: any): Promise<any> {
-    
-    return axios.get(environment.apiUrl+this.controllerUrl, {
+
+    return axios.get(environment.apiUrl + this.controllerUrl, {
       params: data
     })
-    .then((response) => {
-    
-      return response.data.personal_evaluations;
-      })      
-    .catch(function (error: any) {
-      return error;
-    });
+      .then((response) => {
+
+        return response.data.personal_evaluations;
+      })
+      .catch(function (error: any) {
+        return error;
+      });
   }
-  
+
 }
 
 

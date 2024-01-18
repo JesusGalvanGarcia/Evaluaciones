@@ -76,13 +76,10 @@ export class SublevelMenuComponent implements OnInit {
   constructor(public router: Router) {}
 test()
 {
-  console.log("d")
-  console.log(this.collapsed)
   this.collapsed=!this.collapsed;
 
 }
   ngOnInit(): void {
-    console.log("jd")
   }
 
 

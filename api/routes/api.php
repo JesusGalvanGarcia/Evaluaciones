@@ -9,6 +9,8 @@ use App\Http\Controllers\PLDUsersController;
 use App\Http\Controllers\UserTestController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Evaluation360Controller;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Aws\S3\S3Client;
@@ -48,14 +50,35 @@ Route::resource('/user-evaluations', UserEvaluationController::class, [
         'destroy' => 'Borrar Evaluaciones del Usuario'
     ]
 ]);
+Route::resource('/evaluation360', Evaluation360Controller::class, [
+    'names' => [
+        'index' => 'Consultar Evaluaciones del Usuario',
+        'show' => 'Consultar Usuarios',
+    ]
+]);
+Route::post('/evaluation360/changeStatus', [Evaluation360Controller::class, 'changeStatus'])->name('Cambiar status');
+Route::post('/evaluation360/getFinish360', [Evaluation360Controller::class, 'getFinish360'])->name('Consultar reporte 360');
+Route::post('/evaluation360/get360', [Evaluation360Controller::class, 'get360'])->name('Consultar evaluacinoes 360');
+Route::post('/evaluation360/Users', [Evaluation360Controller::class, 'Users'])->name('Consultar users 360');
+Route::post('/evaluation360/Users360', [Evaluation360Controller::class, 'Users360'])->name('Consultar users 360');
+Route::post('/evaluation360/assign', [Evaluation360Controller::class, 'assign'])->name('Asignar clientes  internos');
+Route::post('/evaluation360/assignUsers', [Evaluation360Controller::class, 'assignUsers'])->name('Consultar clientes  internos');
+Route::post('/evaluation360/assign360', [Evaluation360Controller::class, 'assign360'])->name('Consultar clientes  internos');
+Route::post('/evaluation360/assignAsesors', [Evaluation360Controller::class, 'assignAsesors'])->name('Crear asesores');
+Route::post('/evaluation360/getPersonal360', [Evaluation360Controller::class, 'getPersonal360'])->name('Crear asesores');
+Route::post('/evaluation360/getUsersAdmin360', [Evaluation360Controller::class, 'getUsersAdmin360'])->name('Crear asesores');
 
+Route::post('/user-evaluations/getAverages', [UserEvaluationController::class, 'getAverages'])->name('Cosultar promedios');
 
 // Route::post('/user-tests/saveAnswers', [UserTestController::class, 'saveAnswers'])->name('Guardar Respuestas del Usuario');
 Route::post('/user-tests/saveAnswer', [UserTestController::class, 'saveAnswer'])->name('Guardar Respuesta del Usuario');
 Route::post('/PLDUser/saveAnswerPLD', [PLDUsersController::class, 'saveAnswerPLD'])->name('Guardar Respuesta del Usuario');
 Route::post('/PLDUser/showExams', [PLDUsersController::class, 'showExams'])->name('Ver examenes');
-
+Route::post('/user-tests/saveAnswerAverage', [UserTestController::class, 'saveAnswerAverage'])->name('Guardar promedio del modulo');
 Route::post('/user-tests/saveModuleNote', [UserTestController::class, 'saveModuleNote'])->name('Guardar nota del modulo');
+Route::post('/user-tests/saveSuggetions', [UserTestController::class, 'saveSuggetions'])->name('Guardar campos del test');
+Route::post('/user-tests/getPreview', [UserTestController::class, 'getPreview'])->name('Cosultar modulos de test');
+
 Route::post('/user-tests/changeProcess', [UserTestController::class, 'changeProcess'])->name('Cambiar de proceso');
 Route::resource('/user-tests', UserTestController::class, [
     'names' => [

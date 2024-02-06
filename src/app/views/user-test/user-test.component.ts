@@ -18,9 +18,12 @@ export class UserTestComponent {
   typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   modules: any;
   test: any;
+  name:string;
   score: any;
   clasification: any;
-
+  strengths:any;
+  suggestions:any;
+  chance:any;
   constructor(
     private userTestService: UserTestService,
     private route: ActivatedRoute,
@@ -43,13 +46,18 @@ export class UserTestComponent {
     }
 
     this.userTestService.GetEvaluation(searchData, this.user_test_id).
-      then(({ test, score, clasification }) => {
+      then(({ test, score, clasification,user_test,evaluated_user_name }) => {
 
         this.score = score;
         this.clasification = clasification;
         this.test = test;
         this.modules = test.test_modules;
         this.loading = false;
+        this.name=evaluated_user_name;
+        this.strengths=user_test.strengths;
+        this.suggestions=user_test.suggestions;
+        this.chance=user_test.chance;
+
       })
       .catch(({ title, message, code }) => {
 
@@ -61,6 +69,6 @@ export class UserTestComponent {
   }
 
   redirectToPage() {
-    this.router.navigate(['/dashboard/evaluacion']);
+    this.router.navigate(['/dashboard/exam/home']);
   }
 }

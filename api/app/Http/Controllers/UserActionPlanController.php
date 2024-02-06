@@ -212,10 +212,10 @@ class UserActionPlanController extends Controller
                     'code' => $this->prefix . 'X205'
                 ], 400);
 
-            if ($user_evaluation->process_id != 5)
+           /* if ($user_evaluation->process_id != 5)
                 $user_evaluation->update([
                     'process_id' => 4
-                ]);
+                ]);*/
 
             return response()->json([
                 'title' => 'Proceso terminado',
@@ -521,13 +521,25 @@ class UserActionPlanController extends Controller
                 'updated_by' => $request->user_id,
                 'finish_date' => Carbon::now()->format('Y-m-d')
             ]);
+            $processId = $user_evaluation->process_id;
 
+            switch ($processId) {
+                case 8:
+                    $newProcessId = 9;
+                    break;
+                case 10:
+                    $newProcessId = 11;
+                    break;
+                default:
+                    $newProcessId = 5;
+            }
             // La evaluación pasa a estar en el proceso de firmas
             UserEvaluation::where('id', $user_evaluation->id)->update([
-                'process_id' => 5,
+                'process_id' => $newProcessId,
+                'status_id' => 3,
                 'updated_by' => $request->user_id
             ]);
-
+            
             DB::commit();
 
             // Se envía el correo de confirmación del plan de acción.

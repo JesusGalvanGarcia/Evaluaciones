@@ -1,0 +1,266 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { CdkTableModule } from '@angular/cdk/table';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
+import { MensajeService } from '@http/mensaje.service';
+import { AgGridModule } from 'ag-grid-angular';
+import { CollaboratorEvaluation } from '@models/colaboradorEvaluation/colaboradorEvaluation';
+import { TestModel } from '@models/colaboradorEvaluation/evaluationDetail';
+import { ProcessModel } from "../../shared/entities/models/testDetails/processModel";
+import { UserEvaluationService } from "../../shared/services/userEvaluation.service";
+import { LoadingComponent } from '../loading/loading.component';
+import { UserTestService } from '@services/userTest.service';
+import{Evaluation360Service} from  '@services/evaluation360.service';
+import { GridModule } from '@sharedComponents/grid/grid.module';
+import { GridActions } from '@utils/grid-action';
+import { ColDef } from 'ag-grid-community';
+@Component({
+  selector: 'app-index360',
+  standalone:true,
+  imports: [
+    CommonModule,
+    MatTooltipModule,
+    GridModule,
+    MatInputModule, 
+    LoadingComponent,
+    FormsModule,
+    CdkTableModule,
+    AgGridModule,
+    MatIconModule,
+    MatTableModule
+  ],
+  templateUrl: './index360.component.html',
+  styleUrls: ['./index360.component.css']
+})
+export class Index360Component implements OnInit {
+
+  protected  isChecked: boolean = true;
+  changeProcess:ProcessModel;
+  ListChangeColaborator:CollaboratorEvaluation[];
+ 
+  ListColaborator:CollaboratorEvaluation[];
+  ListTest:TestModel[];
+  mostrar:boolean=false;
+  indexPos:number;
+  PersonalList:CollaboratorEvaluation[];
+  protected isLoading: boolean = false;
+  
+  displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name', 'actual_process','start_date', 'evaluator_type', 'status',"action"];
+  dataSource: MatTableDataSource<TestModel> | any = [];
+  constructor(private http: HttpClient,
+    private userEvaluationService: UserEvaluationService,
+    private router: Router,    
+    public message:MensajeService,
+    public userTestService: UserTestService,
+    public evaluations360:Evaluation360Service    ) {}
+
+    public seeDetailSeenButton:ColDef = Object.assign(
+      {
+        cellRendererSelector: (params: any) => {
+          const component = { component: 'gridActionButton',
+          params: { 
+            action:  GridActions.Seen,   
+            icon:'fa-solid fa-eye',
+            title:' Ver reporte' 
+          }
+        };
+        return component;
+        }
+      },
+      GridActions.DEFAULT_COLUMN
+    )
+    public seeDetailAccionPlan:ColDef = Object.assign(
+      {
+        cellRendererSelector: (params: any) => {
+          const component = { component: 'gridActionButton',
+          params: { 
+            action:  GridActions.Start,   
+            icon:'fa-solid fa-arrow-right',
+            title:' Ver plan de acción' 
+          }
+        };
+        return component;
+        }
+      },
+      GridActions.DEFAULT_COLUMN
+    )
+    protected columnDefs: ColDef[] = [
+      { headerName: 'Nombre', field: 'collaborator_name',  },
+      { headerName: 'Evaluación', field: 'evaluation_name',  },
+      { headerName: 'Inicio', field: 'evaluation_start',  },
+      { headerName: 'Fin', field: 'evaluation_end',  },
+      this.seeDetailSeenButton,
+      this.seeDetailAccionPlan
+    ]
+  
+  getTestUser(data:any,userid:any,array:number)
+  {
+    this.userEvaluationService.GetTest(data,userid)
+    .then((response:any) => {
+     
+      this.mostrar=true;
+      this.isLoading=false;
+  
+      this.ListColaborator[array].detail=response;
+      
+   
+    }).catch((error:any) => {
+      console.error('Error in the request:', error);
+    });
+  }
+  
+  changeList()
+  {
+  
+  
+    
+  }
+    ngOnInit() {
+      var user=localStorage.getItem("email");
+      if(user=="")
+      {
+        this.router.navigate(['/login']);
+        this.message.error("Tienes que iniciar sesion");
+  
+      }
+  
+      this.getTable();
+    }
+    toggleRow(row: any) {
+      this.isLoading=true;
+      row.isExpanded = !row.isExpanded;
+      row.detail=[]
+      let data = {
+        user_id: Number(localStorage.getItem("user_id")),
+        collaborators_id: [],
+        evaluations_id: []
+      };
+      const posicion = this.ListColaborator.findIndex((elemento) => elemento.user_evaluation_id
+      === row.user_evaluation_id    );
+      this.indexPos=posicion;
+      this.getTestUser(data,row.user_evaluation_id ,posicion);
+      this.dataSource.data = [...this.dataSource.data];
+  
+  }
+  get360(data:any)
+  {
+    this.evaluations360.getFinished(data)
+    .then((response:any) => {
+      this.PersonalList=response.users;
+  
+    })
+    .catch((error:any) => {
+      console.error('Error in the request:', error);
+      // Handle errors here
+    });
+  }
+  protected onActionEvent(actionEvent: { action: string, data: any }) {
+    if (actionEvent.action == GridActions.Seen )  //verificar si no han finalizado los intentos
+    {
+      localStorage.setItem("collaborator_name", actionEvent.data.collaborator_name);
+      localStorage.setItem("admin", "");
+
+      this.router.navigate(['/dashboard/exam/personal360/' + actionEvent.data.evaluation_id + "/" + actionEvent.data.user_id]);
+      
+    }
+
+}
+
+    getTable()
+  {
+    this.isLoading=true;
+    let data = {
+      user_id: Number(localStorage.getItem("user_id")),
+      collaborators_id: [],
+      evaluations_id: []
+    };
+    this.evaluations360.getPersonalIndex360(data)
+    .then((response:any) => {
+      this.ListColaborator=response.users;
+      this.get360(data);
+      this.isLoading=false;
+      this.dataSource = new MatTableDataSource(this.ListColaborator);
+  
+    })
+    .catch((error:any) => {
+      console.error('Error in the request:', error);
+      // Handle errors here
+    });
+    }
+  
+    getUser() {
+      var user=localStorage.getItem("email");
+      if(user=="")
+      {
+        this.router.navigate(['/login']);
+        this.message.error("Tienes que iniciar sesion");
+  
+      }
+  
+      return user;
+    }
+
+  
+  sendPageEvaluation(process:string,id:string,status:string,calificacion:number,detalle:any)
+  {   
+     localStorage.setItem("score", detalle[0].total_score.toString());
+    switch(process)
+    {
+      case "Evaluaciones 360":
+        //  this.router.navigate(['exam/asesors/'+id+"/1"]);
+          if(status=="Terminado")
+          {
+            this.router.navigate(['/prueba/'+id]);
+          }
+          else{
+            this.router.navigate(['/dashboard/exam/evaluation350/'+id]);
+          }
+        break
+        case "Feedback y Plan de Acción":
+ 
+
+          this.router.navigate(['/plan-accion/'+id]);
+        
+      break
+    }
+  
+    
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  
+  changeProcessFunc(process:number,user_test_id:number)
+  {
+  
+       this.changeProcess=
+       {
+        user_id: Number(localStorage.getItem("user_id")),
+        user_test_id: user_test_id,
+        process_id:process,   
+       }
+       this.userTestService.SendChangeProcess(this.changeProcess)
+       .then((response: any) => {
+      
+        this.message.error("Hace falta contestar una evaluación o este proceso ya esta terminado");
+      })
+    
+  }
+    enviarFormulario(form: NgForm){
+      this.onSwitchChange() 
+    }
+    onSwitchChange() {
+      // Acciones a realizar cuando cambia el estado del switch
+      this.isChecked=!this.isChecked;
+     
+      this.changeList();
+    }
+}

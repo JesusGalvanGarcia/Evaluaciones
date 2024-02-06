@@ -1,0 +1,61 @@
+
+<div class="bgImageContainer2"></div>
+<div class="containerz" >
+  <div class="container">
+ 
+    
+      <mat-card class="card-body"><app-loading *ngIf="isLoading"></app-loading>
+        <div class="evaIcon">
+          <div class="col-md-12 center-div" >
+            <img
+              src="assets/logo/logo_trinitas.jpg"
+              style="width: 25%;margin-top: 5%;"
+              alt="Logo_Trinitas"
+            />
+       
+          </div><br>
+     
+          <span class="estilo-title">{{actualUser}}</span>
+        </div>
+    
+ 
+      <div  style="padding:3%">
+        <app-grid *ngIf="start"
+        [columnDefs]="columnDefsUsers"
+        [rowData]="UsersData"
+        [enableDelete]="false"
+        [enableEdit]="false"
+        (actionEvent)="onActionEventUser($event)"
+        exportTitle="Usuarios"
+      ></app-grid>
+      <div class="row">
+      <div  class="col-11">
+        <button type="button" *ngIf="!start" class="btn btn-primary" (click)="back()">Regresar</button>
+      </div>      
+         
+      <div  class="col-1">
+        <button type="button" *ngIf="!start" class="btn btn-primary" (click)="send()">Finalizar</button>
+      </div>      
+      </div>
+      
+      <br/><br/>
+        <dual-list
+        *ngIf="!start"
+        [sort]="true"
+        [source]="UsersData"
+        [height]="'500px'"
+        [(destination)]="selectedItems"
+        [key]="'id'"  
+        [format]="format"
+        [filter]="true"
+        [display]="'collaborator_name'"
+      ></dual-list>
+      </div>
+
+      </mat-card>
+      <!-- users.component.html -->
+
+   
+  </div>
+  
+</div>

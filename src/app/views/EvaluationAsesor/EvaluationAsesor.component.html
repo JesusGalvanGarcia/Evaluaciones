@@ -1,0 +1,169 @@
+<div class="containerz" >
+  <div class="container" >
+  
+      <mat-card class="card-body cards" >
+        <app-loading *ngIf="isLoading==true"></app-loading>                            
+
+      <div *ngIf="start==true&&end==false">
+        <div class="row row-cols-12 mt-2">
+          <div class="col-12">
+              <p>
+                  <img class="img-fluid" src="./assets/img/trinitas-logo.png" alt="Trinitas Logo">
+              </p>
+          </div>
+      </div>
+      
+  
+      <div style="padding: 5%">
+        <div class="col">
+          <span class="header-1"> {{PLDTest.name}}</span>
+      </div>
+      <p class="small-1"><br/>
+        <small>
+      {{PLDTest.introduction_text}}
+        </small>
+    </p>
+   
+      <p class="card-title">
+        <!-- {{exam_info.description }} -->
+        Recuerda que la calificación mínima aprobatoria es de   {{PLDTest.min_score}}
+    </p>
+    <div style="justify-content: center;display: flex;">
+    <mat-card-actions class="mt-4" >
+
+      <button type="button" class="btn btn-success" (click)="changeStart()">
+          Empezar
+          <mat-icon>arrow_forward</mat-icon>
+      </button>
+  </mat-card-actions>
+  </div>
+  
+  </div>
+</div>
+<div *ngIf="start==false&&end==false" >
+  <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+  aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+  [style.width]="exam_progress + '%'"> {{ exam_progress }} %</div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div >
+          <div *ngIf="index>0"   >
+            <button class="btn btn-light"   (click)="back()" [disabled]="sendButton"> 
+              <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="30"><path d="M160-240H80v-480h80v480Zm320 0L240-480l240-240 56 56-143 144h487v80H393l144 144-57 56Z"/></svg>               </button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div >
+        
+        </div>
+      </div>
+      <div class="col">
+        <div >
+        
+        </div>
+      </div>
+      <div class="col">
+        <div >
+          <div *ngIf="actualAnswer!=='Selecciona una  respuesta...'&&size !=index+1"  >
+            <button class="btn btn-light"  (click)="next()" [disabled]="sendButton"> 
+              <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="30"><path d="M800-240v-480h80v480h-80Zm-320 0-57-56 144-144H80v-80h487L424-664l56-56 240 240-240 240Z"/></svg>            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+  
+    <img mat-card-image src="./assets/img/trinitas-logo.png" >
+        
+  <div class="col">
+    <span class="header-1">  {{PLDTest.name}}</span>
+</div> 
+  <div class="col-md-10 center-div" style="width: 100%;margin-top: 3%;">
+    <span class="sdPregunta">{{ PLDTest.test_modules[0].questions[index].description }}  </span>
+  </div>
+
+
+ 
+  <!-- <div style="justify-content: center; display: grid;width: 100%;"> -->
+    <div style="text-align: center;display: flex;justify-content: center;">
+ <br/>
+  <div class="form-group" >
+    <br/> <br/>
+    <ng-select
+    [items]="PLDTest.test_modules[0].questions[index].answers"
+    bindLabel="description"
+    class="custom"
+    placeholder="Selecciona..."
+    [searchable]="true"
+    [ngModel]="getIndexOfAnswerWithNonNullUserAnswer(index)"
+    [ngModelOptions]="{ standalone: true }"
+    (change)="onSelectChange($event, index)"
+></ng-select>
+
+<br/>
+</div>
+  </div>
+
+<button class="btn btn-light" (click)="backIndex()" [disabled]="sendButton"> 
+  <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>   
+  Volver al inicio
+</button><br/><br/><br/>
+<div class="pregunta-container">
+  <span>Pregunta &nbsp;</span> {{ (index+1) + "/" + (size) }}
+</div>
+
+<div class="cent">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+  <!-- <button class="btn" *ngIf="!finish" class="btn btn-success">Guardar</button> -->
+</div>
+
+  </div>
+ 
+</div>
+
+      </mat-card>
+      <div *ngIf="start==false&&end==true
+      " >            
+        <div >
+            <div class="row justify-content-center" style="padding-bottom: 50px; padding-top: 20px;">
+                <div class="result-container">
+                    <div class="result-header">
+                      <span class="result-title">¡Has terminado de contestar la evaluación!</span><br/><br/>
+                    </div>
+                    <div class="result-info">
+                      <span class="result-score">Puntuación total:
+                        <br/>
+                      <span style="color:#b60b0b;font-size: xx-large;font-weight: 500;" *ngIf="score<getNumber(PLDTest.min_score)">{{ score +"/"+max_score}}</span>  </span><br/>
+                      <span style="color:green; font-size: xx-large; font-weight: 500;" *ngIf="score>=getNumber(PLDTest.min_score)">{{ score +"/"+max_score}}</span>  <br/>
+                      <div *ngIf="score>=getNumber(PLDTest.min_score)">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" fill="green" viewBox="0 -960 960 960" width="24"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
+                      </div>
+                      <div *ngIf="score<getNumber(PLDTest.min_score)">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" fill="red" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>        
+                      </div>
+                    </div>
+                  
+                    <div class="result-evaluation">
+                      <span class="result-text" >Este fue el exámen: {{ PLDTest.name }}</span><br/><br/>
+                    </div>
+                    <button class="btn btn-light" (click)="backIndex()"  > 
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>   
+                      Volver al inicio
+                    </button><br/>
+                  </div>
+                  
+                <br />
+          
+             
+           
+         
+            </div>
+        </div>
+      </div>
+  </div>
+  
+</div>

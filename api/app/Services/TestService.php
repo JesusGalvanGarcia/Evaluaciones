@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use App\Mail\PerformanceEvaluation as MailPerformanceEvaluation;
+use App\Mail\sendEmail360 as sendEmail360;
+
 use App\Models\Process;
 use App\Models\Files;
 
@@ -81,6 +83,13 @@ class TestService extends ServiceProvider
                 ];
 
                 break;
+                // Default para manejar casos no contemplados
+            default:
+            $clasification = [
+                "clasification" => "No clasificado",
+                "description" => "Esta evaluación no contiene clasificaciones."
+            ];
+            break;
         }
 
         return $clasification;
@@ -120,7 +129,12 @@ class TestService extends ServiceProvider
         Mail::to($email)->send(new sendEmails($name,$emailLid,$path,$file));
 
     }
+    static function sendEmail360($evaluation,$name,$email)
+    {
 
+        Mail::to('yunuen.vejar@trinitas.mx')->send(new sendEmail360($name,$evaluation,'yunuen.vejar@trinitas.mx'));
+
+    }
     static function createPldTest($test, $user_id, $assigned_users){
         // Convertir $test a un objeto si no lo es
         $test = is_array($test) ? (object) $test : $test;

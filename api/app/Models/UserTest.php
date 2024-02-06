@@ -16,6 +16,9 @@ class UserTest extends Model
     protected $fillable = [
         'user_evaluation_id',
         'test_id',
+        'strengths',
+        'chance',
+        'suggestions',
         'attempts',
         'total_score',
         'finish_date',

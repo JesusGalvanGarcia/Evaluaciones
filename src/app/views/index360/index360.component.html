@@ -1,0 +1,192 @@
+<div class="bgImageContainer2"></div><br/><br/>
+
+<div class="posi bgImageContainer">
+  <div class="container">
+    <br/>
+    <div class="colabora">
+      <span>
+        <img
+          src="assets/svg/users.svg"
+          style="width: 20px;"
+          alt="Logo_Trinitas"
+        />
+        {{ getUser() }}
+      </span><br/>
+    </div><br/>
+    <div class="evaIcon">
+      <span>
+        <img
+          src="assets/svg/evaluation.svg"
+          class="estilo-imagen"
+          style="width: 20px;"
+          alt="Logo_Trinitas"
+        />
+      </span>
+      <span class="estilo-title">Evaluaciones 360</span>
+    </div>
+    <div style="margin-top: 0%;">
+      <div class="center-container"></div>
+      <br/>
+      <div class="form-check form-switch mostrar">
+        Mis reportes
+      <div class="checks">
+        <input class="form-check-input" id="idInp" name="nameinput" #isChekedModel="ngModel" (click)="onSwitchChange()" type="checkbox" [(ngModel)]="isChecked">
+      </div>
+        <label class="form-check-label" for="idInp">Mis evaluaciones</label>
+        <br/>
+      </div>
+      <br/>
+      <div *ngIf="isChecked">
+      <div class="custom-input" >
+        <div class="input-group mb-3" style="margin: 0 auto;" >
+          <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg></span>
+          <input  type="text" class="form-control" matInput (keyup)="applyFilter($event)" placeholder="Buscar colaborador..." #input>
+        </div>
+      </div>
+      <mat-table *ngIf="isChecked" [dataSource]="dataSource" class="example-table" multiTemplateDataRows matSort>
+        <!-- Header Row -->
+   
+   
+
+        <!-- Evaluation Name Column -->
+        <ng-container matColumnDef="evaluation_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de Evaluación</th>
+          <td mat-cell *matCellDef="let row"> {{ row.evaluation_name }} </td>
+        </ng-container>
+
+        <!-- Collaborator Name Column -->
+        <ng-container matColumnDef="collaborator_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de Colaborador </th>
+          <td mat-cell *matCellDef="let row"> {{ row.collaborator_name }} </td>
+        </ng-container>
+
+        <!-- Actual Process Column -->
+        <ng-container matColumnDef="actual_process">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Proceso Actual </th>
+          <td mat-cell *matCellDef="let row"> {{ row.actual_process }} </td>
+        </ng-container>
+        <ng-container matColumnDef="start_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Inicio </th>
+          <td mat-cell *matCellDef="let row"> {{ row.start_date }} </td>
+        </ng-container>
+        <!-- Phase Column -->
+ 
+        <ng-container matColumnDef="evaluator_type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Evaluador </th>
+          <td mat-cell *matCellDef="let row"> {{ row.evaluator_type }} </td>
+        </ng-container>
+
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+          <td mat-cell *matCellDef="let row"> {{ row.status }} </td>
+        </ng-container>
+
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="action" >
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let row">
+            <div class="row" style="width: 90%;margin-left: 2%;"><br/>
+              <button class="btn btn-light "        mat-icon-button aria-label="expand row" 
+                (click)="toggleRow(row)">
+                <mat-icon *ngIf="row.isExpanded ">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="!row.isExpanded ">keyboard_arrow_up</mat-icon>
+              </button>
+              
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Row for Detail Expansion -->
+        <ng-container matColumnDef="detail-row">
+          <td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
+            <div *ngIf="row.isExpanded &&mostrar==true">
+              <!-- Contenido de las filas adicionales -->
+              <div class="example-element-description">
+                <div class="tabla">
+                  <div class="encabezados">
+                    <div class="encabezado">Evaluación</div>
+                    <div class="encabezado">Estatus</div>
+                    <div class="encabezado">Calificación</div>
+                    <div class="encabezado">Clasificación</div>
+                    <div class="encabezado">Acción</div>
+                  </div>
+                  <div class="fila" *ngFor="let detalle of row.detail;let i =index">
+                
+                    <div class="dato">{{ detalle.name }}</div>
+                
+                    <div class="dato">
+                      <div >{{ detalle.status }}</div>
+                    </div>
+                    <div class="dato">
+                      <ng-container *ngIf="detalle.name !='Feedback y Plan de Acción'; else elseTemplate">
+                        &nbsp; &nbsp; {{ detalle.total_score===""?"": (detalle.total_score ===null?"No aplica":detalle.total_score)}}    
+                      </ng-container>
+                      <ng-template #elseTemplate>
+                        <svg *ngIf="detalle.status=='Terminado'"  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                          <path d="m381-240 424-424-57-56-368 367-169-170-57 57 227 226Z" fill="green" />
+                        </svg>
+                        
+                      </ng-template>
+      
+                    </div>
+                    <div class="dato" >
+                  <div class="row ranks" >
+                <div class="col col-sm-9">
+                  <ng-container *ngIf="detalle.name =='Evaluación de Desempeño'; else elseTemplate">
+                    &nbsp; &nbsp; {{ detalle.rank}}    
+                  </ng-container>
+                  <ng-template #elseTemplate>
+                    <span></span>
+                  </ng-template>
+                </div>
+                <div class="col col-sm-1" *ngIf="detalle.name =='Evaluación de Desempeño'">
+                  <span     *ngIf="detalle.rank!==''">
+                    <mat-icon>warning</mat-icon>
+
+                  </span>
+                </div>
+                  </div>
+                    </div>
+                 
+                    <div class="dato" *ngIf="isChecked ==true" >
+                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.rank,row.detail)">
+                        {{detalle.status  === 'Pendiente'?"Comenzar":detalle.status=="Terminado"?"Ver":"Continuar"}}
+                      </button>
+                    </div>
+                 
+                  </div>
+              
+                  <!-- Puedes agregar más filas y datos aquí -->
+                </div>
+                
+               
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['detail-row']" class="example-detail-row"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4" style="text-align: center;">No se han encontrado resultados {{input.value}}</td>
+        </tr>
+      
+      </mat-table>
+    </div>
+      <app-grid *ngIf="!isChecked"
+      [columnDefs]="columnDefs"
+      [rowData]="PersonalList"
+      [enableDelete]="false"
+      [enableEdit]="false"
+      (actionEvent)="onActionEvent($event)"
+      exportTitle="Evaluaciones"
+    ></app-grid>
+      <br/>     <br/>
+    </div>
+  </div>
+</div>
+<app-loading *ngIf="isLoading"></app-loading>
+

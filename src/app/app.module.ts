@@ -2,6 +2,9 @@ import { HashLocationStrategy, LocationStrategy, registerLocaleData } from '@ang
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeEs from '@angular/common/locales/es';
 import { NgModule } from '@angular/core';
+
+
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -29,7 +32,9 @@ import { TablesModule } from './views/plan/plan.module';
 import { SidenavComponent } from './views/sidenav/sidenav.component';
 import { SublevelMenuComponent } from './views/sidenav/sublevel-menu.component';
 import { UserTestComponent } from './views/user-test/user-test.component';
+import { AngularDualListBoxModule } from 'angular-dual-listbox';
 
+import { Personal360Component } from './views/personal360/personal360.component';
 export function getDatepickerConfig(): BsDatepickerConfig {
   return Object.assign(new BsDatepickerConfig(), {
     isAnimated: true, 
@@ -42,20 +47,23 @@ export function getDatepickerConfig(): BsDatepickerConfig {
 
 @NgModule({
   declarations: [
+    
     AppComponent,
     SidenavComponent,
     SublevelMenuComponent,
     UserTestComponent,
+    
   ],
   imports: [
+    AngularDualListBoxModule,
     LoadingComponent,
     BrowserModule,
     AppRoutingModule,
     TablesModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
-    ReactiveFormsModule,
     AgGridModule,
     SurveyModule,
     AppRoutingModule,

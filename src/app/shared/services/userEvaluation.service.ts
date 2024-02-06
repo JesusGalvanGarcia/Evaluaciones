@@ -23,10 +23,37 @@ export class UserEvaluationService {
       return error;
     });
   }
+  GetAverages(data: any): Promise<any> {
+    
+    return axios.post(environment.apiUrl+this.controllerUrl+"/getAverages", data)
+    .then(({ data }: any) => {
+      
+      return data;
+    })
+    .catch(({ response }: any) => {
+
+      const { data } = response
+    
+      throw data;
+    });
+  }
 
   GetColaboradorEvaluationsWithParams(data: any): Promise<any> {
 
     return axios.get(environment.apiUrl+this.controllerUrl, {
+      params: data
+    })
+    .then((response) => {
+      return response.data;
+      })      
+    .catch(function (error: any) {
+      console.log(error)
+      throw error;
+    });
+  }
+  Get360(data: any): Promise<any> {
+
+    return axios.get(environment.apiUrl+this.controllerUrl+"/index360", {
       params: data
     })
     .then((response) => {

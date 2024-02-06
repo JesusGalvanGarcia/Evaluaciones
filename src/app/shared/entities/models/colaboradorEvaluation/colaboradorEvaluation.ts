@@ -8,6 +8,8 @@ export class CollaboratorEvaluation {
     process_id: string;
     actual_process: string;
     finish_date: Date | null;
+    start_date: Date | null;
+
     status: string;
     detail:TestModel[]
   }

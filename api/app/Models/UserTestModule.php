@@ -16,6 +16,7 @@ class UserTestModule extends Model
         'user_test_id',
         'module_id',
         'note',
+        'average',
         'created_at',
         'updated_at',
         'deleted_at'

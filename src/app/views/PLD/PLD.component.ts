@@ -35,7 +35,8 @@ export class PLDComponent implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Start,
-       
+          icon:'fa-solid fa-arrow-right',
+          title:'Empezar exámen'
         }
       };
       return component;
@@ -49,6 +50,7 @@ export class PLDComponent implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Seen,
+          title:'Ver exámen',
           icon: 'fa-solid fa-eye'
         }
       };

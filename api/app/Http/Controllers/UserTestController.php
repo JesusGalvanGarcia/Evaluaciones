@@ -5,9 +5,17 @@ use App\Models\User;
 use App\Models\Files;
 use App\Models\Process;
 use App\Models\Test;
+use App\Models\FinishEvaluation;
+use App\Models\ActionPlan;
+use App\Models\ActionPlanAgreement;
+use App\Models\ActionPlanParameter;
+use App\Models\ActionPlanSignature;
+use App\Models\UserActionPlan;
 use App\Models\UserAnswer;
 use App\Models\UserEvaluation;
 use App\Models\UserTest;
+use App\Models\Answer;
+use App\Models\Question;
 use App\Models\UserTestModule;
 use App\Services\TestService;
 use App\Services\UserService;
@@ -94,7 +102,9 @@ class UserTestController extends Controller
                             'id',
                             'name',
                             'test_id',
-                            DB::raw("(select note from user_test_modules as UTM where UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at is null) AS 'note'")
+                            DB::raw("(SELECT note FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'note'"),
+                            DB::raw("(SELECT average FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'average'")
+                            
                         );
 
                         $query->with([
@@ -145,6 +155,7 @@ class UserTestController extends Controller
                 'test' => $test,
                 'score' => $user_test->total_score,
                 'clasification' => $clasification,
+                'user_test'=>$user_test
             ]);
         } catch (Exception $e) {
 
@@ -258,7 +269,262 @@ class UserTestController extends Controller
             ], 500);
         }
     }
+    public function getPreview(Request $request)
+    {
 
+        try {
+
+            // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            // if (!$this->checkPermissions(request()->route()->getName())) {
+
+            //     return response()->json([
+            //         'title' => 'Proceso cancelado',
+            //         'message' => 'No tienes permiso para hacer esto.',
+            //         'code' => 'P007'
+            //     ], 400);
+            // }
+
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|NotIn:0|Min:0',
+                'user_test_id' => 'Required|Integer|NotIn:0|Min:0',
+                'module_id' => 'Nullable|Integer',
+            ]);
+
+            if ($validator->fails()) {
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X701'
+                ], 400);
+            }
+
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X702'
+                ], 400);
+            DB::beginTransaction();
+            // Calculate average score
+            $user_test_module = UserTestModule::join('test_modules', 'user_test_modules.module_id', '=', 'test_modules.id')
+            ->select('user_test_modules.*', 'test_modules.name') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
+            ->where('user_test_modules.user_test_id', $request->user_test_id)
+            ->get();
+        
+            $answers = UserTest::select( 'suggestions', 'chance', 'strengths')
+            ->where('id', $request->user_test_id)
+            ->get();
+            $sum=0;
+            foreach($user_test_module as $module)
+            {
+                $sum=$module->average+ $sum; 
+            }
+            $general=$sum/count($user_test_module);
+
+            return response()->json([
+                'title' => 'Proceso terminado',
+                'message' => 'Modulo consultados correctamente',
+                'module' =>  $user_test_module,
+                'questions'=> $answers,
+                'general'=> round($general,2),
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X799'
+            ], 500);
+        }
+    }
+    public function saveAnswerAverage(Request $request)
+    {
+
+        try {
+
+            // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            // if (!$this->checkPermissions(request()->route()->getName())) {
+
+            //     return response()->json([
+            //         'title' => 'Proceso cancelado',
+            //         'message' => 'No tienes permiso para hacer esto.',
+            //         'code' => 'P007'
+            //     ], 400);
+            // }
+
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|NotIn:0|Min:0',
+                'user_test_id' => 'Required|Integer|NotIn:0|Min:0',
+                'module_id' => 'Nullable|Integer|NotIn:0|Min:0',
+            ]);
+
+            if ($validator->fails()) {
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X701'
+                ], 400);
+            }
+
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X702'
+                ], 400);
+
+ 
+
+            DB::beginTransaction();
+            // Calculate average score
+        $questions = Question::where('module_id',  $request->module_id)->get();
+        $sum=0;
+        foreach($questions as $question)
+        {
+            $userAnswer = UserAnswer::where([
+                ['user_test_id', $request->user_test_id],
+                ['question_id',  $question->id]
+                ])->first();
+            $answer=Answer::where('id',$userAnswer ->answer_id)->first();
+            $sum=$sum+$answer->score;
+            
+        }
+        $average = round($sum / count($questions), 2);
+
+        // Retrieve user test module
+        $user_test_module = UserTestModule::where([
+        ['user_test_id', $request->user_test_id],
+        ['module_id',  $request->module_id]
+        ])->first();
+        
+        if ($user_test_module) {
+            $user_test_module->update([
+                'average' =>  $average
+            ]);
+        } else {
+            UserTestModule::create([
+                'user_test_id' => $request->user_test_id,
+                'module_id' => $request->module_id,
+                'average' =>  $average
+            ]);
+        }
+        
+        DB::commit();
+        
+
+            return response()->json([
+                'title' => 'Proceso terminado',
+                'message' => 'Promedio guardado correctamente',
+                'average' =>  $average
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X799'
+            ], 500);
+        }
+    }
+    public function saveSuggetions(Request $request)
+    {
+
+        try {
+
+            // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            // if (!$this->checkPermissions(request()->route()->getName())) {
+
+            //     return response()->json([
+            //         'title' => 'Proceso cancelado',
+            //         'message' => 'No tienes permiso para hacer esto.',
+            //         'code' => 'P001'
+            //     ], 400);
+            // }
+
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|NotIn:0|Min:0',
+                'user_test_id' => 'Required|Integer|NotIn:0|Min:0',
+                'suggestions' => 'Required|String',
+                'strengths' => 'Required|String',
+                'chance' => 'Required|String',
+            ]);
+
+            if ($validator->fails()) {
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X601'
+                ], 400);
+            }
+
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X602'
+                ], 400);
+
+      
+            $user_test = UserTest::find($request->user_test_id);
+
+
+            $user_test->update([
+                'suggestions' => $request->suggestions,
+                'strengths' => $request->strengths,
+                'chance' => $request->chance,
+                'status_id' => 3
+            ]);
+     
+                //if($user_test->user_evaluation->)
+                $user_evaluation  = UserTest::find($request->user_test_id)->user_evaluation;
+                if($user_evaluation ->type_evaluator_id==2)
+                    {
+                        $user_evaluation->update(
+                            [
+                                'status_id' => 3,
+                                'finish_date' =>Carbon::now()->format('Y-m-d') ,
+                                'process_id'=> 7,
+                            ]
+                        );
+                    }else{
+                        $user_evaluation->update(
+                            [
+                                'status_id' => 2
+                            ]
+                        );
+                    }
+                
+
+            
+
+            DB::commit();
+
+            return response()->json([
+                'title' => 'Proceso terminado',
+                'message' => 'Campos guardados correctamente',
+            
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X699'
+            ], 500);
+        }
+    }
     public function saveAnswer(Request $request)
     {
 
@@ -303,7 +569,7 @@ class UserTestController extends Controller
                 ], 400);
 
             //Se valida el estado de la prueba
-            $user_test = UserTest::whereIn('status_id', [1, 2])->find($request->user_test_id);
+            $user_test = UserTest::whereIn('status_id', [1, 2,3])->find($request->user_test_id);
 
             if (!$user_test)
                 return response()->json([
@@ -360,7 +626,54 @@ class UserTestController extends Controller
             $clasification = TestService::getClasification($total_score);
 
             if ($request->its_over == 'si') {
+               
+                $user_evaluation  = UserTest::find($user_test->id)->user_evaluation;
+             
+                if($user_evaluation->process_id==6||$user_evaluation->process_id==1||$user_evaluation->process_id==2)
+                {
+                $user_evaluation->update(
+                    [
+                        'status_id' => $user_evaluation->process_id==6?2:3,
+                        'finish_date' =>Carbon::now()->format('Y-m-d') ,
+                        'process_id'=> $user_evaluation->process_id==6?8:$user_evaluation->process_id,
+                    ]
+                );
+            }
+                if($user_evaluation->process_id==7)
+                {
+                   
+                    $user_evaluation->update(
+                        [
+                            'status_id' => 2,
+                            'finish_date' =>Carbon::now()->format('Y-m-d') ,
+                            'process_id'=> 10,
+                        ]
+                    );
+    
+                   /* $user_evaluations  = UserEvaluation::where([
+                        ['user_id', $user_evaluation->user_id],
+                        ['evaluation_id', $user_evaluation->evaluation_id ],
+                        ['finish_date',null],
+                    ])->get();
+                  
+                    if(count($user_evaluations)==0)
+                    { 
+                        //Si ya es la ultima  persona en contestar la evaluacion
+                       
+                        FinishEvaluation::create([
+                            'user_id' => $user_evaluation->user_id,
+                            'evaluation_id' => $user_evaluation->evaluation_id,
+                            'status' => false,
+                            'created_by' => $request->user_id, // Utilizamos Auth::id() para obtener el ID del usuario autenticado
+                            'updated_by' => $request->user_id, // O ajusta según sea necesario
+                            'deleted_by' => null, // O ajusta según sea necesario
+                            'created_at' => now(), // Utilizamos now() para obtener la fecha y hora actual
+                            'updated_at' => now(), // O ajusta según sea necesario
+                            'deleted_at' => null, 
+                        ]);
+                    }*/
 
+                }
                 TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],
@@ -369,6 +682,9 @@ class UserTestController extends Controller
                     "evaluation_name" => $user_test->user_evaluation->evaluation->name,
                     "test" => $user_test->test
                 ]);
+                //if($user_test->user_evaluation->)
+         
+
             }
 
             DB::commit();

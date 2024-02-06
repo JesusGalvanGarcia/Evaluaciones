@@ -1,0 +1,191 @@
+/* personal360.component.css */
+.report-header span {
+    font-family: 'Arial', sans-serif; /* Puedes cambiar la fuente según tus preferencias */
+    font-size: 25px; /* Tamaño de fuente */
+    font-weight: 600;
+    color: #030903; /* Color del texto */
+    margin-bottom: 10px; /* Espaciado inferior */
+  
+  }
+  .bgImageContainer2 {
+    z-index: -1;
+    position: fixed;
+    margin-top: -2%;
+    width: 100%;
+    height:1000px;
+    background: rgb(46, 117, 182);
+    background: linear-gradient(to bottom right, #39add3, rgb(33, 113, 33));
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    background-size: 100% 100%;
+  }
+  .bgImageContainer {
+    z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 1000px;
+    background: rgb(46,117,182);
+    background: linear-gradient(to bottom right, #39add3, rgb(33, 113, 33));
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    background-size: 100% 100%;
+  }
+  
+  .report-header  {
+   padding: 5%;
+   align-items: center;
+   display: flex;
+   text-align: center;
+   justify-content: center;
+  }
+  @media screen and (max-width: 767px) {
+    .table th, .table td {
+    
+      width: auto;
+      box-sizing: border-box;
+      overflow-x: auto;
+    }
+  
+    
+  }
+  .row {
+  
+    border-radius: 10px;
+  }
+
+  .col-4 img {
+    width: 100%;
+    border-radius: 10px; /* Rounded corners for the image */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow for a futuristic effect */
+  }
+
+  .col-8 span {
+    font-size: 18px; /* Larger font size for the information */
+    display: block; /* Separate each piece of information on a new line */
+    margin-bottom: 10px; /* Add some spacing between each piece of information */
+  }
+
+  .title {
+    font-size: 24px; /* Larger font size for the titles */
+    font-weight: bold; /* Bold text for emphasis */
+    color: #188c42; /* Blue color for the titles */
+    margin-bottom: 15px; /* Add some spacing between titles and information */
+  }
+  .titleEvaluation {
+    font-size: 28px; /* Larger font size for the titles */
+    font-weight: bold; /* Bold text for emphasis */
+    color: #1e27a1; /* Blue color for the titles */
+    margin-bottom: 15px; /* Add some spacing between titles and information */
+  }
+  .table-container {
+    margin-top: 20px;
+  }
+
+  .table-row {
+    display: flex;
+    justify-content: space-between;
+    background-color: #7a679c; /* Light blue background color */
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+  }
+
+  .table-col {
+    flex: 1;
+    text-align: center;
+  }
+
+  .info-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fafafa; /* Blue color for the titles */
+    margin-bottom: 10px;
+  }
+
+  .info-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2ecc71; /* Green color for the values */
+  }
+  /* Container styles */
+.container {
+  margin-bottom: 20px;
+}
+
+/* Table header styles */
+.table-header {
+  font-weight: bold;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Table row styles */
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+/* Column styles */
+.table-col {
+  flex: 1;
+}
+
+/* Alternating row background colors */
+.table-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 600px) {
+  .table-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+/* Container styles */
+.colTable {
+  margin-bottom: 20px;
+}
+
+/* Table header styles */
+.colTable > .colTable {
+  font-weight: bold;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Table row styles */
+.rowTable {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+/* Column styles */
+.colTable {
+  flex: 1;
+}
+
+/* Alternating row background colors */
+.rowTable:nth-child(even) {
+  background-color: #d2dbd594;
+}
+.subtitle
+{
+  color: #198754;
+  font-weight: 500;
+}
+.titles
+{
+  color: rgb(97 97 99);
+  font-weight: 800;
+}
+/* Responsive styles for smaller screens */
+@media (max-width: 600px) {
+  .rowTable {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

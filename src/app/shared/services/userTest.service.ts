@@ -89,4 +89,45 @@ export class UserTestService {
         throw data;
       });
   }
+  SendTestSuggestions(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl +this.controllerUrl+  "saveSuggetions", data)
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+      
+        throw data;
+      });
+  }
+  SendAverage(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl +this.controllerUrl+  "saveAnswerAverage", data)
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+      
+        throw data;
+      });
+  }
+  getPreview(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl +this.controllerUrl+  "getPreview", data)
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+      
+        throw data;
+      });
+  }
 }
+
+

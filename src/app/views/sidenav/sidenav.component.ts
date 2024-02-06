@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { fadeInOut, INavbarData } from './helper';
 import { navbarData } from './nav-data';
 import { navbarDataAdmin } from './nav-data';
+import { navbarDataAdminEvaluaciones } from './nav-data';
 
 
 interface SideNavToggle {
@@ -38,7 +39,7 @@ export class SidenavComponent implements OnInit {
    
   navDataCopy = navbarDataAdmin;
   
-        
+  navDataEvaluacion=navbarDataAdminEvaluaciones;      
   user:number;
   multiple: boolean = false;
 
@@ -62,7 +63,8 @@ export class SidenavComponent implements OnInit {
       this.user=Number(localStorage.getItem("user_id"));
       if(this.user==16||this.user==67)
       this.navData=this.navDataCopy;
-      
+      if(this.user==19||this.user==88)
+      this.navData=this.navDataEvaluacion;
 
       this.screenWidth = window.innerWidth;
       if(this.screenWidth <= 768 ) {

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('test_modules', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('test_id');
-            $table->string('name', 50);
+            $table->string('name', 500);
             $table->string('notes', 200);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by');

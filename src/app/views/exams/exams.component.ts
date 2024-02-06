@@ -35,6 +35,7 @@ export class ExamsComponent implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Seen,
+          title:'Ver exámen',
           icon: 'fa-solid fa-eye',
           
         }

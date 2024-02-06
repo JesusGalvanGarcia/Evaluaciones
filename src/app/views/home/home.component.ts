@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Importa BrowserAnimationsModule para las animaciones de Angular Material
-import { MatSidenavModule } from '@angular/material/sidenav';
+// Importa MatIconModule y MatButtonModule en tu módulo
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { SidenavComponent } from '../sidenav/sidenav.component';
+import { MatCardModule } from '@angular/material/card';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -20,13 +15,47 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
   styleUrls: ['./home.component.scss'],
   imports: [
     CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule
   ]
 })
 export class HomeComponent implements OnInit {
   protected isCollapsed: boolean = false;
 
-  constructor() { }
+  constructor(  private router: Router) { }
+  showSubMenu: string | null = null;
+  getUser() {
+    var user=localStorage.getItem("email");
+    if(user=="")
+    {
+  
 
+    }
+
+    return user;
+  }
+  toggleSubMenu(menu: string) {
+    this.showSubMenu = this.showSubMenu === menu ? null : menu;
+  }
+  go(page:string)
+  {
+    switch(page)
+    {
+       case "PLD":
+        this.router.navigate(['/dashboard/exam']);
+        break;
+       case  "Evaluaciones":
+        this.router.navigate(['/dashboard/evaluacion']);
+        break;
+        case  "360":
+          this.router.navigate(['/dashboard/evaluacion360']);
+          break;
+          case  "asesores":
+            this.router.navigate(['/dashboard/asesores']);
+            break;
+    }
+  }
   ngOnInit() {
   }
   toggleMenu() {

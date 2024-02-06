@@ -27,6 +27,7 @@ export class UserExamComponent  {
   modules: any;
   test: any;
   score: number;
+  names:string;
   clasification: any;
 
   constructor(
@@ -51,8 +52,9 @@ export class UserExamComponent  {
     }
 
     this.userTestService.GetEvaluation(searchData, this.user_test_id).
-      then(({ test, score, clasification }) => {
+      then(({ test, score, clasification ,evaluated_user_name}) => {
        
+        this.names=evaluated_user_name;
         this.score = score;
         this.clasification = clasification;
         this.test = test;

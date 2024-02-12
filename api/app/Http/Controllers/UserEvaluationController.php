@@ -99,12 +99,13 @@ class UserEvaluationController extends Controller
                     return $status_join->on('S.status_id', 'user_evaluations.status_id')
                         ->where('S.table_name', 'user_evaluations');
                 })
-                ->when(request('user_id') != 88 && request('user_id') != 19 && request('user_id') != 12, function ($when) use ($collaborators_id) {
+                ->when(request('user_id') != 88 &&request('user_id') != 6 && request('user_id') != 19 && request('user_id') != 12, function ($when) use ($collaborators_id) {
 
                     return $when->where([
                         ['responsable_id', request('user_id')]
                     ]);
                 })
+
                 ->when(count($collaborators_id) > 0, function ($when) use ($collaborators_id) {
 
                     return $when->whereIn('user_evaluations.user_id', $collaborators_id);

@@ -38,8 +38,9 @@
 
 .sdComienzo{
   --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
-  font-size: 120%;
+  font-size: 100%;
   width: 80%;
+  text-align: justify;
   line-height: calc(1.25*(var(--cover-title-font-size)));
   color: var(--sjs-primary-backcolor, var(--primary, #57575a));
   font-family: var(--sjs-font-surveytitle-family, var(--font-family));

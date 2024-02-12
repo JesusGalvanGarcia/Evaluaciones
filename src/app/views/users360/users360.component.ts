@@ -66,7 +66,7 @@ export class Users360Component implements OnInit {
     GridActions.DEFAULT_COLUMN
   )
   protected columnDefsUsers: ColDef[] = [
-    { headerName: 'Nombre', field: 'collaborator_name',  },
+    { headerName: 'Nombre', flex:1, field: 'name', minWidth: 200},
     this.seeDetailButton
   
   ]

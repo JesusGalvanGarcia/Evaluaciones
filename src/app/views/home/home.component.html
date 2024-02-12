@@ -36,6 +36,7 @@
             <a (click)="go('Evaluaciones')" routerLink="/dashboard/evaluacion">Desempeño y competencias</a>
             <a (click)="go('360')" routerLink="/dashboard/evaluacion">360</a>
             <a (click)="go('asesores')" routerLink="/dashboard/evaluacion">Asesores</a>
+            <a *ngIf="id=='19'||id=='88'" (click)="go('admin360')" routerLink="/dashboard/evaluacion">Administración</a>
 
           </div>
         </button>

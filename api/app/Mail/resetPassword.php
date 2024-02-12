@@ -11,35 +11,33 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Queue\SerializesModels;
 
-class sendEmail360 extends Mailable
+class resetPassword extends Mailable
 {
     use Queueable, SerializesModels;
-    public $evaluation_name;
-    public $evaluated_user;
-  
+    public $name;
     public $email;
+    public $encrypt;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($evaluation_name,$evaluated_user,$email)
+    public function __construct($name,$email,$encrypt)
     {
-        $this->evaluation_name = $evaluation_name;
-        $this->evaluated_user = $evaluated_user;
+        //
         $this->email = $email;
+        $this->name = $name;
+        $this->encrypt = $encrypt;
 
     }
 
     /**
      * Get the message envelope.
-     */ //brenda.ortiz@trinitas.mx
+     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('brenda.ortiz@trinitas.mx'),
-            replyTo: [
-                new Address('notificaciones@trintias.com', $this->evaluation_name),
-            ],
-            subject: 'Evaluaciones'
+            from: new Address('notificaciones@trintias.com'),
+            subject: 'Cambiar contraseña'
         );
     }
 
@@ -49,10 +47,11 @@ class sendEmail360 extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Evaluations/Evaluation',
+            view: 'Evaluations/Reset',
             with: [
-                'evaluation_name' => $this->evaluation_name,
-                'evaluated_user' => $this->evaluated_user,
+                'name' => $this->name,
+                'email' => $this->email,
+                'url'=>'https://miespaciotest.trinitas.mx/#/resetPassword/'.$this->encrypt
             ]
         );
     }

@@ -56,6 +56,8 @@ export class EvaluationAsesorComponent implements OnInit {
   Answers: SendQuestions[] = [];
   sendInfo: SendQuestions;
   FinalEvalution: End;
+  evaluatedUserName: string = "";
+  type: string = "";
   exam_progress: number = 0;
   max_score: number = 0;
   sendButton: boolean = false;
@@ -109,7 +111,8 @@ export class EvaluationAsesorComponent implements OnInit {
       .GetExam(data, this.user_test_id)
       .then((response: any) => {
         this.PLDTest = response.data.test; //Obtener la informacion y desordenar las preguntas
-  
+        this.evaluatedUserName = response.data.evaluated_user_name;
+        this.type=response.data.tipo;
         this.isLoading = false;
         this.size = this.PLDTest.test_modules[0].questions.length;
         this.exam_progress = 0;

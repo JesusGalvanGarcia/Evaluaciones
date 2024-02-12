@@ -24,18 +24,19 @@
               <img src="assets/logo/logo_trinitas.jpg" style="width: 65%;" alt="Logo_Trinitas" class="mx-auto" />
             </div>
 
-            <div class="col-md-12 text-center" style="width: 95% !important;">
-              <br />
-              <span class="sdComienzo">{{ DesempenoTest.introduction_text }}</span>
+            <div class="col-md-12" style="text-align: justify;margin:5%;width: 85% !important">
+           
+              <span class="sdComienzo" [innerHTML]="textoConSaltosDeLinea(DesempenoTest.introduction_text)"></span>
             </div>
-            <br />
+          
             <div class="text-center btnEmpezar">
      
-              <br /> <br />
+       
               <button class="btn btn-success" (click)="FalseMark()">Comenzar</button>
-              <br /> <br />
+          
             </div>
           </div>
+          <br/> <br/>
         </mat-card>
       </div>
       <div *ngIf="!start" class="contenedor-padre">
@@ -257,7 +258,9 @@
                   </button><br />
                 </div><br />
                 <div class="mt-2" style="text-align: center;">
-                  <p class="tex-center fw-bolder">Colaborador: {{ evaluatedUserName }}</p>
+                  <p class="tex-center fw-bolder">Colaborador: {{ evaluatedUserName }}</p> 
+                  <p class="tex-center fw-bolder">Tipo de evaluación: {{ type }}</p>
+
                 </div>
                 <br />
                 <div class="col-md-10 center-div">

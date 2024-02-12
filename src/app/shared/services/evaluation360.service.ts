@@ -39,6 +39,20 @@ export class Evaluation360Service {
         throw data;
       });
   }
+  getPlans(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl + this.controllerUrl+"/actionPlan", data
+    )
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+
+        throw data;
+      });
+  }
   getPersonal360(data: any): Promise<any> {
 
     return axios.post(environment.apiUrl + this.controllerUrl+"/get360", data

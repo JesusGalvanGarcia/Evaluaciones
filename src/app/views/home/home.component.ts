@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   protected isCollapsed: boolean = false;
-
+  id:any=localStorage.getItem("user_id");
   constructor(  private router: Router) { }
   showSubMenu: string | null = null;
   getUser() {
@@ -54,6 +54,10 @@ export class HomeComponent implements OnInit {
           case  "asesores":
             this.router.navigate(['/dashboard/asesores']);
             break;
+            case "admin360":
+              this.router.navigate(['/dashboard/admin360']);
+              break;
+
     }
   }
   ngOnInit() {

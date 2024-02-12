@@ -138,7 +138,29 @@ class UserTestController extends Controller
                 ]);
 
             $user_evaluated = $user_evaluation?->user;
+            $evaluationType = '';
 
+            switch ($user_evaluation?->type_evaluator_id) {
+                case 1:
+                    $evaluationType = "Lider";
+                    break;
+                case 2:
+                    $evaluationType = "Autoevaluacion";
+                    break;
+                case 3:
+                    $evaluationType = "Cliente";
+                    break;
+                case 4:
+                    $evaluationType = "Lateral";
+                    break;
+                case 5:
+                    $evaluationType = "Colaborador";
+                    break;
+                // Puedes agregar más casos según tus necesidades
+                default:
+                    // Acción por defecto si el tipo no coincide con ningún caso
+                    break;
+            }
             if (!$test)
                 return response()->json([
                     'title' => 'Prueba no encontrada',
@@ -155,7 +177,8 @@ class UserTestController extends Controller
                 'test' => $test,
                 'score' => $user_test->total_score,
                 'clasification' => $clasification,
-                'user_test'=>$user_test
+                'user_test'=>$user_test,
+                'tipo'=>$evaluationType,
             ]);
         } catch (Exception $e) {
 

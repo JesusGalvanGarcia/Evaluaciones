@@ -61,7 +61,7 @@ export const navbarData: INavbarData[] = [
 export const navbarDataAdmin: INavbarData[] = [    
     {
         routeLink: 'exam/home',
-        icon: 'fa-solid fa-money-bill',
+        icon: 'fa-solid fa-house',
         label: 'Home',
         
     },
@@ -122,7 +122,7 @@ export const navbarDataAdmin: INavbarData[] = [
 export const navbarDataAdminEvaluaciones: INavbarData[] = [    
     {
         routeLink: 'exam/home',
-        icon: 'fa-solid fa-money-bill',
+        icon: 'fa-solid fa-house',
         label: 'Home',
         
     },
@@ -187,12 +187,6 @@ export const navbarDataAdminEvaluaciones: INavbarData[] = [
                 label: 'PLD',
                 active:true,
             },
-            {
-                icon: 'fa-solid fa-toolbox',
-                routeLink: 'exam/adminPld',
-                label: 'Administración de PLD',
-              
-              }
         ]
         
     },

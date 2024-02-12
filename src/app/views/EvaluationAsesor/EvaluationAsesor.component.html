@@ -67,7 +67,7 @@
       </div>
       <div class="col">
         <div >
-          <div *ngIf="actualAnswer!=='Selecciona una  respuesta...'&&size !=index+1"  >
+          <div *ngIf="actualAnswer!=='Selecciona una opción...'"  >
             <button class="btn btn-light"  (click)="next()" [disabled]="sendButton"> 
               <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="30"><path d="M800-240v-480h80v480h-80Zm-320 0-57-56 144-144H80v-80h487L424-664l56-56 240 240-240 240Z"/></svg>            </button>
           </div>
@@ -82,6 +82,10 @@
   <div class="col">
     <span class="header-1">  {{PLDTest.name}}</span>
 </div> 
+<div class="mt-2" style="text-align: center;">
+  <p class="tex-center fw-bolder">Colaborador: {{ evaluatedUserName }}</p> 
+
+</div>
   <div class="col-md-10 center-div" style="width: 100%;margin-top: 3%;">
     <span class="sdPregunta">{{ PLDTest.test_modules[0].questions[index].description }}  </span>
   </div>

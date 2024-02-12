@@ -8,6 +8,8 @@ use App\Models\ActionPlanSignature;
 use App\Services\TestService;
 use App\Models\Process;
 use App\Models\Status;
+use App\Models\Question;
+use App\Models\Answer;
 use App\Models\Test;
 use App\Models\UserActionPlan;
 use App\Models\UserCollaborator;
@@ -268,9 +270,11 @@ class Evaluation360Controller extends Controller
     ->whereIn('responsable_id', $responsableIdsArray)
     ->where('action_plan_id', 2)
     ->get();
+  
     foreach($action_plan as $plan)
     {
-        $signature[] = [
+        $signature[] = 
+        [
             'user_action_plan_id' => $plan->id,
             'responsable_id' => $plan->responsable_id,
             'created_at' => now(),
@@ -278,8 +282,48 @@ class Evaluation360Controller extends Controller
             'deleted_at' => null,
         ];
     }
-    $newPlansActions = ActionPlanSignature::insert($signature);
+   
+    foreach($signature as $item)
+    {
+
+        $signatureResponsable[] = 
+        [
+            'user_action_plan_id' => $item['user_action_plan_id'],
+            'responsable_id' => 88,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
+        ];
+    }
+    $Colaborador = [];
+
+    foreach ($action_plan as $item) {
+        $Colaborador[] = [
+            'user_action_plan_id' => $item->id,
+            'responsable_id' => $item->user_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
+        ];
+    }
     
+    // Filtrar duplicados por user_action_plan_id y responsable_id
+    $uniqueColaborador = [];
+    foreach ($Colaborador as $item) {
+        $key = $item['user_action_plan_id'] . '_' . $item['responsable_id'];
+        if (!array_key_exists($key, $uniqueColaborador)) {
+            $uniqueColaborador[$key] = $item;
+        }
+    }
+    
+    $uniqueColaborador = array_values($uniqueColaborador);
+    
+    // Insertar en la base de datos
+    $newPlansActions = ActionPlanSignature::insert($signature);
+    $newPlansActionsResponsable = ActionPlanSignature::insert($signatureResponsable);
+    $PlansUser = ActionPlanSignature::insert($uniqueColaborador);
+    
+
     
         DB::commit();
             return response()->json([
@@ -481,6 +525,7 @@ class Evaluation360Controller extends Controller
     $actionPlan = $user_evaluations->map(function ($item) use ($request) {
      
         return [
+            
             'user_id' => $item->user_id,
             'action_plan_id' => 3,
             'status_id' => 1,
@@ -491,6 +536,7 @@ class Evaluation360Controller extends Controller
             'created_at' => now(),
             'updated_at' => now(),
             'deleted_at' => null,
+            
         ];
     
     });
@@ -499,6 +545,7 @@ class Evaluation360Controller extends Controller
     DB::commit();
     DB::beginTransaction();
     $signature=[];
+    $signatureResponsable=[];
     $userIdsArray = $actionPlan->pluck('user_id')->toArray();
     $responsableIdsArray = $actionPlan->pluck('responsable_id')->toArray();
     $action_plan = UserActionPlan::
@@ -506,9 +553,11 @@ class Evaluation360Controller extends Controller
     ->whereIn('responsable_id', $responsableIdsArray)
     ->where('action_plan_id', 3)
     ->get();
+  
     foreach($action_plan as $plan)
     {
-        $signature[] = [
+        $signature[] = 
+        [
             'user_action_plan_id' => $plan->id,
             'responsable_id' => $plan->responsable_id,
             'created_at' => now(),
@@ -516,8 +565,48 @@ class Evaluation360Controller extends Controller
             'deleted_at' => null,
         ];
     }
-    $newPlansActions = ActionPlanSignature::insert($signature);
+   
+    foreach($signature as $item)
+    {
+
+        $signatureResponsable[] = 
+        [
+            'user_action_plan_id' => $item['user_action_plan_id'],
+            'responsable_id' => 88,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
+        ];
+    }
+    $Colaborador = [];
+
+    foreach ($action_plan as $item) {
+        $Colaborador[] = [
+            'user_action_plan_id' => $item->id,
+            'responsable_id' => $item->user_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
+        ];
+    }
     
+    // Filtrar duplicados por user_action_plan_id y responsable_id
+    $uniqueColaborador = [];
+    foreach ($Colaborador as $item) {
+        $key = $item['user_action_plan_id'] . '_' . $item['responsable_id'];
+        if (!array_key_exists($key, $uniqueColaborador)) {
+            $uniqueColaborador[$key] = $item;
+        }
+    }
+    
+    $uniqueColaborador = array_values($uniqueColaborador);
+    
+    // Insertar en la base de datos
+    $newPlansActions = ActionPlanSignature::insert($signature);
+    $newPlansActionsResponsable = ActionPlanSignature::insert($signatureResponsable);
+    $PlansUser = ActionPlanSignature::insert($uniqueColaborador);
+    
+
     
         DB::commit();
         return response()->json([
@@ -618,6 +707,102 @@ class Evaluation360Controller extends Controller
                 'deleted_at' => null,
             ]);
         }
+     
+        $userIdsMatch = collect($request->users)->pluck('id')->toArray();
+        DB::beginTransaction();
+        $user_evaluations = UserEvaluation::whereIn('responsable_id', $userIdsMatch)
+        ->where('evaluation_id', $request->evaluation_id)
+        ->where('process_id', 7)
+        ->where('type_evaluator_id', 3)
+        ->get();
+    $user_evaluations =  $user_evaluations->filter(function ($item) {
+        return $item['type_evaluator_id'] != 2;
+    });
+
+    $actionPlan = $user_evaluations->map(function ($item) use ($request) {
+     
+        return [
+            'user_id' => $item->user_id,
+            'action_plan_id' => 3,
+            'status_id' => 1,
+            'responsable_id' => $item->responsable_id,
+            'created_by' => $request->user_id,
+            'updated_by' => $request->user_id,
+            'deleted_by' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
+        ];
+    
+    });
+ 
+    $newPlans = UserActionPlan::insert($actionPlan->toArray());
+    DB::commit();
+    DB::beginTransaction();
+    $signature=[];
+    $userIdsArray = $actionPlan->pluck('user_id')->toArray();
+    $responsableIdsArray = $actionPlan->pluck('responsable_id')->toArray();
+    $action_plan = UserActionPlan::
+    whereIn('user_id',$userIdsArray)
+    ->whereIn('responsable_id', $responsableIdsArray)
+    ->where('action_plan_id', 3)
+    ->get();
+  
+    foreach($action_plan as $plan)
+    {
+        $signature[] = 
+        [
+            'user_action_plan_id' => $plan->id,
+            'responsable_id' => $plan->responsable_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
+        ];
+    }
+   
+    foreach($signature as $item)
+    {
+
+        $signatureResponsable[] = 
+        [
+            'user_action_plan_id' => $item['user_action_plan_id'],
+            'responsable_id' => 88,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
+        ];
+    }
+    $Colaborador = [];
+
+    foreach ($action_plan as $item) {
+        $Colaborador[] = [
+            'user_action_plan_id' => $item->id,
+            'responsable_id' => $item->user_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
+        ];
+    }
+    
+    // Filtrar duplicados por user_action_plan_id y responsable_id
+    $uniqueColaborador = [];
+    foreach ($Colaborador as $item) {
+        $key = $item['user_action_plan_id'] . '_' . $item['responsable_id'];
+        if (!array_key_exists($key, $uniqueColaborador)) {
+            $uniqueColaborador[$key] = $item;
+        }
+    }
+    
+    $uniqueColaborador = array_values($uniqueColaborador);
+    
+    // Insertar en la base de datos
+    $newPlansActions = ActionPlanSignature::insert($signature);
+    $newPlansActionsResponsable = ActionPlanSignature::insert($signatureResponsable);
+    $PlansUser = ActionPlanSignature::insert($uniqueColaborador);
+    
+
+    DB::commit();
+    
         return response()->json([
             'title' => 'Proceso terminado',
             'message' => 'Usuarios agregados correctamente',
@@ -661,6 +846,34 @@ class Evaluation360Controller extends Controller
         ], 500);
        }
         
+    }
+    public function  actionPlan(Request $request)
+    {
+        try{
+
+            $user_action_plan = UserActionPlan::join('users as R', 'R.id', '=', 'user_action_plans.responsable_id')
+            ->select('user_action_plans.*', DB::raw("CONCAT(R.name, ' ', R.father_last_name, ' ', R.mother_last_name) as responsable_name"))
+            ->where([
+                ['user_action_plans.user_id', $request->user_id],
+                ['user_action_plans.status_id', 3],
+                ['user_action_plans.action_plan_id', 3]
+            ])
+            ->get();
+            return response()->json([
+            'title' => 'Proceso terminado',
+            'message' => 'Examenes consultados correctamente',
+          
+            'user_action_plan'=>$user_action_plan
+        ]);
+    }catch(Exception $e)
+    {
+  
+     return response()->json([
+         'title' => 'Ocurrio un error en el servidor',
+         'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+         'code' => $this->prefix . 'X699'
+     ], 500);
+    }
     }
     public function get360(Request $request)
     {
@@ -709,6 +922,7 @@ class Evaluation360Controller extends Controller
             return $status_join->on('S.status_id', 'user_evaluations.status_id')
                 ->where('S.table_name', 'user_evaluations');
         })
+        
         ->when(count($collaborators_id) > 0, function ($when) use ($collaborators_id) {
             return $when->whereIn('user_evaluations.user_id', $collaborators_id);
         })
@@ -723,6 +937,7 @@ class Evaluation360Controller extends Controller
                 $query->whereIn('user_evaluations.process_id', [10, 11]);
             });
         })
+        ->where('user_evaluations.user_id',$request->user_id)
         ->get();
  
      
@@ -796,6 +1011,12 @@ class Evaluation360Controller extends Controller
         ->when(count($evaluations_id) > 0, function ($when) use ($evaluations_id) {
             return $when->whereIn('user_evaluations.evaluation_id', $evaluations_id);
         })
+        ->when(request('user_id') != 88 && request('user_id') != 19 && request('user_id') != 12, function ($when) use ($collaborators_id) {
+
+            return $when->where([
+                ['responsable_id', request('user_id')]
+            ]);
+        })
         ->where(function ($query) use ($request) {
             $query->where([
                 ['user_evaluations.process_id', 7]
@@ -803,7 +1024,7 @@ class Evaluation360Controller extends Controller
                 $query->whereIn('user_evaluations.process_id', [10, 11]);
             });
         })
-        ->where('user_evaluations.responsable_id', $request->user_id)
+       // ->where('user_evaluations.responsable_id', $request->user_id)
         ->get();
  
      

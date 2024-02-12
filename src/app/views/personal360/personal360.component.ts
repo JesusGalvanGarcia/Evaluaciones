@@ -128,7 +128,8 @@ export class Personal360Component implements OnInit {
       this.isLoading=false;
     } catch (error) {
       console.log(error);
-
+      this.isLoading=false;
+      this.message.error("Los datos  no  estan  disponibles en  este  momento. "+error);
     }
   }
   getObjectKeys(obj: any): string[] {

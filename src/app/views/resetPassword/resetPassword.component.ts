@@ -27,7 +27,6 @@ import { LoadingComponent } from '../loading/loading.component';
   ],
   providers: [
     PassWordService,
-    Router,
     MensajeService
   ]
 })
@@ -75,7 +74,9 @@ export class ResertPasswordComponent implements OnInit {
   }
   public async sendResetPass() {
     this.passwordRequest.email=this.email;
-    await lastValueFrom(this.passWordService.sendResetPass(this.passwordRequest))
+    if(this.passwordRequest.password ==this.passwordRequest.confirmPassword)
+    {
+      await lastValueFrom(this.passWordService.sendResetPass(this.passwordRequest))
       .then(() => {
         this.isLoading=false;
 
@@ -87,6 +88,15 @@ export class ResertPasswordComponent implements OnInit {
         this.isLoading=false;
         this.disableSubmit = false;
       });
+    }
+    else
+    {
+      this.messageService.error('Las constraseñas no coinciden.');
+      this.isLoading=false;
+      this.disableSubmit = false;
+
+    }
+
   }
 }
 

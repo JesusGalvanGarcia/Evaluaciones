@@ -52,6 +52,8 @@ export class Evaluation360Component implements OnInit {
   showSuggestions:boolean;
 
   evaluatedUserName: string = "";
+  type: string = "";
+
   newModulo: Moduled =
     {
       id: 0,
@@ -392,6 +394,10 @@ export class Evaluation360Component implements OnInit {
         // Handle errors here
       });
   }
+   textoConSaltosDeLinea(text:any): any {
+    // Reemplaza '\n' con '<br>' para que Angular interprete los saltos de línea
+    return text.replace(/\\n/g, '<br>');
+  }
   getTable(data: any) {
  
     this.userTestService.GetEvaluation(data, this.user_test_id)
@@ -399,6 +405,7 @@ export class Evaluation360Component implements OnInit {
   
         this.DesempenoTest = response.test;
         this.evaluatedUserName = response.evaluated_user_name;
+        this.type=response.tipo;
         this.sizeTotal = this.DesempenoTest.test_modules.length;
         this.sizeQuestions = this.DesempenoTest.test_modules[this.index].questions.length;
         this.isLoading=false;

@@ -75,7 +75,7 @@ export class AsesoresComponent implements OnInit {
   PersonalList:CollaboratorEvaluation[];
   protected isLoading: boolean = false;
   
-  displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name', 'actual_process','start_date', 'phase', 'status',"action"];
+  displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name','responsable_name', 'actual_process','start_date', 'phase', 'status',"action"];
   dataSource: MatTableDataSource<TestModel> | any = [];
   constructor(private http: HttpClient,
     private userEvaluationService: UserEvaluationService,
@@ -242,7 +242,7 @@ export class AsesoresComponent implements OnInit {
       //  this.router.navigate(['exam/asesors/'+id+"/1"]);
         if(status=="Terminado")
         {
-          this.router.navigate(['/prueba/'+id]);
+          this.router.navigate(['/pruebaAsesor/'+id]);
         }
         else{
           this.router.navigate(['/dashboard/exam/asesors/'+id+"/1"]);

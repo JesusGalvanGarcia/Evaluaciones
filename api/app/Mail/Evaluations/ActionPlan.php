@@ -18,15 +18,18 @@ class ActionPlan extends Mailable
     public $evaluation_name;
     public $evaluated_user;
     public $responsable_user;
+    public $file;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($evaluation_name, $evaluated_user, $responsable_user)
+    public function __construct($evaluation_name, $evaluated_user, $responsable_user,$file)
     {
         $this->evaluation_name = $evaluation_name;
         $this->evaluated_user = $evaluated_user;
         $this->responsable_user = $responsable_user;
+        $this->file = $file;
+
     }
 
     /**
@@ -35,9 +38,9 @@ class ActionPlan extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('yunuen.vejar@trinitas.mx', $this->responsable_user->name . ' ' . $this->responsable_user->father_last_name . ' ' . $this->responsable_user->mother_last_name),
+            from: new Address('brenda.ortiz@trinitas.mx', $this->responsable_user->name . ' ' . $this->responsable_user->father_last_name . ' ' . $this->responsable_user->mother_last_name),
             replyTo: [
-                new Address('yunuen.vejar@trinitas.mx', 'Yunuen Vejar Badillo'),
+                new Address('brenda.ortiz@trinitas.mx', 'Yunuen Vejar Badillo'),
             ],
             subject: 'Plan de Acción concluido'
         );
@@ -49,7 +52,7 @@ class ActionPlan extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Evaluations/ActionPlanComplete',
+            view: 'Evaluations/'.$this->file,
             with: [
                 'evaluation_name' => $this->evaluation_name,
                 'evaluated_user' => $this->evaluated_user,

@@ -44,7 +44,8 @@ export class Index360Component implements OnInit {
   protected  isChecked: boolean = true;
   changeProcess:ProcessModel;
   ListChangeColaborator:CollaboratorEvaluation[];
- 
+  plans:boolean=false;
+  planList:any;
   ListColaborator:CollaboratorEvaluation[];
   ListTest:TestModel[];
   mostrar:boolean=false;
@@ -52,7 +53,7 @@ export class Index360Component implements OnInit {
   PersonalList:CollaboratorEvaluation[];
   protected isLoading: boolean = false;
   
-  displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name', 'actual_process','start_date', 'evaluator_type', 'status',"action"];
+  displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name','responsable_name', 'actual_process','start_date', 'evaluator_type', 'status',"action"];
   dataSource: MatTableDataSource<TestModel> | any = [];
   constructor(private http: HttpClient,
     private userEvaluationService: UserEvaluationService,
@@ -68,7 +69,7 @@ export class Index360Component implements OnInit {
           params: { 
             action:  GridActions.Seen,   
             icon:'fa-solid fa-eye',
-            title:' Ver reporte' 
+            title:' Ver' 
           }
         };
         return component;
@@ -92,14 +93,18 @@ export class Index360Component implements OnInit {
       GridActions.DEFAULT_COLUMN
     )
     protected columnDefs: ColDef[] = [
-      { headerName: 'Nombre', field: 'collaborator_name',  },
-      { headerName: 'Evaluación', field: 'evaluation_name',  },
-      { headerName: 'Inicio', field: 'evaluation_start',  },
-      { headerName: 'Fin', field: 'evaluation_end',  },
+      { headerName: 'Nombre', flex:1, field: 'collaborator_name', minWidth: 200  },
+      { headerName: 'Evaluación', flex:1, field: 'evaluation_name', minWidth: 200 },
+      { headerName: 'Inicio', flex:1, field: 'evaluation_start', minWidth: 200  },
+      { headerName: 'Fin', flex:1, field: 'evaluation_end', minWidth: 200  },
       this.seeDetailSeenButton,
       this.seeDetailAccionPlan
     ]
-  
+    protected columnDefsPlans: ColDef[] = [
+      { headerName: 'Nombre', flex:1, field: 'responsable_name', minWidth: 200  },
+      { headerName: 'Fin', flex:1, field: 'finish_date', minWidth: 200  },
+      this.seeDetailSeenButton
+    ]
   getTestUser(data:any,userid:any,array:number)
   {
     this.userEvaluationService.GetTest(data,userid)
@@ -161,6 +166,21 @@ export class Index360Component implements OnInit {
       // Handle errors here
     });
   }
+  getPlans(data:any)
+  {
+    this.isLoading=true;
+    this.evaluations360.getPlans(data)
+    .then((response:any) => {
+     // this.PersonalList=response.users;
+     this.planList=response.user_action_plan;
+     this.isLoading=false;
+
+    })
+    .catch((error:any) => {
+      console.error('Error in the request:', error);
+      // Handle errors here
+    });
+  }
   protected onActionEvent(actionEvent: { action: string, data: any }) {
     if (actionEvent.action == GridActions.Seen )  //verificar si no han finalizado los intentos
     {
@@ -170,9 +190,27 @@ export class Index360Component implements OnInit {
       this.router.navigate(['/dashboard/exam/personal360/' + actionEvent.data.evaluation_id + "/" + actionEvent.data.user_id]);
       
     }
+    if (actionEvent.action == GridActions.Start )  //verificar si no han finalizado los intentos
+    {
+      this.plans=true;
+      let data = {
+        user_id: Number(localStorage.getItem("user_id")),
+        collaborators_id: [],
+        evaluations_id: []
+      };
+      this.getPlans(data);
+    }
 
 }
+protected onActionEventPlans(actionEvent: { action: string, data: any }) {
+  if (actionEvent.action == GridActions.Seen )  //verificar si no han finalizado los intentos
+  {
+    this.router.navigate(['/plan-accion/'+actionEvent.data.id]);
+    
+  }
+ 
 
+}
     getTable()
   {
     this.isLoading=true;
@@ -225,8 +263,10 @@ export class Index360Component implements OnInit {
         break
         case "Feedback y Plan de Acción":
  
-
+          if(detalle[0].status=="Terminado")
           this.router.navigate(['/plan-accion/'+id]);
+        else
+        this.message.error("No has terminado  la evaluacion.")
         
       break
     }

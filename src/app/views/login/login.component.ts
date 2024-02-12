@@ -59,6 +59,10 @@ export class LoginComponent implements OnInit {
     }
     this.authenticate();
   }
+  redirectToForgotPassword() {
+    // Aquí indicas la ruta a la que deseas redirigir
+    this.router.navigate(['/sendEmail']);
+}
 
   /**
    * Realiza la autenticación del usuario utilizando el servicio de inicio de sesión y redirige a la página de pacientes.

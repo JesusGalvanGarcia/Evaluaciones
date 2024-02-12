@@ -56,6 +56,9 @@ Route::resource('/evaluation360', Evaluation360Controller::class, [
         'show' => 'Consultar Usuarios',
     ]
 ]);
+Route::post('/user/sendPasswordResetEmail', [UserController::class, 'sendPasswordResetEmail'])->name('Enviar correo para cambio de contraseña');
+Route::post('/user/resetPassword', [UserController::class, 'resetPassword'])->name('Cambiar contraseña');
+
 Route::post('/evaluation360/changeStatus', [Evaluation360Controller::class, 'changeStatus'])->name('Cambiar status');
 Route::post('/evaluation360/getFinish360', [Evaluation360Controller::class, 'getFinish360'])->name('Consultar reporte 360');
 Route::post('/evaluation360/get360', [Evaluation360Controller::class, 'get360'])->name('Consultar evaluacinoes 360');
@@ -67,6 +70,7 @@ Route::post('/evaluation360/assign360', [Evaluation360Controller::class, 'assign
 Route::post('/evaluation360/assignAsesors', [Evaluation360Controller::class, 'assignAsesors'])->name('Crear asesores');
 Route::post('/evaluation360/getPersonal360', [Evaluation360Controller::class, 'getPersonal360'])->name('Crear asesores');
 Route::post('/evaluation360/getUsersAdmin360', [Evaluation360Controller::class, 'getUsersAdmin360'])->name('Crear asesores');
+Route::post('/evaluation360/actionPlan', [Evaluation360Controller::class, 'actionPlan'])->name('Consultar planes de  accion');
 
 Route::post('/user-evaluations/getAverages', [UserEvaluationController::class, 'getAverages'])->name('Cosultar promedios');
 

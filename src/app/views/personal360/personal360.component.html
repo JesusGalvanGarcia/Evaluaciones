@@ -146,7 +146,7 @@
     Lider
     </div>
 <div *ngFor="let item of lideres" class="row rowTable">
-
+  <div *ngIf="item.suggestions!=''" class="row rowTable">
     <div class="col colTable">
      <div class="titles">
       Sugerencias<br/>
@@ -171,6 +171,7 @@
         {{item.strengths}}
        </div>
         </div>
+        </div>
 </div>
 </div>
 
@@ -180,7 +181,7 @@
     Colaborador
     </div>
 <div *ngFor="let item of colaboradores" class="row rowTable">
-
+  <div *ngIf="item.suggestions!=''" class="row rowTable">
     <div class="col colTable">
       <div class="titles">
         Sugerencias<br/>
@@ -205,14 +206,15 @@
           {{item.strengths}}
          </div>
         </div>
+        </div>
 </div>
 </div>
-<div class="col colTable">
-  <div class="col colTable" *ngIf="cliente.length>0&&cliente[0].suggestions!=''">
+<div class="col colTable" *ngIf="cliente.length>0&&cliente[0].suggestions!=''">
+  <div class="col colTable" >
     Clientes
     </div>
 <div *ngFor="let item of cliente" class="row rowTable">
-
+    <div *ngIf="item.suggestions!=''" class="row rowTable">
     <div class="col colTable">
       <div class="titles">
         Sugerencias<br/>
@@ -237,6 +239,7 @@
           {{item.strengths}}
          </div>
         </div>
+      </div>
 </div>
 </div>
 <div class="col colTable" *ngIf="lateral.length>0&&lateral[0].suggestions!=''">
@@ -244,7 +247,7 @@
     Laterales
     </div>
 <div *ngFor="let item of lateral" class="row rowTable">
-
+  <div *ngIf="item.suggestions!=''" class="row rowTable">
     <div class="col colTable">
       <div class="titles">
         Sugerencias<br/>
@@ -268,6 +271,7 @@
          <div class="subtitle">
           {{item.strengths}}
          </div>
+        </div>
         </div>
 </div>
 </div>
@@ -276,7 +280,7 @@
     Autoevaluacion
     </div>
 <div *ngFor="let item of autoevaluacion" class="row rowTable">
-
+  <div *ngIf="item.suggestions!=''" class="row rowTable">
     <div class="col colTable">
       <div class="titles">
         Sugerencias<br/>
@@ -300,6 +304,7 @@
          <div class="subtitle">
           {{item.strengths}}
          </div>
+        </div>
         </div>
 </div>
 </div>

@@ -134,6 +134,7 @@ class TestService extends ServiceProvider
     {
 
         Mail::to('brenda.ortiz@trinitas.mx')->send(new sendEmail360($name,$evaluation,'brenda.ortiz@trinitas.mx'));
+        //Mail::to($email)->send(new sendEmail360($name,$evaluation,$email));
 
     }
     static function sendEmailReset($name,$email,$encrypt)

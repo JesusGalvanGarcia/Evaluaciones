@@ -102,7 +102,7 @@ export class EvaluationAsesorComponent implements OnInit {
     } 
     this.PostsaveAnswers(this.PLDTest.test_modules[0].questions[this.index],event,event.id)
     this.actualAnswer = "Selecciona una opción...";
-    console.log(this.actualAnswer)
+  
    
   }
 

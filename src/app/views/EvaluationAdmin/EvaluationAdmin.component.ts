@@ -94,8 +94,7 @@ export class EvaluationAdminComponent implements OnInit {
   async ngOnInit() 
    {
 
-    console.log(this.evaluation)
-    console.log(this.modules)
+  
 
    }
    

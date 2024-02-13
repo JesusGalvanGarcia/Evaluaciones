@@ -39,7 +39,7 @@ export class Admin360Component implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Report,
-          icon: 'fa-solid fa-arrow-right',
+          icon: 'fa-solid fa-file-invoice',
           title:'Ir a reporte'
        
         }
@@ -159,12 +159,12 @@ export class Admin360Component implements OnInit {
   }
   getExamns(data: any) {
     this.isLoading=true;
-    console.log(data)
+   
     this.evaluations.Get360(data)  //Cargar examen
       .then((response: any) => {
-        console.log(response)
+      
         this.evaluationData = response.evaluations.filter((evaluation:any) =>Number(evaluation.process_id)== 7||Number(evaluation.process_id)== 10||Number(evaluation.process_id)== 11);;
-        console.log(this.evaluationData)
+       
 
         this.isLoading=false;
      
@@ -180,11 +180,11 @@ export class Admin360Component implements OnInit {
   }
   getUsers(data: any,id:any) {
  
-    console.log(data)
+  
     this.isLoading=true;
     this.evaluations.GetUsers360(data,id)  //Cargar examen
       .then((response: any) => {
-        console.log(response)
+       
         this.UsersData = response.users;
 
         this.isLoading=false;
@@ -201,10 +201,10 @@ export class Admin360Component implements OnInit {
   }
   getUserPersonal(data: any) {
     this.isLoading=true;
-    console.log(data)
+    
     this.evaluations.getPersonal360(data)  //Cargar examen
       .then((response: any) => {
-        console.log(response)
+       
         this.UsersPersonalData = response.users;
 
         this.isLoading=false;
@@ -270,7 +270,7 @@ export class Admin360Component implements OnInit {
       user_id: id,
       evaluation_id:this.evaluationNumber
     };
-    console.log(data)
+  
     this.evaluations.changeStatus(data)
     .then((response: any) => {
      this.message.success("El  reporte se ha aprobado con exito");

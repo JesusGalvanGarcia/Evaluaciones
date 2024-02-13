@@ -87,19 +87,32 @@ export class Personal360Component implements OnInit {
   }
   numbers(num:any)
   {
-    return num.toFixed(2);
+    return num.toFixed(1);
   }
   sum(labels: any): number {
     // Calculate the sum of values in the labels array
     return labels.reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0);
-  }
-  
-  average(aspect: any, question: any): any {
+}
+
+average(aspect: any, question: any): any {
     let labels = Object.values(this.question_averages[aspect][question]);
 
-    return (this.sum(labels)/labels.length).toFixed(2);
-    
-  }
+    // Check if labels.length is zero to avoid division by zero
+    if (labels.length === 0) {
+        return 'N/A';
+    }
+
+    // Calculate the average
+    let avg = this.sum(labels) / labels.length;
+
+    // Check if the result is NaN
+    if (isNaN(avg)) {
+        return 'N/A';
+    }
+
+    return avg.toFixed(1);
+}
+
   
   async getData() {
     this.body = {
@@ -109,7 +122,7 @@ export class Personal360Component implements OnInit {
 
     try {
       const response = await this.evaluationService.GetAverages(this.body);
-      console.log(response);
+     
       this.promedioData = response.promedio;
       this.evaluatorData = response.evaluator;
       this.generalData = response.general;
@@ -127,10 +140,14 @@ export class Personal360Component implements OnInit {
       this.processData(this.promedioData ,'bar','promedio','Promedio general');
       this.isLoading=false;
     } catch (error) {
-      console.log(error);
-      this.isLoading=false;
-      this.message.error("Los datos  no  estan  disponibles en  este  momento. "+error);
+    
+      this.message.warning("Los datos  no  estan  disponibles en  este  momento ya que ninguna evaluacion ha sido contestada para este evaluado. "+error);
+      this.back();
     }
+  }
+  checkNan(data:any)
+  {
+    return isNaN(data); 
   }
   getObjectKeys(obj: any): string[] {
     return Object.keys(obj);
@@ -187,7 +204,7 @@ export class Personal360Component implements OnInit {
   }
   
   onSelect(event: any): void {
-    console.log(event);
+
   }
    shuffleArray(array: any[]): any[] {
     let currentIndex = array.length, randomIndex;

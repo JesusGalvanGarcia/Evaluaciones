@@ -22,7 +22,7 @@ export class ConfirmationModalComponent implements OnInit {
     ) { }
 
     public ngOnInit(): void {
-        console.log("confirma")
+     
     }
 
     public showConfirmationModal(title: string, body: string): void {

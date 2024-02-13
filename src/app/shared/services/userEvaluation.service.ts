@@ -47,7 +47,7 @@ export class UserEvaluationService {
       return response.data;
       })      
     .catch(function (error: any) {
-      console.log(error)
+     
       throw error;
     });
   }
@@ -60,7 +60,7 @@ export class UserEvaluationService {
       return response.data;
       })      
     .catch(function (error: any) {
-      console.log(error)
+     
       throw error;
     });
   }
@@ -75,7 +75,7 @@ export class UserEvaluationService {
       return response.data.personal_evaluations;
       })      
     .catch(function (error: any) {
-      console.log(error)
+  
 
       throw error;
     });

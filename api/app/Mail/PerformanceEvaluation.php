@@ -39,7 +39,7 @@ class PerformanceEvaluation extends Mailable
         return new Envelope(
             from: new Address($this->responsable_user->email, $this->responsable_user->name . ' ' . $this->responsable_user->father_last_name . ' ' . $this->responsable_user->mother_last_name),
             replyTo: [
-                new Address('brenda.ortiz@trinitas.mx', 'Yunuen Vejar Badillo'),
+                new Address('yunuen.vejar@trinitas.mx', 'Yunuen Vejar Badillo'),
             ],
             subject: 'Evaluación de Desempeño concluida'
         );

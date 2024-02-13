@@ -35,7 +35,7 @@ class sendEmail360 extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('brenda.ortiz@trinitas.mx'),
+            from: new Address($this->responsable_user->email),
             replyTo: [
                 new Address('notificaciones@trintias.com', $this->evaluation_name),
             ],

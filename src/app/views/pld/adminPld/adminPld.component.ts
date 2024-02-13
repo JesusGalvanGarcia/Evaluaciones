@@ -119,7 +119,7 @@ export class AdminPldComponent implements OnInit {
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      console.log('El modal se cerró');
+ 
       this.close();
     });
     

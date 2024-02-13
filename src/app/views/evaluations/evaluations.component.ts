@@ -165,7 +165,7 @@ changeList()
     this.ListChangeColaborator=response.collaborators_evaluations;
     this.PersonalList=this.PersonalList.filter(colaborator => Number(colaborator.process_id) <=Number(5 ));
     this.isLoading=false;
-   console.log(response);
+  
     this.dataSource = new MatTableDataSource(this.ListColaborator);
 
   })

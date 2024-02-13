@@ -93,7 +93,7 @@ export class UsersComponent implements OnInit {
   }
   send()
   {
-    console.log(this.selectedItems);
+    
     this.isLoading=true;
     let data = {
       user_id: Number(localStorage.getItem("user_id")),
@@ -119,10 +119,10 @@ export class UsersComponent implements OnInit {
   }
   getAllUsers(data: any) {
  
-    console.log(data)
+    
     this.evaluation360.GetUsersAssing360(data)  //Cargar examen
       .then((response: any) => {
-        console.log(response)
+     
         this.UsersAllData = response.evaluations;
 
         this.isLoading=false;
@@ -139,10 +139,10 @@ export class UsersComponent implements OnInit {
   }
   getUsers(data: any) {
  
-    console.log(data)
+ 
     this.evaluation360.GetUsersSelect360(data)  //Cargar examen
       .then((response: any) => {
-        console.log(response)
+    
         this.UsersData = response.evaluations;
 
         this.isLoading=false;
@@ -162,14 +162,13 @@ export class UsersComponent implements OnInit {
    
     this.evaluation360.GetAssing360(data)  //Cargar examen
       .then((response: any) => {
-        console.log(response)
-
+     
         this.isLoading=false;
         this.start=false;
         this.selectedItems = response.existingRecords.map((item :any)=> ({ ...item, id: Number(item.id) }));
 
         
-      console.log(this.UsersData)
+   
       })
       .catch((error: any) => {
         this.isLoading=false;

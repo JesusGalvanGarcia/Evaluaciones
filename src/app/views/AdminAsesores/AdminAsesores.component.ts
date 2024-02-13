@@ -119,12 +119,12 @@ export class AdminAsesoresComponent implements OnInit {
   }
   getExamns(data: any) {
  
-    console.log(data)
+
     this.evaluations.Get360(data)  //Cargar examen
       .then((response: any) => {
-        console.log(response)
+      
         this.evaluationData = response.evaluations.filter((evaluation:any) =>Number(evaluation.process_id)== 6);
-        console.log(this.evaluationData)
+       
 
         this.isLoading=false;
      
@@ -140,10 +140,10 @@ export class AdminAsesoresComponent implements OnInit {
   }
   getUsers(data: any,id:any) {
  
-    console.log(data)
+
     this.evaluations.GetUsers360(data,id)  //Cargar examen
       .then((response: any) => {
-        console.log(response)
+       
         this.UsersData = response.users;
 
         this.isLoading=false;

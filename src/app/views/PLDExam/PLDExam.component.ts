@@ -86,7 +86,7 @@ export class PLDExamComponent implements OnInit {
         this.PLDTest.test_modules[0].questions = this.shuffleArray(
           this.PLDTest.test_modules[0].questions
         );
-        console.log(this.PLDTest);
+     
         this.isLoading = false;
         this.size = this.PLDTest.test_modules[0].questions.length;
         this.exam_progress = 0;
@@ -124,7 +124,7 @@ export class PLDExamComponent implements OnInit {
     this.pldService
       .SendTestPLD(this.saveIndivisual)
       .then((response: any) => {
-        console.log(response);
+    
         this.loading = false;
         this.score = response.actual_score;
         this.sendButton = false;
@@ -176,7 +176,7 @@ export class PLDExamComponent implements OnInit {
   ) {
     this.exam_progress = Number(((this.index + 1) * 100) / this.size);
     this.exam_progress=Number(this.exam_progress.toFixed(0));
-    console.log(this.exam_progress);
+   
     //this.PostsaveAnswers(question, answer)
     //Actualizar la pregunta en  el array
     this.PLDTest.test_modules[0].questions[this.index].answers.map(

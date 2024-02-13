@@ -90,7 +90,7 @@ export class Evaluation360Service {
       return response.data;
       })      
     .catch(function (error: any) {
-      console.log(error)
+    
       throw error;
     });
   }
@@ -187,7 +187,7 @@ export class Evaluation360Service {
       return response.data;
       })      
     .catch(function (error: any) {
-      console.log(error)
+  
       throw error;
     });
   }

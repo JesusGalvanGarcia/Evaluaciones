@@ -157,7 +157,7 @@ export class AsesoresComponent implements OnInit {
 
       this.ListChangeColaborator=response.collaborators_evaluations;
       this.isLoading=false;
-     console.log(response);
+    
       this.dataSource = new MatTableDataSource(this.ListColaborator);
   
     })

@@ -88,7 +88,7 @@ export class UserAsesorsComponent implements OnInit {
   }
   send()
   {
-    console.log(this.selectedItems);
+  
     this.isLoading=true;
     let data = {
       user_id: Number(localStorage.getItem("user_id")),
@@ -114,11 +114,11 @@ export class UserAsesorsComponent implements OnInit {
   }
   getUsers(data: any) {
  
-    console.log(data)
+   
     this.evaluation360.GetUsersAssing360(data)  //Cargar examen
       .then((response: any) => {
         this.UsersData = response.evaluations;
-        console.log(this.UsersData)
+       
         this.isLoading=false;
       })
       .catch((error: any) => {

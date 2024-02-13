@@ -66,7 +66,9 @@ class Evaluation360Controller extends Controller
         try{
             //Traer los datos del index de examenes
             // Se consultan las pruebas de la evaluación asignadas.
-            $users = User::selectRaw("id, CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name")->get();
+            $users = User::selectRaw("id, CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name")
+            ->where('status_id', 1)
+            ->get();
 
             
 
@@ -352,25 +354,37 @@ class Evaluation360Controller extends Controller
         ]);
   
         $userIds = collect($request->users)->pluck('id')->toArray();
-        //enviar correo 
-        // Obtener los correos electrónicos de los usuarios
 
-        //tabla con los usuarios
-        foreach($userIds as $user)
-        {
-            FinishEvaluation::create([
-                'user_id' => $user,
-                'evaluation_id' => $request->evaluation_id,
-                'status' => false,
-                'created_by' => $request->user_id, // Utilizamos Auth::id() para obtener el ID del usuario autenticado
-                'updated_by' => $request->user_id, // O ajusta según sea necesario
-                'deleted_by' => null, // O ajusta según sea necesario
-                'created_at' => now(), // Utilizamos now() para obtener la fecha y hora actual
-                'updated_at' => now(), // O ajusta según sea necesario
-                'deleted_at' => null, 
-            ]);
+        foreach ($userIds as $key => $user) {
+            // Check if the user already has a FinishEvaluation record for the specified evaluation
+            $existingFinishEvaluation = FinishEvaluation::where('user_id', $user)
+                ->where('evaluation_id', $request->evaluation_id)
+                ->first();
+         
+            if ($existingFinishEvaluation === null) {
+                // Create a new FinishEvaluation record
+                FinishEvaluation::create([
+                    'user_id' => $user,
+                    'evaluation_id' => $request->evaluation_id,
+                    'status' => false,
+                    'created_by' => $request->user_id,
+                    'updated_by' => $request->user_id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'deleted_at' => null,
+                ]);
+            } else {
+                // Remove the user ID from both arrays
+                unset($userIds[$key]);
+        
+                // If $request->users is a collection, remove the item from the collection
+                $request->users = collect($request->users)->reject(function ($item) use ($user) {
+                    return $item['id'] == $user;
+                })->values();
+            }
         }
-
+        
+        
         //Autoevaluacion
         $userAutoevaluation = collect($userIds)->map(function ($item) {
             return [
@@ -380,61 +394,44 @@ class Evaluation360Controller extends Controller
             ];
         });
         
-        //consulta para traer  colaboradores
         $userCollaboratorIds = UserCollaborator::whereIn('user_id', $userIds)
         ->select('user_id', 'collaborator_id as responsable_id')
+        ->addSelect(DB::raw('5 as type')) // Add the new 'type' column with a numeric value of 5
         ->get();
-        //asignando  identificador de tipo  examen
-        $userCollaboratorIds = $userCollaboratorIds->map(function ($item) {
-            // Añadir la nueva propiedad con el valor que desees
-            $item->type = 5;
-            
-            return $item;
-        });
+    
         //consulta para traer lider
         $userCollaboratorLiderIds = UserCollaborator::whereIn('collaborator_id', $userIds)
-        ->select('user_id as responsable_id', 'collaborator_id as user_id') //ahora el responsable es el user_id
+        ->select('user_id as responsable_id', 'collaborator_id as user_id')
+        ->addSelect(DB::raw('1 as type')) // Add the new 'type' column with a numeric value of 1
         ->get();
-        //asignando identificador de tipo examen
-        $userCollaboratorLiderIds = $userCollaboratorLiderIds->map(function ($item) {
-            // Añadir la nueva propiedad con el valor que desees
-            $item->type = 1;
-            
-            return $item;
-        });
+    
         //consulta para traer laterales
         $userLiderIds = collect($userCollaboratorLiderIds)->pluck('responsable_id')->toArray();
        
         $userCollaboratorLiderIds2 = UserCollaborator::whereIn('user_id', $userLiderIds)
-        ->select('collaborator_id as responsable_id','user_id') 
+        ->select('collaborator_id as responsable_id', 'user_id')
         ->whereNotIn('collaborator_id', $userIds)
-        ->get()
-        ->toArray();
-       
-// Convert the result to a collection
-        $userCollaboratorLiderIds2 = collect($userCollaboratorLiderIds2);
-
-        // Assigning identifier type
-        $userCollaboratorLiderIds2 = $userCollaboratorLiderIds2->map(function ($item) use ($userCollaboratorLiderIds) {
-            // Add the new property with the desired value
-            $item['type'] = 4;
-
-            // Find the matching item in $userCollaboratorLiderIds based on responsable_id
-            $matchingItem = $userCollaboratorLiderIds->first(function ($userCollaborator) use ($item) {
-                return $userCollaborator['responsable_id'] === $item['user_id'];
-            });
-
-            // Set user_id based on the matching item
-            $item['user_id'] = $matchingItem ? $matchingItem['user_id'] : null;
-
-            return $item;
-        });
-
+        ->get();
+    
+    // Assigning identifier type and user_id
+    $userCollaboratorLiderIds2 = $userCollaboratorLiderIds2->map(function ($item) use ($userCollaboratorLiderIds) {
+        // Add the new property with the desired value
+        $item['type'] = 4;
+    
+        // Find the matching item in $userCollaboratorLiderIds based on responsable_id
+        $matchingItem = $userCollaboratorLiderIds->firstWhere('responsable_id', $item['user_id']);
+    
+        // Set user_id based on the matching item
+        $item['user_id'] = $matchingItem ? $matchingItem['user_id'] : null;
+    
+        return $item;
+    })->toArray();
+    
 
         $evaluationsTotal=  array_merge(
             $userCollaboratorIds->toArray(),
             $userCollaboratorLiderIds->toArray(),
-            $userCollaboratorLiderIds2->toArray(),
+            $userCollaboratorLiderIds2, //son laterales pero me equivoque en el nombre
             $userAutoevaluation->toArray(),
         );
         $userIdsTotal = collect($evaluationsTotal)->pluck('user_id')->toArray();
@@ -515,12 +512,11 @@ class Evaluation360Controller extends Controller
     }
 
     $user_evaluations = UserEvaluation::whereIn('user_id', $userIdsMatch)
-        ->where('evaluation_id', $request->evaluation_id)
-        ->where('process_id', 7)
-        ->get();
-    $user_evaluations =  $user_evaluations->filter(function ($item) {
-        return $item['type_evaluator_id'] != 2;
-    });
+    ->where('evaluation_id', $request->evaluation_id)
+    ->where('process_id', 7)
+    ->where('type_evaluator_id', '<>', 2)
+    ->get();
+
 
     $actionPlan = $user_evaluations->map(function ($item) use ($request) {
      
@@ -553,60 +549,41 @@ class Evaluation360Controller extends Controller
     ->whereIn('responsable_id', $responsableIdsArray)
     ->where('action_plan_id', 3)
     ->get();
-  
-    foreach($action_plan as $plan)
-    {
-        $signature[] = 
-        [
+
+    $Colaborador = [];
+    
+    foreach ($action_plan as $plan) {
+        $signature[] = [
             'user_action_plan_id' => $plan->id,
             'responsable_id' => $plan->responsable_id,
             'created_at' => now(),
             'updated_at' => now(),
             'deleted_at' => null,
         ];
-    }
-   
-    foreach($signature as $item)
-    {
-
-        $signatureResponsable[] = 
-        [
-            'user_action_plan_id' => $item['user_action_plan_id'],
+    
+        $signatureResponsable[] = [
+            'user_action_plan_id' => $plan->id,
             'responsable_id' => 88,
             'created_at' => now(),
             'updated_at' => now(),
             'deleted_at' => null,
         ];
-    }
-    $Colaborador = [];
-
-    foreach ($action_plan as $item) {
-        $Colaborador[] = [
-            'user_action_plan_id' => $item->id,
-            'responsable_id' => $item->user_id,
+    
+        $ColaboradorKey = $plan->id . '_' . $plan->user_id;
+        $Colaborador[$ColaboradorKey] = [
+            'user_action_plan_id' => $plan->id,
+            'responsable_id' => $plan->user_id,
             'created_at' => now(),
             'updated_at' => now(),
             'deleted_at' => null,
         ];
     }
     
-    // Filtrar duplicados por user_action_plan_id y responsable_id
-    $uniqueColaborador = [];
-    foreach ($Colaborador as $item) {
-        $key = $item['user_action_plan_id'] . '_' . $item['responsable_id'];
-        if (!array_key_exists($key, $uniqueColaborador)) {
-            $uniqueColaborador[$key] = $item;
-        }
-    }
-    
-    $uniqueColaborador = array_values($uniqueColaborador);
-    
     // Insertar en la base de datos
     $newPlansActions = ActionPlanSignature::insert($signature);
     $newPlansActionsResponsable = ActionPlanSignature::insert($signatureResponsable);
-    $PlansUser = ActionPlanSignature::insert($uniqueColaborador);
+    $PlansUser = ActionPlanSignature::insert(array_values($Colaborador));
     
-
     
         DB::commit();
         return response()->json([
@@ -740,6 +717,7 @@ class Evaluation360Controller extends Controller
     DB::commit();
     DB::beginTransaction();
     $signature=[];
+    $signatureResponsable=[];
     $userIdsArray = $actionPlan->pluck('user_id')->toArray();
     $responsableIdsArray = $actionPlan->pluck('responsable_id')->toArray();
     $action_plan = UserActionPlan::
@@ -747,58 +725,41 @@ class Evaluation360Controller extends Controller
     ->whereIn('responsable_id', $responsableIdsArray)
     ->where('action_plan_id', 3)
     ->get();
-  
-    foreach($action_plan as $plan)
-    {
-        $signature[] = 
-        [
+
+    $Colaborador = [];
+    
+    foreach ($action_plan as $plan) {
+        $signature[] = [
             'user_action_plan_id' => $plan->id,
             'responsable_id' => $plan->responsable_id,
             'created_at' => now(),
             'updated_at' => now(),
             'deleted_at' => null,
         ];
-    }
-   
-    foreach($signature as $item)
-    {
-
-        $signatureResponsable[] = 
-        [
-            'user_action_plan_id' => $item['user_action_plan_id'],
+    
+        $signatureResponsable[] = [
+            'user_action_plan_id' => $plan->id,
             'responsable_id' => 88,
             'created_at' => now(),
             'updated_at' => now(),
             'deleted_at' => null,
         ];
-    }
-    $Colaborador = [];
-
-    foreach ($action_plan as $item) {
-        $Colaborador[] = [
-            'user_action_plan_id' => $item->id,
-            'responsable_id' => $item->user_id,
+    
+        $ColaboradorKey = $plan->id . '_' . $plan->user_id;
+        $Colaborador[$ColaboradorKey] = [
+            'user_action_plan_id' => $plan->id,
+            'responsable_id' => $plan->user_id,
             'created_at' => now(),
             'updated_at' => now(),
             'deleted_at' => null,
         ];
     }
     
-    // Filtrar duplicados por user_action_plan_id y responsable_id
-    $uniqueColaborador = [];
-    foreach ($Colaborador as $item) {
-        $key = $item['user_action_plan_id'] . '_' . $item['responsable_id'];
-        if (!array_key_exists($key, $uniqueColaborador)) {
-            $uniqueColaborador[$key] = $item;
-        }
-    }
-    
-    $uniqueColaborador = array_values($uniqueColaborador);
-    
     // Insertar en la base de datos
     $newPlansActions = ActionPlanSignature::insert($signature);
     $newPlansActionsResponsable = ActionPlanSignature::insert($signatureResponsable);
-    $PlansUser = ActionPlanSignature::insert($uniqueColaborador);
+    $PlansUser = ActionPlanSignature::insert(array_values($Colaborador));
+    
     
 
     DB::commit();

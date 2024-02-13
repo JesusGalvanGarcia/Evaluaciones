@@ -37,7 +37,7 @@
       </div>
       <div class="table-col">
         <div class="info-title">Promedio sin Auto evaluación</div>
-        <div class="info-value">{{ (response.general_average - evaluatorData.Autoevaluacion).toFixed(2) }}</div>
+        <div class="info-value">{{ (response.general_average - evaluatorData.Autoevaluacion).toFixed(1) }}</div>
       </div>
     </div>
   </div>
@@ -49,7 +49,7 @@
       <button *ngIf="rol=='true'" type="button" class="btn btn-success" (click)="postApproved()">Aprobar</button>
 </div>
      </div>
-      <div style="display: block; text-align: center;" >
+      <div style="display: block" >
     <div class="table-responsive">
      
       <table class="table">
@@ -62,31 +62,31 @@
             <th>Cliente</th>
             <th>Autoevaluación</th>
             <th>Promedio</th>
-            <th>Sin Autoevaluación</th>
+            <th class="text-center" >Sin Autoevaluación</th>
 
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let aspecto of tableLabels">
-            <td>{{ aspecto }}</td>
-            <td>{{ generalData[aspecto]?.Lider || 0 }}</td>
-            <td>{{ generalData[aspecto]?.Colaborador|| 0 }}</td>
-            <td>{{ generalData[aspecto]?.Lateral || 0 }}</td>
-            <td>{{ generalData[aspecto]?.Cliente || 0 }}</td>
-            <td>{{ generalData[aspecto]?.Autoevaluacion || 0 }}</td>
-            <td style="color:green;font-weight: bold;">{{ promedioData[aspecto]|| 0 }}</td>
-            <td style="color:green;font-weight: bold;">{{ (promedioData[aspecto]-generalData[aspecto]?.Autoevaluacion ).toFixed(2)|| 0 }}</td>
+            <td class="text-left">{{ aspecto }}</td>
+            <td class="text-center">{{ (generalData[aspecto]?.Lider).toFixed(1) || 0 }}</td>
+            <td class="text-center">{{ (generalData[aspecto]?.Colaborador).toFixed(1) || 0 }}</td>
+            <td class="text-center">{{ (generalData[aspecto]?.Lateral).toFixed(1) || 0 }}</td>
+            <td class="text-center">{{ (generalData[aspecto]?.Cliente).toFixed(1) || 0 }}</td>
+            <td class="text-center">{{ (generalData[aspecto]?.Autoevaluacion).toFixed(1) || 0 }}</td>
+            <td style="color:green;font-weight: bold;" class="text-center">{{ (promedioData[aspecto]).toFixed(1) || 0 }}</td>
+            <td style="color:green;font-weight: bold;" class="text-center">{{ (promedioData[aspecto]-generalData[aspecto]?.Autoevaluacion ).toFixed(1)|| 0 }}</td>
 
           </tr>
           <tr>
-            <td>Promedio Total</td>
-            <td>{{ evaluatorData.Lider || 0 }}</td>
-            <td>{{ evaluatorData.Colaborador|| 0 }}</td>
-            <td>{{ evaluatorData.Lateral || 0 }}</td>
-            <td>{{ evaluatorData.Cliente || 0 }}</td>
-            <td>{{ evaluatorData.Autoevaluacion || 0 }}</td>
-            <td style="color:red;font-weight: bold;">{{ response.general_average || 0 }}</td>
-            <td style="color:red;font-weight: bold;">{{ (response.general_average -evaluatorData.Autoevaluacion ).toFixed(2)|| 0 }}</td>
+            <td class="text-center">Promedio Total</td>
+            <td class="text-center">{{ (evaluatorData.Lider).toFixed(1) || 0 }}</td>
+            <td class="text-center">{{ (evaluatorData.Colaborador).toFixed(1)|| 0 }}</td>
+            <td class="text-center">{{ (evaluatorData.Lateral).toFixed(1) || 0 }}</td>
+            <td class="text-center">{{ evaluatorData.Cliente || 0 }}</td>
+            <td class="text-center">{{ (evaluatorData.Autoevaluacion).toFixed(1) || 0 }}</td>
+            <td class="text-center" style="color:red;font-weight: bold;">{{ (response.general_average).toFixed(1)  || 0 }}</td>
+            <td class="text-center" style="color:red;font-weight: bold;">{{ (response.general_average -evaluatorData.Autoevaluacion ).toFixed(1)|| 0 }}</td>
 
 
           </tr>
@@ -109,7 +109,7 @@
             <th>Cliente</th>
             <th>Colaborador</th>
             <th>Promedio</th>
-            <th>Sin Autoevaluacion</th>
+            <th class="text-center" >Sin Autoevaluacion</th>
 
           </tr>
         </thead>
@@ -120,22 +120,28 @@
                 <td>{{ question }}</td>
                 <td>{{ aspecto }}</td>
                 <td>{{ question_averages[aspecto][question]?.Lider || 0 }}</td>
-                <td>{{ question_averages[aspecto][question]?.Autoevaluacion || 0 }}</td>
-                <td>{{ question_averages[aspecto][question]?.Lateral || 0 }}</td>
-                <td>{{ question_averages[aspecto][question]?.Cliente || 0 }}</td>
-                <td>{{ question_averages[aspecto][question]?.Colaborador || 0 }}</td>
-                <td style="color:green;font-weight: bold;">{{average(aspecto,question)}}</td>
-                <td style="color:green;font-weight: bold;">{{(average(aspecto,question)-question_averages[aspecto][question]?.Autoevaluacion).toFixed(2)}}</td>
-              </tr>
+                <td class="text-center">{{ question_averages[aspecto][question]?.Autoevaluacion || 0 }}</td>
+                <td class="text-center">{{ question_averages[aspecto][question]?.Lateral || 0 }}</td>
+                <td class="text-center">{{ question_averages[aspecto][question]?.Cliente || 0 }}</td>
+                <td class="text-center">{{ (question_averages[aspecto][question]?.Colaborador) || 0 }}</td>
+                <td class="text-center" style="color:green;font-weight: bold;">{{average(aspecto,question)}}</td>
+                <td class="text-center" style="color: green; font-weight: bold;">
+                  {{
+                      (question_averages[aspecto][question]?.Autoevaluacion == 0 || checkNan(average(aspecto, question) - question_averages[aspecto][question]?.Autoevaluacion))
+                          ? 'N/A'
+                          : (average(aspecto, question) - question_averages[aspecto][question]?.Autoevaluacion).toFixed(1)
+                  }}
+              </td>
+                            </tr>
             </ng-container>
           </ng-container>
         </tbody>
       </table>
       
  <div id="graficas">
-    <canvas id="chart" width="800" height="100"></canvas></div>
+    <canvas id="chart" width="800" height="400"></canvas></div>
     <div id="contentToConvert2">
-    <canvas id="evaluators" width="800" height="400"></canvas>
+    <canvas id="evaluators" width="800" height="400"></canvas><br/><br/><br/><br/>
     <canvas id="promedio" width="800" height="400"></canvas>
   </div>
 

@@ -327,7 +327,7 @@
                                                         <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;color:#333333;font-size:16px">{{ $evaluation_data['evaluation_name'] }} (Etapa 1)</p>
+                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;color:#333333;font-size:16px">{{ $evaluation_data['evaluation_name'] }} </p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -408,13 +408,13 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <h2 style="Margin:0;line-height:22px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:18px;font-style:normal;font-weight:normal;color:#333333"><strong><span style="font-size:14px">Realizaste con éxito la etapa 1</span></strong>: <span style="font-size:14px">Elaboración de la Evaluación de Competencias.</span></h2>
+                                                                    <h2 style="Margin:0;line-height:22px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:18px;font-style:normal;font-weight:normal;color:#333333"><strong><span style="font-size:14px">Realizaste con éxito la evaluación</span></strong>: <span style="font-size:14px">.</span></h2>
                                                                     <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"></p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <h2 style="Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:14px;font-style:normal;font-weight:normal;color:#333333"><strong>Continúa con la Etapa 2</strong>: Feedback con colaborador y elaboración de Plan de Acción.</h2>
+                                                                    <h2 style="Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:14px;font-style:normal;font-weight:normal;color:#333333"><strong>Continúa con</strong>: Feedback con colaborador y elaboración de Plan de Acción.</h2>
                                                                 </td>
                                                             </tr>
                                                             <tr>

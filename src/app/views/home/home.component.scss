@@ -21,6 +21,10 @@
   margin-left: 5%;
 }
 /* home.component.scss */
+.letter
+{
+  font-size: 20px;
+}
 .data
 {
   margin-top: -3%;
@@ -146,9 +150,20 @@
   padding: 15%;
   margin-left: 8%;
 }
-
+.bottos
+{
+  width: 50%;
+}
 /* Media Query para dispositivos con pantalla pequeña */
 @media (max-width: 768px) {
+  .bottos
+{
+  width: 80%;
+}
+  .letter
+{
+  font-size: 10px;
+}
   .ventana {
     width: 90%;
     height: 90%; /* Reducir la altura para dispositivos más pequeños */

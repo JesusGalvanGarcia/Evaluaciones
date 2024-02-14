@@ -50,6 +50,8 @@ export class Index360Component implements OnInit {
   ListTest:TestModel[];
   mostrar:boolean=false;
   indexPos:number;
+  showIframe: boolean = false;
+
   PersonalList:CollaboratorEvaluation[];
   protected isLoading: boolean = false;
   
@@ -77,6 +79,9 @@ export class Index360Component implements OnInit {
       },
       GridActions.DEFAULT_COLUMN
     )
+    toggleIframe() {
+      this.showIframe = !this.showIframe;
+    }
     public seeDetailAccionPlan:ColDef = Object.assign(
       {
         cellRendererSelector: (params: any) => {

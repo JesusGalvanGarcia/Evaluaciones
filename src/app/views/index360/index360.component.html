@@ -23,6 +23,19 @@
         />
       </span>
       <span class="estilo-title">Evaluaciones 360</span>
+      <div style="display:block">
+        <!-- Button to toggle iframe visibility -->
+        <div>
+          <button (click)="toggleIframe()" class="btn btn-success" >Video Tutorial <i class="fa-solid fa-play"></i></button>
+
+        </div>
+      <div>
+        <iframe *ngIf="showIframe" src="https://drive.google.com/file/d/12Ce4dr0wGmz0solNc_ZGpzrc2war9wCT/preview" width="640" height="480" allow="autoplay"></iframe>
+
+      </div>
+        <!-- Iframe to be toggled -->
+    </div>
+    
     </div>
     <div style="margin-top: 0%;">
       <div class="center-container"></div>

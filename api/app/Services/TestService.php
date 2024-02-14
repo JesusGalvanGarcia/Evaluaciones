@@ -113,11 +113,11 @@ class TestService extends ServiceProvider
             if ($evaluation_data['test']->modular == 0) {
 
                 // $mail = Mail::to('brenda.ortiz@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
-                $mail = Mail::to($responsable_leader?->email)->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+                $mail = Mail::to($responsable_user?->email)->cc(['francisco.delarosa@trinitas.mx', $evaluated_user->email])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
             } else {
 
                 // $mail = Mail::to('brenda.ortiz@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
-                $mail = Mail::to($responsable_leader?->email)->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+                $mail = Mail::to($responsable_user?->email)->cc(['francisco.delarosa@trinitas.mx', $evaluated_user->email])->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
             }
         }
     }
@@ -133,8 +133,8 @@ class TestService extends ServiceProvider
     static function sendEmail360($evaluation,$name,$email)
     {
 
-        Mail::to('brenda.ortiz@trinitas.mx')->send(new sendEmail360($name,$evaluation,'brenda.ortiz@trinitas.mx'));
-        //Mail::to($email)->send(new sendEmail360($name,$evaluation,$email));
+       // Mail::to('brenda.ortiz@trinitas.mx')->send(new sendEmail360($name,$evaluation,'brenda.ortiz@trinitas.mx'));
+         Mail::to($email)->send(new sendEmail360($name,$evaluation,$email));
 
     }
     static function sendEmailReset($name,$email,$encrypt)

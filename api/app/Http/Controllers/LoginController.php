@@ -70,7 +70,7 @@ class LoginController extends Controller
 
             $log_Data = [
                 'user_id' => $user->id,
-                'user_name' => $user->name,
+                'user_name' => $user->name." ".$user->father_last_name,
                 'email' => $user->email,
                 // 'role' => $user->roles->first()->id
             ];

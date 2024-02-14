@@ -231,8 +231,6 @@ class PLDUsersController extends Controller
                 ]);
          
             }
-          
-    
             
             $user_test->update([
                 'status_id' => $request->its_over == 'si' ? 3 : 2,
@@ -394,7 +392,7 @@ class PLDUsersController extends Controller
             'title' => 'Proceso terminado',
             'message' => 'Examenes consultados correctamente',
           
-            'test'=>$user_tests
+            'test'=>$user_test2
         ]);
 
     }catch(Exception $e)

@@ -16,11 +16,25 @@ export class UserEvaluationService {
     return axios.get(environment.apiUrl+this.controllerUrl+"/"+id, {
       params: data
     })
-    .then((response) => {
-      return response.data.tests;
-      })      
-    .catch(function (error: any) {
-      return error;
+      .then((response) => {
+        return response.data.tests;
+      })
+      .catch(function (error: any) {
+        return error;
+      });
+  }
+  GetAverages(data: any): Promise<any> {
+    
+    return axios.post(environment.apiUrl+this.controllerUrl+"/getAverages", data)
+    .then(({ data }: any) => {
+      
+      return data;
+    })
+    .catch(({ response }: any) => {
+
+      const { data } = response
+    
+      throw data;
     });
   }
   GetAverages(data: any): Promise<any> {
@@ -40,7 +54,7 @@ export class UserEvaluationService {
 
   GetColaboradorEvaluationsWithParams(data: any): Promise<any> {
 
-    return axios.get(environment.apiUrl+this.controllerUrl, {
+    return axios.get(environment.apiUrl + this.controllerUrl, {
       params: data
     })
     .then((response) => {
@@ -80,7 +94,7 @@ export class UserEvaluationService {
       throw error;
     });
   }
-  
+
 }
 
 

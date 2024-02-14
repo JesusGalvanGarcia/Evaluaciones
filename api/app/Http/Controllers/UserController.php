@@ -8,6 +8,10 @@ use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Crypt;
+use App\Services\TestService;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -99,4 +103,75 @@ class UserController extends Controller
     {
         //
     }
+    public function sendPasswordResetEmail(Request $request)
+    {
+        try{
+        $request->validate(['email' => 'required|email']);
+        
+        $user = User::where([
+            ['email', $request->email]
+        ])
+        ->first();
+        if (!$user) {
+
+            return response()->json([
+                'title' => 'Error de Validación',
+                'message' => 'Usuario o contraseña incorrecto, intente de nuevo.',
+                'code' => $this->prefixCode . 'X002'
+            ], 400);
+        }
+        $decodedEmail = Crypt::encryptString($request->email);
+     
+        TestService::sendEmailReset($user->name,$request->email,$decodedEmail);
+        
+        return response()->json([
+            'message' => 'El correo fue enviado con exito',
+ 
+        ], 200);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X099'
+            ], 500);
+        }
+        }
+        public function resetPassword(Request $request)
+        {
+            try{
+            $decodedEmail = Crypt::decryptString($request->email);
+            
+            $user = User::where([
+                ['email', $decodedEmail],
+            ])
+            ->first();
+            if (!$user) {
+    
+                return response()->json([
+                    'title' => 'Error de Validación',
+                    'message' => 'Usuario o contraseña incorrecto, intente de nuevo.',
+                    'code' => $this->prefix . 'X002'
+                ], 400);
+            }
+            $hashedPassword = Hash::make($request->password);
+
+            $user->update([
+                'password' => $hashedPassword
+            ]);
+            
+            
+            return response()->json([
+                'message' => 'La contraseña se cambio correctamente',
+     
+            ], 200);
+            } catch (Exception $e) {
+    
+                return response()->json([
+                    'title' => 'Ocurrio un error en el servidor',
+                    'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                    'code' => $this->prefix . 'X099'
+                ], 500);
+            }
+            }
 }

@@ -5,10 +5,10 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class EmailService {
-  private controllerUrl = 'users';
+  private controllerUrl = 'user';
   constructor(private http: HttpClient) { }
 
   public sendEmail(loginRequest: EmailRequest): Observable<EmailRequest>{
-    return this.http.post<EmailRequest>(this.controllerUrl + '/sendEmail', loginRequest);
+    return this.http.post<EmailRequest>(this.controllerUrl + '/sendPasswordResetEmail', loginRequest);
   }
 }

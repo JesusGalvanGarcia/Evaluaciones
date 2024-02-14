@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use App\Mail\PerformanceEvaluation as MailPerformanceEvaluation;
+use App\Mail\sendEmail360 as sendEmail360;
+use App\Mail\resetPassword as resetPassword;
+
 use App\Models\Process;
 use App\Models\Files;
 
@@ -81,6 +84,13 @@ class TestService extends ServiceProvider
                 ];
 
                 break;
+                // Default para manejar casos no contemplados
+            default:
+            $clasification = [
+                "clasification" => "No clasificado",
+                "description" => "Esta evaluación no contiene clasificaciones."
+            ];
+            break;
         }
 
         return $clasification;
@@ -102,11 +112,11 @@ class TestService extends ServiceProvider
         if ($responsable_leader) {
             if ($evaluation_data['test']->modular == 0) {
 
-                // $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+                // $mail = Mail::to('brenda.ortiz@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
                 $mail = Mail::to($responsable_leader?->email)->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
             } else {
 
-                // $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+                // $mail = Mail::to('brenda.ortiz@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
                 $mail = Mail::to($responsable_leader?->email)->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
             }
         }
@@ -115,12 +125,24 @@ class TestService extends ServiceProvider
     {
 
 
-        // $mail = Mail::to('yunuen.vejar@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
+        // $mail = Mail::to('brenda.ortiz@trinitas.mx')->cc(['francisco.delarosa@trinitas.mx', 'jesus.galvan@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
         //$mail = Mail::to("")->send(new Certificate($evaluated_user));
         Mail::to($email)->send(new sendEmails($name,$emailLid,$path,$file));
 
     }
+    static function sendEmail360($evaluation,$name,$email)
+    {
 
+        Mail::to('brenda.ortiz@trinitas.mx')->send(new sendEmail360($name,$evaluation,'brenda.ortiz@trinitas.mx'));
+        //Mail::to($email)->send(new sendEmail360($name,$evaluation,$email));
+
+    }
+    static function sendEmailReset($name,$email,$encrypt)
+    {
+
+        Mail::to($email)->send(new resetPassword($name,$email,$encrypt));
+
+    }
     static function createPldTest($test, $user_id, $assigned_users){
         // Convertir $test a un objeto si no lo es
         $test = is_array($test) ? (object) $test : $test;
@@ -178,7 +200,7 @@ class TestService extends ServiceProvider
         ->pluck('user_evaluation_id')
         ->isNotEmpty();
         $is_test_in_dates = Carbon::today() < $test->end_date && Carbon::today() > $test->start_date;
-        if(!($has_user_evaluations_started || $is_test_in_dates)){
+        if(!$has_user_evaluations_started && $is_test_in_dates){
             UserEvaluationService::deleteUserEvaluationAndTests($test->id, $user_id);
             if($assigned_users){
                 foreach ($assigned_users as $user) {
@@ -186,11 +208,11 @@ class TestService extends ServiceProvider
                 }
             }
         }
-        else{
+  /*      else{
             if($assigned_users){
                 UserEvaluationService::updateUserEvaluationAndTests($assigned_users, $test, $user_id);
             }
-        }
+        }*/
         return $createUpdateTest;
     }
 

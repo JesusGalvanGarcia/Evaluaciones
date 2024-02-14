@@ -18,15 +18,18 @@ class ActionPlan extends Mailable
     public $evaluation_name;
     public $evaluated_user;
     public $responsable_user;
+    public $file;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($evaluation_name, $evaluated_user, $responsable_user)
+    public function __construct($evaluation_name, $evaluated_user, $responsable_user,$file)
     {
         $this->evaluation_name = $evaluation_name;
         $this->evaluated_user = $evaluated_user;
         $this->responsable_user = $responsable_user;
+        $this->file = $file;
+
     }
 
     /**
@@ -49,7 +52,7 @@ class ActionPlan extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Evaluations/ActionPlanComplete',
+            view: 'Evaluations/'.$this->file,
             with: [
                 'evaluation_name' => $this->evaluation_name,
                 'evaluated_user' => $this->evaluated_user,

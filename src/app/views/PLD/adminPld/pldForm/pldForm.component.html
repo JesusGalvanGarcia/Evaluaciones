@@ -190,19 +190,21 @@
                       (change)="onAnswerChange($event, question,j)"
                       [value]="answer.description"
                       [checked]="answer.checked">
-                        <mat-form-field>
-                          <input
-                          matInput
-                          class="input-form"
-                          id="'{{i}}{{j}}'"
-                          name="answer{{i}}{{j}}"
-                          [(ngModel)]="answer.description"
-                          placeholder="Opción {{j + 1}}"
-                          required
-                          maxlength="250"
-                        />
-                      </mat-form-field>
+           
                       </mat-radio-button>
+                      <mat-form-field  class="col-md-10">
+                        <textarea
+                        matInput
+                        class="input-form"
+                        id="'{{i}}{{j}}'"
+                        name="answer{{i}}{{j}}"
+                        [(ngModel)]="answer.description"
+                        placeholder="Opción {{j + 1}}"
+                        required
+                        maxlength="250"
+                      >
+                    </textarea>
+                    </mat-form-field>
                     </div>
                   </mat-radio-group>
                 </div>

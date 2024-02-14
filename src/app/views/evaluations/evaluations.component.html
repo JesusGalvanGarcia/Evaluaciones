@@ -22,7 +22,7 @@
           alt="Logo_Trinitas"
         />
       </span>
-      <span class="estilo-title">Evaluaciones</span>
+      <span class="estilo-title">Evaluaciones de  desempeño y 360</span>
     </div>
     <div style="margin-top: 0%;">
       <div class="center-container"></div>
@@ -64,7 +64,10 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Proceso Actual </th>
           <td mat-cell *matCellDef="let row"> {{ row.actual_process }} </td>
         </ng-container>
-
+        <ng-container matColumnDef="start_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Inicio </th>
+          <td mat-cell *matCellDef="let row"> {{ row.start_date }} </td>
+        </ng-container>
         <!-- Phase Column -->
         <ng-container matColumnDef="phase">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Fase </th>

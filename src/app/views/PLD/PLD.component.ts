@@ -35,7 +35,8 @@ export class PLDComponent implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Start,
-       
+          icon:'fa-solid fa-arrow-right',
+          title:'Empezar exámen'
         }
       };
       return component;
@@ -49,6 +50,7 @@ export class PLDComponent implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Seen,
+          title:'Ver exámen',
           icon: 'fa-solid fa-eye'
         }
       };
@@ -116,6 +118,7 @@ export class PLDComponent implements OnInit {
     });
     
     dialogRef.afterClosed().subscribe(result => {
+    
     });
     this.closeModalEvent.subscribe(() => {
       dialogRef.close();
@@ -134,9 +137,12 @@ export class PLDComponent implements OnInit {
   }
   getExamns(data: any) {
  
+  
     this.PLDService.GetExamns(data)  //Cargar examen
       .then((response: any) => {
+       
         this.PLDData = response.test;
+       
 
         this.isLoading=false;
      

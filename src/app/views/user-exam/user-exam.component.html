@@ -6,14 +6,17 @@
             <div class="header-content">
               <mat-card-title>
                <div>
-                {{ test.name }}
+                {{ test.name }} <br/>
                </div>
             </mat-card-title>
-            
+        
             </div>
           </mat-card-header>
           
           <mat-card-content class="exam-content">
+          <div style="justify-content: center;display:flex;font-weight: bold;font-size: 20px;">
+            {{names}}
+          </div><br/>
             <div *ngIf="test.modular == 0" class="row">
                 <div class="col-md-4 mb-4 result-info">
                   <table class="info-table">

@@ -191,10 +191,11 @@ class UserActionPlanController extends Controller
                 'action_plan_signatures.url',
                 'action_plan_signatures.signature_date',
                 DB::raw("CONCAT(U.name, ' ', U.father_last_name, ' ', U.mother_last_name) as collaborator_name"),
-            )->where([['user_action_plan_id', $id]])
-                ->join('users as U', 'U.id', 'action_plan_signatures.responsable_id')
+            )->join('users as U', 'U.id', 'action_plan_signatures.responsable_id')
+            ->where([['user_action_plan_id', $id]])
+            
                 ->get();
-
+          
             if (!$signatures->firstWhere('responsable_id', request('user_id')))
                 return response()->json([
                     'title' => 'No estás autorizado.',
@@ -212,10 +213,10 @@ class UserActionPlanController extends Controller
                     'code' => $this->prefix . 'X205'
                 ], 400);
 
-            if ($user_evaluation->process_id != 5)
+           /* if ($user_evaluation->process_id != 5)
                 $user_evaluation->update([
                     'process_id' => 4
-                ]);
+                ]);*/
 
             return response()->json([
                 'title' => 'Proceso terminado',
@@ -521,17 +522,32 @@ class UserActionPlanController extends Controller
                 'updated_by' => $request->user_id,
                 'finish_date' => Carbon::now()->format('Y-m-d')
             ]);
+            $processId = $user_evaluation->process_id;
 
+            switch ($processId) {
+                case 8:
+                    $newProcessId = 9;
+                    break;
+                case 10:
+                    $newProcessId = 11;
+                    break;
+                default:
+                    $newProcessId = 5;
+            }
             // La evaluación pasa a estar en el proceso de firmas
             UserEvaluation::where('id', $user_evaluation->id)->update([
-                'process_id' => 5,
+                'process_id' => $newProcessId,
+                'status_id' => 3,
                 'updated_by' => $request->user_id
             ]);
-
+            
             DB::commit();
-
+          
             // Se envía el correo de confirmación del plan de acción.
-            ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name);
+            if($newProcessId ==5)
+            ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlanComplete");
+            else
+            ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlan350");
 
             return response()->json([
                 'title' => 'Proceso terminado',

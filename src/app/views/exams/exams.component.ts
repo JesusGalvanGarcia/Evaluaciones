@@ -35,6 +35,7 @@ export class ExamsComponent implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Seen,
+          title:'Ver exámen',
           icon: 'fa-solid fa-eye',
           
         }
@@ -116,6 +117,7 @@ export class ExamsComponent implements OnInit {
    {
     this.pld.GetListExams(data)
     .then((data) => {
+ //Obtener detalles
      this.test=data.test;
      let maxValue = this.test.reduce((max, item) => Math.max(max, Number(item.total_score)), -Infinity);
      this.max=maxValue;

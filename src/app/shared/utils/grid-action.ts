@@ -7,7 +7,11 @@ export class GridActions{
     public static readonly Continue='Continuar';
     public static readonly Start='Empezar';
     public static readonly Seen='Ver';
-
+    public static readonly Acept='Enviar';
+    public static readonly Report='Ver reportes';
+    public static readonly AddClient='Agregar Cliente';
+    public static readonly AceptarReport='Aceptar Reporte';
+    public static readonly VerReport='Ver Reporte';
 
     public static readonly DEFAULT_COLUMN: ColDef = 
     {

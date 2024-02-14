@@ -119,6 +119,7 @@ export class AdminPldComponent implements OnInit {
     });
   
     dialogRef.afterClosed().subscribe(result => {
+ 
       this.close();
     });
     

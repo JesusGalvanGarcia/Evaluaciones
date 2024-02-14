@@ -1,0 +1,47 @@
+<div class="bgImageContainer2"></div>
+<div class="containerz" >
+  <div class="container">
+ 
+    
+      <mat-card class="card-body"><app-loading *ngIf="isLoading"></app-loading>
+        <div class="evaIcon">
+          <div class="col-md-12 center-div" >
+            <img
+              src="assets/logo/logo_trinitas.jpg"
+              style="width: 25%;margin-top: 5%;"
+              alt="Logo_Trinitas"
+            />
+       
+          </div><br>
+          <i class="fas fa-file"></i>
+          <span class="estilo-title">Evaluaciones</span>
+        </div>
+    
+      <div *ngIf="start==false" style="padding:3%">
+        
+        <app-grid
+        [columnDefs]="columnDefs"
+        [rowData]="evaluationData"
+        [enableDelete]="false"
+        [enableEdit]="false"
+        (actionEvent)="onActionEvent($event)"
+        exportTitle="Evaluaciones"
+      ></app-grid>
+      </div>
+      <div *ngIf="start" style="padding:3%">
+        <button type="button" class="btn btn-success" (click)="back()">Regresar</button>
+
+        <app-grid
+        [columnDefs]="columnDefsUsers"
+        [rowData]="UsersData"
+        [enableDelete]="false"
+        [enableEdit]="false"
+        (actionEvent)="onActionEventUser($event)"
+        exportTitle="Usuarios"
+      ></app-grid>
+      </div>
+      </mat-card>
+   
+  </div>
+  
+</div>

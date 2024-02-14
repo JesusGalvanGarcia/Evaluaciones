@@ -85,7 +85,7 @@ indexPos:number;
 PersonalList:CollaboratorEvaluation[];
 protected isLoading: boolean = false;
 
-displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name', 'actual_process', 'phase', 'status',"action"];
+displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name', 'actual_process','start_date', 'phase', 'status',"action"];
 dataSource: MatTableDataSource<TestModel> | any = [];
 constructor(private http: HttpClient,
   private userEvaluationService: UserEvaluationService,
@@ -113,9 +113,9 @@ getTestUser(data:any,userid:any,array:number)
 changeList()
 {
   if(this.isChecked==true)
-  this.ListColaborator=this.ListChangeColaborator;
+  this.ListColaborator=this.ListChangeColaborator.filter(colaborator => Number(colaborator.process_id) <=Number(5 ));
   else{
-  this.ListColaborator=this.PersonalList;
+  this.ListColaborator=this.PersonalList.filter(colaborator => Number(colaborator.process_id) <=Number(5 ));
   }
   this.dataSource = new MatTableDataSource(this.ListColaborator);
 
@@ -159,11 +159,13 @@ changeList()
   };
   this.userEvaluationService.GetColaboradorEvaluationsWithParams(data)
   .then((response:any) => {
-    this.ListColaborator=response.collaborators_evaluations;
+    this.ListColaborator=response.collaborators_evaluations    ;
+    this.ListColaborator=this.ListColaborator.filter(colaborator => Number(colaborator.process_id) <=Number(5 ));
     this.PersonalList=response.personal_evaluations;
     this.ListChangeColaborator=response.collaborators_evaluations;
+    this.PersonalList=this.PersonalList.filter(colaborator => Number(colaborator.process_id) <=Number(5 ));
     this.isLoading=false;
- 
+  
     this.dataSource = new MatTableDataSource(this.ListColaborator);
 
   })
@@ -230,7 +232,7 @@ getColorByClasification(clasification: string) {
 
 sendPageEvaluation(process:string,id:string,status:string,calificacion:number,detalle:any)
 {   
-   localStorage.setItem("score", calificacion.toString());
+   localStorage.setItem("score", detalle[0].total_score.toString());
 
   switch(process)
   {
@@ -244,9 +246,29 @@ sendPageEvaluation(process:string,id:string,status:string,calificacion:number,de
         this.router.navigate(['/desempeño/'+id]);
       }
     break
+    case "Evaluaciones de asesores":
+    //  this.router.navigate(['exam/asesors/'+id+"/1"]);
+      if(status=="Terminado")
+      {
+        this.router.navigate(['/prueba/'+id]);
+      }
+      else{
+        this.router.navigate(['/dashboard/exam/asesors/'+id+"/1"]);
+      }
+    break
+    case "Evaluaciones 360":
+      //  this.router.navigate(['exam/asesors/'+id+"/1"]);
+        if(status=="Terminado")
+        {
+          this.router.navigate(['/prueba/'+id]);
+        }
+        else{
+          this.router.navigate(['/dashboard/exam/evaluation350/'+id]);
+        }
+      break
     case "Feedback y Plan de Acción":
  
-      const elemento = detalle.find((item:any) => item.name === "Evaluación de Competencias");
+      const elemento = detalle.find((item:any) => item.name === "Evaluaciones de asesores");
     
       if(elemento.status!="Terminado")
       {

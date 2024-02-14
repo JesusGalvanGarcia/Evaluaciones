@@ -56,7 +56,7 @@ $adelanto-theme: mat.define-light-theme((
 
 
 // NG-Select
-@import "~@ng-select/ng-select/themes/material.theme.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 html, body { height: 100%; }
 .mat-mdc-table {

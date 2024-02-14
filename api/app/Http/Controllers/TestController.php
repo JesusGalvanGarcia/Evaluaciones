@@ -322,7 +322,6 @@ class TestController extends Controller
                     ->whereNotNull('user_tests.finish_date');
             })
             ->where('tests.evaluation_id', '=', 2)
-            ->whereNull('user_tests.deleted_at')
             ->groupBy('tests.id', 'tests.name', 'tests.end_date')
             ->get();
 

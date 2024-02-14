@@ -1,6 +1,47 @@
-<div class="bgImageContainer">
- 
+<!-- home.component.html -->
+
+<div class="home-container">
+    <div class="background">
+      <mat-card class="card-body">
+  <div style="display:flex;gap:5%">
+    <img class="logo"       src="assets/logo/logo_trinitas.jpg" alt="Logo">
+
+  </div>
+      <!-- home.component.html -->
+<div class="data">
+  
+<div class="title">Intranet</div>
+<div class="subtitle"> <i class="fa-solid fa-user"></i>&nbsp; {{ getUser() }}</div>
 </div>
-<div class="ventana">
-    
-</div>
+
+<!-- ... restante de tu contenido -->
+
+  
+      <div class="button-container">
+        <button mat-flat-button color="primary" (click)="toggleSubMenu('pld')">
+          <i class="fa-solid fa-money-bill"></i><br/>
+           <span class="label">PLD</span>
+          <mat-icon *ngIf="showSubMenu === 'pld'" class="sub-icon">keyboard_arrow_up</mat-icon>
+          <div *ngIf="showSubMenu === 'pld'" class="sub-menu">
+         
+            <a (click)="go('PLD')" routerLink="/dashboard/exam">Inicio</a>
+          </div>
+        </button>
+  
+        <button mat-flat-button color="accent" (click)="toggleSubMenu('evaluaciones')">
+          <i class="fa-solid fa-newspaper"></i>
+          <span class="label">Evaluaciones</span>
+          <mat-icon *ngIf="showSubMenu === 'evaluaciones'" class="sub-icon">keyboard_arrow_up</mat-icon>
+          <div *ngIf="showSubMenu === 'evaluaciones'" class="sub-menu" >
+            <a (click)="go('Evaluaciones')" routerLink="/dashboard/evaluacion">Desempeño y competencias</a>
+            <a (click)="go('360')" routerLink="/dashboard/evaluacion">360</a>
+            <a (click)="go('asesores')" routerLink="/dashboard/evaluacion">Asesores</a>
+            <a *ngIf="id=='19'||id=='88'" (click)="go('admin360')" routerLink="/dashboard/evaluacion">Administración</a>
+
+          </div>
+        </button>
+      </div>
+      </mat-card>
+    </div>
+  </div>
+  

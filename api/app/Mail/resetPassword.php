@@ -51,7 +51,7 @@ class resetPassword extends Mailable
             with: [
                 'name' => $this->name,
                 'email' => $this->email,
-                'url'=>'https://miespaciotest.trinitas.mx/#/resetPassword/'.$this->encrypt
+                'url'=>'https://miespacio.trinitas.mx/#/resetPassword/'.$this->encrypt
             ]
         );
     }

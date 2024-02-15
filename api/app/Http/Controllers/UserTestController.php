@@ -511,7 +511,7 @@ class UserTestController extends Controller
      
                 //if($user_test->user_evaluation->)
                 $user_evaluation  = UserTest::find($request->user_test_id)->user_evaluation;
-                if($user_evaluation ->type_evaluator_id==2)
+                if($user_evaluation ->type_evaluator_id<=2)
                     {
                         $user_evaluation->update(
                             [

@@ -460,22 +460,38 @@ class UserEvaluationController extends Controller
             $user_tests = UserTest::select(
                 'user_tests.id',
                 'T.name',
-                'user_tests.total_score',
+                DB::raw('ROUND((SELECT ROUND(SUM(ROUND(user_test_modules.average, 2)) / COUNT(user_test_modules.id), 2)
+                            FROM user_test_modules 
+                            JOIN test_modules ON user_test_modules.module_id = test_modules.id 
+                            WHERE user_test_modules.user_test_id = user_tests.id), 2) as total_score'), // Redondear a dos decimales
                 'user_tests.finish_date',
                 'S.description as status',
-                DB::raw("(CASE WHEN user_tests.status_id != 3 THEN 'Sin clasificación' ELSE (CASE when user_tests.total_score < 70 THEN 'En Riesgo' WHEN user_tests.total_score >= 70 AND user_tests.total_score < 80 THEN 'Baja' WHEN user_tests.total_score >= 80 AND user_tests.total_score < 90 THEN 'Regular' WHEN user_tests.total_score >= 90 AND user_tests.total_score < 100 THEN 'Buena' WHEN user_tests.total_score >= 100 AND user_tests.total_score < 120 THEN 'Excelente' WHEN user_tests.total_score = 120 THEN 'Máxima' END) END) as 'rank'"),
+                DB::raw("(CASE 
+                            WHEN user_tests.status_id != 3 THEN 'Sin clasificación' 
+                            ELSE (
+                                CASE 
+                                    WHEN user_tests.total_score < 70 THEN 'En Riesgo' 
+                                    WHEN user_tests.total_score >= 70 AND user_tests.total_score < 80 THEN 'Baja' 
+                                    WHEN user_tests.total_score >= 80 AND user_tests.total_score < 90 THEN 'Regular' 
+                                    WHEN user_tests.total_score >= 90 AND user_tests.total_score < 100 THEN 'Buena' 
+                                    WHEN user_tests.total_score >= 100 AND user_tests.total_score < 120 THEN 'Excelente' 
+                                    WHEN user_tests.total_score = 120 THEN 'Máxima' 
+                                END
+                            ) 
+                        END) as 'rank'"),
                 DB::raw("1 as type")
             )
-                ->join('user_evaluations as UE', function ($join) use ($id) {
-                    return $join->on('UE.id', 'user_tests.user_evaluation_id')
-                        ->where('UE.id', $id);
-                })
-                ->join('tests as T', 'T.id', 'user_tests.test_id')
-                ->join('status as S', function ($join) use ($id) {
-                    return $join->on('S.status_id', 'user_tests.status_id')
-                        ->where('S.table_name', 'user_tests');
-                })
-                ->get();
+            ->join('user_evaluations as UE', function ($join) use ($id) {
+                return $join->on('UE.id', 'user_tests.user_evaluation_id')
+                    ->where('UE.id', $id);
+            })
+            ->join('tests as T', 'T.id', 'user_tests.test_id')
+            ->join('status as S', function ($join) use ($id) {
+                return $join->on('S.status_id', 'user_tests.status_id')
+                    ->where('S.table_name', 'user_tests');
+            })
+            ->get();
+            
 
             // Se consulta la información de la evaluación del usuario
             $user_evaluation = UserEvaluation::find($id);

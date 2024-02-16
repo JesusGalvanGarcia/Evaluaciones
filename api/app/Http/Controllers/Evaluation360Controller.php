@@ -352,7 +352,79 @@ class Evaluation360Controller extends Controller
             'evaluation_id.*' => 'Integer|NotIn:0|Min:0|Distinct',
             'responsable_id.*' => 'Integer|NotIn:0|Min:0|Distinct',
         ]);
-  
+        /*
+        $user_evaluations = UserEvaluation::
+         where('evaluation_id', $request->evaluation_id)
+        ->where('process_id', 7)
+        ->where('type_evaluator_id',  1)
+        ->get();
+         return  $user_evaluations;
+    
+        $actionPlan = $user_evaluations->map(function ($item) use ($request) {
+         
+            return [
+                
+                'user_id' => $item->user_id,
+                'action_plan_id' => 3,
+                'status_id' => 1,
+                'responsable_id' => $item->responsable_id,
+                'created_by' => $request->user_id,
+                'updated_by' => $request->user_id,
+                'deleted_by' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'deleted_at' => null,
+                
+            ];
+        
+        });
+     
+        $newPlans = UserActionPlan::insert($actionPlan->toArray());
+        DB::commit();
+        DB::beginTransaction();
+        $signature=[];
+        $signatureResponsable=[];
+        $userIdsArray = $actionPlan->pluck('user_id')->toArray();
+        $responsableIdsArray = $actionPlan->pluck('responsable_id')->toArray();
+        $action_plan = UserActionPlan::
+        whereIn('user_id',$userIdsArray)
+        ->whereIn('responsable_id', $responsableIdsArray)
+        ->where('action_plan_id', 3)
+        ->get();
+    
+        $Colaborador = [];
+        
+        foreach ($action_plan as $plan) {
+            $signature[] = [
+                'user_action_plan_id' => $plan->id,
+                'responsable_id' => $plan->responsable_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'deleted_at' => null,
+            ];
+        
+            $signatureResponsable[] = [
+                'user_action_plan_id' => $plan->id,
+                'responsable_id' => 88,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'deleted_at' => null,
+            ];
+        
+            $ColaboradorKey = $plan->id . '_' . $plan->user_id;
+            $Colaborador[$ColaboradorKey] = [
+                'user_action_plan_id' => $plan->id,
+                'responsable_id' => $plan->user_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'deleted_at' => null,
+            ];
+        }
+        
+        // Insertar en la base de datos
+        $newPlansActions = ActionPlanSignature::insert($signature);
+        $newPlansActionsResponsable = ActionPlanSignature::insert($signatureResponsable);
+        $PlansUser = ActionPlanSignature::insert(array_values($Colaborador));*/
         $userIds = collect($request->users)->pluck('id')->toArray();
 
         foreach ($userIds as $key => $user) {

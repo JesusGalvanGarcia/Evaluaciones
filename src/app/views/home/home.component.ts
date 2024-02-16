@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   constructor(  private router: Router) { }
   showSubMenu: string | null = null;
   getUser() {
-    var user=localStorage.getItem("email");
+    var user=localStorage.getItem("names");
     if(user=="")
     {
   

@@ -327,7 +327,7 @@
                                                         <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;color:#333333;font-size:16px">{{ $evaluation_name }} (Etapa 3)</p>
+                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:24px;color:#333333;font-size:16px">{{ $evaluation_name }} </p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -338,7 +338,7 @@
                                                         <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"><strong>Lider</strong> : {{ $responsable_user->name }} {{ $responsable_user->father_last_name }} {{ $responsable_user->mother_last_name }}</p>
+                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"><strong>Evaluador</strong> : {{ $responsable_user->name }} {{ $responsable_user->father_last_name }} {{ $responsable_user->mother_last_name }}</p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -349,7 +349,7 @@
                                                         <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"><strong>Colaborador</strong>: {{ $evaluated_user->name }} {{ $evaluated_user->father_last_name }} {{ $evaluated_user->mother_last_name }}</p>
+                                                                    <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"><strong>Evaluado</strong>: {{ $evaluated_user->name }} {{ $evaluated_user->father_last_name }} {{ $evaluated_user->mother_last_name }}</p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -408,12 +408,11 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <h2 style="Margin:0;line-height:22px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:18px;font-style:normal;font-weight:normal;color:#333333"><strong><span style="font-size:14px">Haz concluido satisfactoriamente la Etapa 3</span></strong>: <span style="font-size:14px">Firma de plan de acción .</span></h2>
+                                                                    <h2 style="Margin:0;line-height:22px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:18px;font-style:normal;font-weight:normal;color:#333333"><strong><span style="font-size:14px">Haz concluido satisfactoriamente </span></strong>: <span style="font-size:14px">Firma de plan de acción .</span></h2>
                                                                     <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"></p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td align="center" style="margin-top:20px;padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://gbvhso.stripocdn.email/content/guids/CABINET_c462ae58b53ce78a4c9170fe5ae69653c656e56a52388c68e706b5f0bfb168a0/images/calendarioevaluaciones.jpeg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560" height="315"></td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="center" style="padding:0;Margin:0;padding-top:15px;padding-bottom:15px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#3d85c6;border-width:0px 0px 2px 0px;display:block;border-radius:30px;width:auto"><a href="https://miespacio.trinitas.mx" class="es-button es-button-1698760508161" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;padding:10px 0px;display:block;background:#3d85c6;border-radius:30px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #3d85c6">Ingresa a tu espacio</a></span></td>

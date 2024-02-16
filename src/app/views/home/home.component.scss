@@ -19,8 +19,14 @@
   width: 95%;
   height: 100%;
   margin-left: 5%;
+  background-image: url('../../../assets/img/encuentro.jpg');
+  
 }
 /* home.component.scss */
+.letter
+{
+  font-size: 20px;
+}
 .data
 {
   margin-top: -3%;
@@ -74,7 +80,7 @@
 
       button {
         margin: 10px;
-        width: 12%;
+        width: 14%;
         height: 80px;
         display: flex;
         flex-direction: column;
@@ -146,9 +152,20 @@
   padding: 15%;
   margin-left: 8%;
 }
-
+.bottos
+{
+  width: 50%;
+}
 /* Media Query para dispositivos con pantalla pequeña */
 @media (max-width: 768px) {
+  .bottos
+{
+  width: 80%;
+}
+  .letter
+{
+  font-size: 7px;
+}
   .ventana {
     width: 90%;
     height: 90%; /* Reducir la altura para dispositivos más pequeños */

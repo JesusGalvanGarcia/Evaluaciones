@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("token", token);
         localStorage.setItem("user_id", data.user_id);
         localStorage.setItem("email", data.email);
+        localStorage.setItem("names", data.user_name);
 
         this.router.navigate(['/dashboard/exam/home']);
 

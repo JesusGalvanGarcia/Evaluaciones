@@ -41,7 +41,7 @@ class PerformanceEvaluation extends Mailable
             replyTo: [
                 new Address('yunuen.vejar@trinitas.mx', 'Yunuen Vejar Badillo'),
             ],
-            subject: 'Evaluación de Desempeño concluida'
+            subject: 'Evaluación concluida'
         );
     }
 

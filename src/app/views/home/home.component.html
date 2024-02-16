@@ -4,7 +4,7 @@
     <div class="background">
       <mat-card class="card-body">
   <div style="display:flex;gap:5%">
-    <img class="logo"       src="assets/logo/logo_trinitas.jpg" alt="Logo">
+    <img class="logo"       src="assets/img/fondo.png" alt="Logo">
 
   </div>
       <!-- home.component.html -->
@@ -18,9 +18,9 @@
 
   
       <div class="button-container">
-        <button mat-flat-button color="primary" (click)="toggleSubMenu('pld')">
+        <button class="bottos" mat-flat-button color="primary" (click)="toggleSubMenu('pld')">
           <i class="fa-solid fa-money-bill"></i><br/>
-           <span class="label">PLD</span>
+           <div class="letter">PLD</div>
           <mat-icon *ngIf="showSubMenu === 'pld'" class="sub-icon">keyboard_arrow_up</mat-icon>
           <div *ngIf="showSubMenu === 'pld'" class="sub-menu">
          
@@ -28,9 +28,9 @@
           </div>
         </button>
   
-        <button mat-flat-button color="accent" (click)="toggleSubMenu('evaluaciones')">
+        <button mat-flat-button color="accent" class="bottos" (click)="toggleSubMenu('evaluaciones')">
           <i class="fa-solid fa-newspaper"></i>
-          <span class="label">Evaluaciones</span>
+            <div class="letter">Evaluaciones</div>
           <mat-icon *ngIf="showSubMenu === 'evaluaciones'" class="sub-icon">keyboard_arrow_up</mat-icon>
           <div *ngIf="showSubMenu === 'evaluaciones'" class="sub-menu" >
             <a (click)="go('Evaluaciones')" routerLink="/dashboard/evaluacion">Desempeño y competencias</a>
@@ -41,6 +41,7 @@
           </div>
         </button>
       </div>
+   
       </mat-card>
     </div>
   </div>

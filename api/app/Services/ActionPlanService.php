@@ -32,7 +32,7 @@ class ActionPlanService extends ServiceProvider
             return false;
     }
 
-    static function sendConfirmMail($user_evaluation, $evaluation_name,$file)
+    static function sendConfirmMail($user_evaluation, $evaluation_name, $file)
     {
         $evaluated_user = User::find($user_evaluation->user_id);
 
@@ -42,11 +42,9 @@ class ActionPlanService extends ServiceProvider
 
         $responsable_leader = User::find($responsable_leader_id?->user_id);
 
-        $mail = Mail::to('brenda.ortiz@trinitas.mx')->cc('francisco.delarosa@trinitas.mx')->send(new ActionPlan($evaluation_name, $evaluated_user, $responsable_user,$file));
-       // $mail = Mail::to($evaluated_user->email)->cc(['francisco.delarosa@trinitas.mx', $responsable_leader?->email])->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
-
+        $mail = Mail::to($evaluated_user->email)->cc(['francisco.delarosa@trinitas.mx', $responsable_leader?->email])->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
     }
-    static function sendConfirmMail360($user_evaluation, $evaluation_name,$file)
+    static function sendConfirmMail360($user_evaluation, $evaluation_name, $file)
     {
         $evaluated_user = User::find($user_evaluation->user_id);
 
@@ -56,9 +54,7 @@ class ActionPlanService extends ServiceProvider
 
         $responsable_leader = User::find($responsable_leader_id?->user_id);
 
-        $mail = Mail::to('brenda.ortiz@trinitas.mx')->cc('francisco.delarosa@trinitas.mx')->send(new ActionPlan($evaluation_name, $evaluated_user, $responsable_user,$file));
-       // $mail = Mail::to($evaluated_user->email)->cc(['francisco.delarosa@trinitas.mx', $responsable_leader?->email])->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
-
+        $mail = Mail::to($evaluated_user->email)->cc(['francisco.delarosa@trinitas.mx', $responsable_leader?->email])->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
     }
 
     static function sendConfirmSignaturesMail($user_evaluation, $evaluation_name)
@@ -71,7 +67,6 @@ class ActionPlanService extends ServiceProvider
         $responsable_leader_id = UserCollaborator::where('collaborator_id', $user_evaluation->responsable_id)->first();
         $responsable_leader = User::find($responsable_leader_id?->user_id);
 
-        $mail = Mail::to('brenda.ortiz@trinitas.mx')->cc('francisco.delarosa@trinitas.mx')->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
-    // $mail = Mail::to($evaluated_user->email)->cc(['francisco.delarosa@trinitas.mx', $responsable_leader?->email])->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
+        $mail = Mail::to($evaluated_user->email)->cc(['francisco.delarosa@trinitas.mx', $responsable_leader?->email])->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
     }
 }

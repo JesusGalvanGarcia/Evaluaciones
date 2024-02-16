@@ -37,20 +37,6 @@ export class UserEvaluationService {
       throw data;
     });
   }
-  GetAverages(data: any): Promise<any> {
-    
-    return axios.post(environment.apiUrl+this.controllerUrl+"/getAverages", data)
-    .then(({ data }: any) => {
-      
-      return data;
-    })
-    .catch(({ response }: any) => {
-
-      const { data } = response
-    
-      throw data;
-    });
-  }
 
   GetColaboradorEvaluationsWithParams(data: any): Promise<any> {
 

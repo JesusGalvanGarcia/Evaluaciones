@@ -16,17 +16,16 @@ class sendEmail360 extends Mailable
     use Queueable, SerializesModels;
     public $evaluation_name;
     public $evaluated_user;
-  
+
     public $email;
     /**
      * Create a new message instance.
      */
-    public function __construct($evaluation_name,$evaluated_user,$email)
+    public function __construct($evaluation_name, $evaluated_user, $email)
     {
         $this->evaluation_name = $evaluation_name;
         $this->evaluated_user = $evaluated_user;
         $this->email = $email;
-
     }
 
     /**
@@ -35,7 +34,7 @@ class sendEmail360 extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address($this->responsable_user->email),
+            from: new Address($this->email),
             replyTo: [
                 new Address('notificaciones@trintias.com', $this->evaluation_name),
             ],

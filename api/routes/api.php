@@ -54,10 +54,12 @@ Route::resource('/evaluation360', Evaluation360Controller::class, [
     'names' => [
         'index' => 'Consultar Evaluaciones del Usuario',
         'show' => 'Consultar Usuarios',
+        
     ]
 ]);
 Route::post('/user/sendPasswordResetEmail', [UserController::class, 'sendPasswordResetEmail'])->name('Enviar correo para cambio de contraseña');
 Route::post('/user/resetPassword', [UserController::class, 'resetPassword'])->name('Cambiar contraseña');
+Route::get('/evaluation360/showTest/{id}', [Evaluation360Controller::class, 'showTest'])->name('Ver tests');
 
 Route::post('/evaluation360/changeStatus', [Evaluation360Controller::class, 'changeStatus'])->name('Cambiar status');
 Route::post('/evaluation360/getFinish360', [Evaluation360Controller::class, 'getFinish360'])->name('Consultar reporte 360');

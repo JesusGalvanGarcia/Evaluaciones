@@ -112,7 +112,7 @@ export class Index360Component implements OnInit {
     ]
   getTestUser(data:any,userid:any,array:number)
   {
-    this.userEvaluationService.GetTest(data,userid)
+    this.evaluations360.GetTests360(data,userid)
     .then((response:any) => {
      
       this.mostrar=true;
@@ -253,7 +253,7 @@ protected onActionEventPlans(actionEvent: { action: string, data: any }) {
   
   sendPageEvaluation(process:string,id:string,status:string,calificacion:number,detalle:any)
   {   
-     localStorage.setItem("score", detalle[0].total_score.toString());
+     localStorage.setItem("score", detalle[0].total_score==null?"0":detalle[0].total_score.toString());
     switch(process)
     {
       case "Evaluaciones 360":

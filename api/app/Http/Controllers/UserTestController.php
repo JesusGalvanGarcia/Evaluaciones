@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use App\Models\Files;
 use App\Models\Process;
@@ -77,7 +78,7 @@ class UserTestController extends Controller
 
             // Se valida si el usuario tiene asignada la prueba y si existe.
             $user_test = UserTest::find($id);
-          
+
             if (!$user_test)
                 return response()->json([
                     'title' => 'Prueba no encontrada',
@@ -104,7 +105,7 @@ class UserTestController extends Controller
                             'test_id',
                             DB::raw("(SELECT note FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'note'"),
                             DB::raw("(SELECT average FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'average'")
-                            
+
                         );
 
                         $query->with([
@@ -118,7 +119,7 @@ class UserTestController extends Controller
                                             'description',
                                             'score',
                                             'question_id',
-                                          
+
                                             DB::raw("(SELECT id from user_answers UA where user_test_id = $id AND UA.question_id = answers.question_id AND UA.answer_id = answers.id AND deleted_at is null) as 'user_answer_id'")
                                         )
                                             ->orderBy('score', 'desc');
@@ -131,7 +132,7 @@ class UserTestController extends Controller
                 ->find($user_test->test_id);
 
             $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
-           
+
             if ($user_evaluation->status_id == 1)
                 $user_evaluation->update([
                     'status_id' => 2
@@ -156,7 +157,7 @@ class UserTestController extends Controller
                 case 5:
                     $evaluationType = "Colaborador";
                     break;
-                // Puedes agregar más casos según tus necesidades
+                    // Puedes agregar más casos según tus necesidades
                 default:
                     // Acción por defecto si el tipo no coincide con ningún caso
                     break;
@@ -177,8 +178,8 @@ class UserTestController extends Controller
                 'test' => $test,
                 'score' => $user_test->total_score,
                 'clasification' => $clasification,
-                'user_test'=>$user_test,
-                'tipo'=>$evaluationType,
+                'user_test' => $user_test,
+                'tipo' => $evaluationType,
             ]);
         } catch (Exception $e) {
 
@@ -333,26 +334,25 @@ class UserTestController extends Controller
             DB::beginTransaction();
             // Calculate average score
             $user_test_module = UserTestModule::join('test_modules', 'user_test_modules.module_id', '=', 'test_modules.id')
-            ->select('user_test_modules.*', 'test_modules.name') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
-            ->where('user_test_modules.user_test_id', $request->user_test_id)
-            ->get();
-        
-            $answers = UserTest::select( 'suggestions', 'chance', 'strengths')
-            ->where('id', $request->user_test_id)
-            ->get();
-            $sum=0;
-            foreach($user_test_module as $module)
-            {
-                $sum=$module->average+ $sum; 
+                ->select('user_test_modules.*', 'test_modules.name') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
+                ->where('user_test_modules.user_test_id', $request->user_test_id)
+                ->get();
+
+            $answers = UserTest::select('suggestions', 'chance', 'strengths')
+                ->where('id', $request->user_test_id)
+                ->get();
+            $sum = 0;
+            foreach ($user_test_module as $module) {
+                $sum = $module->average + $sum;
             }
-            $general=$sum/count($user_test_module);
+            $general = $sum / count($user_test_module);
 
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Modulo consultados correctamente',
                 'module' =>  $user_test_module,
-                'questions'=> $answers,
-                'general'=> round($general,2),
+                'questions' => $answers,
+                'general' => round($general, 2),
             ]);
         } catch (Exception $e) {
 
@@ -403,44 +403,42 @@ class UserTestController extends Controller
                     'code' => $this->prefix . 'X702'
                 ], 400);
 
- 
+
 
             DB::beginTransaction();
             // Calculate average score
-        $questions = Question::where('module_id',  $request->module_id)->get();
-        $sum=0;
-        foreach($questions as $question)
-        {
-            $userAnswer = UserAnswer::where([
-                ['user_test_id', $request->user_test_id],
-                ['question_id',  $question->id]
+            $questions = Question::where('module_id',  $request->module_id)->get();
+            $sum = 0;
+            foreach ($questions as $question) {
+                $userAnswer = UserAnswer::where([
+                    ['user_test_id', $request->user_test_id],
+                    ['question_id',  $question->id]
                 ])->first();
-            $answer=Answer::where('id',$userAnswer ->answer_id)->first();
-            $sum=$sum+$answer->score;
-            
-        }
-        $average = round($sum / count($questions), 2);
+                $answer = Answer::where('id', $userAnswer->answer_id)->first();
+                $sum = $sum + $answer->score;
+            }
+            $average = round($sum / count($questions), 2);
 
-        // Retrieve user test module
-        $user_test_module = UserTestModule::where([
-        ['user_test_id', $request->user_test_id],
-        ['module_id',  $request->module_id]
-        ])->first();
-        
-        if ($user_test_module) {
-            $user_test_module->update([
-                'average' =>  $average
-            ]);
-        } else {
-            UserTestModule::create([
-                'user_test_id' => $request->user_test_id,
-                'module_id' => $request->module_id,
-                'average' =>  $average
-            ]);
-        }
-        
-        DB::commit();
-        
+            // Retrieve user test module
+            $user_test_module = UserTestModule::where([
+                ['user_test_id', $request->user_test_id],
+                ['module_id',  $request->module_id]
+            ])->first();
+
+            if ($user_test_module) {
+                $user_test_module->update([
+                    'average' =>  $average
+                ]);
+            } else {
+                UserTestModule::create([
+                    'user_test_id' => $request->user_test_id,
+                    'module_id' => $request->module_id,
+                    'average' =>  $average
+                ]);
+            }
+
+            DB::commit();
+
 
             return response()->json([
                 'title' => 'Proceso terminado',
@@ -498,7 +496,7 @@ class UserTestController extends Controller
                     'code' => $this->prefix . 'X602'
                 ], 400);
 
-      
+
             $user_test = UserTest::find($request->user_test_id);
 
 
@@ -508,35 +506,35 @@ class UserTestController extends Controller
                 'chance' => $request->chance,
                 'status_id' => 3
             ]);
-     
-                //if($user_test->user_evaluation->)
-                $user_evaluation  = UserTest::find($request->user_test_id)->user_evaluation;
-                if($user_evaluation ->type_evaluator_id<=2)
-                    {
-                        $user_evaluation->update(
-                            [
-                                'status_id' => 3,
-                                'finish_date' =>Carbon::now()->format('Y-m-d') ,
-                                'process_id'=> 7,
-                            ]
-                        );
-                    }else{
-                        $user_evaluation->update(
-                            [
-                                'status_id' => 2
-                            ]
-                        );
-                    }
-                
 
-            
+            //if($user_test->user_evaluation->)
+            $user_evaluation  = UserTest::find($request->user_test_id)->user_evaluation;
+            if ($user_evaluation->type_evaluator_id > 2) {
+                $user_evaluation->update(
+                    [
+                        'status_id' => 3,
+                        'finish_date' => Carbon::now()->format('Y-m-d'),
+                        'process_id' => 7,
+                    ]
+                );
+            } else {
+                $user_evaluation->update(
+                    [
+                        'status_id' => 2,
+                        'process_id' => 10,
+                    ]
+                );
+            }
+
+
+
 
             DB::commit();
 
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Campos guardados correctamente',
-            
+
             ]);
         } catch (Exception $e) {
 
@@ -592,7 +590,7 @@ class UserTestController extends Controller
                 ], 400);
 
             //Se valida el estado de la prueba
-            $user_test = UserTest::whereIn('status_id', [1, 2,3])->find($request->user_test_id);
+            $user_test = UserTest::whereIn('status_id', [1, 2, 3])->find($request->user_test_id);
 
             if (!$user_test)
                 return response()->json([
@@ -611,7 +609,7 @@ class UserTestController extends Controller
                 ['user_test_id', $request->user_test_id],
                 ['question_id', $request->question_id],
             ])->first();
-            
+
             if ($last_user_answer) {
 
                 if ($last_user_answer->answer_id != $request->answer_id) {
@@ -649,31 +647,30 @@ class UserTestController extends Controller
             $clasification = TestService::getClasification($total_score);
 
             if ($request->its_over == 'si') {
-               
+
                 $user_evaluation  = UserTest::find($user_test->id)->user_evaluation;
-             
-                if($user_evaluation->process_id==6||$user_evaluation->process_id==1||$user_evaluation->process_id==2)
-                {
-                $user_evaluation->update(
-                    [
-                        'status_id' => $user_evaluation->process_id==6?2:3,
-                        'finish_date' =>Carbon::now()->format('Y-m-d') ,
-                        'process_id'=> $user_evaluation->process_id==6?8:$user_evaluation->process_id,
-                    ]
-                );
-            }
-                if($user_evaluation->process_id==7)
+
+                if ($user_evaluation->process_id == 6 || $user_evaluation->process_id == 1 || $user_evaluation->process_id == 2) {
+                    $user_evaluation->update(
+                        [
+                            'status_id' => $user_evaluation->process_id == 6 ? 2 : 3,
+                            'finish_date' => Carbon::now()->format('Y-m-d'),
+                            'process_id' => $user_evaluation->process_id == 6 ? 8 : $user_evaluation->process_id,
+                        ]
+                    );
+                }
+                /*if($user_evaluation->process_id==7)
                 {
                    
                     $user_evaluation->update(
                         [
                             'status_id' => 2,
                             'finish_date' =>Carbon::now()->format('Y-m-d') ,
-                            'process_id'=> 10,
+                            //'process_id'=> 10,
                         ]
                     );
     
-                   /* $user_evaluations  = UserEvaluation::where([
+                   $user_evaluations  = UserEvaluation::where([
                         ['user_id', $user_evaluation->user_id],
                         ['evaluation_id', $user_evaluation->evaluation_id ],
                         ['finish_date',null],
@@ -694,9 +691,10 @@ class UserTestController extends Controller
                             'updated_at' => now(), // O ajusta según sea necesario
                             'deleted_at' => null, 
                         ]);
-                    }*/
+                    }
 
                 }
+                */
                 TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],
@@ -706,7 +704,7 @@ class UserTestController extends Controller
                     "test" => $user_test->test
                 ]);
                 //if($user_test->user_evaluation->)
-         
+
 
             }
 
@@ -771,7 +769,7 @@ class UserTestController extends Controller
 
             //Se valida el estado de la prueba
             $user_test = UserTest::whereIn('status_id', [1, 2])->find($request->user_test_id);
-     
+
             if (!$user_test)
                 return response()->json([
                     'title' => 'Prueba Invalida',

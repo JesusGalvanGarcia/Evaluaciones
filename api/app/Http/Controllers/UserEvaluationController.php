@@ -99,7 +99,7 @@ class UserEvaluationController extends Controller
                     return $status_join->on('S.status_id', 'user_evaluations.status_id')
                         ->where('S.table_name', 'user_evaluations');
                 })
-                ->when(request('user_id') != 88 &&request('user_id') != 6 && request('user_id') != 19 && request('user_id') != 12, function ($when) use ($collaborators_id) {
+                ->when(request('user_id') != 88 && request('user_id') != 6 && request('user_id') != 19 && request('user_id') != 12, function ($when) use ($collaborators_id) {
 
                     return $when->where([
                         ['responsable_id', request('user_id')]
@@ -114,7 +114,7 @@ class UserEvaluationController extends Controller
 
                     return $when->whereIn('user_evaluations.evaluation_id', $evaluations_id);
                 })
-                ->where("user_evaluations.evaluation_id","!=",2)
+                ->where("user_evaluations.evaluation_id", "!=", 2)
                 ->get();
 
             $personal_evaluations = UserEvaluation::select(
@@ -142,7 +142,7 @@ class UserEvaluationController extends Controller
                 ->where([
                     ['user_id', request('user_id')],
                 ])
-     
+
                 ->get();
 
             return response()->json([
@@ -163,54 +163,54 @@ class UserEvaluationController extends Controller
 
     public function getAverages(Request $request)
     {
-        try{
-        $validator = Validator::make(request()->all(), [
-            'user_id' => 'Required|Integer|NotIn:0|Min:0',
-            'evaluation_id' => 'Required|Integer|NotIn:0|Min:0',
-        ]);
+        try {
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|NotIn:0|Min:0',
+                'evaluation_id' => 'Required|Integer|NotIn:0|Min:0',
+            ]);
 
-        if ($validator->fails()) {
+            if ($validator->fails()) {
 
-            return response()->json([
-                'title' => 'Datos Faltantes',
-                'message' => $validator->messages()->first(),
-                'code' => $this->prefix . 'X001'
-            ], 400);
-        }
-        $evaluation = Evaluation::where('id', $request->evaluation_id)->first();
-        $users = User::select(DB::raw("CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name"), 'email')
-        ->where('id', $request->user_id)
-        ->first();
-    
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X001'
+                ], 400);
+            }
+            $evaluation = Evaluation::where('id', $request->evaluation_id)->first();
+            $users = User::select(DB::raw("CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name"), 'email')
+                ->where('id', $request->user_id)
+                ->first();
 
-        $user = UserService::checkUser(request('user_id'));
 
-        if (!$user)
-            return response()->json([
-                'title' => 'Consulta Cancelada',
-                'message' => 'Usuario invalido, no tienes acceso.',
-                'code' => $this->prefix . 'X002'
-            ], 400);
-          
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X002'
+                ], 400);
+
             $user_evaluations = UserEvaluation::select(
-                'user_evaluations.type_evaluator_id', 
+                'user_evaluations.type_evaluator_id',
                 'evaluator_type.description',
                 'user_tests.total_score',
                 'user_tests.id AS test_id'
             )
-            ->join('evaluator_type', 'user_evaluations.type_evaluator_id', '=', 'evaluator_type.id')
-            ->leftJoin('user_tests', 'user_evaluations.id', '=', 'user_tests.user_evaluation_id')
-            ->where('user_evaluations.evaluation_id', $request->evaluation_id)
-            ->where('user_evaluations.user_id', $request->user_id)
-            ->get();
-           // $users_test=UserTest::where('')
+                ->join('evaluator_type', 'user_evaluations.type_evaluator_id', '=', 'evaluator_type.id')
+                ->leftJoin('user_tests', 'user_evaluations.id', '=', 'user_tests.user_evaluation_id')
+                ->where('user_evaluations.evaluation_id', $request->evaluation_id)
+                ->where('user_evaluations.user_id', $request->user_id)
+                ->get();
+            // $users_test=UserTest::where('')
             $sums = [
                 'Lider' => 0,
                 'Colaborador' => 0,
                 'Cliente' => 0,
                 'Lateral' => 0,
-                'Autoevaluacion'=>0,
-                'SinAutoevaluacion'=>0
+                'Autoevaluacion' => 0,
+                'SinAutoevaluacion' => 0
             ];
             $user_test_module_sums = [];
             $evaluator_type_sums = [];
@@ -221,9 +221,9 @@ class UserEvaluationController extends Controller
             $Lateral = [];
             foreach ($user_evaluations as $element) {
                 $description = $element->description;
-            
+
                 $filteredEvaluations = $user_evaluations->where('description', $description);
-            
+
                 if (array_key_exists($description, $sums)) {
                     $user_test_modules = UserTestModule::where('user_test_id', $element->test_id)->get();
                     if (!isset($evaluator_type_sums[$description])) {
@@ -235,7 +235,7 @@ class UserEvaluationController extends Controller
                         'Cliente' => 0,
                         'Lateral' => 0,
                         'Autoevaluacion' => 0,
-                        
+
                     ];
 
                     $answers = UserTest::select('suggestions', 'chance', 'strengths')
@@ -245,7 +245,7 @@ class UserEvaluationController extends Controller
                     switch ($element->description) {
                         case 'Lider':
                             $Lideres[] = $answers;
-                         
+
                             break;
                         case 'Colaborador':
                             $Colaboradores[] = $answers;
@@ -259,81 +259,80 @@ class UserEvaluationController extends Controller
                         case 'Lateral':
                             $Lateral[] = $answers;
                             break;
-                     
                     }
                     foreach ($user_test_modules as $element_module) {
                         $name = TestModule::where('id', $element_module->module_id)->first();
-            
-                         // Initialize sumsModule for the current module if not exists
-            if (!isset($user_test_module_sums[$name->name])) {
-                $user_test_module_sums[$name->name] = [
-                    'Lider' => 0,
-                    'Colaborador' => 0,
-                    'Cliente' => 0,
-                    'Lateral' => 0,
-                    'Autoevaluacion' => 0,
-                    
-                ];
-            }
 
-           
-            $countFilteredEvaluations = count($filteredEvaluations);
-            $user_test_module_sums[$name->name][$description] += ($countFilteredEvaluations > 0 ? round($element_module->average / $countFilteredEvaluations,2) : 0);
-            if (!isset($evaluator_type_sums[$description][$name->name])) {
-                $evaluator_type_sums[$description][$name->name] = [];
-            }
-    
-            $evaluator_type_sums[$description][$name->name][] = round($element_module->average,2);
-         // Fetch questions related to the current module
-            // Fetch questions related to the current module
-            $questions = Question::where('module_id', $element_module->module_id)->get();
+                        // Initialize sumsModule for the current module if not exists
+                        if (!isset($user_test_module_sums[$name->name])) {
+                            $user_test_module_sums[$name->name] = [
+                                'Lider' => 0,
+                                'Colaborador' => 0,
+                                'Cliente' => 0,
+                                'Lateral' => 0,
+                                'Autoevaluacion' => 0,
 
-            // Fetch answers from UserAnswer based on the current test and module
-            $answers = UserAnswer::select('answers.score', 'user_answers.question_id')
-                ->join('answers', 'user_answers.answer_id', '=', 'answers.id')
-                ->where('user_test_id', $element->test_id)
-                ->whereIn('user_answers.question_id', $questions->pluck('id'))
-                ->get();
+                            ];
+                        }
 
-            foreach ($answers as $answer) {
-                // Fetch the question text based on the question_id
-                $questionText = $questions->where('id', $answer->question_id)->first()->description;
 
-                // Calculate the average of answers
-                $answersAverage = $answers->count() > 0 ? round($answers->avg('score'), 2) : 0;
+                        $countFilteredEvaluations = count($filteredEvaluations);
+                        $user_test_module_sums[$name->name][$description] += ($countFilteredEvaluations > 0 ? round($element_module->average / $countFilteredEvaluations, 2) : 0);
+                        if (!isset($evaluator_type_sums[$description][$name->name])) {
+                            $evaluator_type_sums[$description][$name->name] = [];
+                        }
 
-                // Store the average for each question
-                if (!isset($question_averages[$name->name])) {
-                    $question_averages[$name->name][$questionText][$element->description] = [];
-                }
+                        $evaluator_type_sums[$description][$name->name][] = round($element_module->average, 2);
+                        // Fetch questions related to the current module
+                        // Fetch questions related to the current module
+                        $questions = Question::where('module_id', $element_module->module_id)->get();
 
-                $question_averages[$name->name][$questionText][$element->description] =$answersAverage;
-            }
-        }
+                        // Fetch answers from UserAnswer based on the current test and module
+                        $answers = UserAnswer::select('answers.score', 'user_answers.question_id')
+                            ->join('answers', 'user_answers.answer_id', '=', 'answers.id')
+                            ->where('user_test_id', $element->test_id)
+                            ->whereIn('user_answers.question_id', $questions->pluck('id'))
+                            ->get();
+
+                        foreach ($answers as $answer) {
+                            // Fetch the question text based on the question_id
+                            $questionText = $questions->where('id', $answer->question_id)->first()->description;
+
+                            // Calculate the average of answers
+                            $answersAverage = $answers->count() > 0 ? round($answers->avg('score'), 2) : 0;
+
+                            // Store the average for each question
+                            if (!isset($question_averages[$name->name])) {
+                                $question_averages[$name->name][$questionText][$element->description] = [];
+                            }
+
+                            $question_averages[$name->name][$questionText][$element->description] = $answersAverage;
+                        }
+                    }
                 }
             }
             $overall_module_averages = [];
             foreach ($user_test_module_sums as $module => $averages) {
-                $overall_module_averages[$module] = count($averages) > 0 ? round(array_sum($averages) / count($averages),2) : 0;
-            }     
+                $overall_module_averages[$module] = count($averages) > 0 ? round(array_sum($averages) / count($averages), 2) : 0;
+            }
             $overall_evaluator_type_averages = [];
             foreach ($evaluator_type_sums as $evaluator => $moduleData) {
                 $totalAverage = 0;
                 $moduleCount = 0;
-            
+
                 foreach ($moduleData as $module => $data) {
                     // Assuming $data is an array, adjust the code accordingly
                     if (is_array($data)) {
-                        $totalAverage += count($data) > 0 ? round(array_sum($data) / count($data) ,2): 0;
+                        $totalAverage += count($data) > 0 ? round(array_sum($data) / count($data), 2) : 0;
                         $moduleCount++;
                     }
                 }
-            
-                $overall_evaluator_type_averages[$evaluator] = $moduleCount > 0 ? round($totalAverage / $moduleCount,2) : 0;
+
+                $overall_evaluator_type_averages[$evaluator] = $moduleCount > 0 ? round($totalAverage / $moduleCount, 2) : 0;
             }
             $overall_average_all_evaluators = 0;
             $overall_count_all_evaluators = 0;
-            
+
             foreach ($evaluator_type_sums as $evaluator => $moduleData) {
                 foreach ($moduleData as $module => $data) {
                     // Assuming $data is an array, adjust the code accordingly
@@ -343,38 +342,38 @@ class UserEvaluationController extends Controller
                     }
                 }
             }
-            
+
             $overall_average_all_evaluators = $overall_count_all_evaluators > 0 ?
                 round($overall_average_all_evaluators / $overall_count_all_evaluators, 2) : 0;
 
-        return response()->json([
-            'title' => 'Proceso terminado',
-            'message' => 'Evaluaciones del usuario consultadas correctamente',
-            'general'=>$user_test_module_sums,
-            'promedio'=>$overall_module_averages,
-            'evaluator'=>$overall_evaluator_type_averages,
-            'evaluation'=>$evaluation,
-            'user'=>$users,
-            'general_average' => $overall_average_all_evaluators,
-            'question_averages' => $question_averages,
-            'Lideres'=>$Lideres,
-            'Colaboradores'=>$Colaboradores,
-            'Autoevaluacion'=>$AutoEvaluacion,
-            'Cliente'=>$Cliente,
-            'Lateral'=>$Lateral
+            return response()->json([
+                'title' => 'Proceso terminado',
+                'message' => 'Evaluaciones del usuario consultadas correctamente',
+                'general' => $user_test_module_sums,
+                'promedio' => $overall_module_averages,
+                'evaluator' => $overall_evaluator_type_averages,
+                'evaluation' => $evaluation,
+                'user' => $users,
+                'general_average' => $overall_average_all_evaluators,
+                'question_averages' => $question_averages,
+                'Lideres' => $Lideres,
+                'Colaboradores' => $Colaboradores,
+                'Autoevaluacion' => $AutoEvaluacion,
+                'Cliente' => $Cliente,
+                'Lateral' => $Lateral
 
 
 
-        
-        ]);
-    } catch (Exception $e) {
 
-        return response()->json([
-            'title' => 'Ocurrio un error en el servidor',
-            'message' => $e->getMessage() . ' -L:' . $e->getLine(),
-            'code' => $this->prefix . 'X099'
-        ], 500);
-    }
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X099'
+            ], 500);
+        }
     }
     public function store(Request $request)
     {
@@ -460,38 +459,22 @@ class UserEvaluationController extends Controller
             $user_tests = UserTest::select(
                 'user_tests.id',
                 'T.name',
-                DB::raw('ROUND((SELECT ROUND(SUM(ROUND(user_test_modules.average, 2)) / COUNT(user_test_modules.id), 2)
-                            FROM user_test_modules 
-                            JOIN test_modules ON user_test_modules.module_id = test_modules.id 
-                            WHERE user_test_modules.user_test_id = user_tests.id), 2) as total_score'), // Redondear a dos decimales
+                'user_tests.total_score',
                 'user_tests.finish_date',
                 'S.description as status',
-                DB::raw("(CASE 
-                            WHEN user_tests.status_id != 3 THEN 'Sin clasificación' 
-                            ELSE (
-                                CASE 
-                                    WHEN user_tests.total_score < 70 THEN 'En Riesgo' 
-                                    WHEN user_tests.total_score >= 70 AND user_tests.total_score < 80 THEN 'Baja' 
-                                    WHEN user_tests.total_score >= 80 AND user_tests.total_score < 90 THEN 'Regular' 
-                                    WHEN user_tests.total_score >= 90 AND user_tests.total_score < 100 THEN 'Buena' 
-                                    WHEN user_tests.total_score >= 100 AND user_tests.total_score < 120 THEN 'Excelente' 
-                                    WHEN user_tests.total_score = 120 THEN 'Máxima' 
-                                END
-                            ) 
-                        END) as 'rank'"),
+                DB::raw("(CASE WHEN user_tests.status_id != 3 THEN 'Sin clasificación' ELSE (CASE when user_tests.total_score < 70 THEN 'En Riesgo' WHEN user_tests.total_score >= 70 AND user_tests.total_score < 80 THEN 'Baja' WHEN user_tests.total_score >= 80 AND user_tests.total_score < 90 THEN 'Regular' WHEN user_tests.total_score >= 90 AND user_tests.total_score < 100 THEN 'Buena' WHEN user_tests.total_score >= 100 AND user_tests.total_score < 120 THEN 'Excelente' WHEN user_tests.total_score = 120 THEN 'Máxima' END) END) as 'rank'"),
                 DB::raw("1 as type")
             )
-            ->join('user_evaluations as UE', function ($join) use ($id) {
-                return $join->on('UE.id', 'user_tests.user_evaluation_id')
-                    ->where('UE.id', $id);
-            })
-            ->join('tests as T', 'T.id', 'user_tests.test_id')
-            ->join('status as S', function ($join) use ($id) {
-                return $join->on('S.status_id', 'user_tests.status_id')
-                    ->where('S.table_name', 'user_tests');
-            })
-            ->get();
-            
+                ->join('user_evaluations as UE', function ($join) use ($id) {
+                    return $join->on('UE.id', 'user_tests.user_evaluation_id')
+                        ->where('UE.id', $id);
+                })
+                ->join('tests as T', 'T.id', 'user_tests.test_id')
+                ->join('status as S', function ($join) use ($id) {
+                    return $join->on('S.status_id', 'user_tests.status_id')
+                        ->where('S.table_name', 'user_tests');
+                })
+                ->get();
 
             // Se consulta la información de la evaluación del usuario
             $user_evaluation = UserEvaluation::find($id);

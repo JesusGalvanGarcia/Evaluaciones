@@ -178,6 +178,19 @@ export class Evaluation360Service {
         throw data;
       });
   }
+  GetTests360(data: any,id:any): Promise<any> {
+
+    return axios.get(environment.apiUrl+this.controllerUrl+"/showTest/"+id, {
+      params: data
+    })
+    .then((response) => {
+      return response.data.tests;
+      })      
+    .catch(function (error: any) {
+  
+      throw error;
+    });
+  }
   GetUsers360(data: any,id:any): Promise<any> {
 
     return axios.get(environment.apiUrl+this.controllerUrl+"/"+id, {

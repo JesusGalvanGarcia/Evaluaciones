@@ -507,41 +507,23 @@ class UserTestController extends Controller
                 'status_id' => 3
             ]);
 
-<<<<<<< HEAD
-            //if($user_test->user_evaluation->)
-=======
->>>>>>> 2271f0e5b150876bde45ecac34d54b9f4a72e46e
             $user_evaluation  = UserTest::find($request->user_test_id)->user_evaluation;
             if ($user_evaluation->type_evaluator_id > 2) {
                 $user_evaluation->update(
                     [
                         'status_id' => 3,
                         'finish_date' => Carbon::now()->format('Y-m-d'),
-<<<<<<< HEAD
-                        'process_id' => 7,
-=======
                         'process_id' => 7
->>>>>>> 2271f0e5b150876bde45ecac34d54b9f4a72e46e
                     ]
                 );
             } else {
                 $user_evaluation->update(
                     [
                         'status_id' => 2,
-<<<<<<< HEAD
-                        'process_id' => 10,
-                    ]
-                );
-            }
-
-
-
-=======
                         'process_id' => 10
                     ]
                 );
             }
->>>>>>> 2271f0e5b150876bde45ecac34d54b9f4a72e46e
 
             DB::commit();
 
@@ -665,52 +647,6 @@ class UserTestController extends Controller
                 $user_evaluation  = UserTest::find($user_test->id)->user_evaluation;
 
                 if ($user_evaluation->process_id == 6 || $user_evaluation->process_id == 1 || $user_evaluation->process_id == 2) {
-<<<<<<< HEAD
-                    $user_evaluation->update(
-                        [
-                            'status_id' => $user_evaluation->process_id == 6 ? 2 : 3,
-                            'finish_date' => Carbon::now()->format('Y-m-d'),
-                            'process_id' => $user_evaluation->process_id == 6 ? 8 : $user_evaluation->process_id,
-                        ]
-                    );
-                }
-                /*if($user_evaluation->process_id==7)
-                {
-                   
-                    $user_evaluation->update(
-                        [
-                            'status_id' => 2,
-                            'finish_date' =>Carbon::now()->format('Y-m-d') ,
-                            //'process_id'=> 10,
-                        ]
-                    );
-    
-                   $user_evaluations  = UserEvaluation::where([
-                        ['user_id', $user_evaluation->user_id],
-                        ['evaluation_id', $user_evaluation->evaluation_id ],
-                        ['finish_date',null],
-                    ])->get();
-                  
-                    if(count($user_evaluations)==0)
-                    { 
-                        //Si ya es la ultima  persona en contestar la evaluacion
-                       
-                        FinishEvaluation::create([
-                            'user_id' => $user_evaluation->user_id,
-                            'evaluation_id' => $user_evaluation->evaluation_id,
-                            'status' => false,
-                            'created_by' => $request->user_id, // Utilizamos Auth::id() para obtener el ID del usuario autenticado
-                            'updated_by' => $request->user_id, // O ajusta según sea necesario
-                            'deleted_by' => null, // O ajusta según sea necesario
-                            'created_at' => now(), // Utilizamos now() para obtener la fecha y hora actual
-                            'updated_at' => now(), // O ajusta según sea necesario
-                            'deleted_at' => null, 
-                        ]);
-                    }
-
-                }
-                */
-=======
                     $user_evaluation->update(
                         [
                             'status_id' => $user_evaluation->process_id == 6 ? 2 : 3,
@@ -720,7 +656,6 @@ class UserTestController extends Controller
                     );
                 }
 
->>>>>>> 2271f0e5b150876bde45ecac34d54b9f4a72e46e
                 TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],
@@ -729,12 +664,6 @@ class UserTestController extends Controller
                     "evaluation_name" => $user_test->user_evaluation->evaluation->name,
                     "test" => $user_test->test
                 ]);
-<<<<<<< HEAD
-                //if($user_test->user_evaluation->)
-
-
-=======
->>>>>>> 2271f0e5b150876bde45ecac34d54b9f4a72e46e
             }
 
             DB::commit();

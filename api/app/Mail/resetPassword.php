@@ -21,13 +21,12 @@ class resetPassword extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($name,$email,$encrypt)
+    public function __construct($name, $email, $encrypt)
     {
         //
         $this->email = $email;
         $this->name = $name;
         $this->encrypt = $encrypt;
-
     }
 
     /**
@@ -51,7 +50,7 @@ class resetPassword extends Mailable
             with: [
                 'name' => $this->name,
                 'email' => $this->email,
-                'url'=>'https://miespacio.trinitas.mx/#/resetPassword/'.$this->encrypt
+                'url' => 'https://miespacio.trinitas.mx/#/resetPassword/' . $this->encrypt
             ]
         );
     }

@@ -1620,7 +1620,8 @@ class Evaluation360Controller extends Controller
                     $AverageAuto=0;
                     $question_averages=[];
                     $modules = TestModule::where('test_id', 134)->get();
-
+                    $questionPromedio=0;
+                    $questionAuto=0;
                     foreach ($evaluatorTypes as $evaluatorType => $evaluatorTypeName) {
                     $evaluations = $evaluationsAll->where('evaluator_type_id',$evaluatorType );
                     $answers = UserTest::select('suggestions', 'chance', 'strengths')
@@ -1628,13 +1629,13 @@ class Evaluation360Controller extends Controller
                     ->get();
                     $Comments[$evaluatorTypeName]=$answers;
                     // Inicializar el array para el tipo de evaluador actual
-                    
+
                     $averageObject = new \stdClass();
                     
                     $lastKey =  count($modules)-1;
                    
                     foreach ($modules as $key => $module) {
-                     
+
                         $evaluationsModule = $evaluations->where('module_id', $module->id);
                         $evaluationsNA = $evaluations->where('module_id', $module->id)->where('average', 0);
                     
@@ -1681,9 +1682,9 @@ class Evaluation360Controller extends Controller
                                 // Verificar si ya existe un promedio para esta pregunta, evaluador y módulo
                                 if (!isset($question_averages[$module->name][$questionText][$evaluatorTypeName])) {
                                     $question_averages[$module->name][$questionText][$evaluatorTypeName] = round(($answersAverage / $divisor),2);
-                               
-                                } 
+                                 
     
+                                }      
                             }
                             }
                     
@@ -1691,6 +1692,42 @@ class Evaluation360Controller extends Controller
                    
                    
                 }
+     // Recorre los promedios de cada módulo y evaluador
+            foreach ($averagesByType as $moduleName => $evaluatorData) {
+                foreach ($evaluatorData as $evaluatorTypeName => $average) {
+                    foreach ($question_averages[$moduleName] as $questionText => &$evaluatorAverages) {
+                        // Si esta pregunta aún no tiene un arreglo para almacenar los promedios, inicialízalo
+                        if (!isset($evaluatorAverages['Promedio'])) {
+                            $evaluatorAverages['Promedio'] = 0;
+                        }
+                        if (!isset($evaluatorAverages['PromedioSinAuto'])) {
+                            $evaluatorAverages['PromedioSinAuto'] = 0;
+                        }
+                        
+                        // Suma el promedio del evaluador al promedio de la pregunta
+                        $evaluatorAverages['Promedio'] += $evaluatorAverages[$evaluatorTypeName];
+                        
+                        // Si no es autoevaluación, suma el promedio del evaluador al promedio sin autoevaluación de la pregunta
+                        if ($evaluatorTypeName !== 'Autoevaluacion') {
+                            $evaluatorAverages['PromedioSinAuto'] += $evaluatorAverages[$evaluatorTypeName];
+                        }
+                    }
+                }
+            }
+
+            // Calcula el promedio total de los evaluadores por pregunta dividiendo por el número total de evaluadores
+            foreach ($question_averages as $moduleName => &$moduleQuestions) {
+                foreach ($moduleQuestions as $questionText => &$evaluatorAverages) {
+                    $totalEvaluators = count($averagesByType[$moduleName]);
+                    $evaluatorAverages['Promedio'] /= $totalEvaluators;
+                    $evaluatorAverages['PromedioSinAuto'] /= ($totalEvaluators - 1); // Excluye la autoevaluación
+                    // Aquí puedes hacer cualquier otra operación que necesites con los promedios
+                }
+            }
+
+            // Ahora $question_averages contiene el promedio y el promedio sin autoevaluación por pregunta
+
+                
                 foreach ($averagesByType as $moduleName => $evaluatorData) {
                     $sumAll = 0;
                     $sumExcludingAutoevaluacion = 0;

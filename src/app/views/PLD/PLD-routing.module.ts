@@ -1,16 +1,16 @@
-import { UserExamComponent } from './../user-exam/user-exam.component';
+import { UserExamComponent } from './user-exam/user-exam.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PLDComponent } from './PLD.component';
 import { AdminPldComponent } from './adminPld/adminPld.component';
 import { PldFormComponent } from './adminPld/pldForm/pldForm.component';
-import { PLDExamComponent } from '../PLDExam/PLDExam.component';
+import { PLDExamComponent } from './PLDExam/PLDExam.component';
 import{AuthGuardService} from '../../shared/http/auth.service';
-import {HomeComponent} from '../home/home.component';
-import{Personal360Component} from '../personal360/personal360.component';
-import{Evaluation360Component} from '../Evaluation360/Evaluation360.component';
-import { EvaluationAsesorComponent } from '../EvaluationAsesor/EvaluationAsesor.component';
+import {HomeComponent} from '../app/home/home.component';
+import{Personal360Component} from '../Evaluation/Evaluation360/personal360/personal360.component';
+import{Evaluation360Component} from '../Evaluation/Evaluation360/Evaluation360/Evaluation360.component';
+import { EvaluationAsesorComponent } from '../Evaluation/Asesores/EvaluationAsesor/EvaluationAsesor.component';
 const routes: Routes = [
    {
         path: '', 

@@ -27,14 +27,14 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { SurveyModule } from "survey-angular-ui";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoadingComponent } from './views/loading/loading.component';
-import { TablesModule } from './views/plan/plan.module';
-import { SidenavComponent } from './views/sidenav/sidenav.component';
-import { SublevelMenuComponent } from './views/sidenav/sublevel-menu.component';
-import { UserTestComponent } from './views/user-test/user-test.component';
+import { LoadingComponent } from './views/app/loading/loading.component';
+import { TablesModule } from './views/Evaluation/plan/plan.module';
+import { SidenavComponent } from './views/app/sidenav/sidenav.component';
+import { SublevelMenuComponent } from './views/app/sidenav/sublevel-menu.component';
+import { UserTestComponent } from './views/Evaluation/user-test/user-test.component';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
 
-import { Personal360Component } from './views/personal360/personal360.component';
+import { Personal360Component } from './views/Evaluation/Evaluation360/personal360/personal360.component';
 export function getDatepickerConfig(): BsDatepickerConfig {
   return Object.assign(new BsDatepickerConfig(), {
     isAnimated: true, 

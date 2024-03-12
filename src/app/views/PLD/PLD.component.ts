@@ -12,8 +12,8 @@ import { GridModule } from '@sharedComponents/grid/grid.module';
 import { GridActions } from '@utils/grid-action';
 import { ColDef } from 'ag-grid-community';
 import { PLDUser } from '../../shared/entities/models/pldUser/pldUser';
-import { PLDUserService } from '@services/pldUser.service';
-import { AttemptsComponent } from '../attempts/attempts.component';
+import { PLDUserService } from '@services/PLD/pldUser.service';
+import { AttemptsComponent } from './attempts/attempts.component';
 
 @Component({
   selector: 'app-PLD',

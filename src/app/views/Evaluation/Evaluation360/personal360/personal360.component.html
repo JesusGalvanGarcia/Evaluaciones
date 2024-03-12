@@ -1,0 +1,203 @@
+<!-- personal360.component.html -->
+<div class="bgImageContainer2"></div>
+<div style="padding: 2%;padding-left: 8%;" >
+
+  <mat-card  ><app-loading *ngIf="isLoading"></app-loading>
+    <div>
+
+    </div>
+    <div id="todo" style="display: flex; flex-direction: column; align-items: center;padding-left: 10%;padding-right: 10%;">
+      <div id="contentToConvert">
+        <div >
+      <div class="report-header">
+<div>
+  <div class="row text-left">
+    <div class="col-4 text-left">
+      <img src="assets/logo/logo_trinitas.jpg" alt="Logo_Trinitas" />
+    </div>
+    <div class="col-8 text-left">
+      <div class="title">Reporte 360:</div>
+      <p class="titleEvaluation">Evaluacion 360</p>
+     
+  <div class="row">
+<div class="col">
+  <span>Nombre: {{ names}}</span>
+</div>
+<div class="col">
+  <span>Correo: {{email }}</span>
+</div>
+  </div>
+    </div>
+  </div><br/>
+  <div class="table-container">
+    <div class="table-row">
+      <div class="table-col">
+        <div class="info-title">Promedio</div>
+        <div class="info-value">{{ general.toFixed(2)}}</div>
+      </div>
+      <div class="table-col">
+        <div class="info-title">Promedio sin Auto evaluación</div>
+        <div class="info-value">{{auto.toFixed(2) }}</div>
+      </div>
+    </div>
+  </div>
+
+<div style="display:block" id="boton"><br/>
+  <button  type="button" class="btn btn-success" (click)="back()">Regresar</button>
+  &nbsp; &nbsp;   
+  <button  type="button" class="btn btn-success" (click)="convertToPDF()">Descargar</button>
+  &nbsp; &nbsp;   
+  <button *ngIf="rol=='true'" type="button" class="btn btn-success" (click)="postApproved()">Aprobar</button>
+</div>
+
+</div>
+     </div>
+  
+      <div style="display: block" id="tablesModules">
+    <div class="table-responsive">
+ 
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Aspecto</th>
+            <th>Lider</th>
+            <th>Autoevaluacion</th>
+            <th>Cliente</th>
+            <th>Lateral</th>
+            <th>Colaborador</th>
+            <th>Promedio</th>
+            <th>Sin Autoevaluacion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let aspecto of tableLabels">
+            <td class="text-left">{{ aspecto }}</td>
+            <td class="text-center">{{ evaluatorData[aspecto]['Lider'].toFixed(2) }}</td>
+            <td class="text-center">{{ evaluatorData[aspecto]['Autoevaluacion'].toFixed(2)  }}</td>
+            <td class="text-center">{{ evaluatorData[aspecto]['Cliente'].toFixed(2)  }}</td>
+            <td class="text-center">{{ evaluatorData[aspecto]['Lateral'].toFixed(2)  }}</td>
+            <td class="text-center">{{ evaluatorData[aspecto]['Colaborador'].toFixed(2)  }}</td>
+            <td class="text-center">{{ evaluatorData[aspecto]['Promedio'].toFixed(2)  }}</td>
+            <td class="text-center">{{ evaluatorData[aspecto]['PromedioSinAutoevaluacion'].toFixed(2)  }}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </div>
+    </div>
+          <div style="display: block" id="tablesPromedio">
+    <div class="table-responsive">
+ 
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Aspecto</th>
+            <th>Lider</th>
+            <th>Autoevaluacion</th>
+            <th>Cliente</th>
+            <th>Lateral</th>
+            <th>Colaborador</th>
+            <th>Promedio</th>
+            <th>Sin Autoevaluacion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr >
+            <td class="text-left">Promedio general por evaluador</td>
+            <td class="text-center">{{ promedioData['Lider'].toFixed(2) }}</td>
+            <td class="text-center">{{ promedioData['Autoevaluacion'].toFixed(2)  }}</td>
+            <td class="text-center">{{ promedioData['Cliente'].toFixed(2)  }}</td>
+            <td class="text-center">{{ promedioData['Lateral'].toFixed(2)  }}</td>
+            <td class="text-center">{{ promedioData['Colaborador'].toFixed(2)  }}</td>
+            <td class="text-center">{{general.toFixed(2)}}</td>
+            <td class="text-center">{{auto.toFixed(2)}}</td>
+
+          </tr>
+        </tbody>
+      </table>
+      
+    </div>
+    </div>
+  </div>
+</div>
+    <div class="table-responsive" id="tables">
+     
+      <table class="table" id="converttable">
+        <thead>
+          <tr>
+            <th>Pregunta</th>
+            <th>Seccion</th>
+            <th>Lider</th>
+            <th>Autoevaluacion</th>
+            <th>Lateral</th>
+            <th>Cliente</th>
+            <th>Colaborador</th>
+            <th>Promedio</th>
+            <th class="text-center" >Sin Autoevaluacion</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let aspecto of tableLabels; let i = index">
+            <ng-container  *ngFor="let question of getObjectKeys(question_averages[aspecto])" >
+              <tr >
+                <td>{{ question }}</td>
+                <td>{{ aspecto }}</td>
+                <td>{{ question_averages[aspecto][question]?.Lider || 0 }}</td>
+                <td class="text-center">{{ question_averages[aspecto][question]?.Autoevaluacion || 0 }}</td>
+                <td class="text-center">{{ question_averages[aspecto][question]?.Lateral || 0 }}</td>
+                <td class="text-center">{{ question_averages[aspecto][question]?.Cliente || 0 }}</td>
+                <td class="text-center">{{ (question_averages[aspecto][question]?.Colaborador) || 0 }}</td>
+                <td class="text-center" style="color:green;font-weight: bold;">{{average(aspecto,question,0)}}</td>
+                <td class="text-center" style="color: green; font-weight: bold;">
+                  {{
+                      (question_averages[aspecto][question]?.Autoevaluacion == 0 || checkNan(average(aspecto, question,question_averages[aspecto][question]?.Autoevaluacion) ))
+                          ? 'N/A'
+                          : (average(aspecto, question,question_averages[aspecto][question]?.Autoevaluacion) )
+                  }}
+              </td>
+                </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+      <div id="graficas" class="container">
+        <canvas id="chart" width="800" height="400"></canvas></div>
+        <div id="contentToConvert2">
+        <canvas id="evaluators" width="800" height="400"></canvas><br/><br/><br/><br/>
+        <canvas id="promedio" width="800" height="400"></canvas>
+      </div>
+
+        </div>
+         </div>
+         <div class="table-responsive" id="adicional">
+          <div class="row">
+            <div class="col colTable">
+    <div *ngFor="let item of colaboradores">
+      <div class="col colTable">
+        {{item}}
+      </div>
+      <div class="row rowTable">
+      <div *ngFor="let item2 of response[item]">
+        <div class="col colTable" *ngIf="item2.suggestions!=''">
+          <div class="titles">Sugerencias</div>
+          <div class="subtitle">{{ item2.suggestions }}</div>
+        </div>
+        <div class="col colTable" *ngIf="item2.suggestions!=''">
+          <div class="titles">Areas de oportunidad</div>
+          <div class="subtitle">{{ item2.chance }}</div>
+        </div>
+        <div class="col colTable" *ngIf="item2.suggestions!=''">
+          <div class="titles">Fortalezas</div>
+          <div class="subtitle">{{ item2.strengths }}</div>
+        </div>
+      </div>
+      </div>
+    </div>
+            </div>
+            <!-- Repite esta estructura para los demás tipos de evaluadores -->
+          </div>
+        </div>
+        
+        </mat-card>
+    </div>

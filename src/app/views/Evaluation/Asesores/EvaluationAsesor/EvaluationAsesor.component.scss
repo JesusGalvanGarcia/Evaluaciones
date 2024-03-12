@@ -1,0 +1,258 @@
+.containerx {
+    background-color: #FFFFFF;
+
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.cards
+{
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+}
+.evaIcon
+{
+    text-align: center;
+   
+    align-items: center;
+}
+.sdPregunta{
+    --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 16px))));
+    font-size: 120%;
+  
+    color: var(--sjs-primary-backcolor, var(--primary, #6b6b6e));
+    font-family: 'Roboto-Regular';
+    font-weight: var(--sjs-font-surveytitle-weight, 700);
+    text-align: center;
+
+  }
+  .result-container {
+  text-align: center;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 60%;
+}
+
+.result-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.result-score {
+  font-size: 18px;
+  color: #555;
+  font-weight: bold;
+
+}
+
+.result-text {
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+
+.result-description {
+  font-size: 16px;
+  color: #333;
+  margin-top: 10px;
+}
+
+  .pregunta-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin-top: -5%;
+    font-weight: bold;
+    color: #999797;
+  }
+/* Right Card */
+.card {
+    background-color: #F0F0F0;
+    max-width: 350px;
+    min-width: 250px;
+    min-height: 400px;
+}
+
+.card-text {
+    margin-top: 45px;
+    margin-bottom: 50px;
+}
+
+.card-footer {
+    font-size: 12px;
+}
+
+/* Left Card */
+.example-label {
+    display: table-cell;
+    font-size: 14px;
+    margin-left: 8px;
+    min-width: 120px;
+}
+
+.mat-label {
+    display: table-cell;
+    font-size: 10px;
+    margin-left: 8px;
+    min-width: 120px;
+}
+
+.header-1 {
+    color: #707070;
+    font-family: 'Roboto-Regular';
+    font-size: 30px;
+  
+    font-weight: bold;
+}
+.estilo-title {
+    color: rgb(155, 155, 155);
+    font-weight: bold;
+    font-size: 150%;
+    width: 100%;
+    /* margin-top: -20%; */
+    padding: 5%;
+    text-align: center;
+
+    
+  }
+.header-2 {
+    color: #0055B8;
+    font: normal normal bold 65px/68px Kommon Grotesk;
+}
+
+.small-1 {
+    color: #707070;
+    font-family: 'Roboto-Regular';
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+.small-2 {
+    color: #707070;
+    font: normal normal normal 20px/23px Kommon Grotesk;
+    padding-bottom: 10px;
+}
+
+mat-card {
+    width: calc(100%);
+    height: calc(100%);
+}
+
+/* Exam Card*/
+
+.containerz {
+    background-color: #FFFFFF;
+    background-size: contain;
+    background-image: url('../../../../../assets/img/fondo.jpg'); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.example-card {
+    background-color: #F0F0F0;
+    margin-top: 8px;
+    max-width: 1600px;
+    margin-bottom: 8px;
+    min-height: 400px;
+}
+
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+}
+
+.example-radio-button {
+    margin: 5px;
+}
+
+.example-h2 {
+    margin: 10px;
+}
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.example-margin {
+    margin: 0 10px;
+}
+
+.wrap-mat-radio-label {
+    width: 100%;
+    vertical-align: middle;
+    display: inline-flex;
+    white-space: normal;
+}
+
+.header-3 {
+    color: #707070;
+    font: normal normal bold 40px/43px Kommon Grotesk;
+}
+
+.header-4 {
+    color: #0055B8;
+    font: normal normal bold 40px/43px Kommon Grotesk;
+}
+
+.obtained_score_fail {
+    color: #D60812;
+    font: normal normal bold 120px/68px Kommon Grotesk;
+}
+
+.obtained_score_correct {
+    color: #80BC00;
+    font: normal normal bold 120px/68px Kommon Grotesk;
+}
+
+.max_score {
+    color: #707070;
+    font: normal normal bold 120px/68px Kommon Grotesk;
+}
+/* Estilos para el contenedor principal */
+.ng-select {
+  width: 300px; /* Ajusta el ancho según tus necesidades */
+}
+
+
+
+/* Estilos para las opciones desplegadas */
+.ng-dropdown-panel {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ng-option {
+  padding: 8px;
+  cursor: pointer;
+}
+
+/* Estilo para la opción resaltada al pasar el mouse */
+.ng-option.ng-option-marked {
+  background-color: #f0f0f0;
+}
+
+@media screen and (max-width: 600px) {
+    .cards
+    {
+        width: 100%;
+        margin-left: 0%;
+        text-align: center;
+    }
+    
+  }

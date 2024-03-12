@@ -1,0 +1,177 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .exam-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+  }
+  
+  .module-card {
+    margin-top: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .row {
+    margin-bottom: 16px;
+    justify-content: center;
+    display: flex;
+  }
+  
+  .col-md-4 {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+  
+  .list-group {
+    width: 100%;
+  }
+  
+  .list-group-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: background-color 0.3s;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f9f9f9;
+  }
+  
+  button {
+    cursor: pointer;
+    padding: 8px 16px;
+    border: 1px solid #1c4a1c;
+    border-radius: 4px;
+    background-color: rgb(47, 154, 68);
+    color: #fff;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #737070d0
+}  
+.exam-header {
+    background-color: rgb(47, 154, 68);
+    color: #fff;
+    display: flex;
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    justify-content: center;
+  }
+  .containerz {
+    background-color: #FFFFFF;
+    background-size: contain;
+    background-image: url('../../../../assets/img/fondo.jpg'); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .max-score {
+    font-size: 14px;
+  }
+  
+  .exam-content {
+    padding: 16px;
+  }
+  .info-table {
+    width: 100%;
+  }
+  
+  .info-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .info-table td:first-child {
+    font-weight: bold;
+  }
+  
+  .result-info {
+    background-color: #f9f9f9;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-weight: bold;
+  }
+  .question-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .question-item {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+  
+  .question-item:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px);
+  }
+  
+  .question-header {
+    margin-bottom: 12px;
+  }
+  
+  .question-title {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .question-subtitle {
+    margin: 0;
+    font-size: 16px;
+    color: #777;
+  }
+  
+  .answer-list {
+    margin-top: 12px;
+  }
+  
+  .mat-list-option {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 16px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .mat-list-option[selected] {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .mat-list-option:hover {
+    background-color: #f9f9f9;
+  }
+  

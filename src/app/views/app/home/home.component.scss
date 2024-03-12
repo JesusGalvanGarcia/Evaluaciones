@@ -1,0 +1,251 @@
+.bgImageContainer {
+  z-index: -1;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgb(46, 117, 182);
+  background: linear-gradient(
+    0deg,
+    rgba(16, 26, 62, 0.43) 0%,
+    rgba(16, 26, 62, 0.43) 100%
+  ),
+  linear-gradient(180deg, #6d9d06 0%, rgba(107, 175, 96, 0.00) 100%);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  background-size: 100% 100%;
+}
+/* home.component.scss */
+.card-body
+{
+  width: 95%;
+  height: 100%;
+  margin-left: 5%;
+  background-image: url('../../../../assets/img/encuentro.jpg');
+  
+}
+/* home.component.scss */
+.letter
+{
+  font-size: 20px;
+}
+.data
+{
+  margin-top: -3%;
+}
+.title {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px; /* Ajusta el espacio entre el título y el subtítulo */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.banner
+{
+  width: 50%;
+}
+.subtitle {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 21px; /* Tamaño del subtítulo */
+  font-weight: normal; /* Puede ser normal o semibold, según tu preferencia */
+  color: #666; /* Color del subtítulo */
+}
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .background {
+    background: linear-gradient(to bottom right, #39add3, rgb(33, 113, 33));
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    height: 100%;
+
+    .logo {
+      max-width: 300px; /* Tamaño máximo del logotipo */
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-top: 20px;
+      justify-content: center;
+
+      button {
+        margin: 10px;
+        width: 14%;
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 24px;
+        transition: all 0.3s ease-in-out;
+
+        .icon {
+          font-size: 64px;
+          margin-bottom: 10px;
+        }
+
+        .label {
+          margin-top: 8px;
+        }
+
+        .sub-icon {
+          font-size: 24px;
+          margin-top: 5px;
+        }
+
+        .sub-menu {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background-color: #fff;
+          border: 1px solid #ccc;
+          position: absolute;
+          top: 100%;
+          left: 50%;
+       
+          transform: translateX(-50%);
+          margin-top: 10px;
+          padding: 10px;
+          box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+          border-radius: 5px;
+
+          a {
+            text-decoration: none;
+            color: #333;
+            margin: 5px;
+            font-size: 16px;
+
+            &:hover {
+              color: #007bff;
+            }
+          }
+        }
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+}
+
+.ventana {
+  z-index: -1;
+  position: fixed;
+  width: 90%;
+  height: 95%;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  background-size: 100% 100%;
+  border-radius: 20px;
+  margin-top: 2%;
+  display: flex;
+  padding: 15%;
+  margin-left: 8%;
+}
+.bottos
+{
+  width: 50%;
+}
+/* Media Query para dispositivos con pantalla pequeña */
+@media (max-width: 768px) {
+  .bottos
+{
+  width: 80%;
+}
+  .letter
+{
+  font-size: 7px;
+}
+  .ventana {
+    width: 90%;
+    height: 90%; /* Reducir la altura para dispositivos más pequeños */
+    margin-top: 5%;
+    margin-left: 5%; /* Ajustar el margen izquierdo */
+    padding: 10%; /* Ajustar el relleno interno */
+  }
+}
+
+.menuH{
+  width: 100%;
+}
+.menuH2{
+  margin-left: -15%;
+}
+/* Estilos para el botón hamburguesa */
+.btn-dark {
+  background-color: transparent;
+  border: none;
+  color: #333;
+}
+
+/* Estilos para el menú colapsable */
+.sidebar {
+  transition: width 0.3s ease; /* Agrega una transición suave al cambiar el ancho del menú */
+}
+
+.d-md-none {
+  width: 60px; /* Ancho mínimo del menú colapsado */
+}
+
+/* Estilos para los íconos en el menú colapsado */
+.nav-link i {
+  font-size: 1.5rem; /* Tamaño de los íconos */
+}
+.desp{
+  display: flex;
+}
+/* Estilos para ocultar el nombre de opción en pantallas pequeñas */
+.option-name.d-none.d-md-block {
+  display: none;
+}
+
+.container-fluid {
+  .row {
+    nav.sidebar {
+      // Establece el ancho del menú lateral
+      width: 250px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      background-color: #fff !important; // Color de fondo del menú
+
+      ul.nav.flex-column {
+        padding-top: 20px; // Espacio superior para las opciones del menú
+
+        li.nav-item {
+          width: 100%;
+          a.nav-link {
+            &.active {
+              font-weight: bold; // Estilo para el enlace activo
+            }
+
+            // Estilos generales para los enlaces del menú
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+
+            &:hover {
+              background-color: #e9ecef; // Color de fondo al pasar el ratón
+            }
+          }
+        }
+      }
+    }
+
+    // Estilos para el contenido principal
+    main {
+      margin-left: 250px;
+      padding: 15px;
+    }
+  }
+}

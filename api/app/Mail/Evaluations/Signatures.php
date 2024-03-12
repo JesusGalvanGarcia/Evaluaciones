@@ -49,7 +49,7 @@ class Signatures extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Evaluations/SignaturesComplete',
+            view: 'Evaluations/DesempeñoyCompetencias/SignaturesComplete',
             with: [
                 'evaluation_name' => $this->evaluation_name,
                 'evaluated_user' => $this->evaluated_user,

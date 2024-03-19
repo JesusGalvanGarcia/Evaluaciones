@@ -39,7 +39,7 @@ class LoginController extends Controller
             ])
                 ->whereIn('status_id', [1, 3])
                 ->first();
-
+        
             if (!$user) {
 
                 return response()->json([
@@ -95,7 +95,7 @@ class LoginController extends Controller
             );
 
             $response = app()->handle($log_on);
-
+            
             $content = json_decode($response->getContent(), true);
 
             if (array_key_exists('error', $content)) {

@@ -140,7 +140,7 @@ changeList()
     row.detail=[]
     let data = {
       user_id: Number(localStorage.getItem("user_id")),
-      process_id:[1,2,3,4],
+      process_id:[1,2,3,4,5],
       collaborators_id: [],
       evaluations_id: []
     };
@@ -157,7 +157,7 @@ changeList()
   this.isLoading=true;
   let data = {
     user_id: Number(localStorage.getItem("user_id")),
-    process_id:[1,2,3,4],
+    process_id:[1,2,3,4,5],
     collaborators_id: [],
     evaluations_id: []
   };
@@ -274,9 +274,9 @@ sendPageEvaluation(process:string,id:string,status:string,calificacion:number,de
       break
     case "Feedback y Plan de Acción":
  
-      const elemento = detalle.find((item:any) => item.name === "Evaluaciones de asesores");
+     // const elemento = detalle.find((item:any) => item.name === "Evaluaciones de asesores");
     
-      if(elemento.status!="Terminado")
+      if(status!="Terminado")
       {
         this.message.error("La evaluación de competencias no se ha terminado de contestar.");
       }

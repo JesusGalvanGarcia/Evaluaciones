@@ -1578,15 +1578,24 @@ class Evaluation360Controller extends Controller
                     'message' => 'Usuario invalido, no tienes acceso.',
                     'code' => $this->prefix . 'X002'
                 ], 400);
-            
-                $evaluatorTypes = [
-                    1 => 'Lider',
-                    2 => 'Autoevaluacion',
-                    3 => 'Cliente',
-                    4 => 'Lateral',
-                    5 => 'Colaborador',
-                    
-                ];
+                if($request->user_id==1)
+                {
+                    $evaluatorTypes = [
+                        2 => 'Autoevaluacion',
+                        3 => 'Cliente',
+                        5 => 'Colaborador',
+                        
+                    ];
+                }else{
+                    $evaluatorTypes = [
+                        1 => 'Lider',
+                        2 => 'Autoevaluacion',
+                        3 => 'Cliente',
+                        4 => 'Lateral',
+                        5 => 'Colaborador',
+                        
+                    ];
+                }
                 $sumAverages=0;
                 $averagesByType ;
                 $sumAutoevaluacion=0;
@@ -1616,6 +1625,7 @@ class Evaluation360Controller extends Controller
                     $graficaEvaluadorObj=[];
                     $graficaEvaluadorValue=[];
                     $Comments;
+                    $evaluatorsAll=5;
                     $AverageGeneral=0;
                     $AverageAuto=0;
                     $question_averages=[];
@@ -1705,11 +1715,22 @@ class Evaluation360Controller extends Controller
                         }
                         
                         // Suma el promedio del evaluador al promedio de la pregunta
-                        $evaluatorAverages['Promedio'] += $evaluatorAverages[$evaluatorTypeName];
+                      // Verifica si la clave 'Autoevaluacion' está definida en $evaluatorAverages
+                        if (isset($evaluatorAverages[$evaluatorTypeName])) {
+                            // Suma el valor de 'Autoevaluacion' al promedio
+                            $evaluatorAverages['Promedio'] += $evaluatorAverages[$evaluatorTypeName];
+                        }
+
                         
                         // Si no es autoevaluación, suma el promedio del evaluador al promedio sin autoevaluación de la pregunta
                         if ($evaluatorTypeName !== 'Autoevaluacion') {
-                            $evaluatorAverages['PromedioSinAuto'] += $evaluatorAverages[$evaluatorTypeName];
+                            // Verifica si la clave 'Autoevaluacion' está definida en $evaluatorAverages
+                            if (isset($evaluatorAverages[$evaluatorTypeName])) {
+                                // Suma el valor de 'Autoevaluacion' al promedio
+                                $evaluatorAverages['PromedioSinAuto'] += $evaluatorAverages[$evaluatorTypeName];
+
+                            }
+
                         }
                     }
                 }

@@ -9,7 +9,7 @@ import { LoadingComponent } from '../../../app/loading/loading.component';
 import jspdf from 'jspdf';
 import { ElementRef, Renderer2 } from '@angular/core';
 import html2canvas from 'html2canvas';
-// Resto de tu código
+
 import { MensajeService } from '@http/mensaje.service';
 
 @Component({
@@ -46,12 +46,14 @@ export class Personal360Component implements OnInit {
   // Atributo que almacena los datos del chart
   public chart: Chart;
   response:any;
+  menuVisible: boolean = false;
+
+ 
   ngOnInit(): void {
     this.name=localStorage.getItem("collaborator_name");
     this.rol=localStorage.getItem("admin");
     this.getData();
   }
-
   constructor(private el: ElementRef, private renderer: Renderer2,public message:MensajeService,public evaluation360:Evaluation360Service,public evaluationService: UserEvaluationService, public router:Router,   private route: ActivatedRoute, 
     ) {
     this.route.params.subscribe(params => {
@@ -59,6 +61,13 @@ export class Personal360Component implements OnInit {
       this.evaluation_id = params['idEvaluation']; 
     });
 
+  }
+
+scrollToElement(id:any) {
+    var element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+    }
   }
   postApproved()
   {
@@ -78,6 +87,9 @@ export class Personal360Component implements OnInit {
 
       // Handle errors here
     });
+  }
+  toggleMenu() {
+    this.menuVisible = !this.menuVisible; // Alternar la visibilidad del menú
   }
   back()
   { 
@@ -231,11 +243,14 @@ average(aspect: any, question: any,autoevaluacion:any): any {
 
   convertToPDF(): void {
     const divElement = this.el.nativeElement.querySelector('#boton');
+    const divElementMargen = this.el.nativeElement.querySelector('#reporte');
 
     // Verifica si se encontró el elemento antes de modificarlo
     if (divElement) {
       // Cambia el estilo del elemento
       this.renderer.setStyle(divElement, 'display', 'none');
+      this.renderer.setStyle(divElementMargen, 'padding-left', '0px');
+
     }
     this.isLoading=true;
   
@@ -312,15 +327,7 @@ average(aspect: any, question: any,autoevaluacion:any): any {
   
     const convertAllElements = async () => {
       try{
-      await convertElementToPDF('contentToConvert');
-      addNewPage();
-     // await convertElementToPDFTable("row_0","row_1","row_2");
-      await convertElementToTablePDF('converttable',3);
-      await convertElementToPDF("graficas");
-      addNewPage();
-      await convertElementToPDF("contentToConvert2");
-      addNewPage();
-      await convertElementToTablePDF("adicional",2);
+        await convertElementToTablePDF('reporte',5);
 
       // Puedes agregar más llamadas a convertElementToPDF para otros elementos
   
@@ -331,7 +338,9 @@ average(aspect: any, question: any,autoevaluacion:any): any {
       // Verifica si se encontró el elemento antes de modificarlo
       if (divElement) {
         // Cambia el estilo del elemento
-        this.renderer.setStyle(divElement, 'display', 'block');
+        this.renderer.setStyle(divElement, 'display', 'flex');
+        this.renderer.setStyle(divElementMargen, 'padding-left', '80px');
+
       }
     } catch (error) {
       this.isLoading=false;

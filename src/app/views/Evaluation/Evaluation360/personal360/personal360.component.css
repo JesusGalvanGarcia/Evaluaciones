@@ -1,191 +1,583 @@
 /* personal360.component.css */
+.flotante {
+      display:scroll;
+      position: fixed;
+      bottom: 320px;
+      right: 10px;
+}
+.contenedor {
+  width: 90px;
+  height: 240px;
+  position: absolute;
+  right: 45px;
+  bottom: 0px;
+}
+
+.elemento {
+  padding: 5px;
+  margin: 2px;
+
+}
+
+
+.boton-redondo {
+  border-radius: 50%; /* Hace que el borde sea redondo */
+  width: 50px; /* Define el ancho del botón */
+  height: 50px; /* Define la altura del botón */
+  background-color: blue; /* Define el color de fondo del botón */
+  color: white; /* Define el color del texto del botón */
+  font-size: 16px; /* Define el tamaño del texto del botón */
+  border: none; /* Elimina el borde del botón */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+}
+
 .report-header span {
-    font-family: 'Arial', sans-serif; /* Puedes cambiar la fuente según tus preferencias */
-    font-size: 25px; /* Tamaño de fuente */
-    font-weight: 600;
-    color: #030903; /* Color del texto */
-    margin-bottom: 10px; /* Espaciado inferior */
-  
-  }
-  .bgImageContainer2 {
-    z-index: -1;
-    position: fixed;
-    margin-top: -2%;
-    width: 100%;
-    height:1000px;
-    background: rgb(46, 117, 182);
-    background: linear-gradient(to bottom right, #39add3, rgb(33, 113, 33));
-      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    background-size: 100% 100%;
-  }
-  .bgImageContainer {
-    z-index: -1;
-    position: fixed;
-    width: 100%;
-    height: 1000px;
-    background: rgb(46,117,182);
-    background: linear-gradient(to bottom right, #39add3, rgb(33, 113, 33));
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    background-size: 100% 100%;
-  }
-  
-  .report-header  {
-   padding: 5%;
-   align-items: center;
-   display: flex;
-   text-align: center;
-   justify-content: center;
-  }
-  @media screen and (max-width: 767px) {
-    .table th, .table td {
-    
-      width: auto;
-      box-sizing: border-box;
-      overflow-x: auto;
-    }
-  
-    
-  }
-  .row {
-  
-    border-radius: 10px;
-  }
+  font-family: 'Arial', sans-serif;
+  font-size: 25px; 
+  font-weight: 600;
+  color: #030903; 
+  margin-bottom: 10px;
 
-  .col-4 img {
-    width: 100%;
-    border-radius: 10px; /* Rounded corners for the image */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow for a futuristic effect */
-  }
+}
+.containerTable {
+  overflow-x: auto;
+}
 
-  .col-8 span {
-    font-size: 18px; /* Larger font size for the information */
-    display: block; /* Separate each piece of information on a new line */
-    margin-bottom: 10px; /* Add some spacing between each piece of information */
-  }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-  .title {
-    font-size: 24px; /* Larger font size for the titles */
-    font-weight: bold; /* Bold text for emphasis */
-    color: #188c42; /* Blue color for the titles */
-    margin-bottom: 15px; /* Add some spacing between titles and information */
-  }
-  .titleEvaluation {
-    font-size: 28px; /* Larger font size for the titles */
-    font-weight: bold; /* Bold text for emphasis */
-    color: #1e27a1; /* Blue color for the titles */
-    margin-bottom: 15px; /* Add some spacing between titles and information */
-  }
-  .table-container {
-    margin-top: 20px;
-  }
+.table th,
+.table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
 
-  .table-row {
-    display: flex;
-    justify-content: space-between;
-    background-color: #7a679c; /* Light blue background color */
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
-  }
+.table th {
+  background-color: #f2f2f2;
+}
 
-  .table-col {
-    flex: 1;
-    text-align: center;
-  }
+.table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
 
-  .info-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #fafafa; /* Blue color for the titles */
-    margin-bottom: 10px;
-  }
+.table tbody tr:hover {
+  background-color: #f2f2f2;
+}
 
-  .info-value {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2ecc71; /* Green color for the values */
-  }
-  /* Container styles */
+.evaluador
+{
+  color:#0b3591;
+  font-weight: bold;
+  font-size: 22px;
+}
+.cuadro
+{
+  background-color: #7ab82a;
+  border-top-right-radius: 10px; 
+  border-bottom-right-radius: 10px; 
+  max-height: 500px;
+  margin-left: 0.5%;
+}
+
+.card2 {
+  margin-bottom: 10px;
+}
+
+.card-header2 {
+  color:#0b3591;
+  font-weight: bold;
+}
+
+.card-body2 {
+  padding: 15px;
+}
+.demo
+{
+  bottom: 100px;
+  border-radius: 5px;
+  background-color: #030903;
+}
+.bgImageContainer2 {
+  position: relative; 
+}
+
+/* Estilos CSS para hacer la imagen fluida */
+
+
+/* Estilos CSS para la imagen de fondo */
+.banner-container {
+  position: relative;
+}
+
+.banner-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.backImage
+{
+  background-color: #fff;
+  max-height: 50px;
+}
+/* Estilos CSS para el texto en el centro */
+.centered-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  background-color: #0b3591;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Asegura que el texto esté sobre la imagen */
+  text-align: center; /* Alinea el texto al centro */
+  border-radius: 20px;
+  font-size: 40px;
+  font-weight: bold;
+}
+.centered-data {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  display: block;
+  color: white;
+  background-color: #7ab82a;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Asegura que el texto esté sobre la imagen */
+  text-align: center; /* Alinea el texto al centro */
+  font-size: 20px;
+  font-weight: bold;
+  padding: 2%;
+}
+/* Estilos CSS para la segunda imagen superpuesta */
+.overlay-image {
+  position: absolute;
+  top: 10%;
+  width: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  max-height: 150px;
+  background-color: #fff;
+  text-align: center;
+  border-bottom-left-radius: 30%;
+  border-bottom-right-radius: 30%;
+}
+
+.margen
+{
+  padding-left: 80px;
+}
+.averages
+{
+ 
+
+}
+.divConBordeDerecho {
+  border-right: 3px solid #ccc; /* Define un borde sólido de 3px de grosor y color gris claro */
+}
+
+.fon
+{
+  background-color: #e9f1f3;
+  width: 70%;
+  padding: 5%;
+}
+/* Ajustamos los estilos del contenedor principal para que tenga el fondo gradiente */
 .container {
+margin-top: 8%;
+
+}
+.imgs
+{
+  width: 30% !important;
+}
+.bgImageContainer {
+  z-index: -1;
+  position: fixed;
+  width: 100%;
+  height: 1000px;
+  background: rgb(46,117,182);
+  background: linear-gradient(to bottom right, #39add3, rgb(33, 113, 33));
+      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  background-size: 100% 100%;
+}
+
+.report-header  {
+ padding: 5%;
+ align-items: center;
+ display: flex;
+ text-align: center;
+ justify-content: center;
+}
+@media screen and (max-width: 767px) {
+
+  
+}
+.row {
+
+  border-radius: 10px;
+}
+
+.col-4 img {
+  width: 100%;
+  border-radius: 10px; /* Rounded corners for the image */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow for a futuristic effect */
+}
+
+.col-8 span {
+  font-size: 18px; /* Larger font size for the information */
+  display: block; /* Separate each piece of information on a new line */
+  margin-bottom: 10px; /* Add some spacing between each piece of information */
+}
+
+.title {
+  font-size: 24px; /* Larger font size for the titles */
+  font-weight: bold; /* Bold text for emphasis */
+  color: #188c42; /* Blue color for the titles */
+  margin-bottom: 15px; /* Add some spacing between titles and information */
+}
+.titleEvaluation {
+  font-size: 28px; /* Larger font size for the titles */
+  font-weight: bold; /* Bold text for emphasis */
+  color: #1e27a1; /* Blue color for the titles */
+  margin-bottom: 15px; /* Add some spacing between titles and information */
+}
+.table-container {
+  margin-top: 20px;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  background-color: #7a679c; /* Light blue background color */
+  border-radius: 10px;
+  padding: 20px;
   margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+}
+
+.table-col {
+  flex: 1;
+  text-align: center;
+}
+
+.info-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fafafa; /* Blue color for the titles */
+  margin-bottom: 10px;
+}
+
+.info-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2ecc71; /* Green color for the values */
+}
+/* Container styles */
+.container {
+margin-bottom: 20px;
 }
 
 /* Table header styles */
 .table-header {
-  font-weight: bold;
-  font-size: 18px;
-  color: #333;
+font-weight: bold;
+font-size: 18px;
+color: #333;
 }
 
 /* Table row styles */
 .table-row {
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid #ccc;
-  padding: 10px;
+display: flex;
+justify-content: space-between;
+border: 1px solid #ccc;
+padding: 10px;
 }
 
 /* Column styles */
 .table-col {
-  flex: 1;
+flex: 1;
 }
 
-/* Alternating row background colors */
-.table-row:nth-child(even) {
-  background-color: #f9f9f9;
+.row {
+  border-radius: 10px;
+}
+.cuadro
+{
+  background-color: #7ab82a;
+  border-top-right-radius: 10px; 
+  border-bottom-right-radius: 10px; 
+}
+.card {
+  margin-bottom: 20px;
+}
+.card2 {
+  margin-bottom: 10px;
 }
 
+.card-header2 {
+ 
+  font-weight: bold;
+}
+
+.card-body2 {
+  padding: 15px;
+}
+.card-body {
+  padding: 20px;
+  background-color: #e8efff;
+}
+
+.card-subtitle {
+  color: #030903;
+  font-weight: bold;
+  text-align: center;
+}
+
+.card-title {
+  margin-top: 0;
+  border-radius: 8px;
+  padding: 2px;
+  text-align: center;
+  color: #fff;
+  background-color: #0b3591;
+}
+ /* Estilos para scroll horizontal*/
+ .containerTable{
+
+
+  display: flex;
+  justify-content: center;
+}
 /* Responsive styles for smaller screens */
 @media (max-width: 600px) {
-  .table-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.table-row {
+  flex-direction: column;
+  align-items: flex-start;
+}
 }
 /* Container styles */
 .colTable {
-  margin-bottom: 20px;
+margin-bottom: 20px;
 }
 
 /* Table header styles */
 .colTable > .colTable {
-  font-weight: bold;
-  font-size: 18px;
-  color: #333;
+font-weight: bold;
+font-size: 18px;
+color: #333;
 }
 
 /* Table row styles */
 .rowTable {
+display: flex;
+justify-content: space-between;
+border: 1px solid #ccc;
+padding: 10px;
+}
+.graficaModule
+{
+  width: 50%;
+  margin: 0 auto;
+}
+.graficas
+{
   display: flex;
-  justify-content: space-between;
-  border: 1px solid #ccc;
-  padding: 10px;
+}
+table{
+  border-collapse: collapse;
 }
 
+th{
+  background: #fff;
+  box-sizing: border-box;
+}
+th, td{
+  border: 1px solid #ddd; /* Add 1px solid border around table cells */
+  padding: 8px; /* Add padding to table cells */
+  text-align: left; /* Align text to the left */
+}
+.tablescreen th,
+.tablescreen td {
+  border: 1px solid #ddd; /* Add 1px solid border around table cells */
+  padding: 8px; /* Add padding to table cells */
+  text-align: left; /* Align text to the left */
+}
+
+.tablescreen th {
+  background-color: #f2f2f2; /* Add background color to table header cells */
+}
+
+.tablescreen tr:hover {
+  background-color: #f5f5f5; /* Change background color on hover */
+}
+.tablesLG th,
+.tablesLG td {
+  border: 1px solid #ddd; /* Add 1px solid border around table cells */
+  padding: 8px; /* Add padding to table cells */
+  text-align: left; /* Align text to the left */
+}
+
+.tablesLG th {
+  background-color: #f2f2f2; /* Add background color to table header cells */
+}
+
+.tablesLG tr:hover {
+  background-color: #f5f5f5; /* Change background color on hover */
+}
+.tablesQuestion th,
+.tablesQuestion td {
+  border: 1px solid #ddd; /* Add 1px solid border around table cells */
+  padding: 8px; /* Add padding to table cells */
+  text-align: left; /* Align text to the left */
+}
+
+.tablesQuestion th {
+  background-color: #f2f2f2; /* Add background color to table header cells */
+}
+
+.tablesQuestion tr:hover {
+  background-color: #f5f5f5; /* Change background color on hover */
+}
+.btn{
+  width: auto !important;
+}
+.btnblue
+{
+  border-radius: 5px;
+  background-color: #7d84eb;
+  color:white;
+  font-weight: bold;
+}
+.btngreen
+{
+  border-radius: 5px;
+  background-color: #7ab82a;
+  color:white;
+  font-weight: bold;
+}
+.btnIcon
+{
+  width: 40%;
+  margin: 0 auto;
+
+}
+.cente{
+justify-content: center;
+align-items: center;
+display: flex;
+}
 /* Column styles */
 .colTable {
-  flex: 1;
+flex: 1;
+}
+.btn {
+  margin-top: 20px;
+  width: 150px;
+}
+
+.fa {
+  margin-right: 10px;
 }
 
 /* Alternating row background colors */
 .rowTable:nth-child(even) {
-  background-color: #d2dbd594;
+background-color: #d2dbd594;
 }
 .subtitle
 {
-  color: #198754;
-  font-weight: 500;
+color: #198754;
+font-weight: 500;
 }
 .titles
 {
-  color: rgb(97 97 99);
-  font-weight: 800;
+color: rgb(97 97 99);
+font-weight: 800;
+}
+.centered-contents
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top:8%
 }
 /* Responsive styles for smaller screens */
 @media (max-width: 600px) {
-  .rowTable {
-    flex-direction: column;
-    align-items: flex-start;
+  .card-title {
+    margin-top: 0;
+    border-radius: 8px;
+    padding: 2px;
+    text-align: center;
+    font-size: 9px;
+    color: #fff;
+    background-color: #0b3591;
   }
+  .tablescreen
+  {
+    margin-left:800px;
+  }
+  .tablesLG
+  {
+    margin-left:590px;
+  }
+  .tablesQuestion
+  {
+    margin-left:1600px;
+  }
+.rowTable {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.margen
+{
+  padding-left: 0px;
+}
+.centered-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: white;
+  background-color: #0b3591;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Asegura que el texto esté sobre la imagen */
+  text-align: center; /* Alinea el texto al centro */
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.containerTable{
+ 
+border: 1px solid #eee;
+width: 100%;
+overflow: auto;
+white-space: nowrap;
+}
+.centered-data {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  display: block;
+  color: white;
+  background-color: #7ab82a;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Asegura que el texto esté sobre la imagen */
+  text-align: center; /* Alinea el texto al centro */
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2%;
+  max-height: 200px;
+}
+.contenedor{
+  width: 90px;
+  height: 240px;
+  position: absolute;
+  right: 45px;
+  bottom: 0px;
+ 
+}
+.divConBordeDerecho {
+  border-bottom: 3px solid #ccc; /* Define un borde sólido de 3px de grosor y color gris claro */
+}
+
 }

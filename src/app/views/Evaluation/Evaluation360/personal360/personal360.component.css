@@ -378,7 +378,7 @@ padding: 10px;
 }
 .graficaModule
 {
-  width: 50%;
+  max-width: 50%;
   margin: 0 auto;
 }
 .graficas

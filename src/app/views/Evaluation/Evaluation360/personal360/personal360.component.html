@@ -25,7 +25,7 @@
               <div class="row">
                 <div class="col-8">
                   <h5 class="card-title">Promedio</h5>
-                  <h1 class="card-subtitle">{{ general.toFixed(2)}}</h1>
+                  <h1 class="card-subtitle">{{ general}}</h1>
                 </div>
                 <div class="col-4">
                   <img src="../../../../../assets/img/promedio.png" class="imgs"/>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-8">
                   <h5 class="card-title">Autoevaluación</h5>
-                  <h1 class="card-subtitle">{{ auto.toFixed(2)}}</h1>
+                  <h1 class="card-subtitle">{{ auto}}</h1>
                 </div>
               </div>
             </div>
@@ -109,17 +109,18 @@
       </div>
        <!-- Contenido  de graficas -->
       <div id="graficas" class="container">
-        <div id="contentToConvert2" class="row">
-        <div class="col">
-          <canvas id="evaluators"></canvas>
+        <div id="contentToConvert2" class="row row-cols-1 row-cols-md-2">
+          <div class="col">
+            <canvas id="evaluators"></canvas>
+          </div>
+          <div class="col">
+            <canvas id="promedio"></canvas>
+          </div>
         </div>
-        <div class="col">
-          <canvas id="promedio"></canvas>
-
-        </div>
-        </div>
-        <div class="graficaModule">
-          <canvas id="chart" ></canvas>
+        <div class="container">
+          <div class="graficaModule">
+            <canvas id="chart" ></canvas>
+          </div>
         </div>
         
       </div>
@@ -142,13 +143,13 @@
             <tbody>
               <tr *ngFor="let aspecto of tableLabels">
                 <td>{{ aspecto }}</td>
-                <td *ngIf="user_id!=1">{{ evaluatorData[aspecto]['Lider'].toFixed(2) }}</td>
-                <td class="text-center">{{ evaluatorData[aspecto]['Cliente'].toFixed(2) }}</td>
-                <td *ngIf="user_id!=1" class="text-center">{{ evaluatorData[aspecto]['Lateral'].toFixed(2) }}</td>
-                <td class="text-center">{{ evaluatorData[aspecto]['Colaborador'].toFixed(2) }}</td>
-                <td class="text-center">{{ evaluatorData[aspecto]['Autoevaluacion'].toFixed(2) }}</td>
-                <td class="text-center">{{ evaluatorData[aspecto]['Promedio'].toFixed(2) }}</td>
-                <td class="text-center">{{ evaluatorData[aspecto]['PromedioSinAutoevaluacion'].toFixed(2) }}</td>
+                <td *ngIf="user_id!=1" class="text-center">{{ evaluatorData[aspecto]['Lider'] }}</td>
+                <td class="text-center">{{ evaluatorData[aspecto]['Cliente'] }}</td>
+                <td *ngIf="user_id!=1" class="text-center">{{ evaluatorData[aspecto]['Lateral'] }}</td>
+                <td class="text-center">{{ evaluatorData[aspecto]['Colaborador'] }}</td>
+                <td class="text-center">{{ evaluatorData[aspecto]['Autoevaluacion'] }}</td>
+                <td class="text-center">{{ evaluatorData[aspecto]['Promedio'] }}</td>
+                <td class="text-center">{{ evaluatorData[aspecto]['PromedioSinAutoevaluacion'] }}</td>
               </tr>
             </tbody>
           </table>
@@ -172,13 +173,13 @@
             <tbody>
               <tr >
                 <td class="text-left">Promedio general por evaluador</td>
-                <td *ngIf="user_id!=1" class="text-center">{{ promedioData['Lider'].toFixed(2) }}</td>
-                <td class="text-center">{{ promedioData['Cliente'].toFixed(2)  }}</td>
-                <td *ngIf="user_id!=1" class="text-center">{{ promedioData['Lateral'].toFixed(2)  }}</td>
-                <td class="text-center">{{ promedioData['Colaborador'].toFixed(2)  }}</td>
-                <td class="text-center">{{ promedioData['Autoevaluacion'].toFixed(2)  }}</td>
-                <td class="text-center">{{general.toFixed(2)}}</td>
-                <td class="text-center">{{auto.toFixed(2)}}</td>
+                <td *ngIf="user_id!=1" class="text-center">{{ promedioData['Lider'] }}</td>
+                <td class="text-center">{{ promedioData['Cliente']  }}</td>
+                <td *ngIf="user_id!=1" class="text-center">{{ promedioData['Lateral']  }}</td>
+                <td class="text-center">{{ promedioData['Colaborador']  }}</td>
+                <td class="text-center">{{ promedioData['Autoevaluacion']  }}</td>
+                <td class="text-center">{{general}}</td>
+                <td class="text-center">{{auto}}</td>
     
               </tr>
             </tbody>
@@ -213,9 +214,9 @@
                     <td class="text-center">{{ question_averages[aspecto][question]?.Cliente || 0 }}</td>
                     <td class="text-center">{{ (question_averages[aspecto][question]?.Colaborador) || 0 }}</td>
                     <td class="text-center">{{ question_averages[aspecto][question]?.Autoevaluacion || 0 }}</td>
-                    <td class="text-center" >{{question_averages[aspecto][question]?.Promedio.toFixed(2)}}</td>
+                    <td class="text-center" >{{question_averages[aspecto][question]?.Promedio}}</td>
                     <td class="text-center" >
-                      {{question_averages[aspecto][question]?.PromedioSinAuto.toFixed(2)
+                      {{question_averages[aspecto][question]?.PromedioSinAuto
                       }}
                   </td>
                     </tr>

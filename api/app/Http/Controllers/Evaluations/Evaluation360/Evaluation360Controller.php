@@ -1653,7 +1653,7 @@ class Evaluation360Controller extends Controller
                         $totalScoreSum = $evaluationsModule->sum('average');
                     
                         // Dividir entre la cantidad de evaluaciones
-                        $average = count($evaluationsModule) > 0 ? $totalScoreSum / (count($evaluationsModule) - count($evaluationsNA)) : 0;
+                        $average = round(count($evaluationsModule) > 0 ? $totalScoreSum / (count($evaluationsModule) - count($evaluationsNA)) : 0,2);
                     
                         $averagesByType[$module->name][$evaluatorTypeName] = $average;
                         $questions = Question::where('module_id', $module->id)->get();
@@ -1740,11 +1740,12 @@ class Evaluation360Controller extends Controller
             foreach ($question_averages as $moduleName => &$moduleQuestions) {
                 foreach ($moduleQuestions as $questionText => &$evaluatorAverages) {
                     $totalEvaluators = count($averagesByType[$moduleName]);
-                    $evaluatorAverages['Promedio'] /= $totalEvaluators;
-                    $evaluatorAverages['PromedioSinAuto'] /= ($totalEvaluators - 1); // Excluye la autoevaluación
-                    // Aquí puedes hacer cualquier otra operación que necesites con los promedios
+                    // Redondear y asignar el resultado a la variable original
+                    $evaluatorAverages['Promedio'] = round($evaluatorAverages['Promedio'] / $totalEvaluators, 2);
+                    $evaluatorAverages['PromedioSinAuto'] = round($evaluatorAverages['PromedioSinAuto'] / ($totalEvaluators - 1), 2); // Excluye la autoevaluación
                 }
             }
+            
 
             // Ahora $question_averages contiene el promedio y el promedio sin autoevaluación por pregunta
 
@@ -1769,17 +1770,17 @@ class Evaluation360Controller extends Controller
                     }
                 
                     // Calcular promedios
-                    $averageAll = ($countAll > 0) ? $sumAll / $countAll : 0;
-                    $averageExcludingAutoevaluacion = ($countExcludingAutoevaluacion > 0) ? $sumExcludingAutoevaluacion / $countExcludingAutoevaluacion : 0;
+                    $averageAll =round(($countAll > 0) ? $sumAll / $countAll : 0,2);
+                    $averageExcludingAutoevaluacion = round(($countExcludingAutoevaluacion > 0) ? $sumExcludingAutoevaluacion / $countExcludingAutoevaluacion : 0,2);
                 
                     // Añadir promedios al array
-                    $averagesByType[$moduleName]['Promedio'] = round($averageAll, 2);
-                    $AverageGeneral=$AverageGeneral+round($averageAll, 2);
-                    $averagesByType[$moduleName]['PromedioSinAutoevaluacion'] = round($averageExcludingAutoevaluacion, 2);
-                    $AverageAuto=$AverageAuto+round($averageExcludingAutoevaluacion, 2);
+                    $averagesByType[$moduleName]['Promedio'] = round($averageAll,2);
+                    $AverageGeneral=$AverageGeneral+$averageAll;
+                    $averagesByType[$moduleName]['PromedioSinAutoevaluacion'] = round($averageExcludingAutoevaluacion,2);
+                    $AverageAuto=$AverageAuto+$averageExcludingAutoevaluacion;
 
                     array_push($graficaModulosObj,$moduleName);
-                    array_push($graficaModulosValues,round($averageAll, 2));
+                    array_push($graficaModulosValues,$averageAll);
                 }
                 //recorrer nuevamente para sacar el  promedio total por evaluador
                 $averagesAllModules=[];
@@ -1797,14 +1798,14 @@ class Evaluation360Controller extends Controller
                     }
                         $divisor=(count($modules)-$countNA);
                        
-                        $averageTotal =$divisor!=0?($sumTotalMod) / $divisor:0;
+                        $averageTotal =round($divisor!=0?($sumTotalMod) / $divisor:0,2);
                    $averagesAllModules[$evaluatorType]= $averageTotal;
                    array_push($graficaEvaluadorObj,$evaluatorType);
                    array_push($graficaEvaluadorValue,$averageTotal);
 
                 }
-                $AverageAuto=$AverageAuto/10;
-                $AverageGeneral=  $AverageGeneral/10;
+                $AverageAuto=round($AverageAuto/10,2);
+                $AverageGeneral= round($AverageGeneral/10,2);
                 $users = User::select(DB::raw("CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name"), 'email')
                 ->where('id', $request->user_id)
                 ->first();

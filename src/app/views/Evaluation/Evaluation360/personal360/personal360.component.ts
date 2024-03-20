@@ -210,6 +210,7 @@ average(aspect: any, question: any,autoevaluacion:any): any {
       type: name as ChartType,
       data: data,
       options: {
+        responsive: true,
         indexAxis: 'y',
         scales: {
           r: {

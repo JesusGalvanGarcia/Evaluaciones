@@ -370,8 +370,8 @@ color: #333;
 }
 .etiquetas
 {
-  display: grid;
-  text-align: center;
+
+  text-align: left;
 }
 .Mytitle
 {

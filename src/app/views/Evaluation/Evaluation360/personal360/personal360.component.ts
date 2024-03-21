@@ -9,6 +9,7 @@ import { LoadingComponent } from '../../../app/loading/loading.component';
 import jspdf from 'jspdf';
 import { ElementRef, Renderer2 } from '@angular/core';
 import html2canvas from 'html2canvas';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import { MensajeService } from '@http/mensaje.service';
 
@@ -28,7 +29,7 @@ export class Personal360Component implements OnInit {
   auto:any;
   names:any;
   email:any;
-
+  modulesGrafic:any;
   tableLabels: any;
   tableData: any;
   isLoading:boolean=true;
@@ -145,6 +146,7 @@ average(aspect: any, question: any,autoevaluacion:any): any {
       this.evaluatorData = response.evaluador;
       this.generalData = response.general;
       this.colaboradores=response.evaluator_keys;
+      this.modulesGrafic=response.grafica_keys;
       this.question_averages=response.question_averages;
       this.response=response.Comments;
       this.tableLabels = response.modules_keys;      
@@ -153,9 +155,9 @@ average(aspect: any, question: any,autoevaluacion:any): any {
       this.general=response.general_average;
       this.auto=response.general_auto_average;
       this.tableData= response.general_auto_average;
-      this.processData(response.modules_keys ,response.modules_values,'radar','chart','Promedio por modulo');
+      this.processData(response.grafica_keys ,response.modules_values,'radar','chart','Promedio por modulo');
       this.processData(response.evaluator_keys,response.evaluator_values ,'bar','evaluators','Promedio  por evaluador');
-      this.processData(response.modules_keys ,response.modules_values,'bar','promedio','Promedio general');
+      this.processData(response.grafica_keys ,response.modules_values,'bar','promedio','Promedio general');
       this.isLoading=false;
     } catch (error:any) {
     
@@ -215,10 +217,22 @@ average(aspect: any, question: any,autoevaluacion:any): any {
         scales: {
           r: {
             beginAtZero: true
-          },
+          }
         },
+        plugins: {
+          datalabels: {
+            anchor: 'end',
+            align: 'end',
+            formatter: function(value, context) {
+              return value; // Devuelve el valor de la etiqueta
+            }
+          }
+        }
       },
+      plugins: [ChartDataLabels] // Agrega el plugin como una extensión
     });
+    
+    
   }
   
   onSelect(event: any): void {

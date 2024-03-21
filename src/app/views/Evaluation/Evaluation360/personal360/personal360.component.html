@@ -109,6 +109,22 @@
       </div>
        <!-- Contenido  de graficas -->
       <div id="graficas" class="container">
+        <span class="Mytitle">Graficas por promedio de evaluador y modulos</span>
+        <div class="container">
+          <div id="contentToConvert2" class="row row-cols-1 row-cols-md-2">
+            <div class="col etiquetas" >   
+                <div *ngFor="let modules of tableLabels" >
+                  <span>{{modules}}</span>
+
+              </div>
+            </div>
+            <div class="col">
+              <div class="graficaModule">
+                <canvas id="chart" ></canvas>
+              </div>
+            </div>
+          </div>   
+        </div>
         <div id="contentToConvert2" class="row row-cols-1 row-cols-md-2">
           <div class="col">
             <canvas id="evaluators"></canvas>
@@ -116,26 +132,19 @@
           <div class="col">
             <canvas id="promedio"></canvas>
           </div>
-        </div>
-        <div class="container">
-          <div class="graficaModule">
-            <canvas id="chart" ></canvas>
-          </div>
-        </div>
-        
+        </div>    
       </div>
             <!-- Contenido  de tablas -->
-      <div id="tablas">
+      <div id="tablas"><br/>
+        <span class="Mytitle">Tablas de promedio por modulo</span><br/>
         <div class="containerTable">
           <table class="tablescreen" >
             <thead>
               <tr>
                 <th>Aspecto</th>
-                <th *ngIf="user_id!=1">Lider</th>
-                <th>Cliente</th>
-                <th *ngIf="user_id!=1">Lateral</th>
-                <th>Colaborador</th>
-                <th>Autoevaluacion</th>
+                <th *ngFor="let evaluador of colaboradores">
+                  {{evaluador}}
+                </th>
                 <th>Promedio</th>
                 <th>Sin Autoevaluacion</th>
               </tr>
@@ -143,11 +152,9 @@
             <tbody>
               <tr *ngFor="let aspecto of tableLabels">
                 <td>{{ aspecto }}</td>
-                <td *ngIf="user_id!=1" class="text-center">{{ evaluatorData[aspecto]['Lider'] }}</td>
-                <td class="text-center">{{ evaluatorData[aspecto]['Cliente'] }}</td>
-                <td *ngIf="user_id!=1" class="text-center">{{ evaluatorData[aspecto]['Lateral'] }}</td>
-                <td class="text-center">{{ evaluatorData[aspecto]['Colaborador'] }}</td>
-                <td class="text-center">{{ evaluatorData[aspecto]['Autoevaluacion'] }}</td>
+                <td class="text-center" *ngFor="let evaluador of colaboradores">
+                  {{ evaluatorData[aspecto][evaluador] }}
+                </td>
                 <td class="text-center">{{ evaluatorData[aspecto]['Promedio'] }}</td>
                 <td class="text-center">{{ evaluatorData[aspecto]['PromedioSinAutoevaluacion'] }}</td>
               </tr>
@@ -155,17 +162,16 @@
           </table>
         </div>
         <br/>
+        <span class="Mytitle">Tablas de promedio general por evaluador</span><br/>
+
         <div class="containerTable">
- 
           <table class="tablesLG" >
             <thead>
               <tr>
                 <th>Aspecto</th>
-                <th *ngIf="user_id!=1">Lider</th>
-                <th>Cliente</th>
-                <th *ngIf="user_id!=1">Lateral</th>
-                <th>Colaborador</th>
-                <th>Autoevaluacion</th>
+                <th *ngFor="let evaluador of colaboradores">
+                  {{evaluador}}
+                </th>
                 <th>Promedio</th>
                 <th>Sin Autoevaluacion</th>
               </tr>
@@ -173,11 +179,9 @@
             <tbody>
               <tr >
                 <td class="text-left">Promedio general por evaluador</td>
-                <td *ngIf="user_id!=1" class="text-center">{{ promedioData['Lider'] }}</td>
-                <td class="text-center">{{ promedioData['Cliente']  }}</td>
-                <td *ngIf="user_id!=1" class="text-center">{{ promedioData['Lateral']  }}</td>
-                <td class="text-center">{{ promedioData['Colaborador']  }}</td>
-                <td class="text-center">{{ promedioData['Autoevaluacion']  }}</td>
+                <td class="text-center" *ngFor="let evaluador of colaboradores">
+                 {{ promedioData[evaluador]  }}
+                </td>
                 <td class="text-center">{{general}}</td>
                 <td class="text-center">{{auto}}</td>
     
@@ -186,52 +190,55 @@
           </table>
           
         </div>
-        <br/>
-        <div class="containerTable" >
-          <table class="tablesQuestion" >
-            <thead>
-              <tr>
-                <th>Pregunta</th>
-                <th>Seccion</th>
-                <th *ngIf="user_id!=1">Lider</th>
-                <th *ngIf="user_id!=1">Lateral</th>
-                <th>Cliente</th>
-                <th>Colaborador</th>
-                <th>Autoevaluacion</th>
-                <th>Promedio</th>
-                <th class="text-center" >Sin Autoevaluacion</th>
-    
+  
+<div class="container">
+  <span class="Mytitle">Tablas de promedio por pregunta</span><br/>
+
+  <div class="containerTable" >
+    <table class="tablesQuestion" >
+      <thead>
+        <tr>
+          <th>Pregunta</th>
+          <th>Seccion</th>
+          <th *ngFor="let evaluador of colaboradores">
+            {{evaluador}}
+          </th>
+          <th>Promedio</th>
+          <th class="text-center" >Sin Autoevaluacion</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let aspecto of tableLabels; let i = index">
+          <ng-container  *ngFor="let question of getObjectKeys(question_averages[aspecto])" >
+            <tr >
+              <td>{{ question }}</td>
+              <td>{{ aspecto }}</td>
+              <td class="text-center" *ngFor="let evaluador of colaboradores">
+                {{ question_averages[aspecto][question][evaluador] || 0 }}
+               </td>
+              <td class="text-center" >{{question_averages[aspecto][question]['Promedio']}}</td>
+              <td class="text-center" >
+                {{question_averages[aspecto][question]['PromedioSinAuto']
+                }}
+            </td>
               </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngFor="let aspecto of tableLabels; let i = index">
-                <ng-container  *ngFor="let question of getObjectKeys(question_averages[aspecto])" >
-                  <tr >
-                    <td>{{ question }}</td>
-                    <td>{{ aspecto }}</td>
-                    <td *ngIf="user_id!=1" class="text-center">{{ question_averages[aspecto][question]?.Lider || 0 }}</td>
-                    <td *ngIf="user_id!=1" class="text-center">{{ question_averages[aspecto][question]?.Lateral || 0 }}</td>
-                    <td class="text-center">{{ question_averages[aspecto][question]?.Cliente || 0 }}</td>
-                    <td class="text-center">{{ (question_averages[aspecto][question]?.Colaborador) || 0 }}</td>
-                    <td class="text-center">{{ question_averages[aspecto][question]?.Autoevaluacion || 0 }}</td>
-                    <td class="text-center" >{{question_averages[aspecto][question]?.Promedio}}</td>
-                    <td class="text-center" >
-                      {{question_averages[aspecto][question]?.PromedioSinAuto
-                      }}
-                  </td>
-                    </tr>
-                </ng-container>
-              </ng-container>
-            </tbody>
-          </table>
-        </div>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>
    <!-- Contenido  de comentarios -->
         <div id="comentarios">
-<br/><br/>
+<div class="container">
+  <span class="Mytitle">Comentarios de tus evaluaciones</span>
+
 <div *ngFor="let item of colaboradores">
+  <div *ngIf="response[item].length>0">    <br/>
   <div class="row">
     <div class="col-1 cuadro">
-    </div>
+    </div>    <br/>
     <div class="col-10 evaluador">
       <div>
         {{item}}
@@ -283,8 +290,10 @@
             </div>
           </div>
         </div>
+      </div>
 </div>
         </div>
+      </div>
         </div>
     </div>
   </div>

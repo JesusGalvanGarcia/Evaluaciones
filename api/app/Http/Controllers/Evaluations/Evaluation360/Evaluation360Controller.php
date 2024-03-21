@@ -1578,24 +1578,7 @@ class Evaluation360Controller extends Controller
                     'message' => 'Usuario invalido, no tienes acceso.',
                     'code' => $this->prefix . 'X002'
                 ], 400);
-                if($request->user_id==1)
-                {
-                    $evaluatorTypes = [
-                        2 => 'Autoevaluacion',
-                        3 => 'Cliente',
-                        5 => 'Colaborador',
-                        
-                    ];
-                }else{
-                    $evaluatorTypes = [
-                        1 => 'Lider',
-                        2 => 'Autoevaluacion',
-                        3 => 'Cliente',
-                        4 => 'Lateral',
-                        5 => 'Colaborador',
-                        
-                    ];
-                }
+        
                 $sumAverages=0;
                 $averagesByType ;
                 $sumAutoevaluacion=0;
@@ -1604,7 +1587,8 @@ class Evaluation360Controller extends Controller
                     'user_test_modules.user_test_id',
                     'user_test_modules.module_id',
                     'user_test_modules.average',
-                    'ET.id as evaluator_type_id'
+                    'ET.id as evaluator_type_id',
+                    'ET.description as evaluator_name'
                 )
                     ->join('user_tests as UT', 'UT.id', 'user_test_modules.user_test_id')
                     ->join('user_evaluations as UE', 'UE.id', 'UT.user_evaluation_id')
@@ -1617,9 +1601,10 @@ class Evaluation360Controller extends Controller
                         ['UE.evaluation_id', $request->evaluation_id],
                         ['UE.user_id', $request->user_id]
                     ])
-                    ->groupBy( 'UT.strengths','UT.chance','UT.suggestions','tm.name', 'user_test_modules.id', 'user_test_modules.user_test_id', 'user_test_modules.module_id', 'user_test_modules.average', 'ET.id')
+                    ->groupBy('ET.description','UT.strengths','UT.chance','UT.suggestions','tm.name', 'user_test_modules.id', 'user_test_modules.user_test_id', 'user_test_modules.module_id', 'user_test_modules.average', 'ET.id')
                     ->get();
-                  
+                    $evaluatorTypes = $evaluationsAll->pluck('evaluator_name', 'evaluator_type_id')->unique()->toArray(); // obtenemos los tipos de evuador que existen para esta persona y su id
+              
                     $graficaModulosObj=[];
                     $graficaModulosValues=[];
                     $graficaEvaluadorObj=[];
@@ -1648,12 +1633,13 @@ class Evaluation360Controller extends Controller
 
                         $evaluationsModule = $evaluations->where('module_id', $module->id);
                         $evaluationsNA = $evaluations->where('module_id', $module->id)->where('average', 0);
-                    
+                       
                         // Calcular la suma total
                         $totalScoreSum = $evaluationsModule->sum('average');
-                    
-                        // Dividir entre la cantidad de evaluaciones
-                        $average = round(count($evaluationsModule) > 0 ? $totalScoreSum / (count($evaluationsModule) - count($evaluationsNA)) : 0,2);
+                        $div=(count($evaluationsModule) - count($evaluationsNA)) ;
+                  
+                        // Dividir entre la cantidad de evaluaciones restando las que tienen NA
+                        $average = round(count($evaluationsModule) > 0 ? $totalScoreSum / ($div>0?$div:1) : 0,2);
                     
                         $averagesByType[$module->name][$evaluatorTypeName] = $average;
                         $questions = Question::where('module_id', $module->id)->get();
@@ -1702,9 +1688,12 @@ class Evaluation360Controller extends Controller
                    
                    
                 }
+                $totalEvaluators=0;
      // Recorre los promedios de cada módulo y evaluador
             foreach ($averagesByType as $moduleName => $evaluatorData) {
+              
                 foreach ($evaluatorData as $evaluatorTypeName => $average) {
+                   
                     foreach ($question_averages[$moduleName] as $questionText => &$evaluatorAverages) {
                         // Si esta pregunta aún no tiene un arreglo para almacenar los promedios, inicialízalo
                         if (!isset($evaluatorAverages['Promedio'])) {
@@ -1718,6 +1707,7 @@ class Evaluation360Controller extends Controller
                       // Verifica si la clave 'Autoevaluacion' está definida en $evaluatorAverages
                         if (isset($evaluatorAverages[$evaluatorTypeName])) {
                             // Suma el valor de 'Autoevaluacion' al promedio
+                          
                             $evaluatorAverages['Promedio'] += $evaluatorAverages[$evaluatorTypeName];
                         }
 
@@ -1739,10 +1729,15 @@ class Evaluation360Controller extends Controller
             // Calcula el promedio total de los evaluadores por pregunta dividiendo por el número total de evaluadores
             foreach ($question_averages as $moduleName => &$moduleQuestions) {
                 foreach ($moduleQuestions as $questionText => &$evaluatorAverages) {
-                    $totalEvaluators = count($averagesByType[$moduleName]);
+                   // return $evaluatorAverages;
+                   // $countKeys = count($evaluatorAverages)-2; //le restamos las llaves Promedio y Promedio sin  auto
                     // Redondear y asignar el resultado a la variable original
-                    $evaluatorAverages['Promedio'] = round($evaluatorAverages['Promedio'] / $totalEvaluators, 2);
-                    $evaluatorAverages['PromedioSinAuto'] = round($evaluatorAverages['PromedioSinAuto'] / ($totalEvaluators - 1), 2); // Excluye la autoevaluación
+                    $nonZeroValues = array_filter($evaluatorAverages, function($value) {
+                        return $value != 0;
+                    });
+                    $countKeys =count($nonZeroValues)-2;
+                    $evaluatorAverages['Promedio'] = round($evaluatorAverages['Promedio'] / $countKeys, 2);
+                    $evaluatorAverages['PromedioSinAuto'] = round($evaluatorAverages['PromedioSinAuto'] / ($countKeys - 1), 2); // Excluye la autoevaluación
                 }
             }
             
@@ -1758,13 +1753,18 @@ class Evaluation360Controller extends Controller
                 
                     foreach ($evaluatorData as $evaluatorType => $average) {
                         // Sumar todos los valores
+                        if($average>0)
+                        {
                         $sumAll += $average;
                         $countAll++;
-                
+                        }
                         // Excluir 'Autoevaluacion' de la suma
                         if ($evaluatorType !== 'Autoevaluacion') {
+                            if($average>0)
+                            {
                             $sumExcludingAutoevaluacion += $average;
                             $countExcludingAutoevaluacion++;
+                            }
                         }
                 
                     }
@@ -1804,11 +1804,21 @@ class Evaluation360Controller extends Controller
                    array_push($graficaEvaluadorValue,$averageTotal);
 
                 }
-                $AverageAuto=round($AverageAuto/10,2);
-                $AverageGeneral= round($AverageGeneral/10,2);
+                $AverageAuto = number_format($AverageAuto / 10, 2, '.', '');
+                $AverageGeneral = number_format($AverageGeneral / 10, 2, '.', '');
+                
+                
                 $users = User::select(DB::raw("CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name"), 'email')
                 ->where('id', $request->user_id)
                 ->first();
+                rsort($graficaEvaluadorObj);
+                //crear etiquetas para graficas solo con los numeros de los modulos:
+                $numero = count($graficaModulosObj);
+
+                $keys = [];
+                for ($i = 1; $i <= $numero; $i++) {
+                    $keys[] = $i;
+                }
                 return response()->json([
                     'title' => 'Proceso terminado',
                     'message' => 'Evaluaciones del usuario consultadas correctamente',
@@ -1817,6 +1827,7 @@ class Evaluation360Controller extends Controller
                     'evaluator_keys' => $graficaEvaluadorObj,
                     'evaluator_values' => $graficaEvaluadorValue,
                     'modules_keys' => $graficaModulosObj,
+                    'grafica_keys'=>$keys,
                     'modules_values' => $graficaModulosValues,
                     'question_averages'=>$question_averages,
                     'Comments'=>$Comments,

@@ -1604,7 +1604,10 @@ class Evaluation360Controller extends Controller
                     ->groupBy('ET.description','UT.strengths','UT.chance','UT.suggestions','tm.name', 'user_test_modules.id', 'user_test_modules.user_test_id', 'user_test_modules.module_id', 'user_test_modules.average', 'ET.id')
                     ->get();
                     $evaluatorTypes = $evaluationsAll->pluck('evaluator_name', 'evaluator_type_id')->unique()->toArray(); // obtenemos los tipos de evuador que existen para esta persona y su id
-              
+                    uasort($evaluatorTypes, function($a, $b) {
+                        return strcmp($b, $a); // Ordena los evaluadores para que autoevaluacion quede al  final
+                    });
+
                     $graficaModulosObj=[];
                     $graficaModulosValues=[];
                     $graficaEvaluadorObj=[];
@@ -1826,7 +1829,7 @@ class Evaluation360Controller extends Controller
                 $users = User::select(DB::raw("CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name"), 'email')
                 ->where('id', $request->user_id)
                 ->first();
-                rsort($graficaEvaluadorObj);
+               // rsort($graficaEvaluadorObj);
                 //crear etiquetas para graficas solo con los numeros de los modulos:
                 $numero = count($graficaModulosObj);
 

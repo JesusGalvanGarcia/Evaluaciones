@@ -1732,12 +1732,21 @@ class Evaluation360Controller extends Controller
                    // return $evaluatorAverages;
                    // $countKeys = count($evaluatorAverages)-2; //le restamos las llaves Promedio y Promedio sin  auto
                     // Redondear y asignar el resultado a la variable original
+                   
                     $nonZeroValues = array_filter($evaluatorAverages, function($value) {
                         return $value != 0;
                     });
+                    
                     $countKeys =count($nonZeroValues)-2;
                     $evaluatorAverages['Promedio'] = round($evaluatorAverages['Promedio'] / $countKeys, 2);
-                    $evaluatorAverages['PromedioSinAuto'] = round($evaluatorAverages['PromedioSinAuto'] / ($countKeys - 1), 2); // Excluye la autoevaluación
+                    if (isset($nonZeroValues['Autoevaluacion'])) 
+                    {
+                        $evaluatorAverages['PromedioSinAuto'] = round($evaluatorAverages['PromedioSinAuto'] / ($countKeys - 1), 2); // Excluye la autoevaluación
+                    }
+                    else
+                    {
+                        $evaluatorAverages['PromedioSinAuto'] = round($evaluatorAverages['PromedioSinAuto'] / ($countKeys), 2);
+                    }
                 }
             }
             

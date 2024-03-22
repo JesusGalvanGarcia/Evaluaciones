@@ -1621,7 +1621,13 @@ class Evaluation360Controller extends Controller
                     $evaluations = $evaluationsAll->where('evaluator_type_id',$evaluatorType );
                     $answers = UserTest::select('suggestions', 'chance', 'strengths')
                     ->whereIn('id', $evaluations->pluck('user_test_id'))
+                    ->where(function ($query) {
+                        $query->where('suggestions', '<>', '')
+                            ->orWhere('chance', '<>', '')
+                            ->orWhere('strengths', '<>', '');
+                    })
                     ->get();
+                
                     $Comments[$evaluatorTypeName]=$answers;
                     // Inicializar el array para el tipo de evaluador actual
 

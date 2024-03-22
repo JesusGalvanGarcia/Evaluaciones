@@ -88,7 +88,7 @@ export class Index360Component implements OnInit {
           const component = { component: 'gridActionButton',
           params: { 
             action:  GridActions.Start,   
-            icon:'fa-solid fa-arrow-right',
+            icon:'fa-solid fa-file-invoice',
             title:' Ver plan de acción' 
           }
         };
@@ -183,6 +183,7 @@ export class Index360Component implements OnInit {
      // this.PersonalList=response.users;
      this.planList=response.user_action_plan;
      this.isLoading=false;
+     this.router.navigate(['/plan-accion/'+response.user_action_plan[0].id]);
 
     })
     .catch((error:any) => {
@@ -203,7 +204,7 @@ export class Index360Component implements OnInit {
     }
     if (actionEvent.action == GridActions.Start )  //verificar si no han finalizado los intentos
     {
-      this.plans=true;
+    //  this.plans=true;
       let data = {
         user_id: Number(localStorage.getItem("user_id")),
         collaborators_id: [],

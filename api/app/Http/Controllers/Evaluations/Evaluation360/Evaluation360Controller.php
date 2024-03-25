@@ -1768,7 +1768,7 @@ class Evaluation360Controller extends Controller
                     $sumExcludingAutoevaluacion = 0;
                     $countAll = 0;
                     $countExcludingAutoevaluacion = 0;
-                
+              
                     foreach ($evaluatorData as $evaluatorType => $average) {
                         // Sumar todos los valores
                         if($average>0)
@@ -1786,16 +1786,17 @@ class Evaluation360Controller extends Controller
                         }
                 
                     }
-                
+                   
                     // Calcular promedios
-                    $averageAll =round(($countAll > 0) ? $sumAll / $countAll : 0,2);
+                    $averageAll =round($sumAll / $countAll ,2);
                     $averageExcludingAutoevaluacion = round(($countExcludingAutoevaluacion > 0) ? $sumExcludingAutoevaluacion / $countExcludingAutoevaluacion : 0,2);
-                
+                 
+                    //return $averageExcludingAutoevaluacion;
                     // Añadir promedios al array
                     $averagesByType[$moduleName]['Promedio'] = round($averageAll,2);
-                    $AverageGeneral=$AverageGeneral+$averageAll;
+                   // $AverageGeneral=$AverageGeneral+$averageAll;
                     $averagesByType[$moduleName]['PromedioSinAutoevaluacion'] = round($averageExcludingAutoevaluacion,2);
-                    $AverageAuto=$AverageAuto+$averageExcludingAutoevaluacion;
+                  //  $AverageAuto=$AverageAuto+$averageExcludingAutoevaluacion;
 
                     array_push($graficaModulosObj,$moduleName);
                     array_push($graficaModulosValues,$averageAll);
@@ -1822,10 +1823,20 @@ class Evaluation360Controller extends Controller
                    array_push($graficaEvaluadorValue,$averageTotal);
 
                 }
-                $AverageAuto = number_format($AverageAuto / 10, 2, '.', '');
-                $AverageGeneral = number_format($AverageGeneral / 10, 2, '.', '');
-                
-                
+              //  $AverageAuto = number_format($AverageAuto / 10, 2, '.', '');
+              //  $AverageGeneral = number_format($AverageGeneral / 10, 2, '.', '');
+                $count=0;
+                $countAuto=0;
+                foreach ($averagesAllModules as $key => $value) {            
+                        $AverageGeneral += $value;
+                        $count++;                 
+                    if($key =='Autoevaluacion'){
+                        $AverageAuto =  $AverageGeneral-$value;
+                        $countAuto++;
+                    }
+                }
+                $AverageAuto =round($AverageAuto /($count-$countAuto),2);
+                $AverageGeneral=round($AverageGeneral/$count,2);
                 $users = User::select(DB::raw("CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name"), 'email')
                 ->where('id', $request->user_id)
                 ->first();

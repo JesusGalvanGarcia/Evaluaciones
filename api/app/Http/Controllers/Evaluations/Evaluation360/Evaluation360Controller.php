@@ -1095,8 +1095,8 @@ class Evaluation360Controller extends Controller
                     "
             COALESCE(
                 CASE
-                    WHEN user_evaluations.type_evaluator_id = 1 THEN 'Lider'
-                    WHEN user_evaluations.type_evaluator_id = 2 THEN 'Autoevaluacion'
+                    WHEN user_evaluations.type_evaluator_id = 1 THEN 'Líder'
+                    WHEN user_evaluations.type_evaluator_id = 2 THEN 'Autoevaluación'
                     WHEN user_evaluations.type_evaluator_id = 3 THEN 'Cliente'
                     WHEN user_evaluations.type_evaluator_id = 4 THEN 'Lateral'
                     WHEN user_evaluations.type_evaluator_id = 5 THEN 'Colaborador'
@@ -1607,7 +1607,8 @@ class Evaluation360Controller extends Controller
                     uasort($evaluatorTypes, function($a, $b) {
                         return strcmp($b, $a); // Ordena los evaluadores para que autoevaluacion quede al  final
                     });
-
+                
+                    $AutoevaluacionKey=$evaluatorTypes[2] ; //Tener la key de autoevaluacion (con id 2)
                     $graficaModulosObj=[];
                     $graficaModulosValues=[];
                     $graficaEvaluadorObj=[];
@@ -1721,8 +1722,8 @@ class Evaluation360Controller extends Controller
                         }
 
                         
-                        // Si no es autoevaluación, suma el promedio del evaluador al promedio sin autoevaluación de la pregunta
-                        if ($evaluatorTypeName !== 'Autoevaluacion') {
+                        // Si no es Autoevaluacion, suma el promedio del evaluador al promedio sin Autoevaluacion de la pregunta
+                        if ($evaluatorTypeName !== $AutoevaluacionKey) {
                             // Verifica si la clave 'Autoevaluacion' está definida en $evaluatorAverages
                             if (isset($evaluatorAverages[$evaluatorTypeName])) {
                                 // Suma el valor de 'Autoevaluacion' al promedio
@@ -1748,9 +1749,9 @@ class Evaluation360Controller extends Controller
                     
                     $countKeys =count($nonZeroValues)-2;
                     $evaluatorAverages['Promedio'] = round($evaluatorAverages['Promedio'] / $countKeys, 2);
-                    if (isset($nonZeroValues['Autoevaluacion'])) 
+                    if (isset($nonZeroValues[$AutoevaluacionKey])) 
                     {
-                        $evaluatorAverages['PromedioSinAuto'] = round($evaluatorAverages['PromedioSinAuto'] / ($countKeys - 1), 2); // Excluye la autoevaluación
+                        $evaluatorAverages['PromedioSinAuto'] = round($evaluatorAverages['PromedioSinAuto'] / ($countKeys - 1), 2); // Excluye la Autoevaluacion
                     }
                     else
                     {
@@ -1760,7 +1761,7 @@ class Evaluation360Controller extends Controller
             }
             
 
-            // Ahora $question_averages contiene el promedio y el promedio sin autoevaluación por pregunta
+            // Ahora $question_averages contiene el promedio y el promedio sin Autoevaluacion por pregunta
 
                 
                 foreach ($averagesByType as $moduleName => $evaluatorData) {
@@ -1777,7 +1778,7 @@ class Evaluation360Controller extends Controller
                         $countAll++;
                         }
                         // Excluir 'Autoevaluacion' de la suma
-                        if ($evaluatorType !== 'Autoevaluacion') {
+                        if ($evaluatorType !== $AutoevaluacionKey) {
                             if($average>0)
                             {
                             $sumExcludingAutoevaluacion += $average;
@@ -1830,7 +1831,7 @@ class Evaluation360Controller extends Controller
                 foreach ($averagesAllModules as $key => $value) {            
                         $AverageGeneral += $value;
                         $count++;                 
-                    if($key =='Autoevaluacion'){
+                    if($key ==$AutoevaluacionKey){
                         $AverageAuto =  $AverageGeneral-$value;
                         $countAuto++;
                     }

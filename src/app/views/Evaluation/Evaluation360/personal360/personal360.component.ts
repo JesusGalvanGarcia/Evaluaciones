@@ -51,6 +51,13 @@ export class Personal360Component implements OnInit {
 
  
   ngOnInit(): void {
+    var user=localStorage.getItem("email");
+    if(user=="")
+    {
+      this.router.navigate(['/login']);
+      this.message.error("Tienes que iniciar sesion");
+
+    }
     this.name=localStorage.getItem("collaborator_name");
     this.rol=localStorage.getItem("admin");
     this.getData();
@@ -98,7 +105,7 @@ scrollToElement(id:any) {
     if( this.rol=localStorage.getItem("admin")!="")
    {
      this.router.navigate(['/dashboard/admin360']);
-     localStorage.setItem("admin", "");
+ 
    }
     else
     this.router.navigate(['/dashboard/evaluacion360']);
@@ -342,7 +349,7 @@ average(aspect: any, question: any,autoevaluacion:any): any {
   
     const convertAllElements = async () => {
       try{
-        await convertElementToTablePDF('reporte',5);
+        await convertElementToTablePDF('reporte',6);
 
       // Puedes agregar más llamadas a convertElementToPDF para otros elementos
   

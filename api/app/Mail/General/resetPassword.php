@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Evaluations;
+namespace App\Mail\General;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

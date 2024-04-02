@@ -199,8 +199,8 @@ export class Index360Component implements OnInit {
     if (actionEvent.action == GridActions.Seen )  //verificar si no han finalizado los intentos
     {
       localStorage.setItem("collaborator_name", actionEvent.data.collaborator_name);
-      localStorage.setItem("admin", "");
-
+   
+      localStorage.setItem("admin","");
       this.router.navigate(['/dashboard/exam/personal360/' + actionEvent.data.evaluation_id + "/" + actionEvent.data.user_id]);
       
     }

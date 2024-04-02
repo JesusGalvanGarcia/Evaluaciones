@@ -81,6 +81,13 @@ export class UsersComponent implements OnInit {
     this.router.navigate(['/dashboard/admin360' ] );
     }
   ngOnInit() {
+    var user=localStorage.getItem("email");
+    if(user=="")
+    {
+      this.router.navigate(['/login']);
+      this.message.error("Tienes que iniciar sesion");
+
+    }
     let data = {
       user_id: Number(localStorage.getItem("user_id")),
 

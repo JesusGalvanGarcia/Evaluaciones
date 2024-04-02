@@ -63,7 +63,7 @@ export class SidenavComponent implements OnInit {
       this.user=Number(localStorage.getItem("user_id"));
       if(this.user==16||this.user==67)
       this.navData=this.navDataCopy;
-      if(this.user==19||this.user==88)
+      if(this.user==19||this.user==88||this.user==12)
       this.navData=this.navDataEvaluacion;
 
       this.screenWidth = window.innerWidth;

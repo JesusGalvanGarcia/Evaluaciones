@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
 use App\Services\Evaluations\DesempeñoCompetencias\TestService;
+
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller

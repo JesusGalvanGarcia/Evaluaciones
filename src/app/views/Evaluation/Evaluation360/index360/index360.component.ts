@@ -183,8 +183,10 @@ export class Index360Component implements OnInit {
      // this.PersonalList=response.users;
      this.planList=response.user_action_plan;
      this.isLoading=false;
+     if(response.user_action_plan.length!=0)
      this.router.navigate(['/plan-accion/'+response.user_action_plan[0].id]);
-
+     else
+     this.message.error("No hay un plan acción disponible.");
     })
     .catch((error:any) => {
       console.error('Error in the request:', error);

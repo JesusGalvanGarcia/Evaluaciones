@@ -20,10 +20,10 @@ interface SideNavToggle {
     fadeInOut,
     trigger('rotate', [
       transition(':enter', [
-        animate('1000ms', 
+        animate('1000ms',
           keyframes([
-            style({transform: 'rotate(0deg)', offset: '0'}),
-            style({transform: 'rotate(2turn)', offset: '1'})
+            style({ transform: 'rotate(0deg)', offset: '0' }),
+            style({ transform: 'rotate(2turn)', offset: '1' })
           ])
         )
       ])
@@ -36,61 +36,61 @@ export class SidenavComponent implements OnInit {
   collapsed = true;
   screenWidth = 0;
   navData = navbarData;
-   
+
   navDataCopy = navbarDataAdmin;
-  
-  navDataEvaluacion=navbarDataAdminEvaluaciones;      
-  user:number;
+
+  navDataEvaluacion = navbarDataAdminEvaluaciones;
+  user: number;
   multiple: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = window.innerWidth;
-  
-    if(this.screenWidth <= 768 ) {
+
+    if (this.screenWidth <= 768) {
       this.collapsed = true;
-   
-      this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+
+      this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
     }
   }
 
   constructor(public router: Router) {
-    this.collapsed=false;
-   
+    this.collapsed = false;
+
   }
 
   ngOnInit(): void {
-      this.user=Number(localStorage.getItem("user_id"));
-      if(this.user==16||this.user==67)
-      this.navData=this.navDataCopy;
-      if(this.user==19||this.user==88)
-      this.navData=this.navDataEvaluacion;
+    this.user = Number(localStorage.getItem("user_id"));
+    if (this.user == 16 || this.user == 67)
+      this.navData = this.navDataCopy;
+    if (this.user == 19 || this.user == 88 || this.user == 12)
+      this.navData = this.navDataEvaluacion;
 
-      this.screenWidth = window.innerWidth;
-      if(this.screenWidth <= 768 ) {
-        this.collapsed = true;
-      }
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 768) {
+      this.collapsed = true;
+    }
   }
-  
+
   toggleCollapse(): void {
- 
+
     this.collapsed = !this.collapsed;
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
-     
+    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
+
   }
 
   closeSidenav(): void {
 
     this.collapsed = false;
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
-   
+    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
+
   }
 
   handleClick(item: INavbarData): void {
 
     this.shrinkItems(item);
     item.expanded = !item.expanded
-    
+
   }
 
   getActiveClass(data: INavbarData): string {
@@ -100,7 +100,7 @@ export class SidenavComponent implements OnInit {
 
   shrinkItems(item: INavbarData): void {
     if (!this.multiple) {
-      for(let modelItem of this.navData) {
+      for (let modelItem of this.navData) {
         if (item !== modelItem && modelItem.expanded) {
           modelItem.expanded = false;
         }

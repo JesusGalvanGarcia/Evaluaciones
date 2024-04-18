@@ -99,7 +99,7 @@ export class EvaluationAdminComponent implements OnInit {
    }
    
    protected goBack() {
-    this.router.navigate(['/dashboard/exam/adminPld']);
+    this.router.navigate(['/dashboard/adminPld']);
 }
 protected addModule()
 {

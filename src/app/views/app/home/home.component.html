@@ -13,36 +13,26 @@
 <div class="title">Intranet</div>
 <div class="subtitle"> <i class="fa-solid fa-user"></i>&nbsp; {{ getUser() }}</div>
 </div>
-
+<app-loading *ngIf="isLoading"></app-loading>
 <!-- ... restante de tu contenido -->
 
   
-      <div class="button-container">
-        <button class="bottos" mat-flat-button color="primary" (click)="toggleSubMenu('pld')">
-          <i class="fa-solid fa-money-bill"></i><br/>
-           <div class="letter">PLD</div>
-          <mat-icon *ngIf="showSubMenu === 'pld'" class="sub-icon">keyboard_arrow_up</mat-icon>
-          <div *ngIf="showSubMenu === 'pld'" class="sub-menu">
-         
-            <a (click)="go('PLD')" routerLink="/dashboard/exam">Inicio</a>
-          </div>
-        </button>
+<div class="button-container" >
+  <div *ngFor="let role of links">
+  <button  *ngIf="role.label!='Home'&& role.label!='Cerrar sesion' && role.menu_items.length>0" class="bottos" mat-flat-button [color]="role.label === 'PLD' ? 'primary' : 'accent'" (click)="toggleSubMenu(role.label)">
   
-        <button mat-flat-button color="accent" class="bottos" (click)="toggleSubMenu('evaluaciones')">
-          <i class="fa-solid fa-newspaper"></i>
-            <div class="letter">Evaluaciones</div>
-          <mat-icon *ngIf="showSubMenu === 'evaluaciones'" class="sub-icon">keyboard_arrow_up</mat-icon>
-          <div *ngIf="showSubMenu === 'evaluaciones'" class="sub-menu" >
-            <a (click)="go('Evaluaciones')" routerLink="/dashboard/evaluacion">Desempeño y competencias</a>
-            <a (click)="go('360')" routerLink="/dashboard/evaluacion">360</a>
-            <a (click)="go('asesores')" routerLink="/dashboard/evaluacion">Asesores</a>
-            <a *ngIf="id=='19'||id=='88'" (click)="go('admin360')" routerLink="/dashboard/evaluacion">Administración</a>
+  <div >
 
-          </div>
-        </button>
-      </div>
-   
-      </mat-card>
+  <i [class]="role.icon"></i><br/>
+    <div class="letter">{{ role.label }}</div>
+    <mat-icon *ngIf="showSubMenu === role.label" class="sub-icon">keyboard_arrow_up</mat-icon>
+    <div *ngIf="showSubMenu === role.label" class="sub-menu">
+      <a *ngFor="let item of role.menu_items" (click)="go(item.routeLink,role.routeLink)" >{{ item.label }}</a>
     </div>
+  </div>
+  </button>
+</div> </div>
+      </mat-card>
+   
   </div>
   

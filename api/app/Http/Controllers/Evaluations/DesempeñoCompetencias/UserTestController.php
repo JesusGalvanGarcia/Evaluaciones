@@ -133,16 +133,18 @@ class UserTestController extends Controller
                     }
                 ])
                 ->find($user_test->test_id);
-
+            //ir por permiso de andministradores
+            $permisses=['Acceso Administracion 360','Acceso Administracion desempeno'];
             $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
-            if($user_evaluation->user_id !=request('user_id')&&$user_evaluation->responsable_id !=request('user_id')&&request('user_id')!=19&&request('user_id')!=88)
-            {
-                return response()->json([
-                    'title' => 'Consulta Cancelada',
-                    'message' => 'Usuario invalido, no tienes acceso para realizar esta evaluación.',
-                    'code' => $this->prefix . 'X202'
-                ], 400);
-            }
+            // revisar si el user_id recibido es de algun administrador
+            $userPermission = UserService::checkUserPermisseArray($permisses,$user);
+            // si no pertenece a ningun administrador, ni al responsable ni al evaluado no lo dejes pasarwq
+            if (!$userPermission &&$user_evaluation->responsable_id!=request('user_id')&&$user_evaluation->user_id!=request('user_id'))
+            return response()->json([
+                'title' => 'Consulta Cancelada',
+                'message' => 'Usuario invalido, no tienes acceso.',
+                'code' => $this->prefix . 'X202'
+            ], 400);
             if ($user_evaluation->status_id == 1)
                 $user_evaluation->update([
                     'status_id' => 2

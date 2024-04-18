@@ -4,9 +4,9 @@ export interface INavbarData {
     routeLink: string;
     icon?: string;
     label: string;
-    expanded?: boolean;
+    expanded?: any;
     active?: boolean;
-    items?: INavbarData[];
+    menu_items: any[];
 }
 
 export const fadeInOut = trigger('fadeInOut', [

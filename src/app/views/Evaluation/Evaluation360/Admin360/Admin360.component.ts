@@ -274,7 +274,8 @@ export class Admin360Component implements OnInit {
   {
     this.isLoading=true;
     let data = {
-      user_id: id,
+      user_evaluation: id,
+      user_id:Number(localStorage.getItem("user_id")),
       evaluation_id:this.evaluationNumber
     };
   
@@ -298,7 +299,7 @@ export class Admin360Component implements OnInit {
         localStorage.setItem("collaborator_name", actionEvent.data.collaborator_name);
         localStorage.setItem("admin", "true");
 
-        this.router.navigate(['/dashboard/exam/personal360/' + this.evaluationNumber + "/" + actionEvent.data.collaborator_id]);
+        this.router.navigate(['/dashboard/personal360/' + this.evaluationNumber + "/" + actionEvent.data.collaborator_id]);
         
       }
       if (actionEvent.action == GridActions.Acept )  //verificar si no han finalizado los intentos

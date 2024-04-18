@@ -201,7 +201,7 @@ export class Index360Component implements OnInit {
       localStorage.setItem("collaborator_name", actionEvent.data.collaborator_name);
    
       localStorage.setItem("admin","");
-      this.router.navigate(['/dashboard/exam/personal360/' + actionEvent.data.evaluation_id + "/" + actionEvent.data.user_id]);
+      this.router.navigate(['/dashboard/personal360/' + actionEvent.data.evaluation_id + "/" + actionEvent.data.user_id]);
       
     }
     if (actionEvent.action == GridActions.Start )  //verificar si no han finalizado los intentos
@@ -274,7 +274,7 @@ protected onActionEventPlans(actionEvent: { action: string, data: any }) {
             this.router.navigate(['/prueba/'+id]);
           }
           else{
-            this.router.navigate(['/dashboard/exam/evaluation350/'+id]);
+            this.router.navigate(['/dashboard/evaluation350/'+id]);
           }
         break
         case "Feedback y Plan de Acción":

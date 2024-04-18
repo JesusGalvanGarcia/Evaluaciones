@@ -249,7 +249,16 @@ class UserEvaluationController extends Controller
                     'message' => 'Usuario invalido, no tienes acceso.',
                     'code' => $this->prefix . 'X202'
                 ], 400);
-
+            // Se consulta la información de la evaluación del usuario
+            $user_evaluation = UserEvaluation::find($id);
+       
+            $userPermission = UserService::checkUserPermisse('Acceso Administracion desempeno',$user);
+            if (!$userPermission&&$user_evaluation->responsable_id!=request('user_id')&&$user_evaluation->user_id!=request('user_id'))
+            return response()->json([
+                'title' => 'Consulta Cancelada',
+                'message' => 'Usuario invalido, no tienes acceso.',
+                'code' => $this->prefix . 'X202'
+            ], 400);
             // Se consultan las pruebas de la evaluación asignadas.
             $user_tests = UserTest::select(
                 'user_tests.id',
@@ -271,9 +280,7 @@ class UserEvaluationController extends Controller
                 })
                 ->get();
 
-            // Se consulta la información de la evaluación del usuario
-            $user_evaluation = UserEvaluation::find($id);
-
+   
             // Evalua si la evaluación tiene relacionado un plan de acción
             $action_plan = ActionPlan::where('evaluation_id', $user_evaluation?->evaluation_id)->first();
 

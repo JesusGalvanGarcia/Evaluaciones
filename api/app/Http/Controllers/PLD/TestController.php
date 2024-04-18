@@ -160,6 +160,16 @@ class TestController extends Controller
     public function storePLD(Request $request)
     {
         try{
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $validator = Validator::make($request->test, [
                 'name' => 'required|string',
                 'introduction_text' => 'required|string',
@@ -351,6 +361,16 @@ class TestController extends Controller
     public function updatePLD(Request $request, string $id_test)
     {
         try{
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $validator = Validator::make($request->test, [
                 'name' => 'required|string',
                 'introduction_text' => 'required|string',

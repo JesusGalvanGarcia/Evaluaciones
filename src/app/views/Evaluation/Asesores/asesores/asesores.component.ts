@@ -246,7 +246,7 @@ export class AsesoresComponent implements OnInit {
           this.router.navigate(['/pruebaAsesor/'+id]);
         }
         else{
-          this.router.navigate(['/dashboard/exam/asesors/'+id+"/1"]);
+          this.router.navigate(['/dashboard/asesors/'+id+"/1"]);
         }
       break
       case "Evaluaciones 360":
@@ -256,7 +256,7 @@ export class AsesoresComponent implements OnInit {
             this.router.navigate(['/prueba/'+id]);
           }
           else{
-            this.router.navigate(['/dashboard/exam/evaluation350/'+id]);
+            this.router.navigate(['/dashboard/evaluation350/'+id]);
           }
         break
       case "Feedback y Plan de Acción":

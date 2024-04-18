@@ -196,7 +196,7 @@ export class AdminAsesoresComponent implements OnInit {
         localStorage.setItem("collaborator_name", actionEvent.data.collaborator_name);
         localStorage.setItem("admin", "true");
 
-        this.router.navigate(['/dashboard/exam/personal360/' + this.evaluationNumber + "/" + actionEvent.data.collaborator_id]);
+        this.router.navigate(['/dashboard/personal360/' + this.evaluationNumber + "/" + actionEvent.data.collaborator_id]);
         
       }
    

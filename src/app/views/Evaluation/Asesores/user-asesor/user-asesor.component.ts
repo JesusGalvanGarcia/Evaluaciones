@@ -78,7 +78,7 @@ export class UserAsesorComponent  {
   }
 
   redirectToPage() {
-    this.router.navigate(['/dashboard/exam/home']);
+    this.router.navigate(['/dashboard/home']);
   }
 
 }

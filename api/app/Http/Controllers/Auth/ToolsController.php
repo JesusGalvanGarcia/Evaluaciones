@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Evaluations\Evaluation;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\Attachment;
+//use App\Models\Attachment;
 use App\Models\User;
+use App\Models\Menu;
 use App\Services\Evaluations\UserService;
 use Exception;
 use Illuminate\Http\Request;
@@ -165,15 +166,7 @@ class ToolsController extends Controller
 
     public function storePermissions(Request $request)
     {
-        app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
-        if (!$this->checkPermissions(request()->route()->getName())) {
-
-            return response()->json([
-                'title' => 'Proceso cancelado',
-                'message' => 'No tienes permiso para hacer esto.',
-                'code' => $this->prefixCode . 'P202'
-            ], 400);
-        }
+  
 
         try {
 
@@ -226,6 +219,7 @@ class ToolsController extends Controller
 
     public function storeRoles(Request $request)
     {
+     
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
         if (!$this->checkPermissions(request()->route()->getName())) {
 
@@ -235,7 +229,7 @@ class ToolsController extends Controller
                 'code' => $this->prefixCode . 'P302'
             ], 400);
         }
-
+   
         try {
             // Se validan los parámetros de entrada
             $validator = Validator::make(request()->all(), [
@@ -252,7 +246,8 @@ class ToolsController extends Controller
                     'code' => $this->prefixCode . 'X301'
                 ], 400);
 
-            // Se valida que el usuario este vigente
+            // Se valida que el usuario este vigente 
+        
             $user = UserService::checkUser(request('user_id'));
 
             if (!$user)
@@ -433,7 +428,137 @@ class ToolsController extends Controller
             ], 500);
         }
     }
+    public function getMenu(Request $request)
+    {
+        try {
+    
 
+            // Se validan los parámetros de entrada
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|Min:1'
+            ]);
+
+            // Si la validación detecta un error regresa la descripción del error
+            if ($validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X701'
+                ], 400);
+
+            // Se valida que el usuario este vigente
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Fallo en la consulta',
+                    'message' => 'Usuario no encontrado.',
+                    'code' => $this->prefixCode . 'X702'
+                ], 400);
+                $menuItems = Menu::select('menu.name as label','menu.icon','menu.url as routeLink','menu.id',  DB::raw("'false' as expanded"))
+                ->with(['menu_items' => function ($query) use ($user) {
+                    $query
+                      ->select('menu_items.name as label','menu_items.icon','menu_items.url as routeLink','menu_items.id','menu_items.menu_id','menu_items.permission_id',  DB::raw("'false' as expanded"))
+                        ->join('permissions', 'menu_items.permission_id', 'permissions.id','permissions.id')
+                        ->whereIn('permissions.name', $user->getAllPermissions()->pluck('name'));
+                }])     
+                ->get(); 
+                $menuItems = $menuItems->filter(function ($menuItem) {
+                    return $menuItem->menu_items->count() > 0;
+                });
+                
+                $firstMenuItem = [
+                    'label' => 'Home',
+                    'icon' => 'fa-solid fa-house',
+                    'routeLink' => 'dashboard/home',
+                    "expanded" => 'false',
+                    'menu_items' => []
+                ];
+                
+                $LastMenuItem = [
+                    'label' => 'Cerrar sesion',
+                    'icon' => 'fa-solid fa-arrow-left-long',
+                    'routeLink' => 'dashboard/logout',
+                    "expanded" =>'false',
+                    'menu_items' => []
+                ];
+                
+                $menuItems->prepend($firstMenuItem);               
+                $menuItems->push($LastMenuItem);
+
+            return response()->json([
+                'title' => 'Proceso concluido',
+                'message' => 'El proceso se ha terminado correctamente.',
+                'access' => $menuItems
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefixCode . '799'
+            ], 500);
+        }
+    }
+    public function checkGuard(Request $request)
+    {
+        try {
+       
+            // Se validan los parámetros de entrada
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|Min:1',
+                'permission' => 'Required|String',
+            ]);
+
+            // Si la validación detecta un error regresa la descripción del error
+            if ($validator->fails())
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefixCode . 'X701'
+                ], 400);
+
+            // Se valida que el usuario este vigente
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Fallo en la consulta',
+                    'message' => 'Usuario no encontrado.',
+                    'code' => $this->prefixCode . 'X702'
+                ], 400);
+
+            $userPermissions = $user->getAllPermissions();
+            
+            if (!$userPermissions->where('name', request('permission'))->first())
+             
+            {
+                return response()->json([
+                    'message' => 'Roles consultados correctamente',
+                    'access' => false
+                ]);
+            }
+            else
+          
+            {
+                return response()->json([
+                    'message' => 'Roles consultados correctamente',
+                    'access' => true
+                ]);
+            }
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefixCode . '799'
+            ], 500);
+        }
+    }
     public function checkPermission(Request $request)
     {
         try {

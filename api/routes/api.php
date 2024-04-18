@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Evaluations\Evaluation\EvaluationController;
-use App\Http\Controllers\Evaluations\Evaluation\LoginController;
-use App\Http\Controllers\Evaluations\Evaluation\ToolsController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ToolsController;
+use App\Http\Controllers\Auth\ToolsUserController;
+
 use App\Http\Controllers\Evaluations\Evaluation\UserActionPlanController;
 use App\Http\Controllers\Evaluations\Asesores\AsesoresController;
 
@@ -53,27 +55,30 @@ Route::resource('/user-evaluations', UserEvaluationController::class, [
         'destroy' => 'Borrar Evaluaciones del Usuario'
     ]
 ]);
+Route::get('ToolsUser/roles', [ToolsUserController::class, 'roles'])->name('Consultar roles');
+Route::get('ToolsUser/checkTools', [ToolsUserController::class, 'checkTools'])->name('Consultar roles');
+Route::get('ToolsUser/getLinks', [ToolsUserController::class, 'getLinks'])->name('Obtener las rutas de las pantallas segun los roles');
 
 Route::post('/user/sendPasswordResetEmail', [UserController::class, 'sendPasswordResetEmail'])->name('Enviar correo para cambio de contraseña');
 Route::post('/user/resetPassword', [UserController::class, 'resetPassword'])->name('Cambiar contraseña');
 Route::get('/evaluation360/showTest/{id}', [Evaluation360Controller::class, 'showTest'])->name('Ver tests');
 
-Route::post('/evaluation360/changeStatus', [Evaluation360Controller::class, 'changeStatus'])->name('Cambiar status');
-Route::post('/evaluation360/getFinish360', [Evaluation360Controller::class, 'getFinish360'])->name('Consultar reporte 360');
+Route::post('/evaluation360/changeStatus', [Evaluation360Controller::class, 'changeStatus'])->name('Permiso para aprobar reportes 360');
+Route::post('/evaluation360/getFinish360', [Evaluation360Controller::class, 'getFinish360'])->name('Permiso para ver reportes 360');
 Route::post('/evaluation360/get360', [Evaluation360Controller::class, 'get360'])->name('Consultar evaluacinoes 360');
-Route::post('/evaluation360/Users', [Evaluation360Controller::class, 'Users'])->name('Consultar users 360');
-Route::post('/evaluation360/Users360', [Evaluation360Controller::class, 'Users360'])->name('Consultar users 360');
-Route::post('/evaluation360/assign', [Evaluation360Controller::class, 'assign'])->name('Asignar clientes  internos');
-Route::post('/evaluation360/assignUsers', [Evaluation360Controller::class, 'assignUsers'])->name('Consultar clientes  internos');
-Route::post('/evaluation360/assign360', [Evaluation360Controller::class, 'assign360'])->name('Consultar clientes  internos');
-Route::post('/evaluation360/getPersonal360', [Evaluation360Controller::class, 'getPersonal360'])->name('Crear asesores');
-Route::post('/evaluation360/getUsersAdmin360', [Evaluation360Controller::class, 'getUsersAdmin360'])->name('Crear asesores');
-Route::post('/evaluation360/actionPlan', [Evaluation360Controller::class, 'actionPlan'])->name('Consultar planes de  accion');
-Route::post('/evaluation360/saveAnswer360', [Evaluation360Controller::class, 'saveAnswer360'])->name('Guardar Respuesta del Usuario');
-Route::post('/evaluation360/saveSuggetions', [Evaluation360Controller::class, 'saveSuggetions'])->name('Guardar Respuesta del Usuario');
-Route::post('/evaluation360/getPreview', [Evaluation360Controller::class, 'getPreview'])->name('Cosultar modulos de test');
+Route::post('/evaluation360/Users', [Evaluation360Controller::class, 'Users'])->name('Consultar finish evaluation  360');
+Route::post('/evaluation360/Users360', [Evaluation360Controller::class, 'Users360'])->name('Obtener usuarios 360');
+Route::post('/evaluation360/assign', [Evaluation360Controller::class, 'assign'])->name('Permiso para asignar clientes internos 360');
+Route::post('/evaluation360/assignUsers', [Evaluation360Controller::class, 'assignUsers'])->name('Consultar usuarios asignados clientes internos');
+Route::post('/evaluation360/assign360', [Evaluation360Controller::class, 'assign360'])->name('Permiso para asignar colaboradores 360');
+Route::post('/evaluation360/getPersonal360', [Evaluation360Controller::class, 'getPersonal360'])->name('Obtener index evaluaciones 360');
+Route::post('/evaluation360/getUsersAdmin360', [Evaluation360Controller::class, 'getUsersAdmin360'])->name('Permiso para ver reportes 360');
+Route::post('/evaluation360/actionPlan', [Evaluation360Controller::class, 'actionPlan'])->name('Consultar planes de  accion 360');
+Route::post('/evaluation360/saveAnswer360', [Evaluation360Controller::class, 'saveAnswer360'])->name('Guardar Respuesta del Usuario 360');
+Route::post('/evaluation360/saveSuggetions', [Evaluation360Controller::class, 'saveSuggetions'])->name('Guardar Respuesta del Usuario sugerencias 360');
+Route::post('/evaluation360/getPreview', [Evaluation360Controller::class, 'getPreview'])->name('Obtener reporte 360');
 Route::post('/evaluation360/saveAnswerAverage', [Evaluation360Controller::class, 'saveAnswerAverage'])->name('Guardar promedio del modulo');
-Route::post('/evaluation360/getAverages', [Evaluation360Controller::class, 'getAverages'])->name('Cosultar promedios');
+Route::post('/evaluation360/getAverages', [Evaluation360Controller::class, 'getAverages'])->name('Cosultar promedios 360');
 
 Route::resource('/evaluation360', Evaluation360Controller::class, [
     'names' => [
@@ -113,8 +118,8 @@ Route::resource('/user-tests', UserTestController::class, [
 ]);
 Route::get('/test/pld', [TestController::class, 'showPLD'])->name('Mostrar los Tests de PLD');
 Route::get('/test/pldForm/{id_test}', [TestController::class, 'indexPLD'])->name('Mostrar el formulario del Test de PLD');
-Route::put('/test/pldForm/{id_test}', [TestController::class, 'updatePLD'])->name('Actualizar formulario Test de PLD');
-Route::post('/test/pld', [TestController::class, 'storePLD'])->name('Registrar Test PLD');
+Route::put('/test/pldForm/{id_test}', [TestController::class, 'updatePLD'])->name('Permiso para editar examenes PLD');
+Route::post('/test/pld', [TestController::class, 'storePLD'])->name('Permiso para agregar examenes PLD');
 Route::delete('/test/pld/{id}', [TestController::class, 'destroy'])->name('Borrar el Test');
 
 
@@ -147,4 +152,6 @@ Route::post('/tools/permissions/check', [ToolsController::class, 'checkPermissio
 Route::get('/tools/roles', [ToolsController::class, 'roles'])->name('Consultar Roles');
 Route::get('/tools/roles/get', [ToolsController::class, 'role'])->name('Consultar Roles');
 Route::post('/tools/roles/create', [ToolsController::class, 'storeRoles'])->name('Crear Roles');
+Route::get('/tools/roles/getMenu', [ToolsController::class, 'getMenu'])->name('Obtener menu');
+Route::post('/tools/permissions/checkGuard', [ToolsController::class, 'checkGuard'])->name('Comprobar Permisos');
 Route::post('/tools/roles/assign', [ToolsController::class, 'assignRoles'])->name('Asignar Roles');

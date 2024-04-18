@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\UserService;
+use App\Services\Evaluations\UserService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -17,7 +17,7 @@ class Controller extends BaseController
 
         // Se valida que el usuario este vigente
         $user = UserService::checkUser(request('user_id'));
-
+       
         if (!$user)
             return false;
 
@@ -25,6 +25,7 @@ class Controller extends BaseController
         if (!$user->hasPermissionTo($route_name))
             return false;
 
+        
         return true;
     }
 }

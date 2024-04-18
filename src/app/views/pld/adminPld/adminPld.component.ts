@@ -92,11 +92,11 @@ export class AdminPldComponent implements OnInit {
   }
 
   protected openAddForm(){
-    this.router.navigate(['/dashboard/exam/adminPld/form']);
+    this.router.navigate(['/dashboard/adminPld/form']);
   }
 
   private openEditForm(idTest: number){
-    this.router.navigate(['/dashboard/exam/adminPld/form/', idTest]);
+    this.router.navigate(['/dashboard/adminPld/form/', idTest]);
   }
   close() {
     this.closeModalEvent.emit();

@@ -1,0 +1,50 @@
+<mat-sidenav-container
+(keydown.escape)="sidenav.close()"
+(backdropClick)="sidenav.close()" 
+>
+  <mat-toolbar class="header">
+    <div class="row d-flex vertical-align-middle" style="color:white; width: 100%; align-items: center;">
+      <div class="col-1">
+        <button class="menu" (click)="sidenav.toggle()">
+          <i class="menu-svg fa-solid fa-lg fa-bars"></i>
+        </button>
+      </div>
+      <div class="col-10 d-flex">
+        <div class="row" >
+          <div class="col-2 d-flex" style="margin:auto">
+            <i class="fa-solid fa-xl fa-circle-user"></i>
+          </div>
+          <div class="col-10">
+            <div class="row">
+              <label>Intranet</label>
+            </div>
+            <div class="row">
+              <label style="font-size: 0.8rem;">Trinitas</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-1" style="justify-content: flex-end; display: flex;">
+        <button class="menu" (click)="logout()">
+          <i class="menu-svg fa-solid fa-xl fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    class="sidenav"
+    >
+    <ul class="sidenav-nav">
+      <li class="sidenav-nav-item" (click)="sidenav.close()" *ngFor="let data of navbarData">
+        <a class="sidenav-nav-link" [routerLink]="data.routeLink">
+          <i class="sidenav-link-icon" [class]="data.icon">
+            <span class="sidenav-link-text">{{data.label}}</span>
+          </i>
+        </a>
+      </li>
+    </ul>
+    </mat-sidenav>
+  <router-outlet></router-outlet>
+</mat-sidenav-container>

@@ -4,10 +4,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SidenavComponent } from './views/app/sidenav/sidenav.component';
 import { PlanComponent } from './views/Evaluation/plan/plan.component';
+import { ActionPlan360Component } from './views/Evaluation/Evaluation360/action-plan/action-plan.component';
 import { ActionPlanComponent } from './views/Evaluation/action-plan/action-plan.component';
+
 import { UserTestComponent } from './views/Evaluation/user-test/user-test.component';
 import { UserExamComponent } from './views/PLD/user-exam/user-exam.component';
 import { UserAsesorComponent } from './views/Evaluation/Asesores/user-asesor/user-asesor.component';
+
+import { AuthGuardService } from '@http/auth-guard.service';
 const routes: Routes = [
   {
     path: 'login',
@@ -40,9 +44,10 @@ const routes: Routes = [
     path: 'resetPassword/:id',
     loadComponent: () => import('./views/app/resetPassword/resetPassword.component').then(m => m.ResertPasswordComponent)
   },
-
   { path: 'plan-accion/:user_action_plan_id', component: ActionPlanComponent, data: { routeName: 'Consultar Pagos TP' } },
-  { path: 'prueba/:user_test_id', component: UserTestComponent, data: { routeName: 'Consultar Prueba del Usuario' } },
+  { path: 'plan-accion360/:user_action_plan_id', component: ActionPlan360Component, data: { routeName: 'Consultar Pagos TP' } },
+  { path: 'prueba/:user_test_id', component: UserTestComponent,     canActivate: [AuthGuardService],
+  data: { permission: 'Acceso Administracion asesores' }},
   { path: 'pruebaAsesor/:user_test_id', component: UserAsesorComponent, data: { routeName: 'Consultar Prueba del Usuario' } },
 
   { path: 'exam/:user_test_id', component: UserExamComponent, data: { routeName: 'Consultar Examen del Usuario' } },

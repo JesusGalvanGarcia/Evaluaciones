@@ -27,7 +27,8 @@ use App\Models\TestModule;
 use App\Models\Evaluation;
 use App\Models\User;
 use App\Models\FinishEvaluation;
-
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use App\Services\Evaluations\UserService;
 use Exception;
 use Illuminate\Http\Request;
@@ -377,6 +378,16 @@ class Evaluation360Controller extends Controller
     public function assignAsesors(Request $request)
     {
         try {
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'Required|Integer|NotIn:0|Min:0',
                 'users' => 'Array|Nullable',
@@ -565,6 +576,16 @@ class Evaluation360Controller extends Controller
     public function assign360(Request $request)
     {
         try {
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'Required|Integer|NotIn:0|Min:0',
                 'users' => 'Array|Nullable',
@@ -829,7 +850,16 @@ class Evaluation360Controller extends Controller
     public function assign(Request $request)
     {
         try {
-
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $idEvaluation = $request->evaluation_id;
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'Required|Integer|NotIn:0|Min:0',
@@ -932,9 +962,20 @@ class Evaluation360Controller extends Controller
     }
     public function changeStatus(Request $request)
     {
+
         try {
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $user_finish  = FinishEvaluation::where([
-                ['user_id', $request->user_id],
+                ['user_id', $request->user_evaluation],
                 ['evaluation_id', $request->evaluation_id],
             ])->first();
 
@@ -1564,6 +1605,13 @@ class Evaluation360Controller extends Controller
                     'code' => $this->prefix . 'X001'
                 ], 400);
             }
+           /* $userPermission = UserService::checkUserPermisse('Acceso Administracion 360',$user);
+            if (!$userPermission)
+            return response()->json([
+                'title' => 'Consulta Cancelada',
+                'message' => 'Usuario invalido, no tienes acceso.',
+                'code' => $this->prefix . 'X202'
+            ], 400);*/
             $evaluation = Evaluation::where('id', $request->evaluation_id)->first();
             $users = User::select(DB::raw("CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name"), 'email')
                 ->where('id', $request->user_id)

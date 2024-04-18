@@ -259,7 +259,7 @@ sendPageEvaluation(process:string,id:string,status:string,calificacion:number,de
         this.router.navigate(['/prueba/'+id]);
       }
       else{
-        this.router.navigate(['/dashboard/exam/asesors/'+id+"/1"]);
+        this.router.navigate(['/dashboard/asesors/'+id+"/1"]);
       }
     break
     case "Evaluaciones 360":
@@ -269,7 +269,7 @@ sendPageEvaluation(process:string,id:string,status:string,calificacion:number,de
           this.router.navigate(['/prueba/'+id]);
         }
         else{
-          this.router.navigate(['/dashboard/exam/evaluation350/'+id]);
+          this.router.navigate(['/dashboard/evaluation350/'+id]);
         }
       break
     case "Feedback y Plan de Acción":

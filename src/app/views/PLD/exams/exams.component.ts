@@ -100,7 +100,7 @@ export class ExamsComponent implements OnInit {
   goTest(id:any)
   {
     this.closeTheModal();
-    this.router.navigate(['dashboard/exam/review/'+id]);
+    this.router.navigate(['dashboard/review/'+id]);
   }
   protected onActionEvent(actionEvent: { action: string, data: Evaluation }) {
      if(actionEvent.data.finish_date==null)
@@ -109,7 +109,7 @@ export class ExamsComponent implements OnInit {
 
      }else{
       this.closeTheModal();
-      this.router.navigate(['dashboard/exam/review/'+actionEvent.data.user_test_id]);
+      this.router.navigate(['dashboard/review/'+actionEvent.data.user_test_id]);
      }
   }
   

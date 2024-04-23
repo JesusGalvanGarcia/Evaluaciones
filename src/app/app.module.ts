@@ -34,7 +34,7 @@ import { SublevelMenuComponent } from './views/app/sidenav/sublevel-menu.compone
 import { UserTestComponent } from './views/Evaluation/Desempeño/user-test/user-test.component';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
 import { UserTest360Component } from './views/Evaluation/Evaluation360/user-test/user-test.component';
-
+import { LoginComponent } from './views/app/login/login.component';
 import { Personal360Component } from './views/Evaluation/Evaluation360/personal360/personal360.component';
 export function getDatepickerConfig(): BsDatepickerConfig {
   return Object.assign(new BsDatepickerConfig(), {

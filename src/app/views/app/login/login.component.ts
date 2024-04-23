@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("names", data.user_name);
         localStorage.setItem("page_evaluation","");
 
-        this.router.navigate(['dashboard/home']);
+        this.router.navigate(['home']);
 
       })
       .catch(({ message, title, code }) => {

@@ -1684,8 +1684,8 @@ class Evaluation360Controller extends Controller
                     uasort($evaluatorTypes, function($a, $b) {
                         return strcmp($b, $a); // Ordena los evaluadores para que autoevaluacion quede al  final
                     });
-                    
-                    $AutoevaluacionKey=$evaluatorTypes[2] ; //Tener la key de autoevaluacion (con id 2)
+                  
+                    $AutoevaluacionKey=$evaluatorTypes[2] ?? 'NoEvaluation';  //Tener la key de autoevaluacion (con id 2)
                     $graficaModulosObj=[];
                     $graficaModulosValues=[];
                     $graficaEvaluadorObj=[];

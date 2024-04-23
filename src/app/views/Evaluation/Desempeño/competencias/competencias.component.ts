@@ -192,7 +192,7 @@ export class CompetenciasComponent implements OnInit {
   }
   send() {
    
-    this.router.navigate(['/dashboard/evaluacion']);
+    this.router.navigate(['evaluacion']);
     this.message.success("¡Haz terminado la evaluacion  de Competencias!")
   }
   changeProcessFunc(process:number)
@@ -321,7 +321,7 @@ export class CompetenciasComponent implements OnInit {
   }
   goIndex()
   {
-    this.router.navigate(['/dashboard/evaluacion']);
+    this.router.navigate(['evaluacion']);
     this.message.success("¡Se ha suspendido la evaluacion!")
   }
   ngOnInit() {

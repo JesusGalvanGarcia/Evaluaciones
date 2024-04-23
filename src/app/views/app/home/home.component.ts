@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
   go(page:string,pageOrigin:string)
   {
     this.isLoading=true;
-    this.router.navigate([pageOrigin+"/"+page]);
+    this.router.navigate([page]);
     this.isLoading=false;
   }
   ngOnInit() {

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -46,6 +47,16 @@ class LoginController extends Controller
                     'title' => 'Error de Validación',
                     'message' => 'Usuario o contraseña incorrecto, intente de nuevo.',
                     'code' => $this->prefixCode . 'X002'
+                ], 400);
+            }
+           $permissions= $user->getAllPermissions()->pluck('name');
+           
+            if(count($permissions)==0)
+            {
+                return response()->json([
+                    'title' => 'Error de Validación',
+                    'message' => 'No tienes permiso para ingresar.',
+                    'code' => $this->prefixCode . 'X003'
                 ], 400);
             }
             // Consulta de permisos de la plataforma

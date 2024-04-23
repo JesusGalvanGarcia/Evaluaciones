@@ -53,7 +53,7 @@ const routes: Routes = [
         data: { permission: 'Acceso Administracion PLD' }
     },
     {
-        path: 'evaluation350/:id',
+        path: 'evaluation360/:id',
         component: Evaluation360Component
     },
     {

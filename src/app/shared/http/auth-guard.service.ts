@@ -18,7 +18,7 @@ export class AuthGuardService implements CanActivate {
   if(!hasAccess)
   {
     this.message.warning("No tienes acceso a esta pagina");
-    this.router.navigate(['dashboard/home']);
+    this.router.navigate(['home']);
 
     return false;
   }

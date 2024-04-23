@@ -183,7 +183,7 @@ export class AdminAsesoresComponent implements OnInit {
       }
       if (actionEvent.action == GridActions.Continue )  //verificar si no han finalizado los intentos
       {
-        this.router.navigate(['/dashboard/asesoresUsers/' + actionEvent.data.id]);
+        this.router.navigate(['asesoresUsers/' + actionEvent.data.id]);
 
       }
 
@@ -196,7 +196,7 @@ export class AdminAsesoresComponent implements OnInit {
         localStorage.setItem("collaborator_name", actionEvent.data.collaborator_name);
         localStorage.setItem("admin", "true");
 
-        this.router.navigate(['/dashboard/personal360/' + this.evaluationNumber + "/" + actionEvent.data.collaborator_id]);
+        this.router.navigate(['personal360/' + this.evaluationNumber + "/" + actionEvent.data.collaborator_id]);
         
       }
    

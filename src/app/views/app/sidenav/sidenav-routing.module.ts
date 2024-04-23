@@ -134,7 +134,7 @@ const routes: Routes = [
         data: { permission: 'Permiso para ver detalle de examen PLD' }
     },
     {
-        path: 'evaluation350/:id',
+        path: 'evaluation360/:id',
         component: Evaluation360Component,
         data: { permission: 'Permiso para consultar la evaluacion 360' }
     },

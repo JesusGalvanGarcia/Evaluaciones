@@ -1,2 +1,6 @@
-<router-outlet></router-outlet>
-
+<div *ngIf="!isLoginPage()">
+    <app-sidenav></app-sidenav>
+</div>
+<div *ngIf="isLoginPage()">
+    <router-outlet></router-outlet>
+</div>

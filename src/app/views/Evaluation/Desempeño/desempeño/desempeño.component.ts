@@ -168,12 +168,12 @@ export class SurveyComponent implements OnInit {
   }
 
   finishEvaluation() {
-    this.router.navigate(['/dashboard/evaluacion']);
+    this.router.navigate(['evaluacion']);
     this.message.success("¡Haz terminado la evaluacion de desempeño!")
   }
 
   goIndex() {
-    this.router.navigate(['/dashboard/evaluacion']);
+    this.router.navigate(['evaluacion']);
     this.message.success("¡Se ha suspendido la evaluacion!")
   }
 

@@ -71,6 +71,6 @@ export class UserExamComponent  {
   }
 
   redirectToPage() {
-    this.router.navigate(['/dashboard/adminPld']);
+    this.router.navigate(['/adminPld']);
   }
 }

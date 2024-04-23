@@ -470,7 +470,7 @@ class ToolsController extends Controller
                 $firstMenuItem = [
                     'label' => 'Home',
                     'icon' => 'fa-solid fa-house',
-                    'routeLink' => 'dashboard/home',
+                    'routeLink' => 'home',
                     "expanded" => 'false',
                     'menu_items' => []
                 ];
@@ -478,7 +478,7 @@ class ToolsController extends Controller
                 $LastMenuItem = [
                     'label' => 'Cerrar sesion',
                     'icon' => 'fa-solid fa-arrow-left-long',
-                    'routeLink' => 'dashboard/logout',
+                    'routeLink' => 'logout',
                     "expanded" =>'false',
                     'menu_items' => []
                 ];

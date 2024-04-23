@@ -69,6 +69,6 @@ export class UserTest360Component {
   }
 
   redirectToPage() {
-    this.router.navigate(['/dashboard/home']);
+    this.router.navigate(['home']);
   }
 }

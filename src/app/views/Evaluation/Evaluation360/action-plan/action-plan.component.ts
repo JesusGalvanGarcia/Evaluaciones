@@ -353,7 +353,7 @@ export class ActionPlan360Component {
   }
 
   redirectToPage() {
-    this.router.navigate(['/dashboard/home']);
+    this.router.navigate(['home']);
   }
 
   checkIfItsValid() {

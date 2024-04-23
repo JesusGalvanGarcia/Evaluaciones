@@ -165,7 +165,7 @@ export class PLDComponent implements OnInit {
   
       // Verificar si la fecha actual está entre start_date y end_date
       if (today >= startDate && today <= endDate) {
-        this.router.navigate(['/dashboard/exams/' + actionEvent.data.user_test_id + "/" + actionEvent.data.attempts]);
+        this.router.navigate(['exams/' + actionEvent.data.user_test_id + "/" + actionEvent.data.attempts]);
       } else {
         this.message.error("La fecha actual no está dentro del rango permitido para comenzar el examen.");
       }

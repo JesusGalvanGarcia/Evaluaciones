@@ -104,7 +104,7 @@ export class PLDExamComponent implements OnInit {
     this.start = false;
   }
   backIndex() {
-    this.router.navigate(['/dashboard/exam']);
+    this.router.navigate(['exam']);
   }
   PostsaveAnswers(question: Question, answer: Answer, idAnswer: number) {
     this.loading = true;

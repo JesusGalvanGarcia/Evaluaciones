@@ -261,12 +261,12 @@ export class Admin360Component implements OnInit {
       }
       if (actionEvent.action == GridActions.Continue )  //verificar si no han finalizado los intentos
       {
-        this.router.navigate(['/dashboard/users360/' + actionEvent.data.id]);
+        this.router.navigate(['users360/' + actionEvent.data.id]);
 
       }
       if (actionEvent.action == GridActions.AddClient )  //verificar si no han finalizado los intentos
       {
-        this.router.navigate(['/dashboard/360Users/' + actionEvent.data.id]);
+        this.router.navigate(['360Users/' + actionEvent.data.id]);
 
       }
   }
@@ -299,7 +299,7 @@ export class Admin360Component implements OnInit {
         localStorage.setItem("collaborator_name", actionEvent.data.collaborator_name);
         localStorage.setItem("admin", "true");
 
-        this.router.navigate(['/dashboard/personal360/' + this.evaluationNumber + "/" + actionEvent.data.collaborator_id]);
+        this.router.navigate(['personal360/' + this.evaluationNumber + "/" + actionEvent.data.collaborator_id]);
         
       }
       if (actionEvent.action == GridActions.Acept )  //verificar si no han finalizado los intentos

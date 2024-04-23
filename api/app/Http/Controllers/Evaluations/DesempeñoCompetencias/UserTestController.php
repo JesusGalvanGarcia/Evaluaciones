@@ -134,14 +134,15 @@ class UserTestController extends Controller
                 ])
                 ->find($user_test->test_id);
             //ir por permiso de andministradores
-            $permisses=['Acceso Administracion 360','Acceso Administracion desempeno'];
+            $permisses=['Acceso Administracion desempeno','Acceso Administracion 360'];
             $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
             // revisar si el user_id recibido es de algun administrador
             $userPermission = UserService::checkUserPermisseArray($permisses,$user);
+      
             // si no pertenece a ningun administrador, ni al responsable ni al evaluado no lo dejes pasarwq
             if (!$userPermission &&$user_evaluation->responsable_id!=request('user_id')&&$user_evaluation->user_id!=request('user_id'))
             return response()->json([
-                'title' => 'Consulta Cancelada',
+                'title' => 'Consulta Cancelada ',
                 'message' => 'Usuario invalido, no tienes acceso.',
                 'code' => $this->prefix . 'X202'
             ], 400);
@@ -358,7 +359,12 @@ class UserTestController extends Controller
                     'message' => 'Está prueba no es valida o ya ha sido resuelta.',
                     'code' => $this->prefix . 'X603'
                 ], 400);
-
+            if ($user_test->user_evaluation->responsable_id!=$request->user_id)
+            return response()->json([
+                'title' => 'Prueba Invalida',
+                'message' => 'Está prueba no te corresponde contestarla.',
+                'code' => $this->prefix . 'X603'
+            ], 400);
             // Se iguala el score actual de la prueba
             $total_score = $user_test->total_score;
 

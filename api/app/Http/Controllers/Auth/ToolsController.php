@@ -174,7 +174,7 @@ class ToolsController extends Controller
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'Required|Integer|Min:1',
                 'permissions' => 'Required|Array',
-                'permissions.*' => 'Required|String|Distinct',
+             //   'permissions.*' => 'Required|String|Distinct',
             ]);
 
             // Si la validación detecta un error regresa la descripción del error

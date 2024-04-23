@@ -97,17 +97,14 @@ const routes: Routes = [
         data: { permission: 'Acceso a examen PLD' }
     },
     {
-        path: '', 
-        component: PLDComponent,
-       
-    },
-    {
         path: 'exams/:id/:attempts',
         component: PLDExamComponent,
+        data: { permission: 'Permiso para contestar examen PLD' }
     },
     {
         path: 'asesors/:id/:attempts',
         component: EvaluationAsesorComponent,
+        data: { permission: 'Acceso a examen PLD' }
         
     },
     {
@@ -122,28 +119,30 @@ const routes: Routes = [
         path: 'adminPld/form/:idPldTest',
         component: PldFormComponent,
         canActivate: [AuthGuardService],
-        data: { permission: 'Acceso Administracion PLD' }
+        data: { permission: 'Permiso para editar examenes PLD' }
     },
     {
         path: 'adminPld/form',
         component: PldFormComponent,
         canActivate: [AuthGuardService],
-        data: { permission: 'Acceso Administracion PLD' }
+        data: { permission: 'Permiso para agregar examenes PLD' }
     },
     {
         path: 'review/:id',
         component: UserExamComponent,
         canActivate: [AuthGuardService],
-        data: { permission: 'Acceso Administracion PLD' }
+        data: { permission: 'Permiso para ver detalle de examen PLD' }
     },
     {
         path: 'evaluation350/:id',
-        component: Evaluation360Component
+        component: Evaluation360Component,
+        data: { permission: 'Permiso para consultar la evaluacion 360' }
     },
 
     {
         path: 'personal360/:idEvaluation/:idUser',
-        component: Personal360Component
+        component: Personal360Component,
+        data: { permission: 'Permiso para ver mi reporte 360' }
     },
 ];
 

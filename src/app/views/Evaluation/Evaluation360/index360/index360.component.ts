@@ -271,7 +271,7 @@ protected onActionEventPlans(actionEvent: { action: string, data: any }) {
         //  this.router.navigate(['exam/asesors/'+id+"/1"]);
           if(status=="Terminado")
           {
-            this.router.navigate(['/prueba/'+id]);
+            this.router.navigate(['/prueba360/'+id]);
           }
           else{
             this.router.navigate(['/dashboard/evaluation350/'+id]);

@@ -143,6 +143,7 @@ average(aspect: any, question: any,autoevaluacion:any): any {
   async getData() {
     this.body = {
       user_id: this.user_id,
+      user_id_valid: localStorage.getItem("user_id"),
       evaluation_id: this.evaluation_id
     };
 

@@ -120,7 +120,7 @@ Route::get('/test/pld', [TestController::class, 'showPLD'])->name('Mostrar los T
 Route::get('/test/pldForm/{id_test}', [TestController::class, 'indexPLD'])->name('Mostrar el formulario del Test de PLD');
 Route::put('/test/pldForm/{id_test}', [TestController::class, 'updatePLD'])->name('Permiso para editar examenes PLD');
 Route::post('/test/pld', [TestController::class, 'storePLD'])->name('Permiso para agregar examenes PLD');
-Route::delete('/test/pld/{id}', [TestController::class, 'destroy'])->name('Borrar el Test');
+Route::delete('/test/pld/{id}', [TestController::class, 'destroy'])->name('Permiso para eliminar PLD examen');
 
 
 Route::post('/user-actionPlan/confirmActionPlan', [UserActionPlanController::class, 'confirmActionPlan'])->name('Confirmar Plan de Acción');

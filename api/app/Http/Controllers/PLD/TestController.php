@@ -444,7 +444,16 @@ class TestController extends Controller
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'Required|Integer|NotIn:0|Min:0',
             ]);
-
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             if ($validator->fails()) {
 
                 return response()->json([

@@ -31,8 +31,9 @@ import { LoadingComponent } from './views/app/loading/loading.component';
 import { TablesModule } from './views/Evaluation/plan/plan.module';
 import { SidenavComponent } from './views/app/sidenav/sidenav.component';
 import { SublevelMenuComponent } from './views/app/sidenav/sublevel-menu.component';
-import { UserTestComponent } from './views/Evaluation/user-test/user-test.component';
+import { UserTestComponent } from './views/Evaluation/Desempeño/user-test/user-test.component';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
+import { UserTest360Component } from './views/Evaluation/Evaluation360/user-test/user-test.component';
 
 import { Personal360Component } from './views/Evaluation/Evaluation360/personal360/personal360.component';
 export function getDatepickerConfig(): BsDatepickerConfig {
@@ -52,7 +53,7 @@ export function getDatepickerConfig(): BsDatepickerConfig {
     SidenavComponent,
     SublevelMenuComponent,
     UserTestComponent,
-    
+    UserTest360Component
   ],
   imports: [
     AngularDualListBoxModule,

@@ -26,7 +26,7 @@ class UserService extends ServiceProvider
     }
     static function checkUserPermisseArray($name,$user)
     {   
-        $userPermissions = $user->permissions;
+        $userPermissions = $user->getAllPermissions();
 
         // Buscar el permiso específico dentro de los permisos del usuario
         $permission = $userPermissions->whereIn('name', $name)->first();

@@ -74,6 +74,13 @@ class ActionPlan360Controller extends Controller
                     'code' => $this->prefix . 'X104'
                 ], 400);
 
+                if ($user_action_plan->responsable_id!=$request->user_id)
+                return response()->json([
+                    'title' => 'Plan de acción no valido',
+                    'message' => 'Es posible que no tenga acceso a llenar este plan de accion.',
+                    'code' => $this->prefix . 'X104'
+                ], 400);
+
             DB::beginTransaction();
 
             UserAgreement::create([

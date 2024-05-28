@@ -8,6 +8,7 @@ import { ActionPlanComponent } from './views/Evaluation/action-plan/action-plan.
 import { UserTestComponent } from './views/Evaluation/user-test/user-test.component';
 import { UserExamComponent } from './views/PLD/user-exam/user-exam.component';
 import { UserAsesorComponent } from './views/Evaluation/Asesores/user-asesor/user-asesor.component';
+import { CoursesComponent } from './views/iSpring/courses/courses.component';
 const routes: Routes = [
   {
     path: 'login',
@@ -46,7 +47,8 @@ const routes: Routes = [
   { path: 'pruebaAsesor/:user_test_id', component: UserAsesorComponent, data: { routeName: 'Consultar Prueba del Usuario' } },
 
   { path: 'exam/:user_test_id', component: UserExamComponent, data: { routeName: 'Consultar Examen del Usuario' } },
-
+  
+  { path: 'iSpring/cursos', component: CoursesComponent, data: { routeName: 'Consultar Cursos de iSrping' } },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
 
 ];

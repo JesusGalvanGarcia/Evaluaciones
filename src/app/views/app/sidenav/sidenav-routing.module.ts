@@ -8,7 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from '../home/home.component';
 import { EvaluationsComponent } from '../../Evaluation/evaluations/evaluations.component';
-import{LogOutComponent} from "../logOut/logOut.component";
+import { LogOutComponent } from "../logOut/logOut.component";
 import { Index360Component } from '../../Evaluation/Evaluation360/index360/index360.component';
 import { SurveyComponent } from '../../Evaluation/Desempeño/desempeño/desempeño.component';;
 import { AdminPldComponent } from '../../PLD/adminPld/adminPld.component';
@@ -18,7 +18,8 @@ import { Admin360Component } from '../../Evaluation/Evaluation360/Admin360/Admin
 import { UsersComponent } from '../../Evaluation/Evaluation360/users/users.component';
 import { AdminAsesoresComponent } from '../../Evaluation/Asesores/AdminAsesores/AdminAsesores.component';
 import { UserAsesorsComponent } from '../../Evaluation/Asesores/user-asesors/user-asesors.component';
-import {Users360Component} from '../../Evaluation/Evaluation360/users360/users360.component';
+import { Users360Component } from '../../Evaluation/Evaluation360/users360/users360.component';
+import { CoursesComponent } from '../../iSpring/courses/courses.component';
 const routes: Routes = [
     {
         path: '',
@@ -37,11 +38,11 @@ const routes: Routes = [
         component: UsersComponent
     },
     {
-        path: 'asesoresUsers/:idEvaluation', 
+        path: 'asesoresUsers/:idEvaluation',
         component: UserAsesorsComponent
     },
     {
-        path: '360Users/:idEvaluation', 
+        path: '360Users/:idEvaluation',
         component: Users360Component
     },
     {
@@ -67,11 +68,13 @@ const routes: Routes = [
     {
         path: 'exam',
         loadChildren: () => import('../../PLD/PLD.module').then(m => m.PLDModule)
-    }
+    },
+  { path: 'iSpring/cursos', component: CoursesComponent, data: { routeName: 'Consultar Cursos de iSrping' } },
+
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class SideNavRoutingModule {}
+export class SideNavRoutingModule { }

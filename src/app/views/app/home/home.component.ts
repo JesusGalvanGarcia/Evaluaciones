@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  standalone:true,
+  standalone: true,
 
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -22,14 +22,13 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   protected isCollapsed: boolean = false;
-  id:any=localStorage.getItem("user_id");
-  constructor(  private router: Router) { }
+  id: any = localStorage.getItem("user_id");
+  constructor(private router: Router) { }
   showSubMenu: string | null = null;
   getUser() {
-    var user=localStorage.getItem("names");
-    if(user=="")
-    {
-  
+    var user = localStorage.getItem("names");
+    if (user == "") {
+
 
     }
 
@@ -38,25 +37,27 @@ export class HomeComponent implements OnInit {
   toggleSubMenu(menu: string) {
     this.showSubMenu = this.showSubMenu === menu ? null : menu;
   }
-  go(page:string)
-  {
-    switch(page)
-    {
-       case "PLD":
+  go(page: string) {
+    switch (page) {
+      case "PLD":
         this.router.navigate(['/dashboard/exam']);
         break;
-       case  "Evaluaciones":
+      case "Evaluaciones":
         this.router.navigate(['/dashboard/evaluacion']);
         break;
-        case  "360":
-          this.router.navigate(['/dashboard/evaluacion360']);
-          break;
-          case  "asesores":
-            this.router.navigate(['/dashboard/asesores']);
-            break;
-            case "admin360":
-              this.router.navigate(['/dashboard/admin360']);
-              break;
+      case "360":
+        this.router.navigate(['/dashboard/evaluacion360']);
+        break;
+      case "asesores":
+        this.router.navigate(['/dashboard/asesores']);
+        break;
+      case "admin360":
+        this.router.navigate(['/dashboard/admin360']);
+        break;
+      case "Cursos":
+        this.router.navigate(['/dashboard/iSpring/cursos']);
+        break;
+
 
     }
   }

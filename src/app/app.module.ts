@@ -35,6 +35,7 @@ import { UserTestComponent } from './views/Evaluation/user-test/user-test.compon
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
 
 import { Personal360Component } from './views/Evaluation/Evaluation360/personal360/personal360.component';
+import { CoursesComponent } from './views/iSpring/courses/courses.component';
 export function getDatepickerConfig(): BsDatepickerConfig {
   return Object.assign(new BsDatepickerConfig(), {
     isAnimated: true, 
@@ -52,6 +53,7 @@ export function getDatepickerConfig(): BsDatepickerConfig {
     SidenavComponent,
     SublevelMenuComponent,
     UserTestComponent,
+    CoursesComponent,
     
   ],
   imports: [

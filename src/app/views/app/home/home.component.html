@@ -1,38 +1,38 @@
 <!-- home.component.html -->
 
 <div class="home-container">
-    <div class="background">
-      <mat-card class="card-body">
-  <div style="display:flex;gap:5%">
-    <img class="logo"       src="assets/img/fondo.png" alt="Logo">
+  <div class="background">
+    <mat-card class="card-body">
+      <div style="display:flex;gap:5%">
+        <img class="logo" src="assets/img/fondo.png" alt="Logo">
 
-  </div>
+      </div>
       <!-- home.component.html -->
-<div class="data">
-  
-<div class="title">Intranet</div>
-<div class="subtitle"> <i class="fa-solid fa-user"></i>&nbsp; {{ getUser() }}</div>
-</div>
+      <div class="data">
 
-<!-- ... restante de tu contenido -->
+        <div class="title">Intranet</div>
+        <div class="subtitle"> <i class="fa-solid fa-user"></i>&nbsp; {{ getUser() }}</div>
+      </div>
 
-  
+      <!-- ... restante de tu contenido -->
+
+
       <div class="button-container">
         <button class="bottos" mat-flat-button color="primary" (click)="toggleSubMenu('pld')">
-          <i class="fa-solid fa-money-bill"></i><br/>
-           <div class="letter">PLD</div>
+          <i class="fa-solid fa-money-bill"></i><br />
+          <div class="letter">PLD</div>
           <mat-icon *ngIf="showSubMenu === 'pld'" class="sub-icon">keyboard_arrow_up</mat-icon>
           <div *ngIf="showSubMenu === 'pld'" class="sub-menu">
-         
+
             <a (click)="go('PLD')" routerLink="/dashboard/exam">Inicio</a>
           </div>
         </button>
-  
+
         <button mat-flat-button color="accent" class="bottos" (click)="toggleSubMenu('evaluaciones')">
           <i class="fa-solid fa-newspaper"></i>
-            <div class="letter">Evaluaciones</div>
+          <div class="letter">Evaluaciones</div>
           <mat-icon *ngIf="showSubMenu === 'evaluaciones'" class="sub-icon">keyboard_arrow_up</mat-icon>
-          <div *ngIf="showSubMenu === 'evaluaciones'" class="sub-menu" >
+          <div *ngIf="showSubMenu === 'evaluaciones'" class="sub-menu">
             <a (click)="go('Evaluaciones')" routerLink="/dashboard/evaluacion">Desempeño y competencias</a>
             <a (click)="go('360')" routerLink="/dashboard/evaluacion">360</a>
             <a (click)="go('asesores')" routerLink="/dashboard/evaluacion">Asesores</a>
@@ -40,9 +40,13 @@
 
           </div>
         </button>
+
+        <button mat-flat-button color="primary" class="bottos" (click)="go('Cursos')" >
+          <i class="fa-solid fa-rectangle-list"></i>
+          <div class="letter">Cursos</div>
+        </button>
       </div>
-   
-      </mat-card>
-    </div>
+
+    </mat-card>
   </div>
-  
+</div>

@@ -13,7 +13,8 @@ use App\Http\Controllers\Evaluations\DesempeñoCompetencias\UserTestController;
 use App\Http\Controllers\PLD\TestController;
 use App\Http\Controllers\Evaluations\Evaluation\UserController;
 use App\Http\Controllers\Evaluations\Evaluation360\Evaluation360Controller;
-
+use App\Http\Controllers\iSpring\CursosController;
+use App\Http\Controllers\iSpring\UserCoursesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Aws\S3\S3Client;
@@ -140,6 +141,23 @@ Route::resource('/action-Plan360', ActionPlan360Controller::class, [
         'destroy' => 'Borrar Plan de Acción del Usuario'
     ]
 ]);
+
+Route::resource('/iSpring/courses', CursosController::class, [
+    'names' => [
+        'index' => 'Consultar Evaluaciones del Usuario',
+        'show' => 'Consultar Usuarios',
+        
+    ]
+]);
+
+Route::resource('/iSpring/user-courses', UserCoursesController::class, [
+    'names' => [
+        'index' => 'Consultar Evaluaciones del Usuario',
+        'show' => 'Consultar Usuarios',
+        
+    ]
+]);
+
 Route::get('/tools/permissions', [ToolsController::class, 'permissions'])->name('Consultar Permisos');
 Route::post('/tools/permissions/create', [ToolsController::class, 'storePermissions'])->name('Crear Permisos');
 Route::post('/tools/permissions/assign', [ToolsController::class, 'assignPermissions'])->name('Asignar Permisos');

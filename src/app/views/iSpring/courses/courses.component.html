@@ -1,0 +1,28 @@
+<div class="container mt-4">
+    <div class="tex-center">
+
+        <mat-spinner *ngIf="loading"></mat-spinner>
+    </div>
+
+    <mat-card class="example-card mb-4" *ngFor="let course of courses">
+        <mat-card-header>
+            <mat-card-title>{{ course.courseTitle }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <p>{{ course.completionStatus }}</p>
+            <p>Progreso</p>
+            <mat-divider></mat-divider>
+        </mat-card-content>
+
+        <mat-card-footer>
+            <div class="progress" *ngIf="course.progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                    aria-label="Animated striped example" aria-valuenow="course.progress" aria-valuemin="0"
+                    aria-valuemax="100" style="width: {{ course.progress }}%"> {{course.progress}} %</div>
+            </div>
+        </mat-card-footer>
+        <mat-card-actions>
+            <button mat-button (click)="openLinkInNewWindow(course.courseId)">Continuar</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

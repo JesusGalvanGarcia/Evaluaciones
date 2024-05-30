@@ -115,6 +115,7 @@ Route::post('/user-tests/saveModuleNote', [UserTestController::class, 'saveModul
 Route::post('/user-tests/saveSuggetions', [UserTestController::class, 'saveSuggetions'])->name('Guardar campos del test');
 Route::post('/user-tests/changeProcess', [UserTestController::class, 'changeProcess'])->name('Cambiar de proceso');
 Route::post('/user-tests/saveAnswer', [UserTestController::class, 'saveAnswer'])->name('Guardar Respuesta del Usuario');
+Route::post('/user-tests/saveAverage', [UserTestController::class, 'saveAverage'])->name('Guardar promedio del Usuario');
 //PLD
 Route::resource('/PLDUser', PLDUsersController::class, [
     'names' => [

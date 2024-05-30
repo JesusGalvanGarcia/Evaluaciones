@@ -49,35 +49,6 @@ export class EvaluationsComponent implements OnInit {
 protected  isChecked: boolean = true;
 changeProcess:ProcessModel;
 ListChangeColaborator:CollaboratorEvaluation[];
- testModelList: TestModel[] = [
-  {
-    id: 1,
-    name: "Prueba 1",
-    total_score: "90",
-    finish_date: "2023-10-27",
-    status: "Aprobado",
-    rank: "Alto",
-    type: "Evaluación de desempeño",
-  },
-  {
-    id: 2,
-    name: "Prueba 2",
-    total_score: "85",
-    finish_date: "2023-10-26",
-    status: "En progreso",
-    rank: "Medio",
-    type: "Examen de certificación",
-  },
-  {
-    id: 3,
-    name: "Prueba 3",
-    total_score: "70",
-    finish_date: "2023-10-25",
-    status: "Reprobado",
-    rank: "Bajo",
-    type: "Evaluación de conocimientos",
-  },
-];
 ListColaborator:CollaboratorEvaluation[];
 ListTest:TestModel[];
 mostrar:boolean=false;
@@ -136,6 +107,11 @@ changeList()
   }
   toggleRow(row: any) {
     this.isLoading=true;
+    this.dataSource.data.forEach((element: any) => {
+      if (element !== row) {
+        element.isExpanded = false;
+      }
+    });  
     row.isExpanded = !row.isExpanded;
     row.detail=[]
     let data = {
@@ -157,7 +133,7 @@ changeList()
   this.isLoading=true;
   let data = {
     user_id: Number(localStorage.getItem("user_id")),
-    process_id:[1,2,3,4,5],
+    process_id:[1,2,3,4,5,12,13,14,15],
     collaborators_id: [],
     evaluations_id: []
   };
@@ -192,117 +168,36 @@ changeList()
 
     return user;
   }
-  clasification(data:string)
-{
-  switch(data)
-  {
-    case "Sin clasificación":
-      return "Esta evaluacion no se terminado de contestar aún ."
-    case "En Riesgo":
-      return "El colaborador ha tenido un rendimiento significativamente por debajo de las expectativas, tiene áreas de mejoras claramente identificadas, mismas que se le han indicado por medio de retroalimentación, necesidad urgente de intervención y desarrollo."
-    case "Baja":
-      return "El colaborador tuvo un desempeño insatisfactorio en varias áreas clave, así como el incumplimiento en sus metas y objetivos, requiere acciones correctivas para evitar consecuencias negativas."
-    case "Regular":
-      return "El colaborador ha tenido un cumplimiento básico de responsabilidades y expectativas, muestra competencias en algunas áreas pero con espacio para mejora. Cumple con las expectativas mínimas pero hay oportunidades para el crecimiento."
-    case "Buena":
-      return "El colaborador ha tenido un rendimiento sólido y consistente, cumple y en algunos casos supera las expectativas en su rol. Demuestra habilidades y competencias efectivas en la mayoría de las áreas.        "
-    case "Excelente":
-      return "El colaborador excede consistentemente las expectativas, muestra un desempeño excepcional y contribuye de manera significativa al equipo y a los objetivos de la organización, tiene un alto sentido de compromiso."
-    case "Máxima":
-      return "El colaborador tiene un desempeño excepcionalmente destacado en todas las áreas. Ha hecho contribuciones significativas que impactan positivamente en el equipo y en la organización en general, el colaborador muestra competencias que refieren estar listo para ser promovido."
-     default:
-         return"Sin clasificacion"
-    }
- 
-}
-getColorByClasification(clasification: string) {
-  switch (clasification) {
-    case "Sin clasificación":
-      return "#000";
-    case "En Riesgo":
-      return "#A52A2A";
-    case "Baja":
-      return "#DC143C";
-    case "Regular":
-      return "#1E90FF";
-    case "Buena":
-      return "#DAA520";
-    case "Excelente":
-      return "#228B22";
-    case "Máxima":
-      return "#228B22";
-    default:
-      return "#000"; // Color por defecto si no se encuentra una clasificación válida.
-  }
-}
 
-sendPageEvaluation(process:string,id:string,status:string,calificacion:number,detalle:any)
+sendPageEvaluation(process:string,id:string,status:string,process_id:number,index:number)
 {   
-   localStorage.setItem("score", detalle[0].total_score.toString());
-
-  switch(process)
+  if(status=='Terminado')
+    this.router.navigate(['/prueba/'+id]);
+  else
   {
-    case "Evaluación de Desempeño":
-      this.router.navigate(['/desempeño/'+id]);
-      if(status=="Terminado")
-      {
-        this.router.navigate(['/prueba/'+id]);
-      }
-      else{
+  switch(Number(process_id))
+  {
+    case  12  :
+      if(this.ListColaborator[this.indexPos].detail[index].order=='1')
+    this.router.navigate(['/competencias/'+id]);
+    else 
+    this.message.error("Hace falta contestar una evaluación o este proceso ya esta terminado");
+
+    break;
+    case  13  :
+      if(this.ListColaborator[this.indexPos].detail[0].status=='Terminado')
         this.router.navigate(['/desempeño/'+id]);
-      }
-    break
-    case "Evaluaciones de asesores":
-    //  this.router.navigate(['exam/asesors/'+id+"/1"]);
-      if(status=="Terminado")
-      {
-        this.router.navigate(['/prueba/'+id]);
-      }
-      else{
-        this.router.navigate(['asesors/'+id+"/1"]);
-      }
-    break
-    case "Evaluaciones 360":
-      //  this.router.navigate(['exam/asesors/'+id+"/1"]);
-        if(status=="Terminado")
-        {
-          this.router.navigate(['/prueba/'+id]);
-        }
-        else{
-          this.router.navigate(['evaluation360/'+id]);
-        }
-      break
-    case "Feedback y Plan de Acción":
- 
-     // const elemento = detalle.find((item:any) => item.name === "Evaluaciones de asesores");
-    
-      if(status!="Terminado")
-      {
-        this.message.error("La evaluación de competencias no se ha terminado de contestar.");
-      }
       else
-      {
+      this.message.error("Hace falta contestar una evaluación o este proceso ya esta terminado");
+    break;
+    default:
+      if(this.ListColaborator[this.indexPos].detail[0].status=='Terminado'&&this.ListColaborator[this.indexPos].detail[1].status=='Terminado')
         this.router.navigate(['/plan-accion/'+id]);
-      }
-    break
-    case "Evaluación de Competencias":
-      if(status=="Terminado")
-      {
-        this.router.navigate(['/prueba/'+id]);
-      }
-      else{
-        const elemento = detalle.find((item:any) => item.name === "Evaluación de Desempeño");
-    
-        if(elemento.status!="Terminado")     
-          this.message.error("La evaluación de desempeño no se ha terminado de contestar.");  
-        else
-          this.router.navigate(['/competencias/'+id]);
-        
-
-      }
-    break
+      else
+      this.message.error("Hace falta contestar una evaluación o este proceso ya esta terminado");
+    break;
   }
-
+}
   
 }
 applyFilter(event: Event) {

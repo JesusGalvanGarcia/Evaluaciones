@@ -25,9 +25,11 @@ export class CompetenciasComponent implements OnInit {
    isLoading: boolean = true;
   loading: boolean = false;
   noteUser: NoteUser;
+  averageUser:any;
   showNote:boolean=false;
   changeProcess:ProcessModel;
   totalScore:number=0;
+  note:string="";
   score:number=0;
   DesempenoTest: EvaluationTest;
   sendAnswered: Answered;
@@ -132,18 +134,23 @@ export class CompetenciasComponent implements OnInit {
   }
   home() 
     { 
-          this.isLoading=true;
-          this.changeProcessFunc(4);
-    
+    this.isLoading=true;
+    // this.changeProcessFunc(4);
+    this.send();
 
     }
- sendNote(idModule:number)
+ sendNote()
  {
 
-  if (this.DesempenoTest.test_modules[this.index].note!=null&&this.DesempenoTest.test_modules[this.index].note!="")
-  this.PostsaveNote(idModule);
+  if (this.note!='')
+{ 
+  this.PostsaveNote(this.DesempenoTest.test_modules[this.index-1].id);
+  this.PostsaveAverage(this.DesempenoTest.test_modules[this.index-1].id);
+}
   else
   this.message.error("La nota es requerida para continuar");
+
+
 
  }
   nextQuestion(idRespuesta: number, idPregunta: number, idModule: number, score: string,indexAnswer:number) {
@@ -161,20 +168,11 @@ export class CompetenciasComponent implements OnInit {
 
       this.indexQuestion++;
 
-      if (this.index === this.sizeTotal - 1 && this.indexQuestion+1==this.sizeQuestions) {
-
-      //  this.finish = true; //Termina cuando el index y el tamaño-1  del modulo y las preguntas son la misma cantidad
-   
-      }
-      else {
         if (this.indexQuestion === this.sizeQuestions) {
           this.showNote = true;
-
           this.index = this.index + 1;
           this.indexQuestion = 0; // Reiniciar para el nuevo módulo y las preguntas
-
         }
-      }
   
       this.showQuestion = false; // Inicia la animación de desvanecimiento
 
@@ -238,8 +236,9 @@ export class CompetenciasComponent implements OnInit {
 
       this.saveIndivisual.its_over = "si";
  
-      this.finish = true; //Termina cuando el index y el tamaño-1  del modulo y las preguntas son la misma cantidad
-      this.end=true;
+      //this.finish = true; //Termina cuando el index y el tamaño-1  del modulo y las preguntas son la misma cantidad
+      //this.end=true;
+     
     
     }
    
@@ -278,17 +277,14 @@ export class CompetenciasComponent implements OnInit {
       user_id: Number(localStorage.getItem("user_id")),
       user_test_id: this.user_test_id,
       module_id: idModule,
-      note:this.DesempenoTest.test_modules[this.index].note
+      note:this.note
 
     }
 
 
     this.userTestService.SendTestNote(this.noteUser)
       .then((response: any) => {
-        this.showModule=true;
-        this.showNote=false;
-        this.loading=false;
-
+  
    
       })
       .catch((error: any) => {
@@ -323,6 +319,35 @@ export class CompetenciasComponent implements OnInit {
   {
     this.router.navigate(['evaluacion']);
     this.message.success("¡Se ha suspendido la evaluacion!")
+  }
+  PostsaveAverage(idModule: number) {
+    this.loading=true;
+    this.isLoading=true;
+    this.averageUser = {
+      user_id: Number(localStorage.getItem("user_id")),
+      user_test_id: this.user_test_id,
+      module_id: idModule,
+
+    }
+
+    this.userTestService.SendAverage(this.averageUser)
+      .then((response: any) => {
+        this.isLoading=false;
+        this.loading=false;
+        if(this.index === this.sizeTotal )
+          {
+            this.showModule=false;
+            this.showNote=false;
+            this.end=true;
+     
+    
+          }
+      })
+      .catch((error: any) => {
+        console.error('Error in the request:', error);
+        this.message.error(error.message+" "+error.code);
+        this.isLoading=false
+      });
   }
   ngOnInit() {
    // this.changeProcessFunc(75,3);

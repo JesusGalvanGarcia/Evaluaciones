@@ -75,11 +75,7 @@
                                 <span class="result-description">{{ FinalEvalution.description }}</span><br /><br />
                             </div>
                             <div style="width: 100%;">
-                                <label class="checkbox-container" *ngIf=" score>75 ">
-                                    ¿Deseas continuar a la evaluación de competencias?
-                                    <input type="checkbox" [(ngModel)]="isChecked" (click)="onCheckboxChange()">
-                                    <span class="checkmark"></span>
-                                </label>
+                            
                                 <div class="back-to-evaluations">
                                     <button class="btn btn-success back-to-evaluations-button"
                                         (click)="home()">Volver</button><br /><br />

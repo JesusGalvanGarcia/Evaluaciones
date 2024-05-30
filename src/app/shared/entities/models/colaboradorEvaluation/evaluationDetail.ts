@@ -6,5 +6,6 @@ export class TestModel {
   status: string;
   rank: string;
   type: string;
+  order: string;
   }
   

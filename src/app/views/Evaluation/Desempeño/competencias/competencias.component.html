@@ -1,4 +1,4 @@
-<div class="bgImageContainer2"></div>
+<div class="bgImage2"></div>
 <div class="container main-container">
   <main>
     <!-- Contenedor -->
@@ -102,17 +102,15 @@
         <div *ngIf="showNote">
           <div class="contenedor-padreMod">
             <div class="contenedor-form">
-
-              <div class="row justify-content-center" style="padding-bottom: 50px; ">
+              <div class="row justify-content-center" style="padding-bottom: 50px;">
                 <div>
-
                   <button style="width:100%" class="btn btn-light" (click)="goIndex()">
                     <mat-icon>home</mat-icon>
                   </button><br />
                 </div><br />
                 <div class="col-md-10 center-div">
                   <div style="text-align: center;">
-                    <span class="sd">{{ DesempenoTest.test_modules[index-1].name }}</span><br />
+                    <span class="sd">{{ DesempenoTest.test_modules[index - 1].name }}</span><br />
                   </div>
                 </div><br />
                 <div class="backModul"><br />
@@ -123,34 +121,27 @@
                 <br />
                 <div style="width: 100%;">
                   <div style="text-align: center">
-                    <span class="sdPregunta">{{ DesempenoTest.test_modules[index-1].name }} </span><br />
-                    <span style="color:rgb(156, 16, 16);font-weight: bold;">Estas notas nos ayudan a tener un mejor
-                      entendimiento y seguimiento de la evaluación</span><br /><br />
+                    <span class="sdPregunta">{{ DesempenoTest.test_modules[index - 1].name }}</span><br />
+                    <span style="color:rgb(156, 16, 16);font-weight: bold;">Estas notas nos ayudan a tener un mejor entendimiento y seguimiento de la evaluación</span><br /><br />
                     <span style="color:#616161;font-weight: bold;">Nota final del modulo:</span><br /><br />
                     <mat-form-field class="form-input" style="width: 80% !important;">
-                      <textarea matInput style="width: 100%;"
-                        [placeholder]="'Escribe una nota adicional acerca de este modulo...'"
-                        [value]="DesempenoTest.test_modules[index].note"
-                        [(ngModel)]="DesempenoTest.test_modules[index].note" required></textarea> <br />
+                      <textarea matInput style="width: 100%;" [placeholder]="'Escribe una nota adicional acerca de este modulo...'"
+                        [(ngModel)]="note"  #textarea required></textarea> <br />
                     </mat-form-field>
                   </div>
-
                   <br />
-
                   <div class="text-center btnEmpezarMod">
-                    <button class="btn btn-success"
-                      (click)="sendNote(DesempenoTest.test_modules[index].id)">Siguiente</button>
-                  </div> <br />
+                    <button class="btn btn-success" (click)="sendNote()">Siguiente</button>
+                  </div><br />
                   <div class="cent">
                     <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-                    <!-- <button class="btn" *ngIf="!finish" class="btn btn-success">Guardar</button> -->
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
+        
         <div *ngIf="end">
           <div>
             <!-- Imagen de Login -->

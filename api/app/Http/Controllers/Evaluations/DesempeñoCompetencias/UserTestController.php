@@ -203,7 +203,100 @@ class UserTestController extends Controller
             ], 500);
         }
     }
+    public function saveAverage(Request $request)
+    {
 
+        try {
+
+            // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            // if (!$this->checkPermissions(request()->route()->getName())) {
+
+            //     return response()->json([
+            //         'title' => 'Proceso cancelado',
+            //         'message' => 'No tienes permiso para hacer esto.',
+            //         'code' => 'P007'
+            //     ], 400);
+            // }
+
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|NotIn:0|Min:0',
+                'user_test_id' => 'Required|Integer|NotIn:0|Min:0',
+                'module_id' => 'Nullable|Integer|NotIn:0|Min:0',
+            ]);
+
+            if ($validator->fails()) {
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X701'
+                ], 400);
+            }
+
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X702'
+                ], 400);
+
+
+
+            DB::beginTransaction();
+            // Calculate average score
+            $questions = Question::where('module_id',  $request->module_id)->get();
+            $sum = 0;
+            $count=0;
+            foreach ($questions as $question) {
+                $userAnswer = UserAnswer::where([
+                    ['user_test_id', $request->user_test_id],
+                    ['question_id',  $question->id]
+                ])->first();
+                $answer = Answer::where('id', $userAnswer->answer_id)->first();
+                $count++;
+                $sum = $sum + $answer->score;
+            }
+        
+            $average = round($sum / $count, 2);
+   
+            // Retrieve user test module
+            $user_test_module = UserTestModule::where([
+                ['user_test_id', $request->user_test_id],
+                ['module_id',  $request->module_id]
+            ])->first();
+
+            if ($user_test_module) {
+                $user_test_module->update([
+                    'average' =>  $average
+                ]);
+            } else {
+                UserTestModule::create([
+                    'user_test_id' => $request->user_test_id,
+                    'module_id' => $request->module_id,
+                    'average' =>  $average
+                ]);
+            }
+
+            DB::commit();
+
+
+            return response()->json([
+                'title' => 'Proceso terminado',
+                'message' => 'Promedio guardado correctamente',
+                'average' =>  $average
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X799'
+            ], 500);
+        }
+    }
     public function update(Request $request, string $id)
     {
         //
@@ -351,7 +444,7 @@ class UserTestController extends Controller
                 ], 400);
 
             //Se valida el estado de la prueba
-            $user_test = UserTest::whereIn('status_id', [1, 2, 3])->find($request->user_test_id);
+            $user_test = UserTest::whereIn('status_id', [1, 2])->find($request->user_test_id);
 
             if (!$user_test)
                 return response()->json([
@@ -416,24 +509,24 @@ class UserTestController extends Controller
 
                 $user_evaluation  = UserTest::find($user_test->id)->user_evaluation;
 
-                if ($user_evaluation->process_id == 6 || $user_evaluation->process_id == 1 || $user_evaluation->process_id == 2) {
+            
                     $user_evaluation->update(
                         [
-                            'status_id' => $user_evaluation->process_id == 6 ? 2 : 3,
+                            'status_id' => 2,
                             'finish_date' => Carbon::now()->format('Y-m-d'),
-                            'process_id' => $user_evaluation->process_id == 6 ? 8 : $user_evaluation->process_id,
+                            'process_id' => $user_evaluation->process_id == 12 ? 13 : 14,
                         ]
                     );
-                }
+                
 
-                TestService::sendTestMail([
+              /*  TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],
                     "total_score" => $total_score,
                     "user_evaluation" => $user_test->user_evaluation,
                     "evaluation_name" => $user_test->user_evaluation->evaluation->name,
                     "test" => $user_test->test
-                ]);
+                ]);*/
             }
 
             DB::commit();
@@ -495,15 +588,6 @@ class UserTestController extends Controller
                     'code' => $this->prefix . 'X702'
                 ], 400);
 
-            //Se valida el estado de la prueba
-            $user_test = UserTest::whereIn('status_id', [1, 2])->find($request->user_test_id);
-
-            if (!$user_test)
-                return response()->json([
-                    'title' => 'Prueba Invalida',
-                    'message' => 'Está prueba no es valida o ya ha sido resuelta.',
-                    'code' => $this->prefix . 'X703'
-                ], 400);
 
             DB::beginTransaction();
 

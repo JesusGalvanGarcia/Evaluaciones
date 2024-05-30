@@ -38,36 +38,7 @@ export class AsesoresComponent implements OnInit {
 
   protected  isChecked: boolean = true;
   changeProcess:ProcessModel;
-  ListChangeColaborator:CollaboratorEvaluation[];
-   testModelList: TestModel[] = [
-    {
-      id: 1,
-      name: "Prueba 1",
-      total_score: "90",
-      finish_date: "2023-10-27",
-      status: "Aprobado",
-      rank: "Alto",
-      type: "Evaluación de desempeño",
-    },
-    {
-      id: 2,
-      name: "Prueba 2",
-      total_score: "85",
-      finish_date: "2023-10-26",
-      status: "En progreso",
-      rank: "Medio",
-      type: "Examen de certificación",
-    },
-    {
-      id: 3,
-      name: "Prueba 3",
-      total_score: "70",
-      finish_date: "2023-10-25",
-      status: "Reprobado",
-      rank: "Bajo",
-      type: "Evaluación de conocimientos",
-    },
-  ];
+  ListChangeColaborator:CollaboratorEvaluation[]
   ListColaborator:CollaboratorEvaluation[];
   ListTest:TestModel[];
   mostrar:boolean=false;

@@ -163,6 +163,8 @@ return [
         /*
          * Application Service Providers...
          */
+        Illuminate\Auth\AuthServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,

@@ -1,3 +1,5 @@
+
+@import '../../../../shared/styles/generic-screen.scss';
 .sd{
     --cover-title-font-size: var(--sjs-font-surveytitle-size, calc(2 * (var(--sjs-font-size, 50%))));
     font-size: 200%;

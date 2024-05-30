@@ -25,7 +25,7 @@ import { Users360Component } from './views/Evaluation/Evaluation360/users360/use
 import { Personal360Component } from './views/Evaluation/Evaluation360/personal360/personal360.component';
 import { Evaluation360Component } from './views/Evaluation/Evaluation360/Evaluation360/Evaluation360.component';
 import { EvaluationAsesorComponent } from './views/Evaluation/Asesores/EvaluationAsesor/EvaluationAsesor.component';
-
+import { Curso1Component } from './views/cursos/curso1/curso1.component';
 // PLD components
 import { PLDComponent } from './views/PLD/PLD.component';
 import { PLDExamComponent } from './views/PLD/PLDExam/PLDExam.component';
@@ -39,6 +39,7 @@ import { AuthGuardService } from '@http/auth-guard.service';
 const routes: Routes = [
     // App routes
     { path: 'login', loadComponent: () => import('./views/app/login/login.component').then(m => m.LoginComponent) },
+    { path: 'example', loadComponent: () => import('./views/cursos/curso1/curso1.component').then(m => m.Curso1Component) },
     { path: 'home', component: HomeComponent },
     { path: 'sendEmail', loadComponent: () => import('./views/app/sendEmail/sendEmail.component').then(m => m.SendEmailPasswordComponent) },
     { path: 'resetPassword/:id', loadComponent: () => import('./views/app/resetPassword/resetPassword.component').then(m => m.ResertPasswordComponent) },

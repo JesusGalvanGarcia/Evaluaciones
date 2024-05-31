@@ -134,18 +134,18 @@ class UserTestController extends Controller
                 ])
                 ->find($user_test->test_id);
             //ir por permiso de andministradores
-            $permisses=['Acceso Administracion desempeno','Acceso Administracion 360'];
+            $permisses = ['Acceso Administracion desempeno', 'Acceso Administracion 360'];
             $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
             // revisar si el user_id recibido es de algun administrador
-            $userPermission = UserService::checkUserPermisseArray($permisses,$user);
-      
+            $userPermission = UserService::checkUserPermisseArray($permisses, $user);
+
             // si no pertenece a ningun administrador, ni al responsable ni al evaluado no lo dejes pasarwq
-            if (!$userPermission &&$user_evaluation->responsable_id!=request('user_id')&&$user_evaluation->user_id!=request('user_id'))
-            return response()->json([
-                'title' => 'Consulta Cancelada ',
-                'message' => 'Usuario invalido, no tienes acceso.',
-                'code' => $this->prefix . 'X202'
-            ], 400);
+            if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
+                return response()->json([
+                    'title' => 'Consulta Cancelada ',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X202'
+                ], 400);
             if ($user_evaluation->status_id == 1)
                 $user_evaluation->update([
                     'status_id' => 2
@@ -248,7 +248,7 @@ class UserTestController extends Controller
             // Calculate average score
             $questions = Question::where('module_id',  $request->module_id)->get();
             $sum = 0;
-            $count=0;
+            $count = 0;
             foreach ($questions as $question) {
                 $userAnswer = UserAnswer::where([
                     ['user_test_id', $request->user_test_id],
@@ -258,9 +258,9 @@ class UserTestController extends Controller
                 $count++;
                 $sum = $sum + $answer->score;
             }
-        
+
             $average = round($sum / $count, 2);
-   
+
             // Retrieve user test module
             $user_test_module = UserTestModule::where([
                 ['user_test_id', $request->user_test_id],
@@ -452,12 +452,12 @@ class UserTestController extends Controller
                     'message' => 'Está prueba no es valida o ya ha sido resuelta.',
                     'code' => $this->prefix . 'X603'
                 ], 400);
-            if ($user_test->user_evaluation->responsable_id!=$request->user_id)
-            return response()->json([
-                'title' => 'Prueba Invalida',
-                'message' => 'Está prueba no te corresponde contestarla.',
-                'code' => $this->prefix . 'X603'
-            ], 400);
+            if ($user_test->user_evaluation->responsable_id != $request->user_id)
+                return response()->json([
+                    'title' => 'Prueba Invalida',
+                    'message' => 'Está prueba no te corresponde contestarla.',
+                    'code' => $this->prefix . 'X603'
+                ], 400);
             // Se iguala el score actual de la prueba
             $total_score = $user_test->total_score;
 
@@ -509,17 +509,17 @@ class UserTestController extends Controller
 
                 $user_evaluation  = UserTest::find($user_test->id)->user_evaluation;
 
-            
-                    $user_evaluation->update(
-                        [
-                            'status_id' => 2,
-                            'finish_date' => Carbon::now()->format('Y-m-d'),
-                            'process_id' => $user_evaluation->process_id == 12 ? 13 : 14,
-                        ]
-                    );
-                
 
-              /*  TestService::sendTestMail([
+                $user_evaluation->update(
+                    [
+                        'status_id' => 2,
+                        'finish_date' => Carbon::now()->format('Y-m-d'),
+                        'process_id' => $user_evaluation->process_id == 12 ? 13 : 14,
+                    ]
+                );
+
+
+                /*  TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],
                     "total_score" => $total_score,

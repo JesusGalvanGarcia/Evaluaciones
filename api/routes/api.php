@@ -37,7 +37,7 @@ Route::resource('/evaluation360', Evaluation360Controller::class, [
     'names' => [
         'index' => 'Consultar Evaluaciones del Usuario',
         'show' => 'Consultar Usuarios',
-        
+
     ]
 ]);
 Route::post('/action-Plan360/confirmActionPlan', [ActionPlan360Controller::class, 'confirmActionPlan'])->name('Confirmar Plan de Acción');
@@ -64,7 +64,7 @@ Route::resource('/asesores', AsesoresController::class, [
     'names' => [
         'index' => 'Consultar Evaluaciones del Usuario',
         'show' => 'Consultar Usuarios',
-        
+
     ]
 ]);
 Route::post('/asesores/saveAnswerAsesores', [AsesoresController::class, 'saveAnswerAsesores'])->name('Guardar promedio del modulo');

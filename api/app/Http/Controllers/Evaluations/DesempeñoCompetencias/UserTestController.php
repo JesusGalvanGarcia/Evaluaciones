@@ -425,14 +425,12 @@ class UserTestController extends Controller
                 );
                 $answers = [];
                 // Traer los UserTestModules por el user_test_id, ordenarlos y tomar los primeros dos
-                $user_test_modules = UserTestModule::select('user_test_modules.id', 'user_test_modules.average', 'T.name', 'user_test_modules.user_test_id', 'T.id as module_id')
-                    ->join('user_tests as U', 'U.id', '=', 'user_test_modules.user_test_id')
-                    ->join('test_modules as T', 'T.test_id', '=', 'U.test_id')
+                $user_test_modules = UserTestModule::select('user_test_modules.id', 'user_test_modules.average', 'user_test_modules.user_test_id','user_test_modules.module_id')
                     ->where('user_test_modules.user_test_id', $user_test->id)
-                    ->orderBy('average', 'asc')
+                    ->orderBy('user_test_modules.average', 'asc')
                     ->take(2)
                     ->get();
-
+             
                 foreach ($user_test_modules as $item) {
                     //Traer las preguntas y respuestas cuyo score sea menor a 3
                     $answers = UserAnswer::join('questions as Q', 'Q.id', '=', 'user_answers.question_id')
@@ -441,7 +439,7 @@ class UserTestController extends Controller
                         ->where([['user_answers.user_test_id', $item->user_test_id], ['Q.module_id', $item->module_id], ['A.score', '<=', 3]])
                         ->take(2)
                         ->get();
-                      
+                     
                     if (count($answers)>0) {
                         $item->answers = $answers;
                         //Buscar el plan de accion deacuerdo a la evaluacion y empezar a crear acuerdos de forma automagica

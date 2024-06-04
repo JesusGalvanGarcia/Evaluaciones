@@ -88,7 +88,7 @@ class UserEvaluationController extends Controller
                 'E.name as evaluation_name',
                 DB::raw("CONCAT(U.name, ' ', U.father_last_name, ' ', U.mother_last_name) as collaborator_name"),
                 DB::raw("CONCAT(R.name, ' ', R.father_last_name, ' ', R.mother_last_name) as responsable_name"),
-                'user_evaluations.process_id',
+                'user_evaluations.process_id ',
                 'P.description as actual_process',
                 'P.phase',
                 'E.start_date',
@@ -120,6 +120,7 @@ class UserEvaluationController extends Controller
                 })
                 ->where("user_evaluations.evaluation_id", "!=", 2)
                 ->whereIn("user_evaluations.process_id",request('process_id'))
+           
                 ->get();
 
             $personal_evaluations = UserEvaluation::select(
@@ -336,43 +337,24 @@ class UserEvaluationController extends Controller
                 'user_tests.calification',
                 'user_tests.finish_date',
                 'S.description as status',
-                'C.name as clasificacion_name',
-                'C.color',
-                DB::raw("(
-                    CASE
-                        WHEN user_tests.status_id != 3 THEN 'Sin clasificación'
-                        ELSE (
-                            CASE
-                                WHEN user_tests.total_score < 70 THEN 'En Riesgo'
-                                WHEN user_tests.total_score >= 70 AND user_tests.total_score < 80 THEN 'Baja'
-                                WHEN user_tests.total_score >= 80 AND user_tests.total_score < 90 THEN 'Regular'
-                                WHEN user_tests.total_score >= 90 AND user_tests.total_score < 100 THEN 'Buena'
-                                WHEN user_tests.total_score >= 100 AND user_tests.total_score < 120 THEN 'Excelente'
-                                WHEN user_tests.total_score = 120 THEN 'Máxima'
-                            END
-                        )
-                    END
-                ) as rank"),
-                DB::raw("C.description as clasification_description"),
+                'UE.id as user_evaluation_id',
+                DB::raw("(CASE WHEN T.id = 141 THEN 1 ELSE 2 END) as 'order'"), // ordenar por los id test
+                'UE.process_id',
+                DB::raw("(CASE WHEN user_tests.status_id != 3 THEN 'Sin clasificación' ELSE (CASE when user_tests.total_score < 70 THEN 'En Riesgo' WHEN user_tests.total_score >= 70 AND user_tests.total_score < 80 THEN 'Baja' WHEN user_tests.total_score >= 80 AND user_tests.total_score < 90 THEN 'Regular' WHEN user_tests.total_score >= 90 AND user_tests.total_score < 100 THEN 'Buena' WHEN user_tests.total_score >= 100 AND user_tests.total_score < 120 THEN 'Excelente' WHEN user_tests.total_score = 120 THEN 'Máxima' END) END) as 'rank'"),
                 DB::raw("1 as type")
             )
-            ->join('user_evaluations as UE', function ($join) use ($id) {
-                $join->on('UE.id', 'user_tests.user_evaluation_id')
-                    ->where('UE.id', $id);
-            })
-            ->join('tests as T', 'T.id', 'user_tests.test_id')
-            ->leftJoin('status as S', function ($join) {
-                $join->on('S.status_id', 'user_tests.status_id')
-                    ->where('S.table_name', 'user_tests');
-            })
-            ->leftJoin('clasification as C', function ($join) {
-                $join->on('user_tests.test_id', 'C.test_id')
-                    ->on('user_tests.calification', '>=', 'C.start_range')
-                    ->on('user_tests.calification', '<=', 'C.end_range');
-            })
-            ->get();
+                ->join('user_evaluations as UE', function ($join) use ($id) {
+                    return $join->on('UE.id', 'user_tests.user_evaluation_id')
+                        ->where('UE.id', $id);
+                })
+                ->join('tests as T', 'T.id', 'user_tests.test_id')
+                ->join('status as S', function ($join) use ($id) {
+                    return $join->on('S.status_id', 'user_tests.status_id')
+                        ->where('S.table_name', 'user_tests');
+                })
+                ->get();
 
-   
+        
             // Evalua si la evaluación tiene relacionado un plan de acción
             $action_plan = ActionPlan::where('evaluation_id', $user_evaluation?->evaluation_id)->first();
 

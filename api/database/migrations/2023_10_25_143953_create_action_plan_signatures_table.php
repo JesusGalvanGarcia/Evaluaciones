@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('action_plan_signatures', function (Blueprint $table) {
+       /* Schema::create('action_plan_signatures', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_action_plan_id');
             $table->unsignedBigInteger('responsable_id');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
             $table->timestamp('deleted_at')->nullable($value = true);
-        });
+        });*/
     }
 
     /**
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('action_plan_signs');
+       // Schema::dropIfExists('action_plan_signs');
     }
 };

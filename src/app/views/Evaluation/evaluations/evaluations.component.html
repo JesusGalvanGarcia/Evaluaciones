@@ -22,7 +22,7 @@
           alt="Logo_Trinitas"
         />
       </span>
-      <span class="estilo-title">Evaluaciones de  desempeño </span>
+      <span class="estilo-title">Evaluaciones de competencias </span>
     </div>
     <div style="margin-top: 0%;">
       <div class="center-container"></div>
@@ -151,12 +151,12 @@
                     </div>
                  
                     <div class="dato" *ngIf="isChecked ==true" >
-                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.rank,row.detail)">
+                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.process_id,i)">
                         {{detalle.status  === 'Pendiente'?"Comenzar":detalle.status=="Terminado"?"Ver":"Continuar"}}
                       </button>
                     </div>
                     <div class="dato" *ngIf="isChecked ==false" >
-                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.rank,row.detail)">
+                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.process_id,i)">
                         Ver
                       </button>
                     </div>

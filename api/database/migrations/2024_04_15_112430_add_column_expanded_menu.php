@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('menu_items', function (Blueprint $table) {
+       /* Schema::table('menu_items', function (Blueprint $table) {
             $table->boolean('expanded')->default(false)->nullable();
-        });
+        });*/
     }
 
     /**

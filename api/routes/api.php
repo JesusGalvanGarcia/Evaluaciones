@@ -37,7 +37,7 @@ Route::resource('/evaluation360', Evaluation360Controller::class, [
     'names' => [
         'index' => 'Consultar Evaluaciones del Usuario',
         'show' => 'Consultar Usuarios',
-        
+
     ]
 ]);
 Route::post('/action-Plan360/confirmActionPlan', [ActionPlan360Controller::class, 'confirmActionPlan'])->name('Confirmar Plan de Acción');
@@ -64,7 +64,7 @@ Route::resource('/asesores', AsesoresController::class, [
     'names' => [
         'index' => 'Consultar Evaluaciones del Usuario',
         'show' => 'Consultar Usuarios',
-        
+
     ]
 ]);
 Route::post('/asesores/saveAnswerAsesores', [AsesoresController::class, 'saveAnswerAsesores'])->name('Guardar promedio del modulo');
@@ -115,6 +115,7 @@ Route::post('/user-tests/saveModuleNote', [UserTestController::class, 'saveModul
 Route::post('/user-tests/saveSuggetions', [UserTestController::class, 'saveSuggetions'])->name('Guardar campos del test');
 Route::post('/user-tests/changeProcess', [UserTestController::class, 'changeProcess'])->name('Cambiar de proceso');
 Route::post('/user-tests/saveAnswer', [UserTestController::class, 'saveAnswer'])->name('Guardar Respuesta del Usuario');
+Route::post('/user-tests/saveAverage', [UserTestController::class, 'saveAverage'])->name('Guardar promedio del Usuario');
 
 Route::post('/user-evaluations/createQuestions', [UserEvaluationController::class, 'createQuestions'])->name('Guardar Respuesta del Usuario');
 //PLD

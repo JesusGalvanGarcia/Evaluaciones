@@ -179,19 +179,9 @@ export class SurveyComponent implements OnInit {
 
   home() {
     this.isLoading = true;
-    // this.router.navigate(['/dashboard/evaluacion']);
-    if (this.score > 75 && this.isChecked) {
-      this.changeProcessFunc(2);
-    }
-    else {
-      if (this.score <= 75)
-        this.changeProcessFunc(2);
-      else {
-        this.changeProcessFunc(4);
+     this.router.navigate(['/evaluacion']);
+}
 
-      }
-    }
-  }
 
   changeProcessFunc(id: number) {
     this.changeProcess =

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Evaluations\DesempeñoCompetencias;
 
 
 use App\Http\Controllers\Controller;
-
+use App\Models\UserAgreement;
 use App\Models\User;
 use App\Models\Files;
 use App\Models\Process;
@@ -135,11 +135,20 @@ class UserTestController extends Controller
                 ->find($user_test->test_id);
             //ir por permiso de andministradores
             $permisses = ['Acceso Administracion desempeno', 'Acceso Administracion 360'];
+            $permisses = ['Acceso Administracion desempeno', 'Acceso Administracion 360'];
             $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
             // revisar si el user_id recibido es de algun administrador
             $userPermission = UserService::checkUserPermisseArray($permisses, $user);
 
+            $userPermission = UserService::checkUserPermisseArray($permisses, $user);
+
             // si no pertenece a ningun administrador, ni al responsable ni al evaluado no lo dejes pasarwq
+            if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
+                return response()->json([
+                    'title' => 'Consulta Cancelada ',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X202'
+                ], 400);
             if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
                 return response()->json([
                     'title' => 'Consulta Cancelada ',
@@ -509,21 +518,55 @@ class UserTestController extends Controller
 
                 $user_evaluation  = UserTest::find($user_test->id)->user_evaluation;
 
-                    $user_evaluation->update(
-                        [
-                            'status_id' => 2,
-                            'finish_date' => Carbon::now()->format('Y-m-d'),
-                            'process_id' => $user_evaluation->process_id == 12 ? 13 : 14,
-                        ]
-                    );
-                //Realizamos regla de 3 al finalizar la pregunta para saber la ponderación
-                $test=Test::find($user_test->test_id);
-                $new_score = round(($user_test->total_score * 100) / $test->max_score);
-                $user_test->update([
-                    'calification' => $new_score,
-                ]);
-              
-               /* TestService::sendTestMail([
+                $user_evaluation->update(
+                    [
+                        'status_id' => 2,
+                        'finish_date' => Carbon::now()->format('Y-m-d'),
+                        'process_id' => $user_evaluation->process_id == 12 ? 13 : 14,
+                    ]
+                );
+                $answers = [];
+                // Traer los UserTestModules por el user_test_id, ordenarlos y tomar los primeros dos
+                $user_test_modules = UserTestModule::select('user_test_modules.id', 'user_test_modules.average', 'T.name', 'user_test_modules.user_test_id', 'T.id as module_id')
+                    ->join('user_tests as U', 'U.id', '=', 'user_test_modules.user_test_id')
+                    ->join('test_modules as T', 'T.test_id', '=', 'U.test_id')
+                    ->where('user_test_modules.user_test_id', $user_test->id)
+                    ->orderBy('average', 'asc')
+                    ->take(2)
+                    ->get();
+
+                foreach ($user_test_modules as $item) {
+                    //Traer las preguntas y respuestas cuyo score sea menor a 3
+                    $answers = UserAnswer::join('questions as Q', 'Q.id', '=', 'user_answers.question_id')
+                        ->join('answers as A', 'A.id', '=', 'user_answers.answer_id')
+                        ->select('user_answers.id', 'user_answers.question_id', 'user_answers.answer_id', 'A.score as answer_score', 'Q.description')
+                        ->where([['user_answers.user_test_id', $item->user_test_id], ['Q.module_id', $item->module_id], ['A.score', '<=', 3]])
+                        ->take(2)
+                        ->get();
+                      
+                    if (count($answers)>0) {
+                        $item->answers = $answers;
+                        //Buscar el plan de accion deacuerdo a la evaluacion y empezar a crear acuerdos de forma automagica
+                        $action_plans = ActionPlan::where('evaluation_id', $user_evaluation->evaluation_id)->first();
+                        $user_action_plan = UserActionPlan::where([['action_plan_id', $action_plans->id], ['user_id', $user_evaluation->user_id], ['responsable_id', $user_evaluation->responsable_id]])->first();
+
+                        foreach ($answers as $item_answer) {
+                            UserAgreement::create([
+                                'user_action_plan_id' => $user_action_plan->id,
+                                'opportunity_area' => $item_answer->description,
+                                'goal' => '',
+                                'developed_skill' => '',
+                                'action' => '',
+                                // 'established_date' => Carbon::now()->format('Y-m-d'),
+                                'created_by' => $request->user_id,
+                                'updated_by' => $request->user_id
+                            ]);
+                        }
+                    }
+                }
+
+
+                /*  TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],
                     "total_score" => $total_score,

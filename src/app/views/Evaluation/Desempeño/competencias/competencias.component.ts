@@ -167,7 +167,7 @@ export class CompetenciasComponent implements OnInit {
     if (this.indexQuestion + 1 != this.sizeQuestions)
       this.indexQuestion = this.indexQuestion + 1;
     else {
-      if (this.index+1 === this.sizeTotal) {
+      if (this.index + 1 === this.sizeTotal) {
         this.showModule = false;
         this.showNote = false;
         this.end = true;
@@ -175,7 +175,7 @@ export class CompetenciasComponent implements OnInit {
         this.isLoading = true;
         this.index = this.index + 1;
         this.sizeQuestions =
-        this.DesempenoTest.test_modules[this.index].questions.length;
+          this.DesempenoTest.test_modules[this.index].questions.length;
         this.indexQuestion = 0;
         this.isLoading = false;
         this.showNote = true;
@@ -189,8 +189,8 @@ export class CompetenciasComponent implements OnInit {
   }
   sendNote() {
     if (
-      this.DesempenoTest.test_modules[this.index - 1].note.trim() != '' &&
-      this.DesempenoTest.test_modules[this.index - 1].note != null
+      this.DesempenoTest.test_modules[this.index - 1].note != null &&
+      this.DesempenoTest.test_modules[this.index - 1].note.trim() != ''
     ) {
       this.PostsaveNote(this.DesempenoTest.test_modules[this.index - 1].id);
       this.PostsaveAverage(this.DesempenoTest.test_modules[this.index - 1].id);
@@ -344,7 +344,7 @@ export class CompetenciasComponent implements OnInit {
       .GetEvaluation(data, this.user_test_id)
       .then((response: any) => {
         this.DesempenoTest = response.test;
-        this.score=Number(response.score);
+        this.score = Number(response.score);
         this.evaluatedUserName = response.evaluated_user_name;
         this.sizeTotal = this.DesempenoTest.test_modules.length;
         this.sizeQuestions =

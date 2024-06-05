@@ -191,8 +191,8 @@ class UserTestController extends Controller
                     'code' => $this->prefix . 'X204'
                 ], 400);
 
-            $clasification = TestService::getClasification($user_test->total_score,$user_test->test_id);
-
+            $clasification = TestService::getClasification($user_test->calification,$user_test->test_id);
+            return $user_test;
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Detalle de la prueba del usuario consultado correctamente',
@@ -512,8 +512,6 @@ class UserTestController extends Controller
                 'updated_by' => $request->user_id,
             ]);
 
-            $clasification = TestService::getClasification($total_score,$user_test->test_id);
-
             if ($request->its_over == 'si') {
 
                 $user_evaluation  = UserTest::find($user_test->id)->user_evaluation;
@@ -569,7 +567,7 @@ class UserTestController extends Controller
                 $user_test->update([
                     'calification' => $new_score,
                 ]);
-              
+                $clasification = TestService::getClasification($new_score ,$user_test->test_id);              
                /* TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],

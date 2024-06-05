@@ -38,6 +38,7 @@ export class CompetenciasComponent implements OnInit {
   loading: boolean = false;
   noteUser: NoteUser;
   averageUser: any;
+  clasification:any;
   showNote: boolean = false;
   changeProcess: ProcessModel;
   totalScore: number = 0;
@@ -295,6 +296,8 @@ export class CompetenciasComponent implements OnInit {
       .SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
         this.score = Number(response.actual_score);
+        this.clasification=response.clasification;
+        
         this.loading = false;
 
         if (this.finish != true) {

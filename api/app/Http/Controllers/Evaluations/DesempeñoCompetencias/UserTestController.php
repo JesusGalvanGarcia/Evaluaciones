@@ -453,7 +453,7 @@ class UserTestController extends Controller
                 ], 400);
 
             //Se valida el estado de la prueba
-            $user_test = UserTest::whereIn('status_id', [1, 2])->find($request->user_test_id);
+            $user_test = UserTest::whereIn('status_id', [1, 2,3])->find($request->user_test_id);
 
             if (!$user_test)
                 return response()->json([
@@ -562,13 +562,7 @@ class UserTestController extends Controller
                         }
                     }
                 }
-                    $user_evaluation->update(
-                        [
-                            'status_id' => 2,
-                            'finish_date' => Carbon::now()->format('Y-m-d'),
-                            'process_id' => $user_evaluation->process_id == 12 ? 13 : 14,
-                        ]
-                    );
+
                 //Realizamos regla de 3 al finalizar la pregunta para saber la ponderación
                 $test=Test::find($user_test->test_id);
                 $new_score = round(($user_test->total_score * 100) / $test->max_score);

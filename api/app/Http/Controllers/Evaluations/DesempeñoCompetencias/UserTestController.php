@@ -182,7 +182,7 @@ class UserTestController extends Controller
                     'code' => $this->prefix . 'X204'
                 ], 400);
             $clasification = [];
-            if ($user_test->test_id != 141)
+            if ($user_test->test_id != 142)
                 $clasification = TestService::getClasification($user_test->total_score, $user_test->test_id);
 
             return response()->json([

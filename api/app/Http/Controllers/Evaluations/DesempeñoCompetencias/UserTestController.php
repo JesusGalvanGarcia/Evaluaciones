@@ -182,7 +182,7 @@ class UserTestController extends Controller
                     'code' => $this->prefix . 'X204'
                 ], 400);
 
-            $clasification = TestService::getClasification($user_test->total_score);
+            $clasification = TestService::getClasification($user_test->total_score,$user_test->test_id);
 
             return response()->json([
                 'title' => 'Proceso terminado',
@@ -410,7 +410,7 @@ class UserTestController extends Controller
                 'updated_by' => $request->user_id,
             ]);
 
-            $clasification = TestService::getClasification($total_score);
+            $clasification = TestService::getClasification($total_score,$user_test->test_id);
 
             if ($request->its_over == 'si') {
 

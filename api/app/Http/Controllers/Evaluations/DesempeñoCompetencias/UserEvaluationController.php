@@ -338,21 +338,6 @@ class UserEvaluationController extends Controller
                 'S.description as status',
                 'C.name as clasificacion_name',
                 'C.color',
-                DB::raw("(
-                    CASE
-                        WHEN user_tests.status_id != 3 THEN 'Sin clasificación'
-                        ELSE (
-                            CASE
-                                WHEN user_tests.total_score < 70 THEN 'En Riesgo'
-                                WHEN user_tests.total_score >= 70 AND user_tests.total_score < 80 THEN 'Baja'
-                                WHEN user_tests.total_score >= 80 AND user_tests.total_score < 90 THEN 'Regular'
-                                WHEN user_tests.total_score >= 90 AND user_tests.total_score < 100 THEN 'Buena'
-                                WHEN user_tests.total_score >= 100 AND user_tests.total_score < 120 THEN 'Excelente'
-                                WHEN user_tests.total_score = 120 THEN 'Máxima'
-                            END
-                        )
-                    END
-                ) as rank"),
                 DB::raw("C.description as clasification_description"),
                 DB::raw("1 as type")
             )

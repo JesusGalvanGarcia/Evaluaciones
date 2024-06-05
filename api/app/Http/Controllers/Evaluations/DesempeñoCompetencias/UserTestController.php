@@ -524,14 +524,6 @@ class UserTestController extends Controller
                     'calification' => $new_score,
                 ]);
               
-            
-                $user_evaluation->update(
-                    [
-                        'status_id' => 2,
-                        'finish_date' => Carbon::now()->format('Y-m-d'),
-                        'process_id' => $user_evaluation->process_id == 12 ? 13 : 14,
-                    ]
-                );
                 $answers = [];
                 // Traer los UserTestModules por el user_test_id, ordenarlos y tomar los primeros dos
                 $user_test_modules = UserTestModule::select('user_test_modules.id', 'user_test_modules.average', 'user_test_modules.user_test_id','user_test_modules.module_id')

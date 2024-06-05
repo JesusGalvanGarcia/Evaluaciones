@@ -31,7 +31,8 @@ class TestService extends ServiceProvider
         $clasification = collect();
         $clasification = [
             "clasification" => $clasifications->name,
-            "description" => $clasifications->description
+            "description" => $clasifications->description,
+            "color" => $clasifications->color
         ];
        
         return $clasification;

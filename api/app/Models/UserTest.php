@@ -18,6 +18,7 @@ class UserTest extends Model
         'test_id',
         'strengths',
         'chance',
+        'calification',
         'suggestions',
         'attempts',
         'total_score',

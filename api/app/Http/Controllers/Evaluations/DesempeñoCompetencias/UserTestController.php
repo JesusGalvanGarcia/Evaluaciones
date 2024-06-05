@@ -191,7 +191,7 @@ class UserTestController extends Controller
                     'code' => $this->prefix . 'X204'
                 ], 400);
 
-            $clasification = TestService::getClasification($user_test->total_score);
+            $clasification = TestService::getClasification($user_test->total_score,$user_test->test_id);
 
             return response()->json([
                 'title' => 'Proceso terminado',
@@ -509,10 +509,10 @@ class UserTestController extends Controller
                 'status_id' => $request->its_over == 'si' ? 3 : 2,
                 'finish_date' => $request->its_over == 'si' ? Carbon::now()->format('Y-m-d') : null,
                 'total_score' => $total_score,
-                'updated_by' => $request->user_id
+                'updated_by' => $request->user_id,
             ]);
 
-            $clasification = TestService::getClasification($total_score);
+            $clasification = TestService::getClasification($total_score,$user_test->test_id);
 
             if ($request->its_over == 'si') {
 
@@ -562,9 +562,21 @@ class UserTestController extends Controller
                         }
                     }
                 }
-
-
-                /*  TestService::sendTestMail([
+                    $user_evaluation->update(
+                        [
+                            'status_id' => 2,
+                            'finish_date' => Carbon::now()->format('Y-m-d'),
+                            'process_id' => $user_evaluation->process_id == 12 ? 13 : 14,
+                        ]
+                    );
+                //Realizamos regla de 3 al finalizar la pregunta para saber la ponderación
+                $test=Test::find($user_test->test_id);
+                $new_score = round(($user_test->total_score * 100) / $test->max_score);
+                $user_test->update([
+                    'calification' => $new_score,
+                ]);
+              
+               /* TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],
                     "total_score" => $total_score,
@@ -575,7 +587,7 @@ class UserTestController extends Controller
             }
 
             DB::commit();
-
+          
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Respuesta guardada correctamente',

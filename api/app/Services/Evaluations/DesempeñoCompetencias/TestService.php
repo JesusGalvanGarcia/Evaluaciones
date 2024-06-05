@@ -27,7 +27,7 @@ class TestService extends ServiceProvider
 {
     static function getClasification($actual_score,$test)
     {
-        $clasifications=Clasification::where([['test_id',$test],['start_range','<=',$actual_score],['end_range','>=',$actual_score]])->first();
+        $clasifications=Clasification::where([['test_id',$test],['start_range','<=',(float)$actual_score],['end_range','>=',(float)$actual_score]])->first();
         $clasification = collect();
         $clasification = [
             "clasification" => $clasifications->name,

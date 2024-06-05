@@ -135,7 +135,9 @@
                   <div class="row ranks" >
                 <div class="col col-sm-9">
                   <ng-container *ngIf="detalle.name =='Evaluación de competencias'; else elseTemplate">
-                    &nbsp; &nbsp; {{ detalle.clasificacion_name}}    
+                 <div *ngIf="detalle.status =='Terminado'">
+                  &nbsp; &nbsp; {{ detalle.clasificacion_name}}    
+                 </div>
                   </ng-container>
                   <ng-template #elseTemplate>
                     <span></span>
@@ -143,7 +145,7 @@
                 </div>
                 <div class="col col-sm-1" *ngIf="detalle.name =='Evaluación de competencias'">
                   <span   [style.color]="detalle.color" mat-button [matTooltip]="detalle.clasification_description"  *ngIf="detalle.rank!==''">
-                    <mat-icon>warning</mat-icon>
+                    <mat-icon *ngIf="detalle.status =='Terminado'">warning</mat-icon>
 
                   </span>
                 </div>

@@ -182,9 +182,10 @@ class UserTestController extends Controller
                     'code' => $this->prefix . 'X204'
                 ], 400);
             $clasification = [];
+            
             if ($user_test->test_id != 142)
-                $clasification = TestService::getClasification($user_test->total_score, $user_test->test_id);
-
+                $clasification = TestService::getClasification($user_test->calification, $user_test->test_id);
+        
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Detalle de la prueba del usuario consultado correctamente',
@@ -436,7 +437,7 @@ class UserTestController extends Controller
             }
 
             $user = UserService::checkUser(request('user_id'));
-
+            $clasification =[];
             if (!$user)
                 return response()->json([
                     'title' => 'Consulta Cancelada',
@@ -561,6 +562,8 @@ class UserTestController extends Controller
                 $user_test->update([
                     'calification' => $new_score,
                 ]);
+           
+                if($user_test->test_id!=142)
                 $clasification = TestService::getClasification($new_score ,$user_test->test_id);              
                /* TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],

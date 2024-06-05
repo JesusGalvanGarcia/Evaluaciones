@@ -135,20 +135,11 @@ class UserTestController extends Controller
                 ->find($user_test->test_id);
             //ir por permiso de andministradores
             $permisses = ['Acceso Administracion desempeno', 'Acceso Administracion 360'];
-            $permisses = ['Acceso Administracion desempeno', 'Acceso Administracion 360'];
             $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
             // revisar si el user_id recibido es de algun administrador
             $userPermission = UserService::checkUserPermisseArray($permisses, $user);
 
-            $userPermission = UserService::checkUserPermisseArray($permisses, $user);
-
             // si no pertenece a ningun administrador, ni al responsable ni al evaluado no lo dejes pasarwq
-            if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
-                return response()->json([
-                    'title' => 'Consulta Cancelada ',
-                    'message' => 'Usuario invalido, no tienes acceso.',
-                    'code' => $this->prefix . 'X202'
-                ], 400);
             if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
                 return response()->json([
                     'title' => 'Consulta Cancelada ',
@@ -190,9 +181,10 @@ class UserTestController extends Controller
                     'message' => 'Verifica la información.',
                     'code' => $this->prefix . 'X204'
                 ], 400);
+            $clasification = [];
+            if ($user_test->test_id != 141)
+                $clasification = TestService::getClasification($user_test->total_score, $user_test->test_id);
 
-            $clasification = TestService::getClasification($user_test->calification,$user_test->test_id);
-            return $user_test;
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Detalle de la prueba del usuario consultado correctamente',
@@ -512,6 +504,8 @@ class UserTestController extends Controller
                 'updated_by' => $request->user_id,
             ]);
 
+ 
+
             if ($request->its_over == 'si') {
 
                 $user_evaluation  = UserTest::find($user_test->id)->user_evaluation;
@@ -562,7 +556,7 @@ class UserTestController extends Controller
                 }
 
                 //Realizamos regla de 3 al finalizar la pregunta para saber la ponderación
-                $test=Test::find($user_test->test_id);
+                $test = Test::find($user_test->test_id);
                 $new_score = round(($user_test->total_score * 100) / $test->max_score);
                 $user_test->update([
                     'calification' => $new_score,
@@ -579,7 +573,7 @@ class UserTestController extends Controller
             }
 
             DB::commit();
-          
+
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Respuesta guardada correctamente',

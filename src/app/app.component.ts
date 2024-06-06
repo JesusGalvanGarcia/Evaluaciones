@@ -10,6 +10,20 @@ export class AppComponent {
   title = 'intranet-app';
   constructor(public router: Router) {}
   isLoginPage(): boolean {
-    return this.router.url === '/login';
+    const loginRoutes = ['/login', '/sendEmail'];
+    const currentUrl = this.router.url;
+  
+    // Verificar rutas exactas
+    if (loginRoutes.includes(currentUrl)) {
+      return true;
+    }
+  
+    // Verificar ruta con parámetros dinámicos
+    const resetPasswordRouteRegex = /^\/resetPassword\/[^/]+$/;
+    if (resetPasswordRouteRegex.test(currentUrl)) {
+      return true;
+    }
+  
+    return false;
   }
 }

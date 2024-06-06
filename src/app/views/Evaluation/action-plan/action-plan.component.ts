@@ -279,7 +279,7 @@ export class ActionPlanComponent {
       then(({ }) => {
 
         this.getAgreements();
-        this.changeProcessFunc(5,this.user_action_plan_id);
+        //this.changeProcessFunc(5,this.user_action_plan_id);
       })
       .catch(({ title, message, code }) => {
        

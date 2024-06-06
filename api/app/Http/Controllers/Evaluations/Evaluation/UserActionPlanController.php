@@ -539,7 +539,7 @@ class UserActionPlanController extends Controller
                     $newProcessId = 11;
                     break;
                 default:
-                    $newProcessId = 5;
+                    $newProcessId = 15;
             }
             // La evaluación pasa a estar en el proceso de firmas
             UserEvaluation::where('id', $user_evaluation->id)->update([
@@ -551,10 +551,10 @@ class UserActionPlanController extends Controller
             DB::commit();
           
             // Se envía el correo de confirmación del plan de acción.
-            if($newProcessId ==5)
+           // if($newProcessId ==5)
             ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlanComplete");
-            else
-            ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlan350");
+           // else
+           // ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlan350");
 
             return response()->json([
                 'title' => 'Proceso terminado',

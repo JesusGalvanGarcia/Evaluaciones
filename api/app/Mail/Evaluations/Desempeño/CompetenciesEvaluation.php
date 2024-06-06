@@ -50,7 +50,7 @@ class CompetenciesEvaluation extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Evaluations/CompetenciesComplete',
+            view: 'Evaluations/DesempeñoyCompetencias/CompetenciesComplete',
             with: [
                 'evaluation_data' => $this->evaluation_data,
                 'evaluated_user' => $this->evaluated_user,

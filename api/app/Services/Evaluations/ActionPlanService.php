@@ -2,7 +2,7 @@
 
 namespace App\Services\Evaluations;
 
-use App\Mail\Evaluations\Evaluations\ActionPlan;
+use App\Mail\Evaluations\Desempeño\ActionPlan;
 use App\Mail\Evaluations\Signatures;
 use App\Models\Task;
 use App\Models\User;
@@ -71,7 +71,7 @@ class ActionPlanService extends ServiceProvider
         $responsable_leader_id = UserCollaborator::where('collaborator_id', $user_evaluation->responsable_id)->first();
         $responsable_leader = User::find($responsable_leader_id?->user_id);
 
-        $mail = Mail::to('brenda.ortiz@trinitas.mx')->cc('francisco.delarosa@trinitas.mx')->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
-    // $mail = Mail::to($evaluated_user->email)->cc(['francisco.delarosa@trinitas.mx', $responsable_leader?->email])->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
+        //$mail = Mail::to('brenda.ortiz@trinitas.mx')->cc('francisco.delarosa@trinitas.mx')->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
+        $mail = Mail::to($evaluated_user->email)->cc(['francisco.delarosa@trinitas.mx', $responsable_leader?->email])->send(new Signatures($evaluation_name, $evaluated_user, $responsable_user));
     }
 }

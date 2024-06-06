@@ -565,14 +565,14 @@ class UserTestController extends Controller
            
                 if($user_test->test_id!=142)
                 $clasification = TestService::getClasification($new_score ,$user_test->test_id);              
-               /* TestService::sendTestMail([
-                    "clasification" => $clasification['clasification'],
-                    "clasification_description" => $clasification['description'],
+                TestService::sendTestMail([
+                    "clasification" => $user_test->test_id!=142?$clasification['clasification']:[],
+                    "clasification_description" =>  $user_test->test_id!=142?$clasification['description']:[],
                     "total_score" => $total_score,
                     "user_evaluation" => $user_test->user_evaluation,
                     "evaluation_name" => $user_test->user_evaluation->evaluation->name,
                     "test" => $user_test->test
-                ]);*/
+                ]);
             }
 
             DB::commit();

@@ -118,6 +118,8 @@ Route::post('/user-tests/saveAnswer', [UserTestController::class, 'saveAnswer'])
 Route::post('/user-tests/saveAverage', [UserTestController::class, 'saveAverage'])->name('Guardar promedio del Usuario');
 
 Route::post('/user-evaluations/createQuestions', [UserEvaluationController::class, 'createQuestions'])->name('Guardar Respuesta del Usuario');
+Route::post('/user-evaluations/createEvaluations', [UserEvaluationController::class, 'createEvaluations'])->name('Guardar Evaluaciones del Usuario');
+
 //PLD
 Route::resource('/PLDUser', PLDUsersController::class, [
     'names' => [

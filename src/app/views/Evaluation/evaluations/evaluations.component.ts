@@ -203,7 +203,12 @@ changeList(status:any)
 sendPageEvaluation(process:string,id:string,status:string,process_id:number,index:number)
 {   
   if(status=='Terminado')
-    this.router.navigate(['/prueba/'+id]);
+    {
+      if(process=='Feedback y Plan de Acción')
+      this.router.navigate(['/plan-accion/'+id]);
+      else
+      this.router.navigate(['/prueba/'+id]);
+    }
   else
   {
   switch(Number(process_id))

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Evaluations\DesempeñoCompetencias;
 use App\Http\Controllers\Controller;
 
 use App\Models\ActionPlan;
+use App\Models\ActionPlanSignature;
 use App\Models\Process;
 use App\Models\Status;
 use App\Models\Test;
@@ -171,6 +172,104 @@ class UserEvaluationController extends Controller
             ], 500);
         }
     }
+    public function createEvaluations(Request $request)
+    {
+        $validator = Validator::make(request()->all(), [
+            'user_id' => 'Required|Integer|NotIn:0|Min:0',
+            'responsable_id' => 'Required|Integer',
+            'evaluation_id' => 'Required|Integer',
+            'action_plan_id' => 'Required|Integer',
+            'colaborators'=>'Required|Array', //Colaboradores que seran asignados al responsable
+            'tests_id'=>'Required|Array', //Desempeño y Competencias o si se requiere mas, pues mas,
+            'responsables'=>'Required|Array',//responsable de firmar en este caso es paco, ya automaticamente hace la firma de el colaborador y colaborador-lider solo falta DO
+        ]);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+                'title' => 'Datos Faltantes',
+                'message' => $validator->messages()->first(),
+                'code' => $this->prefix . 'X101'
+            ], 400);
+        }
+        try{
+            DB::beginTransaction();
+        foreach($request->colaborators as $item)
+        {
+            //crear el user evaluation 
+             $user_evaluation=  UserEvaluation::create([
+                'user_id' => $item,
+                'evaluation_id' => $request->evaluation_id,
+                'process_id' => 12,
+                'status_id' => 1,
+                'created_by' => $request->user_id,
+                'updated_by' => $request->user_id,
+                'responsable_id' => $request->responsable_id,
+                'actual_attempt' => 1
+            ]);
+            //crear user_test es decir desempeño o competencias
+           foreach($request->tests_id as $test)
+           {
+            $user_tests=  UserTest::create([
+                'test_id' => $test,
+                'total_score' => 0,
+                'status_id' => 1,
+                'user_evaluation_id' =>$user_evaluation->id,
+                'attempts' => 1,
+                'strengths' => '',
+                'chance' =>'',
+                'suggestions' => '',
+                'calification' => 0,
+                'created_by' => $request->user_id,
+                'updated_by' => $request->user_id,
+            ]);
+           }
+           //crear plan de accion
+           $user_action_plan=UserActionPlan::create([
+            'user_id' => $item,
+            'action_plan_id' => $request->action_plan_id,
+            'status_id' => 1,
+            'responsable_id' => $request->responsable_id,
+            'created_by' => $request->user_id,
+            'updated_by' => $request->user_id,
+           ]);
+           //Añadir como responsables de firmar a los colaboradores que no son DO
+           $action_plan_signature=ActionPlanSignature::create([
+            'user_action_plan_id' => $user_action_plan->id,
+            'responsable_id' => $request->responsable_id,
+            'status_id' => 1,
+            'responsable_id' => $request->responsable_id,
+           ]);
+           $action_plan_signature=ActionPlanSignature::create([
+            'user_action_plan_id' => $user_action_plan->id,
+            'responsable_id' => $item,
+            'status_id' => 1,
+            'responsable_id' => $request->responsable_id,
+           ]);
+           //crear firmas
+           foreach($request->responsables as $responsable)
+           {
+            $action_plan_signature=ActionPlanSignature::create([
+                'user_action_plan_id' => $user_action_plan->id,
+                'responsable_id' => $responsable,
+                'status_id' => 1,
+                'responsable_id' => $request->responsable_id,
+               ]);
+           }
+
+        }
+        DB::commit();
+        return response()->json(['message' => 'Informacion insertada de forma correcta'], 201);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X199'
+            ], 500);
+        }
+    }
     public function createQuestions(Request $request)
     {
         
@@ -200,7 +299,7 @@ class UserEvaluationController extends Controller
                 'modules.*.questions.*.answers.*.description' => 'required|string',
                 'modules.*.questions.*.answers.*.score' => 'required|integer',
             ]);
- 
+        DB::beginTransaction();
         foreach ($data['modules'] as $module) {
             $testModule = TestModule::create([
                 'test_id' => $data['test_id'],
@@ -233,7 +332,7 @@ class UserEvaluationController extends Controller
 
     
         } catch (Exception $e) {
-
+            DB::rollBack();
             return response()->json([
                 'title' => 'Ocurrio un error en el servidor',
                 'message' => $e->getMessage() . ' -L:' . $e->getLine(),

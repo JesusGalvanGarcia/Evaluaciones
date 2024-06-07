@@ -83,6 +83,7 @@ class UserEvaluationController extends Controller
 
             $evaluations = UserEvaluation::select(
                 'user_evaluations.id as user_evaluation_id',
+                'user_evaluations.responsable_id',
                 'user_evaluations.evaluation_id as evaluation_id',
                 'user_evaluations.user_id as collaborator_id',
                 'E.name as evaluation_name',

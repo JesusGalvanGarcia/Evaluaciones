@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import {MatTabsModule} from '@angular/material/tabs';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
@@ -17,7 +18,8 @@ import { ProcessModel } from "../../../shared/entities/models/testDetails/proces
 import { UserEvaluationService } from "../../../shared/services/Evaluations/Desempeño/userEvaluation.service";
 import { LoadingComponent } from '../../app/loading/loading.component';
 import { UserTestService } from '@services/Evaluations/Desempeño/userTest.service';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-evaluations',
@@ -28,11 +30,14 @@ import { UserTestService } from '@services/Evaluations/Desempeño/userTest.servi
     MatTooltipModule,
     MatInputModule, 
     LoadingComponent,
+    MatTabsModule,
     FormsModule,
     CdkTableModule,
     AgGridModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule,
+    MatOptionModule
   ],
   templateUrl: './evaluations.component.html',
   styleUrls: ['./evaluations.component.scss'],
@@ -55,15 +60,20 @@ mostrar:boolean=false;
 indexPos:number;
 PersonalList:CollaboratorEvaluation[];
 protected isLoading: boolean = false;
-
+options: string[] = ['Pendiente', 'Proceso', 'Terminado', 'Mis evaluaciones','Todas'];
+selectedOptions: string[] = [];
 displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name', 'actual_process','start_date', 'phase', 'status',"action"];
 dataSource: MatTableDataSource<TestModel> | any = [];
+filteredData: MatTableDataSource<TestModel> | any = [];
+originData: MatTableDataSource<TestModel> | any = [];
 constructor(private http: HttpClient,
   private userEvaluationService: UserEvaluationService,
   private router: Router,    
   public message:MensajeService,
   public userTestService: UserTestService
-  ) {}
+  ) {
+  
+  }
 
 getTestUser(data:any,userid:any,array:number)
 {
@@ -82,10 +92,30 @@ getTestUser(data:any,userid:any,array:number)
     console.error('Error in the request:', error);
   });
 }
+filterData(event: any) {
+  this.dataSource=new MatTableDataSource(this.ListColaborator);
+  switch(event)
+  {
+    case 'Todas':
+      this.dataSource.filter ='';
+      break;
+    case 'Mis evaluaciones':
+      this.dataSource.filter ='';
+      // Filtrar los datos para mostrar solo las evaluaciones del usuario actual
+      this.dataSource = new MatTableDataSource(this.ListColaborator.filter((item: any) => item.responsable_id === localStorage.getItem("user_id")));
+      break;
+    default:
+    this.dataSource.filter =event;
+  }
 
-changeList()
+}
+
+
+
+
+changeList(status:any)
 {
-  if(this.isChecked==true)
+  if(status=='Colaboradores')
   this.ListColaborator=this.ListChangeColaborator;
   else{
   this.ListColaborator=this.PersonalList;
@@ -104,6 +134,7 @@ changeList()
     }
 
     this.getTable();
+
   }
   toggleRow(row: any) {
     this.isLoading=true;
@@ -147,7 +178,7 @@ changeList()
     this.isLoading=false;
   
     this.dataSource = new MatTableDataSource(this.ListColaborator);
-
+  
   })
   .catch((error:any) => {
     console.error('Error in the request:', error);
@@ -221,13 +252,9 @@ changeProcessFunc(process:number,user_test_id:number)
     })
   
 }
-  enviarFormulario(form: NgForm){
-    this.onSwitchChange() 
-  }
-  onSwitchChange() {
-    // Acciones a realizar cuando cambia el estado del switch
-    this.isChecked=!this.isChecked;
-   
-    this.changeList();
+
+onTabChange(status:any) {
+    // Acciones a realizar cuando cambia el estado del switch   
+    this.changeList(status.tab.textLabel);
   }
 }

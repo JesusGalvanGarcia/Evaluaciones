@@ -26,11 +26,18 @@ tr.example-detail-row {
 tr.example-element-row:not(.example-expanded-row):hover {
   background: whitesmoke;
 }
+.dropDown-seasons-panel {
+  border-radius: 10px !important;
+  border: 1px solid gray !important;
+  position: absolute !important;
+  top: 50px !important;
+}
 .custom-input {
-width: 50%;
+width: 70%;
 display: flex;
+gap: 5%;
 justify-content: center;
-margin-left: 25%;
+margin-left: 15%;
 }
 .btn-light {
 

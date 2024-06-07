@@ -27,21 +27,32 @@
     <div style="margin-top: 0%;">
       <div class="center-container"></div>
       <br/>
-      <div class="form-check form-switch mostrar">
-        Personal
-      <div class="checks">
-        <input class="form-check-input" id="idInp" name="nameinput" #isChekedModel="ngModel" (click)="onSwitchChange()" type="checkbox" [(ngModel)]="isChecked">
-      </div>
-        <label class="form-check-label" for="idInp">Colaboradores</label>
-        <br/>
-      </div>
+      <mat-tab-group (selectedTabChange)="onTabChange($event)">
+        <mat-tab label="Colaboradores" > 
+        </mat-tab>
+        <mat-tab label="Personal">
+        </mat-tab>
+      </mat-tab-group>
+      
       <br/>
       <div class="custom-input" >
         <div class="input-group mb-3" style="margin: 0 auto;">
           <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg></span>
           <input type="text" class="form-control" matInput (keyup)="applyFilter($event)" placeholder="Buscar colaborador..." #input>
         </div>
+        <div >
+          <mat-form-field appearance="fill" >
+            <mat-label>Filtrar</mat-label>
+            <mat-select [(ngModel)]="selectedOptions" (ngModelChange)="filterData($event)" disableOptionCentering panelClass="dropDown-seasons-panel"  >
+              <mat-option *ngFor="let option of options" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
+
+      
       <mat-table [dataSource]="dataSource" class="example-table" multiTemplateDataRows matSort>
         <!-- Header Row -->
    

@@ -133,6 +133,7 @@ class UserTestController extends Controller
                     }
                 ])
                 ->find($user_test->test_id);
+        
             //ir por permiso de andministradores
             $permisses = ['Acceso Administracion desempeno', 'Acceso Administracion 360'];
             $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();

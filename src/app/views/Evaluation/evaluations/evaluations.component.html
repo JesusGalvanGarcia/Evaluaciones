@@ -132,7 +132,7 @@
                     </div>
                     <div class="dato">
                       <ng-container *ngIf="detalle.name =='Evaluación de competencias'; else elseTemplate">
-                        &nbsp; &nbsp; {{ detalle.total_score===""?"": (detalle.total_score ===null?"No aplica":detalle.total_score)}}    
+                        &nbsp; &nbsp; {{ detalle.total_score===null?'':detalle.calification}}    
                       </ng-container>
                       <ng-template #elseTemplate>
                         <svg *ngIf="detalle.status=='Terminado'"  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">

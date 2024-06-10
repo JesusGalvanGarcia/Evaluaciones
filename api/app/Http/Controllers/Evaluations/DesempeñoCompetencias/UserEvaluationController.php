@@ -219,7 +219,7 @@ class UserEvaluationController extends Controller
                 'strengths' => '',
                 'chance' =>'',
                 'suggestions' => '',
-                'calification' => 0,
+                'calification' => null,
                 'created_by' => $request->user_id,
                 'updated_by' => $request->user_id,
             ]);
@@ -236,13 +236,11 @@ class UserEvaluationController extends Controller
            //Añadir como responsables de firmar a los colaboradores que no son DO
            $action_plan_signature=ActionPlanSignature::create([
             'user_action_plan_id' => $user_action_plan->id,
-            'responsable_id' => $request->responsable_id,
             'status_id' => 1,
-            'responsable_id' => $request->responsable_id,
+            'responsable_id' => $item,
            ]);
            $action_plan_signature=ActionPlanSignature::create([
             'user_action_plan_id' => $user_action_plan->id,
-            'responsable_id' => $item,
             'status_id' => 1,
             'responsable_id' => $request->responsable_id,
            ]);
@@ -253,7 +251,7 @@ class UserEvaluationController extends Controller
                 'user_action_plan_id' => $user_action_plan->id,
                 'responsable_id' => $responsable,
                 'status_id' => 1,
-                'responsable_id' => $request->responsable_id,
+           
                ]);
            }
 

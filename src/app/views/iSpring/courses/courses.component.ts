@@ -28,8 +28,8 @@ export class CoursesComponent {
   getUserCourses() {
 
     const searchData = {
-      // user_ispring_id: '69fe235a-13cf-11ef-ab34-4ec723205ab7'
-      user_ispring_id: '49cb4364-1394-11ef-b7c2-023853a0d719'
+      user_ispring_id: '69fe235a-13cf-11ef-ab34-4ec723205ab7'
+      // user_ispring_id: '49cb4364-1394-11ef-b7c2-023853a0d719'
     }
 
     this._userCourseService.GetUserCourses(searchData).

@@ -131,21 +131,21 @@
                       <div >{{ detalle.status }}</div>
                     </div>
                     <div class="dato">
-                      <ng-container *ngIf="detalle.name =='Evaluación de competencias'; else elseTemplate">
-                        &nbsp; &nbsp; {{ detalle.total_score===null?'':detalle.calification}}    
+                      <ng-container *ngIf="detalle.name !='Feedback y Plan de Acción'; else elseTemplate">
+                        &nbsp; &nbsp; {{ detalle.total_score=== '0.0' ?'':detalle.name=='Evaluación de competencias' ? detalle.calification:detalle.total_score}}    
                       </ng-container>
                       <ng-template #elseTemplate>
                         <svg *ngIf="detalle.status=='Terminado'"  xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
                           <path d="m381-240 424-424-57-56-368 367-169-170-57 57 227 226Z" fill="green" />
-                        </svg>
-                        
+                        </svg>  
+                         
                       </ng-template>
       
                     </div>
                     <div class="dato" [style.color]="detalle.color" >
                   <div class="row ranks" >
                 <div class="col col-sm-9">
-                  <ng-container *ngIf="detalle.name =='Evaluación de competencias'; else elseTemplate">
+                  <ng-container *ngIf="detalle.name !='Feedback y Plan de Acción'; else elseTemplate">
                  <div *ngIf="detalle.status =='Terminado'">
                   &nbsp; &nbsp; {{ detalle.clasificacion_name}}    
                  </div>
@@ -154,7 +154,7 @@
                     <span></span>
                   </ng-template>
                 </div>
-                <div class="col col-sm-1" *ngIf="detalle.name =='Evaluación de competencias'">
+                <div class="col col-sm-1" *ngIf="detalle.name !='Feedback y Plan de Acción'">
                   <span   [style.color]="detalle.color" mat-button [matTooltip]="detalle.clasification_description"  *ngIf="detalle.rank!==''">
                     <mat-icon *ngIf="detalle.status =='Terminado'">warning</mat-icon>
 

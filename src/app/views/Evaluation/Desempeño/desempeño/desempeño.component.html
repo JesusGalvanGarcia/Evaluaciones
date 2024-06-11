@@ -64,7 +64,11 @@
                                 <app-loading *ngIf="isLoading==true"></app-loading>
                                 <span class="result-title">¡Has terminado de contestar la encuesta!</span><br /><br />
                             </div>
-
+                            <div class="result-info">
+                                <span class="result-score">Puntuación total:
+                                    <br />
+                                    <span style="color:#b60b0b">{{ score }}</span> </span><br /><br />
+                            </div>
                             <div class="result-evaluation">
                                 <span class="result-text" color="#000"
                                   >¡Haz finalizado la evaluación de desempeño!</span
@@ -150,7 +154,7 @@
                                                 <label>{{ respuesta.description }}</label>
                                             </div>
                                             <div class="col col-3 col-sm-3 col-md-4">
-                                        
+                                             
                                             </div>
                                         </div>
                                     </div>

@@ -463,7 +463,7 @@ class UserTestController extends Controller
                 ], 400);
             // Se iguala el score actual de la prueba
             $total_score = $user_test->total_score;
-
+            $new_score=0; 
             DB::beginTransaction();
 
             // Se consulta la ultima pregunta respondida del usuario en caso de que se tenga
@@ -582,6 +582,7 @@ class UserTestController extends Controller
                 'title' => 'Proceso terminado',
                 'message' => 'Respuesta guardada correctamente',
                 'actual_score' => $total_score,
+                "ranking"=> $new_score,
                 'clasification' => $clasification
             ]);
         } catch (Exception $e) {

@@ -295,7 +295,7 @@ export class CompetenciasComponent implements OnInit {
     this.userTestService
       .SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
-        this.score = Number(response.actual_score);
+        this.score = Number(response.ranking);
         this.clasification=response.clasification;
         
         this.loading = false;

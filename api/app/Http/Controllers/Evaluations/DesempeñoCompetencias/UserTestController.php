@@ -521,27 +521,35 @@ class UserTestController extends Controller
                 );
                 $answers = [];
                 // Traer los UserTestModules por el user_test_id, ordenarlos y tomar los primeros dos
-                $user_test_modules = UserTestModule::select('user_test_modules.id', 'user_test_modules.average', 'user_test_modules.user_test_id','user_test_modules.module_id')
+                $user_test_modules = UserTestModule::select('user_test_modules.id', 'user_test_modules.average', 'user_test_modules.user_test_id','user_test_modules.module_id','T.name')
                     ->where('user_test_modules.user_test_id', $user_test->id)
+                    ->join('test_modules as T','T.id','user_test_modules.module_id')
                     ->orderBy('user_test_modules.average', 'asc')
                     ->take(2)
                     ->get();
-             
-                foreach ($user_test_modules as $item) {
-                    //Traer las preguntas y respuestas cuyo score sea menor a 3
-                    $answers = UserAnswer::join('questions as Q', 'Q.id', '=', 'user_answers.question_id')
-                        ->join('answers as A', 'A.id', '=', 'user_answers.answer_id')
-                        ->select('user_answers.id', 'user_answers.question_id', 'user_answers.answer_id', 'A.score as answer_score', 'Q.description')
-                        ->where([['user_answers.user_test_id', $item->user_test_id], ['Q.module_id', $item->module_id], ['A.score', '<=', 3]])
-                        ->take(2)
-                        ->get();
-                     
-                    if (count($answers)>0) {
-                        $item->answers = $answers;
+                //Traer las preguntas y respuestas cuyo score sea menor a 3
+                $answers = UserAnswer::join('questions as Q', 'Q.id', '=', 'user_answers.question_id')
+                    ->join('answers as A', 'A.id', '=', 'user_answers.answer_id')
+                    ->select('user_answers.id', 'user_answers.question_id', 'user_answers.answer_id', 'A.score as answer_score', 'Q.description')
+                    ->where([['user_answers.user_test_id',  $user_test->id], ['A.score', '<=', 3]])
+                    //->take(2)
+                    ->get();
+           
                         //Buscar el plan de accion deacuerdo a la evaluacion y empezar a crear acuerdos de forma automagica
                         $action_plans = ActionPlan::where('evaluation_id', $user_evaluation->evaluation_id)->first();
                         $user_action_plan = UserActionPlan::where([['action_plan_id', $action_plans->id], ['user_id', $user_evaluation->user_id], ['responsable_id', $user_evaluation->responsable_id]])->first();
-
+                      /*  foreach ($user_test_modules as $modules) {
+                            UserAgreement::create([
+                                'user_action_plan_id' => $user_action_plan->id,
+                                'opportunity_area' => $modules->name,
+                                'goal' => '',
+                                'developed_skill' => '',
+                                'action' => '',
+                                // 'established_date' => Carbon::now()->format('Y-m-d'),
+                                'created_by' => $request->user_id,
+                                'updated_by' => $request->user_id
+                            ]);
+                        }*/
                         foreach ($answers as $item_answer) {
                             UserAgreement::create([
                                 'user_action_plan_id' => $user_action_plan->id,
@@ -554,9 +562,7 @@ class UserTestController extends Controller
                                 'updated_by' => $request->user_id
                             ]);
                         }
-                    }
-                }
-
+                    
                 //Realizamos regla de 3 al finalizar la pregunta para saber la ponderación
                 $test = Test::find($user_test->test_id);
                 $new_score = round(($user_test->total_score * 100) / $test->max_score);

@@ -386,7 +386,7 @@ class UserEvaluationController extends Controller
     public function show(string $id)
     {
         try {
-
+            
             // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
             // if (!$this->checkPermissions(request()->route()->getName())) {
 

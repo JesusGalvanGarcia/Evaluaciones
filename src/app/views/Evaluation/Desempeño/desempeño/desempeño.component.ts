@@ -32,6 +32,7 @@ export class SurveyComponent implements OnInit {
   protected title: string = "";
   evaluatedUserName: string = "";
   protected user_test_id: number = 0;
+  clasification:any;
   showQuestion: boolean = true;
   saveIndivisual: any;
   changeProcess: ProcessModel;
@@ -155,6 +156,7 @@ export class SurveyComponent implements OnInit {
       .then((response: any) => {
         this.loading = false;
         this.score = response.actual_score;
+        this.clasification=response.clasification;
         this.nextQuestion(question, answer, idAnswer, response.actual_score, response);
       })
       .catch(({ title, message, code }) => {

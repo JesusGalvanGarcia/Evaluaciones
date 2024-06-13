@@ -69,6 +69,6 @@ export class UserTestComponent {
   }
 
   redirectToPage() {
-    this.router.navigate(['home']);
+    this.router.navigate(['evaluacion']);
   }
 }

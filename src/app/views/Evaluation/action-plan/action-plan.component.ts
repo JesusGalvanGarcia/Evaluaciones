@@ -353,7 +353,7 @@ export class ActionPlanComponent {
   }
 
   redirectToPage() {
-    this.router.navigate(['evaluation']);
+    this.router.navigate(['evaluacion']);
   }
 
   checkIfItsValid() {

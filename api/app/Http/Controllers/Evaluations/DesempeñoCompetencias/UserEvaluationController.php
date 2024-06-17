@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\UserAnswer;
 use App\Models\Question;
 use App\Models\Answer;
+use Spatie\Permission\Models\Role;
 
 use App\Models\UserTest;
 use App\Models\UserTestModule;
@@ -81,7 +82,9 @@ class UserEvaluationController extends Controller
 
             // Se evalúa si en la petición solicita una evaluación especifica, para filtrar información.
             $evaluations_id = request('evaluations_id') ? request('evaluations_id') : [];
-
+            $role = Role::find(2);
+            // Get users with the specified role
+            $users = User::role($role->name)->pluck('id');
             $evaluations = UserEvaluation::select(
                 'user_evaluations.id as user_evaluation_id',
                 'user_evaluations.responsable_id',
@@ -105,12 +108,10 @@ class UserEvaluationController extends Controller
                     return $status_join->on('S.status_id', 'user_evaluations.status_id')
                         ->where('S.table_name', 'user_evaluations');
                 })
-                ->when(request('user_id') != 88 && request('user_id') != 6 && request('user_id') != 19 && request('user_id') != 12, function ($when) use ($collaborators_id) {
-
-                    return $when->where([
-                        ['responsable_id', request('user_id')]
-                    ]);
+                ->when(!in_array(request('user_id'), $users->toArray()), function ($query)  {
+                    return $query->where('user_evaluations.responsable_id', request('user_id'));
                 })
+                
 
                 ->when(count($collaborators_id) > 0, function ($when) use ($collaborators_id) {
 

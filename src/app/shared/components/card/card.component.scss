@@ -1,0 +1,36 @@
+.example-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    // background: none;
+    // box-shadow: none;
+}
+
+// .mat-card-header,
+// .mat-card-footer {
+//     border-bottom: none;
+// }
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.mat-toolbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.title {
+    font-size: 1.2em;
+    overflow: hidden;
+    white-space: normal;
+    padding: 0 10px;
+    /* Añade un relleno horizontal de 10px */
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.54);
+}

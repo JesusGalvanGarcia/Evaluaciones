@@ -33,7 +33,7 @@ export class UserActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-       
+
         throw data;
       });
   }
@@ -47,7 +47,7 @@ export class UserActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-      
+
         throw data;
       });
   }
@@ -61,7 +61,7 @@ export class UserActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-       
+
         throw data;
       });
   }
@@ -75,7 +75,21 @@ export class UserActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-      
+
+        throw data;
+      });
+  }
+
+  DeleteAgreement(data: any): Promise<any> {
+
+    return this.api_conect.delete(this.controllerUrl + '/' + data.agreement_id, { params: data })
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+
         throw data;
       });
   }
@@ -89,7 +103,7 @@ export class UserActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-      
+
         throw data;
       });
   }
@@ -103,7 +117,7 @@ export class UserActionPlanService {
       .catch(({ response }: any) => {
 
         const { data } = response
-      
+
         throw data;
       });
   }

@@ -86,6 +86,7 @@ class UserActionPlanController extends Controller
                 'developed_skill' => $request->developed_skill,
                 'action' => $request->action,
                 'established_date' => $request->established_date,
+                'principal_agreement' => 0,
                 'created_by' => $request->user_id,
                 'updated_by' => $request->user_id
             ]);
@@ -182,7 +183,8 @@ class UserActionPlanController extends Controller
                 'goal',
                 'developed_skill',
                 'action',
-                'established_date'
+                'established_date',
+                'principal_agreement'
             )
                 ->where('user_action_plan_id', $id)
                 ->get();
@@ -194,11 +196,11 @@ class UserActionPlanController extends Controller
                 'action_plan_signatures.signature_date',
                 DB::raw("CONCAT(U.name, ' ', U.father_last_name, ' ', U.mother_last_name) as collaborator_name"),
             )->join('users as U', 'U.id', 'action_plan_signatures.responsable_id')
-            ->where([['user_action_plan_id', $id]])
-            
+                ->where([['user_action_plan_id', $id]])
+
                 ->get();
-          
-            if (!$signatures->firstWhere('responsable_id', request('user_id'))&&request('user_id')!=19&&request('user_id')!=88)
+
+            if (!$signatures->firstWhere('responsable_id', request('user_id')) && request('user_id') != 19 && request('user_id') != 88)
                 return response()->json([
                     'title' => 'No estás autorizado.',
                     'message' => 'El plan de acción no está disponible, contacta al administradoor.',
@@ -215,17 +217,46 @@ class UserActionPlanController extends Controller
                     'code' => $this->prefix . 'X205'
                 ], 400);
 
-           /* if ($user_evaluation->process_id != 5)
+            /* if ($user_evaluation->process_id != 5)
                 $user_evaluation->update([
                     'process_id' => 4
                 ]);*/
+
+            $strengths = [
+                [
+                    "module" => "Crea un ambiente de confianza con su equipo",
+                    "score" => 90
+                ],
+                [
+                    "module" => "Asegurar que su equipo entienda y aplique la cultura",
+                    "score" => 85
+                ],
+                [
+                    "module" => "Buscar el bienestar y el crecimiento constante de su equipo",
+                    "score" => 70
+                ]
+            ];
+
+            $opportunity_areas = [
+                [
+                    "module" => "Crea un ambiente de confianza con su equipo",
+                    "score" => 45
+                ],
+                [
+                    "module" => "Asegurar que su equipo entienda y aplique la cultura",
+                    "score" => 50
+                ]
+            ];
 
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Detalle del Plan de Acción del Usuario consultado correctamente',
                 'user_action_plan' => $user_action_plan,
                 "agreements" => $action_plan_agreements,
-                "signatures" => $signatures
+                "signatures" => $signatures,
+                "strengths" => $strengths,
+                "opportunity_areas" => $opportunity_areas,
+                // "notes" =>  
             ]);
         } catch (Exception $e) {
 
@@ -323,7 +354,80 @@ class UserActionPlanController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        try {
+            // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            // if (!$this->checkPermissions(request()->route()->getName())) {
+
+            //     return response()->json([
+            //         'title' => 'Proceso cancelado',
+            //         'message' => 'No tienes permiso para hacer esto.',
+            //         'code' => 'P001'
+            //     ], 400);
+            // }
+
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|NotIn:0|Min:0'
+            ]);
+
+            if ($validator->fails()) {
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X401'
+                ], 400);
+            }
+
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X402'
+                ], 400);
+
+            // $user_action_plan = UserActionPlan::firstWhere([['id', $request->user_action_plan_id], ['status_id', '!=', 3]]);
+
+            // if (!$user_action_plan)
+            //     return response()->json([
+            //         'title' => 'Plan de acción no valido',
+            //         'message' => 'Es posible que el plan de acción ya haya sido finalizado, solicite al adminitrador acceso para editarlo.',
+            //         'code' => $this->prefix . 'X303'
+            //     ], 400);
+
+            $agreement = UserAgreement::find($id);
+
+            if (!$agreement)
+                return response()->json([
+                    'title' => 'Acuerdo no valido',
+                    'message' => 'No se encontró esté acuerdo, favor de validar la información.',
+                    'code' => $this->prefix . 'X403'
+                ], 400);
+
+            DB::beginTransaction();
+
+            $agreement->update([
+                'deleted_by' => request('user_id')
+            ]);
+
+            $agreement->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'title' => 'Proceso terminado',
+                'message' => 'Acuerdo actualizado correctamente'
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X499'
+            ], 500);
+        }
     }
 
     public function storeSignature(Request $request)
@@ -542,14 +646,14 @@ class UserActionPlanController extends Controller
                 'status_id' => 3,
                 'updated_by' => $request->user_id
             ]);
-            
+
             DB::commit();
-          
+
             // Se envía el correo de confirmación del plan de acción.
-            if($newProcessId ==5)
-            ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlanComplete");
+            if ($newProcessId == 5)
+                ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name, "ActionPlanComplete");
             else
-            ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlan350");
+                ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name, "ActionPlan350");
 
             return response()->json([
                 'title' => 'Proceso terminado',

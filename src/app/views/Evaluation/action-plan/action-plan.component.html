@@ -62,7 +62,6 @@
 
         </mat-drawer>
 
-
         <div class="example-sidenav-content">
             <div class="row row-cols-1 row-cols-md-2 mt-4 mb-4">
                 <div class="col col-12 col-md-4">
@@ -112,119 +111,146 @@
                 </div>
             </div>
 
-            <div class="row row-cols-1 row-cols-md-2 mb-2" style="margin: 0 auto; max-width: 85%;" *ngIf="!show_sign">
-                <div class="col col-12 col-md-4">
-                    <button type="button" mat-stroked-button (click)="redirectToPage();">
-                        Regresar
-                    </button>
+            <div class="container mb-4" *ngIf="!show_sign">
+                <div class="section-title">Fortalezas</div>
+
+                <div class="row">
+                    <div class="col-12 col-md-4" *ngFor="let strength of strengths">
+                        <app-card [title]="strength.module" [subtitle]="strength.score"></app-card>
+                    </div>
                 </div>
-                <div class="col col-12 col-md-48 text-end">
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 text-end">
+
+                <div class="section-title">Áreas de Oportunidad</div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6" *ngFor="let opportunity_area of opportunity_areas">
+                        <app-card [title]="opportunity_area.module" [subtitle]="opportunity_area.score"></app-card>
+                    </div>
+                </div>
+
+                <div class="section-title">Acuerdos</div>
+                <div class="container">
+
+                    <div class="row row-cols-1 row-cols-md-2 mb-2" *ngIf="!show_sign">
                         <div class="col col-12 col-md-4">
-                            <button type="button" mat-raised-button color="primary"
-                                (click)="scrollToTop(); drawer.toggle();" *ngIf="!finished && responsable"
-                                [disabled]="loading">
-                                Agregar Acuerdo
+                            <button type="button" mat-stroked-button (click)="redirectToPage();">
+                                Regresar
                             </button>
                         </div>
-                        <div class=" col col-12 col-md-4">
-                            <button type="button" mat-raised-button color="warn" (click)="confirmActionPlan();"
-                                *ngIf="!finished && responsable" [disabled]="loading">
-                                Finalizar Plan de Acción
-                            </button>
-                        </div>
-                        <div class="col col-12 col-md-4">
-                            <button type="button" mat-raised-button color="primary" (click)="toSign();"
-                                *ngIf="finished">
-                                Firmar
-                            </button>
-                        </div>
-                        <div class="col col-12 col-md-4" *ngIf="finished">
-                            Finalizado : {{user_action_plan.finish_date | date: 'dd-MM-yyyy' }}
+                        <div class="col col-12 col-md-4 text-end">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 text-end">
+                                <div class="col col-12 col-md-6">
+                                    <button type="button" mat-raised-button color="primary"
+                                        (click)="scrollToTop(); drawer.toggle();" *ngIf="!finished && responsable"
+                                        [disabled]="loading">
+                                        Agregar Acuerdo
+                                    </button>
+                                </div>
+                                <div class=" col col-12 col-md-6">
+                                    <button type="button" mat-raised-button color="warn" (click)="confirmActionPlan();"
+                                        *ngIf="!finished && responsable" [disabled]="loading">
+                                        Finalizar Plan de Acción
+                                    </button>
+                                </div>
+                                <div class="col col-12 col-md-4">
+                                    <button type="button" mat-raised-button color="primary" (click)="toSign();"
+                                        *ngIf="finished">
+                                        Firmar
+                                    </button>
+                                </div>
+                                <div class="col col-12 col-md-4" *ngIf="finished">
+                                    Finalizado : {{user_action_plan.finish_date | date: 'dd-MM-yyyy' }}
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
-                </div>
-            </div>
+                    <div class="row mb-4" *ngIf="!show_sign">
 
-            <div class="row mb-4" style="margin: 0 auto; max-width: 85%;" *ngIf="!show_sign">
+                        <div class="pre-table-container mat-elevation-z8">
+                            <div class="example-table-container">
 
-                <div class="pre-table-container mat-elevation-z8">
-                    <div class="example-table-container">
+                                <div class="mt-2 animated fadeIn" align="center" *ngIf="loading">
+                                    <mat-spinner></mat-spinner>
+                                </div>
 
-                        <div class="mt-2 animated fadeIn" align="center" *ngIf="loading">
-                            <mat-spinner></mat-spinner>
+                                <table mat-table [dataSource]="dataSource" class="example-table" matSort
+                                    *ngIf="!loading">
+
+                                    <!-- ID Column -->
+                                    <ng-container matColumnDef="id">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                                    </ng-container>
+
+                                    <!-- Opportunity Area Column -->
+                                    <ng-container matColumnDef="opportunity_area">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Área de oportunidad </th>
+                                        <td mat-cell *matCellDef="let row"> {{row.opportunity_area}} </td>
+                                    </ng-container>
+
+                                    <!-- Goal Column -->
+                                    <ng-container matColumnDef="goal">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Objetivo </th>
+                                        <td mat-cell *matCellDef="let row"> {{row.goal}} </td>
+                                    </ng-container>
+
+                                    <!-- Developed Skill Column -->
+                                    <ng-container matColumnDef="developed_skill">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Habilidad a Desarrollar
+                                        </th>
+                                        <td mat-cell *matCellDef="let row"> {{row.developed_skill}} </td>
+                                    </ng-container>
+
+                                    <!-- Action Column -->
+                                    <ng-container matColumnDef="action">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Acción a realizar </th>
+                                        <td mat-cell *matCellDef="let row"> {{row.action}} </td>
+                                    </ng-container>
+
+                                    <!-- Established Date Column -->
+                                    <ng-container matColumnDef="established_date">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha establecida </th>
+                                        <td mat-cell *matCellDef="let row"> {{row.established_date}} </td>
+                                    </ng-container>
+
+                                    <!-- Actions Column -->
+                                    <ng-container matColumnDef="actions" stickyEnd>
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+                                        <td mat-cell *matCellDef="let row">
+                                            <div class="row">
+                                                <button mat-icon-button matTooltip="Editar Acuerdo"
+                                                    (click)="editAgreement(row.id)" *ngIf="!finished && responsable"
+                                                    [disabled]="loading">
+                                                    <mat-icon>edit</mat-icon>
+                                                </button>
+                                                <button mat-icon-button style="color: red;" matTooltip="Borrar Acuerdo"
+                                                    *ngIf="!finished && responsable && (!row.principal_agreement || row.principal_agreement == 0)"
+                                                    [disabled]="loading" (click)="deleteAgreement(row.id)">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                                    <!-- Row shown when there is no matching data. -->
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" colspan="4">No se han registrado acuerdos aun.</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                                aria-label="Select page of users"></mat-paginator>
                         </div>
-
-                        <table mat-table [dataSource]="dataSource" class="example-table" matSort *ngIf="!loading">
-
-                            <!-- ID Column -->
-                            <ng-container matColumnDef="id">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                                <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-                            </ng-container>
-
-                            <!-- Opportunity Area Column -->
-                            <ng-container matColumnDef="opportunity_area">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Área de oportunidad </th>
-                                <td mat-cell *matCellDef="let row"> {{row.opportunity_area}} </td>
-                            </ng-container>
-
-                            <!-- Goal Column -->
-                            <ng-container matColumnDef="goal">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Objetivo </th>
-                                <td mat-cell *matCellDef="let row"> {{row.goal}} </td>
-                            </ng-container>
-
-                            <!-- Developed Skill Column -->
-                            <ng-container matColumnDef="developed_skill">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Habilidad a Desarrollar </th>
-                                <td mat-cell *matCellDef="let row"> {{row.developed_skill}} </td>
-                            </ng-container>
-
-                            <!-- Action Column -->
-                            <ng-container matColumnDef="action">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Acción a realizar </th>
-                                <td mat-cell *matCellDef="let row"> {{row.action}} </td>
-                            </ng-container>
-
-                            <!-- Established Date Column -->
-                            <ng-container matColumnDef="established_date">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha establecida </th>
-                                <td mat-cell *matCellDef="let row"> {{row.established_date}} </td>
-                            </ng-container>
-
-                            <!-- Actions Column -->
-                            <ng-container matColumnDef="actions" stickyEnd>
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
-                                <td mat-cell *matCellDef="let row">
-                                    <div class="row">
-                                        <button mat-icon-button matTooltip="Editar Acuerdo"
-                                            (click)="editAgreement(row.id)" *ngIf="!finished && responsable"
-                                            [disabled]="loading">
-                                            <mat-icon>edit</mat-icon>
-                                        </button>
-                                        <!-- <button mat-icon-button style="color: red;" matTooltip="Borrar Acuerdo"
-                                            *ngIf="!finished && responsable" [disabled]="loading">
-                                            <mat-icon>delete</mat-icon>
-                                        </button> -->
-                                    </div>
-                                </td>
-                            </ng-container>
-
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-                            <!-- Row shown when there is no matching data. -->
-                            <tr class="mat-row" *matNoDataRow>
-                                <td class="mat-cell" colspan="4">No se han registrado acuerdos aun.</td>
-                            </tr>
-                        </table>
                     </div>
-
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
-                        aria-label="Select page of users"></mat-paginator>
                 </div>
+
+                <div class="section-title">Comentarios</div>
             </div>
 
             <div class="container mb-4">

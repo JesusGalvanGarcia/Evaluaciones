@@ -20,6 +20,7 @@ class UserAgreement extends Model
         'developed_skill',
         'action',
         'established_date',
+        'principal_agreement',
         'created_by',
         'updated_by',
         'deleted_by'

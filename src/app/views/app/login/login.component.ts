@@ -77,11 +77,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("email", data.email);
         localStorage.setItem("names", data.user_name);
         localStorage.setItem("page_evaluation","");
-        if(data.user_id!=19&&data.user_id!=88&&data.user_id!=12)
-        localStorage.setItem("admin","true");
-        else
-        localStorage.setItem("admin","");
-        this.router.navigate(['/dashboard/exam/home']);
+
+        this.router.navigate(['home']);
 
       })
       .catch(({ message, title, code }) => {

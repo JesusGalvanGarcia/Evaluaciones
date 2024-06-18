@@ -22,7 +22,7 @@
           alt="Logo_Trinitas"
         />
       </span>
-      <span class="estilo-title">Evaluaciones de  desempeño </span>
+      <span class="estilo-title">Evaluaciones de competencias </span>
     </div>
     <div style="margin-top: 0%;">
       <div class="center-container"></div>
@@ -120,7 +120,7 @@
                       <div >{{ detalle.status }}</div>
                     </div>
                     <div class="dato">
-                      <ng-container *ngIf="detalle.name !='Feedback y Plan de Acción'; else elseTemplate">
+                      <ng-container *ngIf="detalle.name =='Evaluación de competencias'; else elseTemplate">
                         &nbsp; &nbsp; {{ detalle.total_score===""?"": (detalle.total_score ===null?"No aplica":detalle.total_score)}}    
                       </ng-container>
                       <ng-template #elseTemplate>
@@ -131,19 +131,21 @@
                       </ng-template>
       
                     </div>
-                    <div class="dato" [style.color]="getColorByClasification(detalle.rank)" >
+                    <div class="dato" [style.color]="detalle.color" >
                   <div class="row ranks" >
                 <div class="col col-sm-9">
-                  <ng-container *ngIf="detalle.name =='Evaluación de Desempeño'; else elseTemplate">
-                    &nbsp; &nbsp; {{ detalle.rank}}    
+                  <ng-container *ngIf="detalle.name =='Evaluación de competencias'; else elseTemplate">
+                 <div *ngIf="detalle.status =='Terminado'">
+                  &nbsp; &nbsp; {{ detalle.clasificacion_name}}    
+                 </div>
                   </ng-container>
                   <ng-template #elseTemplate>
                     <span></span>
                   </ng-template>
                 </div>
-                <div class="col col-sm-1" *ngIf="detalle.name =='Evaluación de Desempeño'">
-                  <span   [style.color]="getColorByClasification(detalle.rank)" mat-button [matTooltip]="clasification(detalle.rank)"  *ngIf="detalle.rank!==''">
-                    <mat-icon>warning</mat-icon>
+                <div class="col col-sm-1" *ngIf="detalle.name =='Evaluación de competencias'">
+                  <span   [style.color]="detalle.color" mat-button [matTooltip]="detalle.clasification_description"  *ngIf="detalle.rank!==''">
+                    <mat-icon *ngIf="detalle.status =='Terminado'">warning</mat-icon>
 
                   </span>
                 </div>
@@ -151,12 +153,12 @@
                     </div>
                  
                     <div class="dato" *ngIf="isChecked ==true" >
-                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.rank,row.detail)">
+                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.process_id,i)">
                         {{detalle.status  === 'Pendiente'?"Comenzar":detalle.status=="Terminado"?"Ver":"Continuar"}}
                       </button>
                     </div>
                     <div class="dato" *ngIf="isChecked ==false" >
-                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.rank,row.detail)">
+                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.process_id,i)">
                         Ver
                       </button>
                     </div>

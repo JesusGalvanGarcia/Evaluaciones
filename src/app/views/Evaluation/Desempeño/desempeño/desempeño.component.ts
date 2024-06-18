@@ -168,30 +168,20 @@ export class SurveyComponent implements OnInit {
   }
 
   finishEvaluation() {
-    this.router.navigate(['/dashboard/evaluacion']);
+    this.router.navigate(['evaluacion']);
     this.message.success("¡Haz terminado la evaluacion de desempeño!")
   }
 
   goIndex() {
-    this.router.navigate(['/dashboard/evaluacion']);
+    this.router.navigate(['evaluacion']);
     this.message.success("¡Se ha suspendido la evaluacion!")
   }
 
   home() {
     this.isLoading = true;
-    // this.router.navigate(['/dashboard/evaluacion']);
-    if (this.score > 75 && this.isChecked) {
-      this.changeProcessFunc(2);
-    }
-    else {
-      if (this.score <= 75)
-        this.changeProcessFunc(2);
-      else {
-        this.changeProcessFunc(4);
+     this.router.navigate(['/evaluacion']);
+}
 
-      }
-    }
-  }
 
   changeProcessFunc(id: number) {
     this.changeProcess =

@@ -233,7 +233,7 @@ export class Evaluation360Component implements OnInit {
   }
   send() {
    
-    this.router.navigate(['/dashboard/evaluacion360']);
+    this.router.navigate(['evaluacion360']);
     this.message.success("¡Haz terminado la evaluacion  de Competencias!")
   }
   changeProcessFunc(process:number)
@@ -433,7 +433,7 @@ export class Evaluation360Component implements OnInit {
   }
   goIndex()
   {
-    this.router.navigate(['/dashboard/evaluacion360']);
+    this.router.navigate(['evaluacion360']);
     this.message.success("¡Se ha suspendido la evaluacion!")
   }
   ngOnInit() {

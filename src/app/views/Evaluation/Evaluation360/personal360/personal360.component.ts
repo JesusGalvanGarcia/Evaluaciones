@@ -104,11 +104,11 @@ scrollToElement(id:any) {
     localStorage.setItem("page_evaluation",  this.evaluation_id.toString());
     if( this.rol=localStorage.getItem("admin")!="")
    {
-     this.router.navigate(['/dashboard/admin360']);
+     this.router.navigate(['admin360']);
  
    }
     else
-    this.router.navigate(['/dashboard/evaluacion360']);
+    this.router.navigate(['evaluacion360']);
 
   }
   numbers(num:any)
@@ -143,6 +143,7 @@ average(aspect: any, question: any,autoevaluacion:any): any {
   async getData() {
     this.body = {
       user_id: this.user_id,
+      user_id_valid: localStorage.getItem("user_id"),
       evaluation_id: this.evaluation_id
     };
 

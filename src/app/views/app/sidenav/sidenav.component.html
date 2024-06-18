@@ -17,20 +17,20 @@
       <ul class="sidenav-nav">
           <li class="sidenav-nav-item" *ngFor="let data of navData">
               <a class="sidenav-nav-link" (click)="handleClick(data)"
-                  *ngIf="data.items && data.items.length > 0"
+                  *ngIf="data.menu_items && data.menu_items.length > 0"
            
               >
                   <i class="sidenav-link-icon" [class]="data.icon"></i>
                   <span class="sidenav-link-text" @fadeInOut >
                       {{data.label}}
                   </span>
-                  <i *ngIf="data.items d" class="menu-collapse-icon"
-                      [ngClass]="!data.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'"
+                  <i *ngIf="data.menu_items" class="menu-collapse-icon"
+                      [ngClass]="data.expanded=='false' ? 'fal fa-angle-right' : 'fal fa-angle-down'"
                   ></i>
               </a>
   
               <a class="sidenav-nav-link"  
-                  *ngIf="!data.items || (data.items && data.items.length === 0)"
+                  *ngIf="!data.menu_items || (data.menu_items && data.menu_items.length === 0)"
                   [routerLink]="[data.routeLink]" 
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{exact: true}"
@@ -41,22 +41,23 @@
                       {{data.label}}
                   </span>
               </a>
-              <div *ngIf=" data.items && data.items.length > 0&&data.expanded==true" (click)="toggleCollapse()">
-                <li *ngFor="let item of data.items" class="sublevel-nav-item">
+              <div *ngIf=" data.menu_items && data.menu_items.length > 0&&data.expanded=='true'" (click)="toggleCollapse()">
+           
+                <li *ngFor="let item of data.menu_items" class="sublevel-nav-item">
                     <a class="sublevel-nav-link"
                     (click)="toggleCollapse()"
-                      *ngIf="item.items && item.items.length > 0"
+                      *ngIf="item.menu_items && item.menu_items.length > 0"
                     
                     >
                       <i class="sublevel-link-icon fa fa-circle"></i>
                       <span class="sublevel-link-text" @fadeInOut  (click)="toggleCollapse()"
                           >{{item.label}}</span>
-                      <i *ngIf="item.items " class="menu-collapse-icon"
-                        [ngClass]="!item.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'"
+                      <i *ngIf="item.menu_items " class="menu-collapse-icon"
+                        [ngClass]="item.expanded=='true' ? 'fal fa-angle-right' : 'fal fa-angle-down'"
                       ></i>
                     </a>
                     <a class="active-sublevel"
-                      *ngIf="!item.items || (item.items && item.items.length === 0)"
+                      *ngIf="!item.menu_items || (item.menu_items && item.menu_items.length === 0)"
                       [routerLink]="[item.routeLink]"
                       routerLinkActive="active-sublevel"
                       (click)="toggleCollapse()"

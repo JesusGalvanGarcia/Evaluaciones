@@ -27,7 +27,8 @@ use App\Models\TestModule;
 use App\Models\Evaluation;
 use App\Models\User;
 use App\Models\FinishEvaluation;
-
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use App\Services\Evaluations\UserService;
 use Exception;
 use Illuminate\Http\Request;
@@ -118,7 +119,12 @@ class Evaluation360Controller extends Controller
                     'message' => 'Está prueba no es valida o ya ha sido resuelta.',
                     'code' => $this->prefix . 'X603'
                 ], 400);
-
+            if ($user_test->user_evaluation->responsable_id!=$request->user_id)
+            return response()->json([
+                'title' => 'Prueba Invalida',
+                'message' => 'Está prueba no te corresponde contestarla.',
+                'code' => $this->prefix . 'X603'
+            ], 400);
             // Se iguala el score actual de la prueba
             $total_score = $user_test->total_score;
 
@@ -377,6 +383,16 @@ class Evaluation360Controller extends Controller
     public function assignAsesors(Request $request)
     {
         try {
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'Required|Integer|NotIn:0|Min:0',
                 'users' => 'Array|Nullable',
@@ -565,6 +581,16 @@ class Evaluation360Controller extends Controller
     public function assign360(Request $request)
     {
         try {
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'Required|Integer|NotIn:0|Min:0',
                 'users' => 'Array|Nullable',
@@ -829,7 +855,16 @@ class Evaluation360Controller extends Controller
     public function assign(Request $request)
     {
         try {
-
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $idEvaluation = $request->evaluation_id;
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'Required|Integer|NotIn:0|Min:0',
@@ -932,9 +967,20 @@ class Evaluation360Controller extends Controller
     }
     public function changeStatus(Request $request)
     {
+
         try {
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $user_finish  = FinishEvaluation::where([
-                ['user_id', $request->user_id],
+                ['user_id', $request->user_evaluation],
                 ['evaluation_id', $request->evaluation_id],
             ])->first();
 
@@ -1067,6 +1113,7 @@ class Evaluation360Controller extends Controller
             ], 500);
         }
     }
+    
     public function getPersonal360(Request $request)
     {
         try {
@@ -1156,6 +1203,16 @@ class Evaluation360Controller extends Controller
     public function getFinish360(Request $request)
     {
         try {
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+            if (!$this->checkPermissions(request()->route()->getName())) {
+    
+                return response()->json([
+                    'title' => 'Proceso cancelado',
+                    'message' => 'No tienes permiso para hacer esto.',
+                    'code' =>  'P402'
+                ], 400);
+            }
             $user_finish = FinishEvaluation::where([
                 ['finish_evaluations.user_id', $request->user_id],
                 ['finish_evaluations.status', true]
@@ -1553,6 +1610,7 @@ class Evaluation360Controller extends Controller
         try {
             $validator = Validator::make(request()->all(), [
                 'user_id' => 'Required|Integer|NotIn:0|Min:0',
+                'user_id_valid' => 'Required|Integer|NotIn:0|Min:0',
                 'evaluation_id' => 'Required|Integer|NotIn:0|Min:0',
             ]);
 
@@ -1564,14 +1622,33 @@ class Evaluation360Controller extends Controller
                     'code' => $this->prefix . 'X001'
                 ], 400);
             }
+           /* $userPermission = UserService::checkUserPermisse('Acceso Administracion 360',$user);
+            if (!$userPermission)
+            return response()->json([
+                'title' => 'Consulta Cancelada',
+                'message' => 'Usuario invalido, no tienes acceso.',
+                'code' => $this->prefix . 'X202'
+            ], 400);*/
+            $user_collaborator=UserCollaborator::where('collaborator_id',request('user_id'))->first();
+            //return $user_collaborator;
             $evaluation = Evaluation::where('id', $request->evaluation_id)->first();
             $users = User::select(DB::raw("CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name"), 'email')
                 ->where('id', $request->user_id)
                 ->first();
 
 
-            $user = UserService::checkUser(request('user_id'));
-
+            $user = UserService::checkUser(request('user_id_valid'));
+            if ($user_collaborator->user_id!=request('user_id_valid')&&request('user_id_valid')!=request('user_id'))
+            {
+                if (!$user->hasPermissionTo('Permiso para ver reportes 360'))
+                return response()->json([
+                    'title' => 'Acceso Restringido',
+                    'message' => 'Usuario no tiene permiso.',
+                    'code' => 'X704'
+                ], 400);
+            }
+ 
+   
             if (!$user)
                 return response()->json([
                     'title' => 'Consulta Cancelada',
@@ -1607,8 +1684,8 @@ class Evaluation360Controller extends Controller
                     uasort($evaluatorTypes, function($a, $b) {
                         return strcmp($b, $a); // Ordena los evaluadores para que autoevaluacion quede al  final
                     });
-                    
-                    $AutoevaluacionKey=$evaluatorTypes[2] ; //Tener la key de autoevaluacion (con id 2)
+                  
+                    $AutoevaluacionKey=$evaluatorTypes[2] ?? 'NoEvaluation';  //Tener la key de autoevaluacion (con id 2)
                     $graficaModulosObj=[];
                     $graficaModulosValues=[];
                     $graficaEvaluadorObj=[];

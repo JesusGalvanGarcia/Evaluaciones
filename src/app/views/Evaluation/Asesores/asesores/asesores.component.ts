@@ -38,36 +38,7 @@ export class AsesoresComponent implements OnInit {
 
   protected  isChecked: boolean = true;
   changeProcess:ProcessModel;
-  ListChangeColaborator:CollaboratorEvaluation[];
-   testModelList: TestModel[] = [
-    {
-      id: 1,
-      name: "Prueba 1",
-      total_score: "90",
-      finish_date: "2023-10-27",
-      status: "Aprobado",
-      rank: "Alto",
-      type: "Evaluación de desempeño",
-    },
-    {
-      id: 2,
-      name: "Prueba 2",
-      total_score: "85",
-      finish_date: "2023-10-26",
-      status: "En progreso",
-      rank: "Medio",
-      type: "Examen de certificación",
-    },
-    {
-      id: 3,
-      name: "Prueba 3",
-      total_score: "70",
-      finish_date: "2023-10-25",
-      status: "Reprobado",
-      rank: "Bajo",
-      type: "Evaluación de conocimientos",
-    },
-  ];
+  ListChangeColaborator:CollaboratorEvaluation[]
   ListColaborator:CollaboratorEvaluation[];
   ListTest:TestModel[];
   mostrar:boolean=false;
@@ -230,33 +201,33 @@ export class AsesoresComponent implements OnInit {
     switch(process)
     {
       case "Evaluación de Desempeño":
-        this.router.navigate(['/desempeño/'+id]);
+        this.router.navigate(['desempeño/'+id]);
         if(status=="Terminado")
         {
-          this.router.navigate(['/prueba/'+id]);
+          this.router.navigate(['prueba/'+id]);
         }
         else{
-          this.router.navigate(['/desempeño/'+id]);
+          this.router.navigate(['desempeño/'+id]);
         }
       break
       case "Evaluaciones de asesores":
       //  this.router.navigate(['exam/asesors/'+id+"/1"]);
         if(status=="Terminado")
         {
-          this.router.navigate(['/pruebaAsesor/'+id]);
+          this.router.navigate(['pruebaAsesor/'+id]);
         }
         else{
-          this.router.navigate(['/dashboard/exam/asesors/'+id+"/1"]);
+          this.router.navigate(['asesors/'+id+"/1"]);
         }
       break
       case "Evaluaciones 360":
         //  this.router.navigate(['exam/asesors/'+id+"/1"]);
           if(status=="Terminado")
           {
-            this.router.navigate(['/prueba/'+id]);
+            this.router.navigate(['prueba/'+id]);
           }
           else{
-            this.router.navigate(['/dashboard/exam/evaluation350/'+id]);
+            this.router.navigate(['evaluation360/'+id]);
           }
         break
       case "Feedback y Plan de Acción":

@@ -6,7 +6,7 @@ import { fadeInOut, INavbarData } from './helper';
 @Component({
   selector: 'app-sublevel-menu',
   template: `
-    <ul *ngIf="data.items && data.items.length > 0"
+    <ul *ngIf="data.menu_items && data.menu_items.length > 0"
     [@submenu]="expanded
       ? {value: 'visible', 
           params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)', height: '*'}}
@@ -14,26 +14,27 @@ import { fadeInOut, INavbarData } from './helper';
           params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)', height: '0'}}"
       class="sublevel-nav"
     >
-      <li *ngFor="let item of data.items" class="sublevel-nav-item">
+      <li *ngFor="let item of data.menu_items" class="sublevel-nav-item">
           <a class="sublevel-nav-link"
         
-            *ngIf="item.items && item.items.length > 0"
+            *ngIf="item.menu_items && item.menu_items.length > 0"
           
           >
             <i class="sublevel-link-icon fa fa-circle"></i>
             <span class="sublevel-link-text" @fadeInOut 
                 >{{item.label}}</span>
-            <i *ngIf="item.items " class="menu-collapse-icon"
+            <i *ngIf="item.menu_items " class="menu-collapse-icon"
               [ngClass]="!item.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'"
             ></i>
           </a>
           <a class="sublevel-nav-link"
-            *ngIf="!item.items || (item.items && item.items.length === 0)"
+            *ngIf="!item.menu_items || (item.menu_items && item.menu_items.length === 0)"
             [routerLink]="[item.routeLink]"
             routerLinkActive="active-sublevel"
          
             [routerLinkActiveOptions]="{exact: true}"
           >
+          
             <i class="sublevel-link-icon fa fa-circle"></i>
             <span class="sublevel-link-text" @fadeInOut    
                (click)="test()">{{item.label}} </span>
@@ -65,7 +66,7 @@ export class SublevelMenuComponent implements OnInit {
     routeLink: '',
     icon: '',
     label: '',
-    items: []
+    menu_items: []
   }
   @Input() collapsed = true;
   @Input() animating: boolean | undefined;

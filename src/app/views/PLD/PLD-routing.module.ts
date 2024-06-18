@@ -6,7 +6,7 @@ import { PLDComponent } from './PLD.component';
 import { AdminPldComponent } from './adminPld/adminPld.component';
 import { PldFormComponent } from './adminPld/pldForm/pldForm.component';
 import { PLDExamComponent } from './PLDExam/PLDExam.component';
-import{AuthGuardService} from '../../shared/http/auth.service';
+import { AuthGuardService } from '@http/auth-guard.service';
 import {HomeComponent} from '../app/home/home.component';
 import{Personal360Component} from '../Evaluation/Evaluation360/personal360/personal360.component';
 import{Evaluation360Component} from '../Evaluation/Evaluation360/Evaluation360/Evaluation360.component';
@@ -24,26 +24,36 @@ const routes: Routes = [
     {
         path: 'asesors/:id/:attempts',
         component: EvaluationAsesorComponent,
+        
     },
     {
         path: 'adminPld',
         component: AdminPldComponent,
+        canActivate: [AuthGuardService],
+        data: { permission: 'Acceso Administracion PLD' }
+     
     },
 
     {
         path: 'adminPld/form/:idPldTest',
-        component: PldFormComponent
+        component: PldFormComponent,
+        canActivate: [AuthGuardService],
+        data: { permission: 'Acceso Administracion PLD' }
     },
     {
         path: 'adminPld/form',
-        component: PldFormComponent
+        component: PldFormComponent,
+        canActivate: [AuthGuardService],
+        data: { permission: 'Acceso Administracion PLD' }
     },
     {
         path: 'review/:id',
-        component: UserExamComponent
+        component: UserExamComponent,
+        canActivate: [AuthGuardService],
+        data: { permission: 'Acceso Administracion PLD' }
     },
     {
-        path: 'evaluation350/:id',
+        path: 'evaluation360/:id',
         component: Evaluation360Component
     },
     {

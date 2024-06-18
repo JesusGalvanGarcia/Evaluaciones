@@ -72,7 +72,7 @@ export class Users360Component implements OnInit {
   ]
   back()
   {
-    this.router.navigate(['/dashboard/admin360' ] );
+    this.router.navigate(['admin360' ] );
     this.actualUser="Asignar Colaboradores 360"
   }
   ngOnInit() {
@@ -106,7 +106,7 @@ export class Users360Component implements OnInit {
     .then((response: any) => {
       this.message.success("Los usuarios se agregaron correctamente");
       this.isLoading=false;
-      this.router.navigate(['/dashboard/admin360' ] );
+      this.router.navigate(['admin360' ] );
 
    
 

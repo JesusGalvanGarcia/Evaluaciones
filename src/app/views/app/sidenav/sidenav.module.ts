@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { SideNavRoutingModule } from './sidenav-routing.module';
 import { NgModule } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 @NgModule({
     declarations: [SidenavComponent],

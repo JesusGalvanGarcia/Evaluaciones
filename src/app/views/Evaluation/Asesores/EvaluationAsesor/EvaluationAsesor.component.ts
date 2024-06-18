@@ -134,7 +134,7 @@ export class EvaluationAsesorComponent implements OnInit {
     this.start = false;
   }
   backIndex() {
-    this.router.navigate(['/dashboard/asesores']);
+    this.router.navigate(['asesores']);
   }
   PostsaveAnswers(question: Question, answer: Answer, idAnswer: number) {
     this.loading = true;

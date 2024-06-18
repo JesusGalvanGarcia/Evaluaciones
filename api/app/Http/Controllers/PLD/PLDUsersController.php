@@ -133,7 +133,12 @@ class PLDUsersController extends Controller
                     'code' => $this->prefix . 'X602PLD'
                 ], 400);
             }
-
+            if ($user_test->user_evaluation->user_id!=$request->user_id)
+            return response()->json([
+                'title' => 'Prueba Invalida',
+                'message' => 'Está prueba no te corresponde contestarla.',
+                'code' => $this->prefix . 'X603'
+            ], 400);
           //Aqui validar que el usuario este en la fecha indicada
           /*  if (!$$user_test)
                 return response()->json([
@@ -369,6 +374,12 @@ class PLDUsersController extends Controller
             if ($user_test2->count() == 0) {
                 // Create a default UserTest instance with additional properties
                 $userTest = UserTest::where('user_evaluation_id', $user_evaluation_id)->first();
+                if ($userTest->user_evaluation->user_id!=$request->user_id&&$userTest->user_evaluation->responsable_id!=$request->user_id)
+                return response()->json([
+                    'title' => 'Prueba Invalida',
+                    'message' => 'Está información no te corresponde consultarla.',
+                    'code' => $this->prefix . 'X603'
+                ], 400);
                 $test= Test::find($userTest->test_id);
                
                 $user_test = new UserTest();

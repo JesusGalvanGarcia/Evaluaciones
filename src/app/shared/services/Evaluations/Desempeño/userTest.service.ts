@@ -89,6 +89,19 @@ export class UserTestService {
         throw data;
       });
   }
+  SendAverage(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl +this.controllerUrl+  "saveAverage", data)
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+      
+        throw data;
+      });
+  }
   SendTestSuggestions(data: any): Promise<any> {
 
     return axios.post(environment.apiUrl +this.controllerUrl+  "saveSuggetions", data)

@@ -6,17 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Roles extends Model
+class Icons extends Model
 {
     use SoftDeletes;
 
-    protected $table = "roles_user";
+    protected $table = "icons";
 
     protected $fillable = [
         'id',
-        'name',
+        'Icon',
         'active',
-        'roles_key',
         'created_by',
         'created_at',
         'updated_by',
@@ -25,7 +24,6 @@ class Roles extends Model
         'deleted_at'
     ];
 
-
-
+ 
  
 }

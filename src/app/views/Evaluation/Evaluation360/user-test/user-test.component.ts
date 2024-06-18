@@ -8,7 +8,7 @@ import { UserTestService } from '@services/Evaluations/Desempeño/userTest.servi
   templateUrl: './user-test.component.html',
   styleUrls: ['./user-test.component.scss']
 })
-export class UserTestComponent {
+export class UserTest360Component {
 
   user_id: number = 0;
   user_test_id: number = 0;
@@ -69,6 +69,6 @@ export class UserTestComponent {
   }
 
   redirectToPage() {
-    this.router.navigate(['/dashboard/exam/home']);
+    this.router.navigate(['home']);
   }
 }

@@ -17,6 +17,7 @@ class Accesses extends Model
         'key',
         'name',
         'description',
+        'origin',
         'url',
         'id_icon',
         'access_type_id',

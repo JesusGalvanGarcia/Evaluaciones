@@ -1,4 +1,4 @@
-<div class="bgImageContainer2"></div>
+<div class="bgImage2"></div>
 <div class="container main-container">
   <main>
     <!-- Contenedor -->
@@ -6,51 +6,80 @@
       <div *ngIf="start" class="contenedor-padre">
         <div class="contenedor-form">
           <div class="row justify-content-center">
-            <app-loading *ngIf="isLoading==true"></app-loading>
+            <app-loading *ngIf="isLoading == true"></app-loading>
 
             <div>
-
-              <button style="width:100%" class="btn btn-light" (click)="goIndex()">
-                <mat-icon>home</mat-icon>
-              </button><br />
-            </div><br />
-            <div class="col-md-10 text-center" style="width: 100%;">
+              <button
+                style="width: 100%"
+                class="btn btn-light"
+                (click)="goIndex()"
+              >
+                <mat-icon>home</mat-icon></button
+              ><br />
+            </div>
+            <br />
+            <div class="col-md-10 text-center" style="width: 100%">
               <div>
                 <br />
                 <span class="sd">{{ DesempenoTest.name }}</span>
               </div>
             </div>
             <div class="col-md-10 text-center">
-              <img src="assets/logo/logo_trinitas.jpg" style="width: 65%;" alt="Logo_Trinitas" class="mx-auto" />
+              <img
+                src="assets/logo/logo_trinitas.jpg"
+                style="width: 65%"
+                alt="Logo_Trinitas"
+                class="mx-auto"
+              />
             </div>
 
-            <div class="col-md-12 text-center" style="width: 95% !important;">
+            <div class="col-md-12 text-center" style="width: 95% !important">
               <br />
-              <span class="sdComienzo">{{ DesempenoTest.introduction_text }}</span>
+              <span class="sdComienzo">{{
+                DesempenoTest.introduction_text
+              }}</span>
             </div>
             <br />
             <div class="text-center btnEmpezar">
-              <div style="width: 80%;text-align: justify;font-family: inherit;">
+              <div
+                style="width: 80%; text-align: justify; font-family: inherit"
+              >
                 <b>
-                  <p>Para realizar las evaluaciones a tus colaboradores deberás tener en consideración lo siguiente:</p>
+                  <p>
+                    Para realizar las evaluaciones a tus colaboradores deberás
+                    tener en consideración lo siguiente:
+                  </p>
                 </b>
 
-                <ol style="color:rgb(143, 22, 22);font-weight: bold;">
-                  <li>Realizar la evaluación de desempeño de acuerdo con el cumplimiento de los objetivos establecidos
-                    durante el periodo del 2do semestre 2023.</li>
-                  <li>Al realizar la evaluación considera los rangos de calificación de acuerdo a la puntuación:</li>
-                  <li>Recuerda realizar en tiempo y forma de acuerdo con las fechas establecidas.</li>
-
+                <ol style="color: rgb(143, 22, 22); font-weight: bold">
+                  <li>
+                    Realizar la evaluación de desempeño de acuerdo con el
+                    cumplimiento de los objetivos establecidos durante el
+                    periodo del 1er semestre del 2024.
+                  </li>
+                  <li>
+                    Al realizar la evaluación considera los rangos de
+                    calificación de acuerdo a la puntuación:
+                  </li>
+                  <li>
+                    Recuerda realizar en tiempo y forma de acuerdo con las
+                    fechas establecidas.
+                  </li>
                 </ol>
-
               </div>
-              <div style="width: 80%;text-align: center;">
-
-                <img src="assets/svg/Calendario-evaluaciones.jpeg" style="width: 100%;" />
+              <div style="width: 80%; text-align: center">
+                <img
+                  src="assets/svg/Calendario-evaluaciones.jpeg"
+                  style="width: 100%"
+                />
               </div>
-              <br /> <br />
-              <button class="btn btn-success" (click)="FalseMark()">Comenzar</button>
-              <br /> <br />
+              <br />
+              <br />
+              <button class="btn btn-success" (click)="FalseMark()">
+                Comenzar
+              </button>
+              <br />
+              <br />
             </div>
           </div>
         </div>
@@ -59,42 +88,67 @@
         <div *ngIf="showModule">
           <div class="contenedor-padreMod">
             <div class="contenedor-form">
-
-              <div class="row justify-content-center" style="padding-bottom: 50px; ">
+              <div
+                class="row justify-content-center"
+                style="padding-bottom: 50px"
+              >
                 <div>
-
-                  <button style="width:100%" class="btn btn-light" (click)="goIndex()">
-                    <mat-icon>home</mat-icon>
-                  </button><br />
-                </div><br />
+                  <button
+                    style="width: 100%"
+                    class="btn btn-light"
+                    (click)="goIndex()"
+                  >
+                    <mat-icon>home</mat-icon></button
+                  ><br />
+                </div>
+                <br />
                 <div class="col-md-10 center-div">
-                  <div style="text-align: center;">
-                    <span class="sd">{{ DesempenoTest.name }}</span><br />
+                  <div style="text-align: center">
+                    <span class="sd">{{ DesempenoTest.name }}</span
+                    ><br />
                   </div>
-                </div><br /> <br />
-                <div class="backModul" *ngIf="index!= 0 "><br /> <br />
-                  <button class="btn btn-light" mat-button (click)="backQuestion()">
-                    <img src="assets/svg/back.svg" style="color:white" />
+                </div>
+                <br />
+                <br />
+                <div class="backModul" *ngIf="index != 0">
+                  <br />
+                  <br />
+                  <button
+                    class="btn btn-light"
+                    mat-button
+                    (click)="backQuestion()"
+                  >
+                    <img src="assets/svg/back.svg" style="color: white" />
                   </button>
                 </div>
                 <br />
-                <div style="width: 100%;">
-                  <div class="col-md-10 center-div" style="width: 100%;">
-                    <span class="sdPregunta">{{ DesempenoTest.test_modules[index].name }} </span>
+                <div style="width: 100%">
+                  <div class="col-md-10 center-div" style="width: 100%">
+                    <span class="sdPregunta"
+                      >{{ DesempenoTest.test_modules[index].name }}
+                    </span>
                   </div>
                   <br />
-                  <div class="col-md-10 text-center" style="width: 100%;">
-                    <img src="assets/logo/logo_trinitas.jpg" style="width: 65%;" alt="Logo_Trinitas" class="mx-auto" />
+                  <div class="col-md-10 text-center" style="width: 100%">
+                    <img
+                      src="assets/logo/logo_trinitas.jpg"
+                      style="width: 65%"
+                      alt="Logo_Trinitas"
+                      class="mx-auto"
+                    />
                   </div>
 
                   <br />
                   <br />
                   <div class="text-center btnEmpezarMod">
-                    <button class="btn btn-success" (click)="FalseMarkMoodulo()">Siguiente</button>
+                    <button
+                      class="btn btn-success"
+                      (click)="FalseMarkMoodulo()"
+                    >
+                      Siguiente
+                    </button>
                   </div>
-
                 </div>
-
               </div>
             </div>
           </div>
@@ -102,130 +156,223 @@
         <div *ngIf="showNote">
           <div class="contenedor-padreMod">
             <div class="contenedor-form">
-
-              <div class="row justify-content-center" style="padding-bottom: 50px; ">
+              <div
+                class="row justify-content-center"
+                style="padding-bottom: 50px"
+              >
                 <div>
-
-                  <button style="width:100%" class="btn btn-light" (click)="goIndex()">
-                    <mat-icon>home</mat-icon>
-                  </button><br />
-                </div><br />
+                  <button
+                    style="width: 100%"
+                    class="btn btn-light"
+                    (click)="goIndex()"
+                  >
+                    <mat-icon>home</mat-icon></button
+                  ><br />
+                </div>
+                <br />
                 <div class="col-md-10 center-div">
-                  <div style="text-align: center;">
-                    <span class="sd">{{ DesempenoTest.test_modules[index-1].name }}</span><br />
+                  <div style="text-align: center">
+                    <span class="sd">{{
+                      DesempenoTest.test_modules[index - 1].name
+                    }}</span
+                    ><br />
                   </div>
-                </div><br />
-                <div class="backModul"><br />
-                  <button class="btn btn-light" mat-button (click)="backQuestion()">
-                    <img src="assets/svg/back.svg" style="color:white" />
+                </div>
+                <br />
+                <div class="backModul">
+                  <br />
+                  <button
+                    class="btn btn-light"
+                    mat-button
+                    (click)="backQuestion()"
+                  >
+                    <img src="assets/svg/back.svg" style="color: white" />
                   </button>
                 </div>
                 <br />
-                <div style="width: 100%;">
+                <div style="width: 100%">
                   <div style="text-align: center">
-                    <span class="sdPregunta">{{ DesempenoTest.test_modules[index-1].name }} </span><br />
-                    <span style="color:rgb(156, 16, 16);font-weight: bold;">Estas notas nos ayudan a tener un mejor
-                      entendimiento y seguimiento de la evaluación</span><br /><br />
-                    <span style="color:#616161;font-weight: bold;">Nota final del modulo:</span><br /><br />
-                    <mat-form-field class="form-input" style="width: 80% !important;">
-                      <textarea matInput style="width: 100%;"
-                        [placeholder]="'Escribe una nota adicional acerca de este modulo...'"
-                        [value]="DesempenoTest.test_modules[index].note"
-                        [(ngModel)]="DesempenoTest.test_modules[index].note" required></textarea> <br />
+                    <span class="sdPregunta">{{
+                      DesempenoTest.test_modules[index - 1].name
+                    }}</span
+                    ><br />
+                    <span style="color: rgb(156, 16, 16); font-weight: bold"
+                      >Estas notas nos ayudan a tener un mejor entendimiento y
+                      seguimiento de la evaluación</span
+                    ><br /><br />
+                    <span style="color: #616161; font-weight: bold"
+                      >Nota final del modulo:</span
+                    ><br /><br />
+                    <mat-form-field
+                      class="form-input"
+                      style="width: 80% !important"
+                    >
+                      <textarea
+                        matInput
+                        style="width: 100%"
+                        [placeholder]="
+                          'Escribe una nota adicional acerca de este modulo...'
+                        "
+                        [(ngModel)]="DesempenoTest.test_modules[index - 1].note"
+                        #textarea
+                        required
+                      ></textarea>
+                      <br />
                     </mat-form-field>
                   </div>
-
                   <br />
-
                   <div class="text-center btnEmpezarMod">
-                    <button class="btn btn-success"
-                      (click)="sendNote(DesempenoTest.test_modules[index].id)">Siguiente</button>
-                  </div> <br />
+                    <button class="btn btn-success" (click)="sendNote()">
+                      Siguiente
+                    </button>
+                  </div>
+                  <br />
                   <div class="cent">
-                    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-                    <!-- <button class="btn" *ngIf="!finish" class="btn btn-success">Guardar</button> -->
+                    <mat-progress-bar
+                      *ngIf="loading"
+                      mode="indeterminate"
+                    ></mat-progress-bar>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
+
         <div *ngIf="end">
           <div>
             <!-- Imagen de Login -->
 
-
-            <div class="row justify-content-center" style="padding-bottom: 50px; padding-top: 20px;">
-
-
+            <div
+              class="row justify-content-center"
+              style="padding-bottom: 50px; padding-top: 20px"
+            >
               <div class="result-container">
                 <div class="result-header">
-                  <app-loading *ngIf="isLoading==true"></app-loading>
+                  <app-loading *ngIf="isLoading == true"></app-loading>
 
-                  <span class="result-title">¡Has terminado de contestar la encuesta!</span><br /><br />
+                  <span class="result-title"
+                    >¡Has terminado de contestar la encuesta!</span
+                  ><br /><br />
                 </div>
                 <div class="result-info">
-                  <span class="result-score">Puntuación total:
+                  <span class="result-score"
+                    >Puntuación total:
                     <br />
-                    <span style="color:#b60b0b">{{ score }}</span> </span><br /><br />
+                    <span style="color: #b60b0b">{{ score }}</span> </span
+                  ><br /><br />
                 </div>
                 <div class="result-evaluation">
-                  <span class="result-text" color="#000">Las evaluaciones han finalizado, ya puedes
-                    continuar</span><br /><br />
-                  <span class="result-description">¡El siguiente paso es realizar el feedback y plan acción junto con el
-                    colaborador!</span><br /><br />
+                  <span class="result-text" color="#000"
+                    >¡Haz finalizado la evaluación de competencias!</span
+                  ><br /><br />
+                  <span class="result-description"
+                    >¡El siguiente paso es realizar la evaluación de
+                    desempeño!</span
+                  ><br /><br />
+                  <div class="result-evaluation">
+                    <span class="result-text" [style.color]="clasification.color">{{ clasification.clasification
+                        }}</span><br /><br />
+                    <span class="result-description">{{ clasification.description }}</span><br /><br />
                 </div>
-                <div style="width: 100%;">
+                </div>
+                <div style="width: 100%">
                   <div class="back-to-evaluations">
-                    <button class="btn btn-success back-to-evaluations-button"
-                      (click)="home()">Volver</button><br /><br />
+                    <button
+                      class="btn btn-success back-to-evaluations-button"
+                      (click)="home()"
+                    >
+                      Volver</button
+                    ><br /><br />
                   </div>
                 </div>
               </div>
 
               <br />
-
-
-
-
             </div>
           </div>
         </div>
-        <div *ngIf="!showModule&&end==false&&showNote==false">
+        <div *ngIf="!showModule && end == false && showNote == false">
           <div>
             <div class="contForm">
               <!-- Imagen de Login -->
-              <div class="row justify-content-center" style="padding-bottom: 50px; ">
+              <div
+                class="row justify-content-center"
+                style="padding-bottom: 50px"
+              >
                 <div>
-
-                  <button style="width:100%" class="btn btn-light" (click)="goIndex()">
-                    <mat-icon>home</mat-icon>
-                  </button><br />
-                </div><br />
-                <div class="mt-2" style="text-align: center;">
-                  <p class="tex-center fw-bolder">Colaborador: {{ evaluatedUserName }}</p>
+                  <button
+                    style="width: 100%"
+                    class="btn btn-light"
+                    (click)="goIndex()"
+                  >
+                    <mat-icon>home</mat-icon></button
+                  ><br />
+                </div>
+                <br />
+                <div class="mt-2" style="text-align: center">
+                  <p class="tex-center fw-bolder">
+                    Colaborador: {{ evaluatedUserName }}
+                  </p>
                 </div>
                 <br />
                 <div class="scores">
-                  <span>Puntos acumulados: {{score}}</span>
+                  <span>Puntos acumulados: {{ score }}</span>
                 </div>
                 <div class="col-md-10 center-div">
-                  <div style="text-align: center;">
-                    <span class="sd">{{ DesempenoTest.test_modules[index].name }}</span>
+                  <div style="text-align: center">
+                    <span class="sd">{{
+                      DesempenoTest.test_modules[index].name
+                    }}</span>
                   </div>
                 </div>
                 <br />
                 <div [class.screen]="!showQuestion">
                   <br />
-                  <div class="back"><br />
-                    <button class="btn btn-light" mat-button (click)="backQuestion()">
-                      <img src="assets/svg/back.svg" style="color:white" />
-                    </button>
+                  <div class="row">
+                    <!-- Botón "backQuestion" alineado a la izquierda -->
+                    <div class="col d-flex justify-content-start">
+                      <button class="btn btn-light" (click)="backQuestion()">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="26"
+                          viewBox="0 -960 960 960"
+                          width="30"
+                        >
+                          <path
+                            d="M160-240H80v-480h80v480Zm320 0L240-480l240-240 56 56-143 144h487v80H393l144 144-57 56Z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                      <button
+                        class="btn btn-light"
+                        (click)="next()"
+                        [disabled]="getIndexOfAnswerWithNonNullUserAnswer()"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="26"
+                          viewBox="0 -960 960 960"
+                          width="30"
+                        >
+                          <path
+                            d="M800-240v-480h80v480h-80Zm-320 0-57-56 144-144H80v-80h487L424-664l56-56 240 240-240 240Z"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                  <div class="col-md-10 center-div" style="width: 100%;">
-                    <span class="sdPregunta">{{ DesempenoTest.test_modules[index].questions[indexQuestion].description
-                      }} </span>
+
+                  <div class="col-md-10 center-div" style="width: 100%">
+                    <span class="sdPregunta"
+                      >{{
+                        DesempenoTest.test_modules[index].questions[
+                          indexQuestion
+                        ].description
+                      }}
+                    </span>
                   </div>
                   <br />
 
@@ -234,43 +381,78 @@
                     <div class="cent">
                       <div class="container">
                         <div
-                          *ngFor="let respuesta of DesempenoTest.test_modules[index].questions[indexQuestion].answers; let i = index"
-                          class="row mt-2">
-                          <div class="col col-1 col-sm-6 col-md-1 " align="start">
-                            <input class="radio-button" type="radio" [disabled]="loading"
-                              (click)="PostsaveAnswers(respuesta.id,DesempenoTest.test_modules[index].id, DesempenoTest.test_modules[index].questions[indexQuestion].id,respuesta.score,i )"
-                              name="flexRadioDefault" id="flexRadioDefault1"
-                              [checked]="respuesta.user_answer_id === null? false:true"
-                              [value]="respuesta.user_answer_id">
+                          *ngFor="
+                            let respuesta of DesempenoTest.test_modules[index]
+                              .questions[indexQuestion].answers;
+                            let i = index
+                          "
+                          class="row mt-2"
+                        >
+                          <div
+                            class="col col-1 col-sm-6 col-md-1"
+                            align="start"
+                          >
+                            <input
+                              class="radio-button"
+                              type="radio"
+                              [disabled]="loading"
+                              (click)="
+                                PostsaveAnswers(
+                                  respuesta.id,
+                                  DesempenoTest.test_modules[index].id,
+                                  DesempenoTest.test_modules[index].questions[
+                                    indexQuestion
+                                  ].id,
+                                  respuesta.score,
+                                  i
+                                )
+                              "
+                              name="flexRadioDefault"
+                              id="flexRadioDefault1"
+                              [checked]="
+                                respuesta.user_answer_id === null ? false : true
+                              "
+                              [value]="respuesta.user_answer_id"
+                            />
                           </div>
-                          <div class="col col-8 col-sm-8 col-md-6 " align="start">
-                            <label for="respuesta{{respuesta.id}}">{{ respuesta.description }}</label>
+                          <div
+                            class="col col-8 col-sm-8 col-md-6"
+                            align="start"
+                          >
+                            <label for="respuesta{{ respuesta.id }}">{{
+                              respuesta.description
+                            }}</label>
                           </div>
                           <div class="col col-3 col-sm-3 col-md-4">
-                            <span style="color:#b60b0b;font-weight: bold;font-size: 90%;">*{{respuesta.score }}
-                              pts</span>
+                            <span
+                              style="
+                                color: #b60b0b;
+                                font-weight: bold;
+                                font-size: 90%;
+                              "
+                              >*{{ respuesta.score }} pts</span
+                            >
                           </div>
-
                         </div>
-
                       </div>
                     </div>
                   </div>
 
                   <br />
-
                 </div>
                 <div class="cent">
-                  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+                  <mat-progress-bar
+                    *ngIf="loading"
+                    mode="indeterminate"
+                  ></mat-progress-bar>
                   <!-- <button class="btn" *ngIf="!finish" class="btn btn-success">Guardar</button> -->
                 </div>
               </div>
 
-
               <div class="pregunta-container">
-                <span>Pregunta &nbsp;</span> {{ (indexQuestion+1) + "/" + (sizeQuestions) }}
+                <span>Pregunta &nbsp;</span>
+                {{ indexQuestion + 1 + "/" + sizeQuestions }}
               </div>
-
             </div>
           </div>
         </div>

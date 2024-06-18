@@ -76,7 +76,12 @@ class UserActionPlanController extends Controller
                     'message' => 'Es posible que el plan de acción ya haya sido finalizado, solicite al adminitrador acceso para editarlo.',
                     'code' => $this->prefix . 'X104'
                 ], 400);
-
+            if ($user_action_plan->responsable_id!=$request->user_id)
+            return response()->json([
+                'title' => 'Plan de acción no valido',
+                'message' => 'Es posible que no tenga acceso a llenar este plan de accion.',
+                'code' => $this->prefix . 'X104'
+            ], 400);
             DB::beginTransaction();
 
             UserAgreement::create([
@@ -210,6 +215,13 @@ class UserActionPlanController extends Controller
             // Se consulta la evaluación del usuario
             $user_evaluation = ActionPlanService::findUserActionPlan($user_action_plan);
 
+            $userPermission = UserService::checkUserPermisse('Acceso Administracion desempeno',$user);
+            if (!$userPermission&&$user_evaluation->responsable_id!=request('user_id')&&$user_evaluation->user_id!=request('user_id'))
+            return response()->json([
+                'title' => 'Consulta Cancelada',
+                'message' => 'Usuario invalido, no tienes acceso.',
+                'code' => $this->prefix . 'X202'
+            ], 400);
             if (!$user_evaluation)
                 return response()->json([
                     'title' => 'No se encontró información',

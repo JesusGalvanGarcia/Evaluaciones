@@ -1,0 +1,83 @@
+<div class="container mt-4 mb-4">
+    <mat-card>
+        <div class="mt-2 animated fadeIn" align="center" *ngIf="loading">
+            <mat-spinner></mat-spinner>
+        </div>
+        <div style="justify-content: center;display:flex;font-weight: bold;font-size: 20px;">
+            {{name}}
+         </div><br/>
+        <mat-card-header *ngIf="!loading">
+            <mat-card-title>{{ test.name }}</mat-card-title>
+         
+            <mat-card-subtitle *ngIf="test.modular == 0">Calificación Máxima: {{ test.max_score }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content *ngIf="!loading">
+            <div class="row row-cols-1 row-cols-md-2 mt-4 mt-4" *ngIf="test.modular == 0">
+                <div class="col col-12 col-md-4 mb-4">Calificación Obtenida: {{ score }}</div>
+            </div>
+            <mat-card >
+                <mat-card-header>
+                    <mat-card-title>Áreas de oportunidad:</mat-card-title>
+                </mat-card-header>
+          
+                <mat-card-content>
+                    <p>
+                        {{ chance }}
+                    </p>
+                </mat-card-content>
+            
+            </mat-card>
+            <mat-card >
+                <mat-card-header>
+                    <mat-card-title>Fortalezas:</mat-card-title>
+                </mat-card-header>
+          
+                <mat-card-content>
+                    <p>
+                        {{strengths }}
+                    </p>
+                </mat-card-content>
+            
+            </mat-card>
+            <mat-card >
+                <mat-card-header>
+                    <mat-card-title>Sugerencias:</mat-card-title>
+                </mat-card-header>
+          
+                <mat-card-content>
+                    <p>
+                        {{suggestions }}
+                    </p>
+                </mat-card-content>
+            
+            </mat-card>
+            <div class="row mt-4 mb-4">
+                <div class="col col-12 col-md-4">
+                    <button type="button" mat-stroked-button (click)="redirectToPage();">
+                        Regresar
+                    </button>
+                </div>
+            </div>
+            <mat-tab-group>
+                <mat-tab *ngFor="let module of modules" [label]="module.name">
+                    <ul class="list-group list-group-flush mt-4">
+                        <li class="list-group-item" *ngFor="let question of module.questions">
+                            <h5>
+                                {{ question.description.split('.')[0] }}
+                            </h5>
+                            <h6>
+                                {{ question.description.split('.')[1] }}
+                            </h6>
+                            <mat-selection-list [multiple]="false">
+                                <mat-list-option *ngFor="let answer of question.answers"
+                                    [selected]="answer.user_answer_id" readonly>
+                                    {{answer.description}}
+                                </mat-list-option>
+                            </mat-selection-list>
+                        </li>
+                    </ul>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </mat-card>
+</div>

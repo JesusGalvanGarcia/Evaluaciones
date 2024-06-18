@@ -10,7 +10,7 @@ use App\Models\ActionPlanSignature;
 use App\Models\UserActionPlan;
 use App\Models\UserAgreement;
 use App\Models\UserEvaluation;
-use App\Services\Evaluations\Evaluation360\Test360Service;
+use App\Services\Evaluations\ActionPlanService;
 use App\Services\Evaluations\UserService;
 use Carbon\Carbon;
 use Exception;
@@ -23,7 +23,6 @@ use Illuminate\Support\Str;
 class ActionPlan360Controller extends Controller
 {
     private $prefix = 'UserActionPlan360';
-
     public function index()
     {
         //
@@ -72,6 +71,13 @@ class ActionPlan360Controller extends Controller
                 return response()->json([
                     'title' => 'Plan de acción no valido',
                     'message' => 'Es posible que el plan de acción ya haya sido finalizado, solicite al adminitrador acceso para editarlo.',
+                    'code' => $this->prefix . 'X104'
+                ], 400);
+
+                if ($user_action_plan->responsable_id!=$request->user_id)
+                return response()->json([
+                    'title' => 'Plan de acción no valido',
+                    'message' => 'Es posible que no tenga acceso a llenar este plan de accion.',
                     'code' => $this->prefix . 'X104'
                 ], 400);
 
@@ -196,16 +202,15 @@ class ActionPlan360Controller extends Controller
             
                 ->get();
           
-            if (!$signatures->firstWhere('responsable_id', request('user_id')))
-                return response()->json([
-                    'title' => 'No estás autorizado.',
-                    'message' => 'El plan de acción no está disponible, contacta al administradoor.',
-                    'code' => $this->prefix . 'X204'
-                ], 400);
-
             // Se consulta la evaluación del usuario
-            $user_evaluation = Test360Service::findUserActionPlan($user_action_plan);
-
+            $user_evaluation = ActionPlanService::findUserActionPlan($user_action_plan);
+            $userPermission = UserService::checkUserPermisse('Acceso Administracion 360',$user);
+            if (!$userPermission&&$user_evaluation->responsable_id!=request('user_id')&&$user_evaluation->user_id!=request('user_id'))
+            return response()->json([
+                'title' => 'Consulta Cancelada',
+                'message' => 'Usuario invalido, no tienes acceso.',
+                'code' => $this->prefix . 'X202'
+            ], 400);
             if (!$user_evaluation)
                 return response()->json([
                     'title' => 'No se encontró información',
@@ -374,7 +379,7 @@ class ActionPlan360Controller extends Controller
                 ], 400);
 
             // Se consulta la evaluación del usuario
-            $user_evaluation = Test360Service::findUserActionPlan($user_action_plan);
+            $user_evaluation = ActionPlanService::findUserActionPlan($user_action_plan);
 
             if (!$user_evaluation)
                 return response()->json([
@@ -431,7 +436,7 @@ class ActionPlan360Controller extends Controller
                     'updated_by' => $request->user_id
                 ]);
 
-                Test360Service::sendConfirmSignaturesMail($user_evaluation, $user_evaluation->evaluation->name);
+                ActionPlanService::sendConfirmSignaturesMail($user_evaluation, $user_evaluation->evaluation->name);
             }
 
             DB::commit();
@@ -505,7 +510,7 @@ class ActionPlan360Controller extends Controller
                 ], 400);
 
             // Se consulta la evaluación del usuario
-            $user_evaluation = Test360Service::findUserActionPlan($user_action_plan);
+            $user_evaluation = ActionPlanService::findUserActionPlan($user_action_plan);
 
             if (!$user_evaluation)
                 return response()->json([
@@ -545,9 +550,9 @@ class ActionPlan360Controller extends Controller
           
             // Se envía el correo de confirmación del plan de acción.
             if($newProcessId ==5)
-            Test360Service::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlanComplete");
+            ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlanComplete");
             else
-            Test360Service::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlan350");
+            ActionPlanService::sendConfirmMail($user_evaluation, $user_evaluation->evaluation->name,"ActionPlan350");
 
             return response()->json([
                 'title' => 'Proceso terminado',

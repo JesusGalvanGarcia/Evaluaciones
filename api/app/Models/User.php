@@ -24,7 +24,6 @@ class User extends Authenticatable
         'name',
         'user_name',
         'email',
-     
         'password',
         'status_id',
         'created_by',
@@ -70,10 +69,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Area::class, 'area_id');
     }
-    public function roles()
-    {
-        return $this->belongsTo(Roles::class, 'rol_id');
-    }
+  
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id');

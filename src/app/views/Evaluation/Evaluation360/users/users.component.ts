@@ -78,7 +78,7 @@ export class UsersComponent implements OnInit {
   backIndex()
   {
     this.start=true;
-    this.router.navigate(['/dashboard/admin360' ] );
+    this.router.navigate(['admin360' ] );
     }
   ngOnInit() {
     var user=localStorage.getItem("email");

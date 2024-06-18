@@ -6,7 +6,9 @@ import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
-
+import { LoadingComponent } from '../../app/loading/loading.component';
+import { MensajeService } from '@http/mensaje.service';
+import { ToolService } from '@services/tools.service';
 @Component({
   selector: 'app-home',
   standalone:true,
@@ -17,50 +19,55 @@ import { Router } from '@angular/router';
     CommonModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    LoadingComponent
   ]
 })
 export class HomeComponent implements OnInit {
   protected isCollapsed: boolean = false;
   id:any=localStorage.getItem("user_id");
-  constructor(  private router: Router) { }
+  links:any;
+  isLoading:boolean=false;
+  constructor( public message: MensajeService, private router: Router,private tools : ToolService) { }
   showSubMenu: string | null = null;
   getUser() {
-    var user=localStorage.getItem("names");
+    var user=localStorage.getItem("user_id");
     if(user=="")
     {
-  
-
+      this.router.navigate(['login']);
+      this.message.error("No hay una sesión iniciada.")
     }
 
-    return user;
+    return localStorage.getItem("names");
   }
   toggleSubMenu(menu: string) {
     this.showSubMenu = this.showSubMenu === menu ? null : menu;
   }
-  go(page:string)
+  go(page:string,pageOrigin:string)
   {
-    switch(page)
-    {
-       case "PLD":
-        this.router.navigate(['/dashboard/exam']);
-        break;
-       case  "Evaluaciones":
-        this.router.navigate(['/dashboard/evaluacion']);
-        break;
-        case  "360":
-          this.router.navigate(['/dashboard/evaluacion360']);
-          break;
-          case  "asesores":
-            this.router.navigate(['/dashboard/asesores']);
-            break;
-            case "admin360":
-              this.router.navigate(['/dashboard/admin360']);
-              break;
-
-    }
+    this.isLoading=true;
+    this.router.navigate([page]);
+    this.isLoading=false;
   }
   ngOnInit() {
+    this.isLoading=true;
+  
+    this.getTool();
+  
+  }
+  getTool()
+  {
+       this.tools.getTools(this.id)
+       .then((response: any) => {
+        this.links=response;
+       this.isLoading=false;
+      })
+      .catch((error) => {
+        console.error('Error al comunicarse con la sesión:', error);
+        this.isLoading = false;
+        this.getUser();
+      });
+    
   }
   toggleMenu() {
     this.isCollapsed = !this.isCollapsed; // Cambia el estado del menú colapsable

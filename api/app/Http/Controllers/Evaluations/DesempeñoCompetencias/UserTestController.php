@@ -537,6 +537,7 @@ class UserTestController extends Controller
                             'goal' => '',
                             'developed_skill' => '',
                             'action' => '',
+                            'principal_agreement'=>true,
                             // 'established_date' => Carbon::now()->format('Y-m-d'),
                             'created_by' => $request->user_id,
                             'updated_by' => $request->user_id
@@ -552,6 +553,7 @@ class UserTestController extends Controller
                             'goal' => '',
                             'developed_skill' => '',
                             'action' => '',
+                            'principal_agreement'=>true,
                             // 'established_date' => Carbon::now()->format('Y-m-d'),
                             'created_by' => $request->user_id,
                             'updated_by' => $request->user_id

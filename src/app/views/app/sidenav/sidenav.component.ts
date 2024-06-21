@@ -21,10 +21,10 @@ interface SideNavToggle {
     fadeInOut,
     trigger('rotate', [
       transition(':enter', [
-        animate('1000ms', 
+        animate('1000ms',
           keyframes([
-            style({transform: 'rotate(0deg)', offset: '0'}),
-            style({transform: 'rotate(2turn)', offset: '1'})
+            style({ transform: 'rotate(0deg)', offset: '0' }),
+            style({ transform: 'rotate(2turn)', offset: '1' })
           ])
         )
       ])
@@ -39,19 +39,19 @@ export class SidenavComponent implements OnInit {
   navData :any=[];
    
   navDataCopy = navbarDataAdmin;
-  
-  navDataEvaluacion=navbarDataAdminEvaluaciones;      
-  user:number;
+
+  navDataEvaluacion = navbarDataAdminEvaluaciones;
+  user: number;
   multiple: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = window.innerWidth;
-  
-    if(this.screenWidth <= 768 ) {
+
+    if (this.screenWidth <= 768) {
       this.collapsed = true;
-   
-      this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+
+      this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
     }
   }
 
@@ -79,17 +79,17 @@ export class SidenavComponent implements OnInit {
     
   }
   toggleCollapse(): void {
- 
+
     this.collapsed = !this.collapsed;
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
-     
+    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
+
   }
 
   closeSidenav(): void {
 
     this.collapsed = false;
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
-   
+    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
+
   }
 
   handleClick(item: INavbarData): void {

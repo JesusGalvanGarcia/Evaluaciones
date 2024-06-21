@@ -1,0 +1,57 @@
+.example-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    // background: none;
+    // box-shadow: none;
+}
+
+// .mat-card-header,
+// .mat-card-footer {
+//     border-bottom: none;
+// }
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.mat-toolbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.title {
+    font-size: 1em;
+    
+    white-space: normal;
+    padding: 0 10px;
+    /* Añade un relleno horizontal de 10px */
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.custom-card {
+    width: 300px;
+    /* Ancho personalizado */
+    margin: 20px;
+    /* Margen alrededor de la tarjeta */
+    padding: 15px;
+    /* Relleno interno de la tarjeta */
+}
+
+.custom-icon {
+    color: #3b38dcd7;
+    /* Color personalizado para el ícono */
+    margin-right: 10px;
+    /* Espacio entre el ícono y el título */
+}
+
+.custom-subtitle {
+    font-size: 1.5em;
+    /* Tamaño de la fuente del subtítulo */
+}

@@ -36,11 +36,12 @@ import { AngularDualListBoxModule } from 'angular-dual-listbox';
 import { UserTest360Component } from './views/Evaluation/Evaluation360/user-test/user-test.component';
 import { LoginComponent } from './views/app/login/login.component';
 import { Personal360Component } from './views/Evaluation/Evaluation360/personal360/personal360.component';
+
 export function getDatepickerConfig(): BsDatepickerConfig {
   return Object.assign(new BsDatepickerConfig(), {
-    isAnimated: true, 
-    dateInputFormat: 'DD/MM/YYYY', 
-    selectFromOtherMonth: true, 
+    isAnimated: true,
+    dateInputFormat: 'DD/MM/YYYY',
+    selectFromOtherMonth: true,
     adaptivePosition: true,
   });
 }
@@ -48,7 +49,7 @@ export function getDatepickerConfig(): BsDatepickerConfig {
 
 @NgModule({
   declarations: [
-    
+
     AppComponent,
     SidenavComponent,
     SublevelMenuComponent,
@@ -91,7 +92,7 @@ export function getDatepickerConfig(): BsDatepickerConfig {
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(){
+  constructor() {
     registerLocaleData(localeEs, 'es');
   }
 }

@@ -26,4 +26,9 @@ class UserTestModule extends Model
     {
         return $this->belongsTo(UserTest::class);
     }
+
+    public function module()
+    {
+        return $this->belongsTo(TestModule::class, 'module_id', 'id', 'module_id');
+    }
 }

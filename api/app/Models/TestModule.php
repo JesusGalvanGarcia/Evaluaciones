@@ -31,4 +31,9 @@ class TestModule extends Model
     {
         return $this->belongsTo(Test::class);
     }
+
+    public function user_test_modules()
+    {
+        return $this->hasMany(UserTestModule::class, 'module_id', 'id');
+    }
 }

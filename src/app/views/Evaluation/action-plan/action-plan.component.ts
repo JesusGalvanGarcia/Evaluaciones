@@ -18,6 +18,7 @@ import { UserActionPlanService } from '@services/Evaluations/userActionPlan.serv
 import SignaturePad from 'signature_pad';
 import { ProcessModel } from "../../../shared/entities/models/testDetails/processModel";
 import { UserTestService } from '@services/Evaluations/Desempeño/userTest.service';
+import { CardComponent } from '@sharedComponents/card/card.component';
 
 
 @Component({
@@ -39,7 +40,8 @@ import { UserTestService } from '@services/Evaluations/Desempeño/userTest.servi
     MatIconModule,
     MatProgressSpinnerModule,
     CommonModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    CardComponent
   ],
 })
 export class ActionPlanComponent {
@@ -55,7 +57,7 @@ export class ActionPlanComponent {
   selected_signature: any;
   show_sign: boolean = false;
   is_signed: boolean = false;
-  changeProcess:ProcessModel;
+  changeProcess: ProcessModel;
 
   // Form Agreements
   agreement_form: FormGroup | any;
@@ -75,7 +77,10 @@ export class ActionPlanComponent {
   action_plan_name: string = '';
   user_action_plan: any;
   agreements: any;
+  strengths: any;
+  opportunity_areas: any;
   signatures: any;
+  notes: any;
 
   selected_agreement_id: number = 0;
 
@@ -107,9 +112,8 @@ export class ActionPlanComponent {
   }
 
   ngAfterViewInit() {
-    var user=localStorage.getItem("email");
-    if(user=="")
-    {
+    var user = localStorage.getItem("email");
+    if (user == "") {
       this.router.navigate(['/login']);
       this.system_message.error("Tienes que iniciar sesion");
 
@@ -125,21 +129,20 @@ export class ActionPlanComponent {
       maxWidth: 3,
     });
   }
-  changeProcessFunc(process:number,user_test_id:number)
-  {
-  
-       this.changeProcess=
-       {
-        user_id: Number(localStorage.getItem("user_id")),
-        user_test_id: user_test_id,
-        process_id:process,   
-       }
-       this.userTestService.SendChangeProcess(this.changeProcess)
-       .then((response: any) => {
-     
-      
+  changeProcessFunc(process: number, user_test_id: number) {
+
+    this.changeProcess =
+    {
+      user_id: Number(localStorage.getItem("user_id")),
+      user_test_id: user_test_id,
+      process_id: process,
+    }
+    this.userTestService.SendChangeProcess(this.changeProcess)
+      .then((response: any) => {
+
+
       })
-    
+
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -157,14 +160,16 @@ export class ActionPlanComponent {
     }
 
     this.userActionPlanService.GetAction(searchData, this.user_action_plan_id).
-      then(({ user_action_plan, agreements, signatures }) => {
+      then(({ user_action_plan, agreements, signatures, strengths, opportunity_areas, notes }) => {
 
         this.user_action_plan = user_action_plan;
         this.action_plan_name = user_action_plan.action_plan_name
         this.agreements = agreements;
+        this.strengths = strengths;
+        this.opportunity_areas = opportunity_areas;
+        this.notes = notes;
 
         // signatures
-
         this.signatures = signatures;
 
         // agreements
@@ -183,7 +188,7 @@ export class ActionPlanComponent {
         this.system_message.error(title + message);
 
         this.dataSource = new MatTableDataSource([]);
-       
+
       });
   }
 
@@ -217,7 +222,7 @@ export class ActionPlanComponent {
         this.closeDrawer();
       })
       .catch(({ title, message, code }) => {
-      
+
       });
   }
 
@@ -226,6 +231,9 @@ export class ActionPlanComponent {
     let agreement = this.agreements.find((agreement: any) => agreement.id == agreement_id);
 
     this.selected_agreement_id = agreement_id;
+
+    if (agreement.principal_agreement || agreement.principal_agreement == 1)
+      this.agreement_form.get('opportunity_area').disable();
 
     this.agreement_form.patchValue({
       opportunity_area: agreement.opportunity_area,
@@ -261,7 +269,29 @@ export class ActionPlanComponent {
         this.selected_agreement_id = 0;
       })
       .catch(({ title, message, code }) => {
-      
+
+        this.loading = false;
+      });
+  }
+
+  deleteAgreement(agreement_id: number) {
+
+    const data = {
+      user_id: this.user_id,
+      user_action_plan_id: this.user_action_plan_id,
+      agreement_id: agreement_id
+    }
+
+    this.loading = true;
+
+    this.userActionPlanService.DeleteAgreement(data).
+      then(({ }) => {
+
+        this.getAgreements();
+
+      })
+      .catch(({ title, message, code }) => {
+
         this.loading = false;
       });
   }
@@ -282,7 +312,7 @@ export class ActionPlanComponent {
         //this.changeProcessFunc(5,this.user_action_plan_id);
       })
       .catch(({ title, message, code }) => {
-       
+
         this.loading = false;
       });
   }
@@ -330,7 +360,7 @@ export class ActionPlanComponent {
         this.getAgreements();
       })
       .catch(({ title, message, code }) => {
-     
+
         this.loading = false;
       });
   }
@@ -350,6 +380,7 @@ export class ActionPlanComponent {
 
   resetForm() {
     this.agreement_form.reset();
+    this.agreement_form.get('opportunity_area').enable();
   }
 
   redirectToPage() {

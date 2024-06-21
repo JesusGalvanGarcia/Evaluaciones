@@ -150,6 +150,10 @@ canvas {
         width: 250px;
         /* Tamaño máximo para pantallas pequeñas */
     }
+    .example-sidenav {
+        padding: 20px;
+        width: 450px; // Estilo general para el formulario
+    }
 }
 
 /* Estilo para pantallas medianas (de 601px a 1200px de ancho) */
@@ -158,6 +162,11 @@ canvas {
         width: 300px;
         /* Tamaño máximo para pantallas medianas */
     }
+    .example-sidenav {
+        padding: 20px;
+        width: 450px; // Estilo general para el formulario
+        margin-left: 60px;
+    }
 }
 
 /* Estilo para pantallas grandes (más de 1200px de ancho) */
@@ -165,5 +174,10 @@ canvas {
     .input-small {
         width: 400px;
         /* Tamaño máximo para pantallas grandes */
+    }
+    .example-sidenav {
+        padding: 20px;
+        width: 450px; // Estilo general para el formulario
+        margin-left: 60px;
     }
 }

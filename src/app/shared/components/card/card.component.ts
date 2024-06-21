@@ -28,4 +28,5 @@ export class CardComponent {
   @Input() title: string;
   @Input() subtitle: string;
   @Input() icon: string;
+  @Input() footer: string;
 }

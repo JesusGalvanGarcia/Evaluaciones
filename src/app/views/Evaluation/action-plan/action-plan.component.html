@@ -114,17 +114,19 @@
             <div class="container mb-4" *ngIf="!show_sign">
                 <div class="section-title">Fortalezas</div>
 
-                <div class="row">
+                <div class="row" align="center">
                     <div class="col-12 col-md-4" *ngFor="let strength of strengths">
-                        <app-card [title]="strength.module" [subtitle]="strength.score"></app-card>
+                        <app-card [title]="strength.module_name" [subtitle]="strength.average"
+                            [icon]="'star'"></app-card>
                     </div>
                 </div>
 
                 <div class="section-title">Áreas de Oportunidad</div>
 
-                <div class="row">
+                <div class="row" align="center">
                     <div class="col-12 col-md-6" *ngFor="let opportunity_area of opportunity_areas">
-                        <app-card [title]="opportunity_area.module" [subtitle]="opportunity_area.score"></app-card>
+                        <app-card [title]="opportunity_area.module_name" [subtitle]="opportunity_area.average"
+                            [icon]="'star_half'"></app-card>
                     </div>
                 </div>
 
@@ -251,6 +253,18 @@
                 </div>
 
                 <div class="section-title">Comentarios</div>
+
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-4" *ngFor="let note of notes">
+                        <div class="card mb-3">
+                            <div class="card-header text-bg-primary"> {{ note.module_name }} </div>
+                            <div class="card-body">
+                                <h5 class="card-title"> {{ note.average }} / 100</h5>
+                                <p class="card-text"> {{ note.note }} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="container mb-4">

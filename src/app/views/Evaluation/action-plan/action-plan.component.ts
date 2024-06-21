@@ -80,6 +80,7 @@ export class ActionPlanComponent {
   strengths: any;
   opportunity_areas: any;
   signatures: any;
+  notes: any;
 
   selected_agreement_id: number = 0;
 
@@ -159,15 +160,16 @@ export class ActionPlanComponent {
     }
 
     this.userActionPlanService.GetAction(searchData, this.user_action_plan_id).
-      then(({ user_action_plan, agreements, signatures, strengths, opportunity_areas }) => {
+      then(({ user_action_plan, agreements, signatures, strengths, opportunity_areas, notes }) => {
 
         this.user_action_plan = user_action_plan;
         this.action_plan_name = user_action_plan.action_plan_name
         this.agreements = agreements;
         this.strengths = strengths;
         this.opportunity_areas = opportunity_areas;
-        // signatures
+        this.notes = notes;
 
+        // signatures
         this.signatures = signatures;
 
         // agreements

@@ -8,6 +8,8 @@ use App\Models\ActionPlan;
 use App\Models\ActionPlanAgreement;
 use App\Models\ActionPlanParameter;
 use App\Models\ActionPlanSignature;
+use App\Models\Question;
+use App\Models\Test;
 use App\Models\UserActionPlan;
 use App\Models\UserAgreement;
 use App\Models\UserEvaluation;
@@ -76,12 +78,12 @@ class UserActionPlanController extends Controller
                     'message' => 'Es posible que el plan de acción ya haya sido finalizado, solicite al adminitrador acceso para editarlo.',
                     'code' => $this->prefix . 'X104'
                 ], 400);
-            if ($user_action_plan->responsable_id!=$request->user_id)
-            return response()->json([
-                'title' => 'Plan de acción no valido',
-                'message' => 'Es posible que no tenga acceso a llenar este plan de accion.',
-                'code' => $this->prefix . 'X104'
-            ], 400);
+            if ($user_action_plan->responsable_id != $request->user_id)
+                return response()->json([
+                    'title' => 'Plan de acción no valido',
+                    'message' => 'Es posible que no tenga acceso a llenar este plan de accion.',
+                    'code' => $this->prefix . 'X104'
+                ], 400);
             DB::beginTransaction();
 
             UserAgreement::create([
@@ -169,6 +171,58 @@ class UserActionPlanController extends Controller
                 ->join('evaluations as E', 'E.id', 'AP.evaluation_id')
                 ->find($id);
 
+            try {
+
+                $user_test_modules = $user_action_plan
+                    ->action_plan
+                    ->evaluation
+                    ->user_evaluations
+                    ->where('user_id', $user_action_plan->user_id)
+                    ->firstOrFail() // Asumiendo que se espera que haya un resultado
+                    ->user_tests
+                    ->first(function ($userTest) {
+                        return Test::find($userTest->test_id)->modular ?? false;
+                    });
+
+                if ($user_test_modules) {
+                    $user_test_modules = $user_test_modules
+                        ->user_test_modules()
+                        ->with('module:id,name') // Cargar la relación 'module'
+                        ->get()
+                        ->map(function ($module) {
+                            return [
+                                'id' => $module->id,
+                                'user_test_id' => $module->user_test_id,
+                                'module_id' => $module->module_id,
+                                'note' => $module->note,
+                                'created_at' => $module->created_at,
+                                'updated_at' => $module->updated_at,
+                                'deleted_at' => $module->deleted_at,
+                                'average' => ($module->average * 100) / 5,
+                                'module_name' => $module->module->name,
+                                'question' => Question::select('questions.description')
+                                    ->join('user_answers as UA', 'UA.question_id', 'questions.id')
+                                    ->join('answers as A', 'A.id', 'UA.answer_id')
+                                    ->where([
+                                        ['questions.module_id', $module->id],
+                                        ['UA.user_test_id', $module->user_test_id]
+                                    ])
+                                    ->orderBy('A.score')
+                                    ->first()
+                            ];
+                        });
+                } else {
+                    $user_test_modules = collect(); // O devolver una colección vacía si no se encuentra ningún usuario de prueba modular
+                }
+            } catch (Exception $e) {
+
+                return response()->json([
+                    'title' => 'Plan de Acción no disponible',
+                    'message' => $e->getMessage(),
+                    'code' => $this->prefix . 'X206'
+                ], 400);
+            }
+
             if (!$user_action_plan)
                 return response()->json([
                     'title' => 'Plan de Acción no disponible',
@@ -215,13 +269,13 @@ class UserActionPlanController extends Controller
             // Se consulta la evaluación del usuario
             $user_evaluation = ActionPlanService::findUserActionPlan($user_action_plan);
 
-            $userPermission = UserService::checkUserPermisse('Acceso Administracion desempeno',$user);
-            if (!$userPermission&&$user_evaluation->responsable_id!=request('user_id')&&$user_evaluation->user_id!=request('user_id'))
-            return response()->json([
-                'title' => 'Consulta Cancelada',
-                'message' => 'Usuario invalido, no tienes acceso.',
-                'code' => $this->prefix . 'X202'
-            ], 400);
+            $userPermission = UserService::checkUserPermisse('Acceso Administracion desempeno', $user);
+            if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X202'
+                ], 400);
             if (!$user_evaluation)
                 return response()->json([
                     'title' => 'No se encontró información',
@@ -234,41 +288,15 @@ class UserActionPlanController extends Controller
                     'process_id' => 4
                 ]);*/
 
-            $strengths = [
-                [
-                    "module" => "Crea un ambiente de confianza con su equipo",
-                    "score" => 90
-                ],
-                [
-                    "module" => "Asegurar que su equipo entienda y aplique la cultura",
-                    "score" => 85
-                ],
-                [
-                    "module" => "Buscar el bienestar y el crecimiento constante de su equipo",
-                    "score" => 70
-                ]
-            ];
-
-            $opportunity_areas = [
-                [
-                    "module" => "Crea un ambiente de confianza con su equipo",
-                    "score" => 45
-                ],
-                [
-                    "module" => "Asegurar que su equipo entienda y aplique la cultura",
-                    "score" => 50
-                ]
-            ];
-
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Detalle del Plan de Acción del Usuario consultado correctamente',
                 'user_action_plan' => $user_action_plan,
                 "agreements" => $action_plan_agreements,
                 "signatures" => $signatures,
-                "strengths" => $strengths,
-                "opportunity_areas" => $opportunity_areas,
-                // "notes" =>  
+                "strengths" => $user_test_modules->sortByDesc('average')->slice(0, 3)->values(),
+                "opportunity_areas" => $user_test_modules->sortBy('average')->slice(0, 2)->values(),
+                "notes" =>  $user_test_modules
             ]);
         } catch (Exception $e) {
 

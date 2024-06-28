@@ -117,6 +117,7 @@
               <div class="example-element-description">
                 <div class="tabla">
                   <div class="encabezados">
+                    <div class="encabezado">#</div>
                     <div class="encabezado">Evaluación</div>
                     <div class="encabezado">Estatus</div>
                     <div class="encabezado">Calificación</div>
@@ -124,7 +125,8 @@
                     <div class="encabezado">Acción</div>
                   </div>
                   <div class="fila" *ngFor="let detalle of row.detail;let i =index">
-                
+                    <div class="dato">{{ i+1 }}</div>
+
                     <div class="dato">{{ detalle.name }}</div>
                 
                     <div class="dato">

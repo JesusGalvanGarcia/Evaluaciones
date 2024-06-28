@@ -559,18 +559,13 @@ class UserTestController extends Controller
                         ]);
                     }
 
-                    //Realizamos regla de 3 al finalizar la pregunta para saber la ponderación
-                    $test = Test::find($user_test->test_id);
-                    $new_score = round(($user_test->total_score * 100) / $test->max_score);
-                    $user_test->update([
-                        'calification' => $new_score,
-                    ]);
-                } else {
-                    $new_score = $user_test->total_score;
-                    $user_test->update([
-                        'calification' => $new_score,
-                    ]);
                 }
+                //Realizamos regla de 3 al finalizar la pregunta para saber la ponderación
+                $test = Test::find($user_test->test_id);
+                $new_score = round(($user_test->total_score * 100) / $test->max_score);
+                $user_test->update([
+                    'calification' => $new_score,
+                ]);
                 $clasification = TestService::getClasification($new_score, $user_test->test_id);
 
                 TestService::sendTestMail([

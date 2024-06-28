@@ -14,7 +14,7 @@
         <mat-card-content *ngIf="!loading">
             <div class="row row-cols-1 row-cols-md-2 mt-4 mt-4" >
                 <div class="col col-12 col-md-4 mb-4">Calificación Obtenida: {{ score }}</div>
-                <div class="col col-12 col-md-8">
+                <div class="col col-12 col-md-8" *ngIf="test.modular == 1">
                     <label class="mb-4">
                         Clasificación : {{ clasification.clasification }}
                     </label><br/>

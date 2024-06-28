@@ -155,7 +155,7 @@ export class SurveyComponent implements OnInit {
     this.userTestService.SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
         this.loading = false;
-        this.score = response.actual_score;
+        this.score = Number(response.ranking);
         this.clasification=response.clasification;
         this.nextQuestion(question, answer, idAnswer, response.actual_score, response);
       })

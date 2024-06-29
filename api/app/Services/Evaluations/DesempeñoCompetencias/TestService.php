@@ -50,7 +50,7 @@ class TestService extends ServiceProvider
         $responsable_leader = User::find($responsable_leader_id?->user_id);
 
         $process = Process::find($evaluation_data['user_evaluation']->process_id);
-   dd(   $process );
+
         if ($responsable_leader) {
          
             if ($evaluation_data['test']->modular == 0) {

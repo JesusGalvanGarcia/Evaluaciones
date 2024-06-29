@@ -164,7 +164,7 @@ changeList(status:any)
   this.isLoading=true;
   let data = {
     user_id: Number(localStorage.getItem("user_id")),
-    process_id:[1,2,3,4,5,12,13,14,15],
+    process_id:[12,13,14,15],
     collaborators_id: [],
     evaluations_id: []
   };

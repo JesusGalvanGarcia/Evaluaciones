@@ -408,13 +408,12 @@
                                                             </tr>
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <h2 style="Margin:0;line-height:22px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:18px;font-style:normal;font-weight:normal;color:#333333"><strong><span style="font-size:14px">Realizaste con éxito la evaluación de Competencias.</span></strong>: <span style="font-size:14px">.</span></h2>
+                                                                    <h2 style="Margin:0;line-height:22px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:18px;font-style:normal;font-weight:normal;color:#333333"><strong><span style="font-size:14px">El Líder realizó  con éxito la evaluación de Competencias.</span></strong></h2>
                                                                     <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px"></p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <h2 style="Margin:0;line-height:17px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:14px;font-style:normal;font-weight:normal;color:#333333"><strong>Continúa con</strong>: Evaluacion de desempeño</h2>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -440,10 +439,7 @@
                                                             <tr>
                                                                 <td align="center" style="padding:0;Margin:0;padding-top:15px;padding-bottom:15px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#3d85c6;border-width:0px 0px 2px 0px;display:block;border-radius:30px;width:auto"><a href="https://miespacio.trinitas.mx" class="es-button es-button-1698760508161" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;padding:10px 0px;display:block;background:#3d85c6;border-radius:30px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #3d85c6">Ingresa a tu espacio</a></span></td>
                                                             </tr>
-                                                            <tr>
-                                                                <td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://gbvhso.stripocdn.email/content/guids/CABINET_c462ae58b53ce78a4c9170fe5ae69653c656e56a52388c68e706b5f0bfb168a0/images/calendarioevaluaciones.jpeg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560" height="315"></td>
-                                                            </tr>
-                                                         
+                                                
                                                         </table>
                                                     </td>
                                                 </tr>

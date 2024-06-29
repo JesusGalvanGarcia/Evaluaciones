@@ -50,8 +50,9 @@ class TestService extends ServiceProvider
         $responsable_leader = User::find($responsable_leader_id?->user_id);
 
         $process = Process::find($evaluation_data['user_evaluation']->process_id);
-
+   dd(   $process );
         if ($responsable_leader) {
+         
             if ($evaluation_data['test']->modular == 0) {
 
                 $mail = Mail::to($responsable_leader?->email)->cc(['francisco.delarosa@trinitas.mx'])->send(new MailPerformanceEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
@@ -60,6 +61,7 @@ class TestService extends ServiceProvider
                 $mail = Mail::to($responsable_leader?->email)->cc(['francisco.delarosa@trinitas.mx'])->send(new CompetenciesEvaluation($evaluation_data, $evaluated_user, $responsable_user, $process));
             }
         }
+     
     }
     static function sendCertificateMail($name, $email, $emailLid, $path, $file)
     {

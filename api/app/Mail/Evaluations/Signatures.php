@@ -39,7 +39,7 @@ class Signatures extends Mailable
             replyTo: [
                 new Address('yunuen.vejar@trinitas.mx', 'Yunuen Vejar Badillo'),
             ],
-            subject: 'Evaluación concluida'
+            subject: 'Firma de plan de acción.'
         );
     }
 

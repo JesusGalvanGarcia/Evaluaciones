@@ -567,7 +567,7 @@ class UserTestController extends Controller
                     'calification' => $new_score,
                 ]);
                 $clasification = TestService::getClasification($new_score, $user_test->test_id);
-
+     
                 TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],
@@ -576,6 +576,7 @@ class UserTestController extends Controller
                     "evaluation_name" => $user_test->user_evaluation->evaluation->name,
                     "test" => $user_test->test
                 ]);
+        
                 $user_evaluation->update(
                     [
                         'status_id' => 2,

@@ -304,7 +304,7 @@
                                                     <td class="es-m-p0r es-m-p20b" valign="top" align="center" style="padding:0;Margin:0;width:180px">
                                                         <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                             <tr>
-                                                                <td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://gbvhso.stripocdn.email/content/guids/CABINET_c462ae58b53ce78a4c9170fe5ae69653c656e56a52388c68e706b5f0bfb168a0/images/trinitaslogo.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="180" height="63"></td>
+                                                                <td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://miespaciotest.trinitas.mx/img/logo_trinitas.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="180" height="63"></td>
                                                             </tr>
                                                         </table>
                                                     </td>

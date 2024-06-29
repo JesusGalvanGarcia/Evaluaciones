@@ -96,7 +96,7 @@ span.MsoHyperlinkFollowed {
                   <td align="center" valign="top" style="padding:0;Margin:0;width:540px">
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr>
-                      <td align="center" style="padding:0;Margin:0;font-size:0"><img class="adapt-img" src="https://fbkoczf.stripocdn.email/content/guids/CABINET_842898d43bcd7e0ce2b6b5e52b530bdeaf93cfa326587be22e117381e1355416/images/trinitaslogo.png" alt="" width="265" style="display:block;font-size:16px;border:0;outline:none;text-decoration:none"></td>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><img class="adapt-img" src="https://miespaciotest.trinitas.mx/img/logo_trinitas.jpg" alt="" width="265" style="display:block;font-size:16px;border:0;outline:none;text-decoration:none"></td>
                      </tr>
                    </table></td>
                  </tr>

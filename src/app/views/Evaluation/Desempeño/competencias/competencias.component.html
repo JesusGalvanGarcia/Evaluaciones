@@ -190,29 +190,37 @@
                     <span style="color: #616161; font-weight: bold"
                       >Nota final del modulo:</span
                     ><br /><br />
+                    <form #miFormulario="ngForm" (ngSubmit)="sendNote(miFormulario)" novalidate>
                     <mat-form-field
                       class="form-input"
                       style="width: 80% !important"
                     >
+           
                       <textarea
-                        matInput
-                        style="width: 100%"
-                        [placeholder]="
-                          'Escribe una nota adicional acerca de este modulo...'
-                        "
-                        [(ngModel)]="DesempenoTest.test_modules[index - 1].note"
-                        #textarea
-                        required
-                      ></textarea>
+                      matInput
+                      class="input-form"
+                      placeholder="Escribe aquí las fortalezas del colaborador..."
+                      [(ngModel)]="DesempenoTest.test_modules[index - 1].note"
+                      name="note"
+                      required
+                      minlength="15"
+                      maxlength="2500"
+                    ></textarea>
+                      <mat-error *ngIf="miFormulario.controls['note'].hasError('required')">Este campo es obligatorio</mat-error>
+                      <mat-error *ngIf="miFormulario.controls['note'].hasError('minlength')">
+                        La longitud mínima es de 15 caracteres.
+                      </mat-error>
                       <br />
                     </mat-form-field>
+                    <br />
+                    <div class="text-center btnEmpezarMod">
+                      <button class="btn btn-success"type="submit">
+                        Siguiente
+                      </button>
+                    </div>
+                 </form>
                   </div>
-                  <br />
-                  <div class="text-center btnEmpezarMod">
-                    <button class="btn btn-success" (click)="sendNote()">
-                      Siguiente
-                    </button>
-                  </div>
+       
                   <br />
                   <div class="cent">
                     <mat-progress-bar

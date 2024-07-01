@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule,NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MensajeService } from '@http/mensaje.service';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EvaluationTest } from '../../../../shared/entities/models/testDetails/evaluationTest';
 import { ProcessModel } from '../../../../shared/entities/models/testDetails/processModel';
 import {
@@ -37,6 +37,8 @@ export class CompetenciasComponent implements OnInit {
   isLoading: boolean = true;
   loading: boolean = false;
   noteUser: NoteUser;
+  miFormulario: FormGroup;
+
   averageUser: any;
   clasification:any;
   showNote: boolean = false;
@@ -73,7 +75,8 @@ export class CompetenciasComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private userTestService: UserTestService,
-    public message: MensajeService
+    public message: MensajeService,
+    private fb: FormBuilder
   ) {
     this.route.params.subscribe((params) => {
       this.user_test_id = params['user_test_id']; //recibe los parametros del titulo de  la evaluacion
@@ -188,7 +191,8 @@ export class CompetenciasComponent implements OnInit {
       this.showQuestion = true;
     }, 300);
   }
-  sendNote() {
+  sendNote(form: NgForm) {
+    if(form.valid){
     if (
       this.DesempenoTest.test_modules[this.index - 1].note != null &&
       this.DesempenoTest.test_modules[this.index - 1].note.trim() != ''
@@ -196,6 +200,7 @@ export class CompetenciasComponent implements OnInit {
       this.PostsaveNote(this.DesempenoTest.test_modules[this.index - 1].id);
       this.PostsaveAverage(this.DesempenoTest.test_modules[this.index - 1].id);
     } else this.message.error('La nota es requerida para continuar');
+  }
   }
   nextQuestion(
     idRespuesta: number,
@@ -401,6 +406,9 @@ export class CompetenciasComponent implements OnInit {
   ngOnInit() {
     // this.changeProcessFunc(75,3);
     // this.isLoading=true;
+    this.miFormulario = this.fb.group({
+      note: ['', Validators.required]
+    });
     var user = localStorage.getItem('email');
     if (user == '') {
       this.router.navigate(['/login']);

@@ -100,38 +100,38 @@ class UserTestController extends Controller
                 'min_score',
                 'modular'
             )
-            ->with([
-                'test_modules' => function ($query) use ($id) {
-                    $query->select(
-                        'id',
-                        'name',
-                        'test_id',
-                        DB::raw("(SELECT TOP 1 note FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'note'"),
-                        DB::raw("(SELECT TOP 1 average FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'average'")
-                    );
-            
-                    $query->with([
-                        'questions' => function ($query) use ($id) {
-                            $query->select('id', 'description', 'score', 'module_id');
-            
-                            $query->with([
-                                'answers' => function ($query) use ($id) {
-                                    $query->select(
-                                        'id',
-                                        'description',
-                                        'score',
-                                        'question_id',
-                                        DB::raw("(SELECT TOP 1 id from user_answers UA where user_test_id = $id AND UA.question_id = answers.question_id AND UA.answer_id = answers.id AND deleted_at is null) as 'user_answer_id'")
-                                    )
-                                    ->orderBy('score', 'desc');
-                                }
-                            ]);
-                        }
-                    ]);
-                }
-            ])
-            ->find($user_test->test_id);
-            
+                ->with([
+                    'test_modules' => function ($query) use ($id) {
+                        $query->select(
+                            'id',
+                            'name',
+                            'test_id',
+                            DB::raw("(SELECT TOP 1 note FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'note'"),
+                            DB::raw("(SELECT TOP 1 average FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'average'")
+                        );
+
+                        $query->with([
+                            'questions' => function ($query) use ($id) {
+                                $query->select('id', 'description', 'score', 'module_id');
+
+                                $query->with([
+                                    'answers' => function ($query) use ($id) {
+                                        $query->select(
+                                            'id',
+                                            'description',
+                                            'score',
+                                            'question_id',
+                                            DB::raw("(SELECT TOP 1 id from user_answers UA where user_test_id = $id AND UA.question_id = answers.question_id AND UA.answer_id = answers.id AND deleted_at is null) as 'user_answer_id'")
+                                        )
+                                            ->orderBy('score', 'desc');
+                                    }
+                                ]);
+                            }
+                        ]);
+                    }
+                ])
+                ->find($user_test->test_id);
+
 
             //ir por permiso de andministradores
             $permisses = ['Acceso Administracion desempeno', 'Acceso Administracion 360'];
@@ -190,7 +190,7 @@ class UserTestController extends Controller
                 'message' => 'Detalle de la prueba del usuario consultado correctamente',
                 'evaluated_user_name' => $user_evaluated?->name . ' ' . $user_evaluated?->father_last_name . ' ' . $user_evaluated?->mother_last_name,
                 'test' => $test,
-                'score' => $test->modular==1?$user_test->calification:$user_test->total_score,
+                'score' => $test->modular == 1 ? $user_test->calification : $user_test->total_score,
                 'clasification' => $clasification,
                 'user_test' => $user_test,
                 'tipo' => $evaluationType,
@@ -512,38 +512,39 @@ class UserTestController extends Controller
                 if ($user_evaluation->process_id == 12) {
                     $answers = [];
                     // Traer los UserTestModules por el user_test_id, ordenarlos y tomar los primeros dos
-                    $user_test_modules = UserTestModule::select('user_test_modules.id', 'user_test_modules.average', 'user_test_modules.user_test_id', 'user_test_modules.module_id', 'T.name')
+                    $user_test_modules = UserTestModule::select('user_test_modules.id', 'user_test_modules.average', 'user_test_modules.user_test_id', 'user_test_modules.module_id', 'T.name',  DB::raw("((user_test_modules.average*100)/5) as average_in_100"),)
                         ->where('user_test_modules.user_test_id', $user_test->id)
                         ->join('test_modules as T', 'T.id', 'user_test_modules.module_id')
                         ->orderBy('user_test_modules.average', 'asc')
-                        ->take(2)
                         ->get();
+                    $user_test_modules =  $user_test_modules->where('average_in_100', '<=', 85);
                     //Traer las preguntas y respuestas cuyo score sea menor a 3
-                    $answers = UserAnswer::join('questions as Q', 'Q.id', '=', 'user_answers.question_id')
+                    /*                $answers = UserAnswer::join('questions as Q', 'Q.id', '=', 'user_answers.question_id')
                         ->join('answers as A', 'A.id', '=', 'user_answers.answer_id')
                         ->select('user_answers.id', 'user_answers.question_id', 'user_answers.answer_id', 'A.score as answer_score', 'Q.description')
                         ->where([['user_answers.user_test_id',  $user_test->id], ['A.score', '<=', 3]])
                         //->take(2)
-                        ->get();
+                        ->get();*/
 
                     //Buscar el plan de accion deacuerdo a la evaluacion y empezar a crear acuerdos de forma automagica
                     $action_plans = ActionPlan::where('evaluation_id', $user_evaluation->evaluation_id)->first();
                     $user_action_plan = UserActionPlan::where([['action_plan_id', $action_plans->id], ['user_id', $user_evaluation->user_id], ['responsable_id', $user_evaluation->responsable_id]])->first();
                     foreach ($user_test_modules as $modules) {
+                        
                         UserAgreement::create([
                             'user_action_plan_id' => $user_action_plan->id,
                             'opportunity_area' => $modules->name,
                             'goal' => '',
                             'developed_skill' => '',
                             'action' => '',
-                            'principal_agreement'=>true,
+                            'principal_agreement' => true,
                             // 'established_date' => Carbon::now()->format('Y-m-d'),
                             'created_by' => $request->user_id,
                             'updated_by' => $request->user_id
                         ]);
                     }
-
-                    foreach ($answers as $item_answer) {
+                    //se elimina la parte donde se insertan las preguntas
+                    /*  foreach ($answers as $item_answer) {
                         $description = preg_replace('/[\d.]/', '', $item_answer->description);
                         
                         UserAgreement::create([
@@ -558,7 +559,7 @@ class UserTestController extends Controller
                             'updated_by' => $request->user_id
                         ]);
                     }
-
+*/
                 }
                 //Realizamos regla de 3 al finalizar la pregunta para saber la ponderación
                 $test = Test::find($user_test->test_id);
@@ -567,16 +568,16 @@ class UserTestController extends Controller
                     'calification' => $new_score,
                 ]);
                 $clasification = TestService::getClasification($new_score, $user_test->test_id);
-     
+
                 TestService::sendTestMail([
                     "clasification" => $clasification['clasification'],
                     "clasification_description" => $clasification['description'],
-                    "total_score" => $user_evaluation->process_id==12?$new_score:$total_score,
+                    "total_score" => $user_evaluation->process_id == 12 ? $new_score : $total_score,
                     "user_evaluation" => $user_test->user_evaluation,
                     "evaluation_name" => $user_test->user_evaluation->evaluation->name,
                     "test" => $user_test->test
                 ]);
-        
+
                 $user_evaluation->update(
                     [
                         'status_id' => 2,

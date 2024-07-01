@@ -294,8 +294,8 @@ class UserActionPlanController extends Controller
                 'user_action_plan' => $user_action_plan,
                 "agreements" => $action_plan_agreements,
                 "signatures" => $signatures,
-                "strengths" => $user_test_modules->sortByDesc('average')->slice(0, 3)->values(),
-                "opportunity_areas" => $user_test_modules->sortBy('average')->slice(0, 2)->values(),
+                "strengths" => $user_test_modules->where('average','>=',85)->values(),
+                "opportunity_areas" => $user_test_modules->where('average','<',85)->values(),
                 "notes" =>  $user_test_modules
             ]);
         } catch (Exception $e) {

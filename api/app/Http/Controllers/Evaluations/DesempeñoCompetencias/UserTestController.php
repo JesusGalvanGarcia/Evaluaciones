@@ -190,7 +190,7 @@ class UserTestController extends Controller
                 'message' => 'Detalle de la prueba del usuario consultado correctamente',
                 'evaluated_user_name' => $user_evaluated?->name . ' ' . $user_evaluated?->father_last_name . ' ' . $user_evaluated?->mother_last_name,
                 'test' => $test,
-                'score' => $test->modular == 1 ? $user_test->calification : $user_test->total_score,
+                'score' => $user_test->calification ,
                 'clasification' => $clasification,
                 'user_test' => $user_test,
                 'tipo' => $evaluationType,
@@ -517,7 +517,7 @@ class UserTestController extends Controller
                         ->join('test_modules as T', 'T.id', 'user_test_modules.module_id')
                         ->orderBy('user_test_modules.average', 'asc')
                         ->get();
-                    $user_test_modules =  $user_test_modules->where('average_in_100', '<=', 85);
+                    $user_test_modules =  $user_test_modules->where('average_in_100', '<', 85);
                     //Traer las preguntas y respuestas cuyo score sea menor a 3
                     /*                $answers = UserAnswer::join('questions as Q', 'Q.id', '=', 'user_answers.question_id')
                         ->join('answers as A', 'A.id', '=', 'user_answers.answer_id')

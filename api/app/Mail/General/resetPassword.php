@@ -35,7 +35,7 @@ class resetPassword extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('notificaciones@trintias.com'),
+            from: new Address('notificaciones@trinitas.mx'),
             subject: 'Cambiar contraseña'
         );
     }

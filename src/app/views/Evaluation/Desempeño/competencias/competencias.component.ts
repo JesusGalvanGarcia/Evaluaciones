@@ -198,7 +198,6 @@ export class CompetenciasComponent implements OnInit {
       this.DesempenoTest.test_modules[this.index - 1].note.trim() != ''
     ) {
       this.PostsaveNote(this.DesempenoTest.test_modules[this.index - 1].id);
-      this.PostsaveAverage(this.DesempenoTest.test_modules[this.index - 1].id);
     } else this.message.error('La nota es requerida para continuar');
   }
   }
@@ -340,7 +339,9 @@ export class CompetenciasComponent implements OnInit {
 
     this.userTestService
       .SendTestNote(this.noteUser)
-      .then((response: any) => {})
+      .then((response: any) => {
+        this.PostsaveAverage(this.DesempenoTest.test_modules[this.index - 1].id);
+      })
       .catch(({ title, message, code }) => {
         this.message.error(message);
         //this.indexQuestion = this.indexQuestion - 1;

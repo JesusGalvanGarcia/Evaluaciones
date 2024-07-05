@@ -134,7 +134,7 @@
                     </div>
                     <div class="dato">
                       <ng-container *ngIf="detalle.name !='Feedback y Plan de Acción'; else elseTemplate">
-                        &nbsp; &nbsp; {{ detalle.total_score=== '0.0' ?'':detalle.calification}}    
+                        &nbsp; &nbsp; {{ detalle.total_score=== '0.0' ?'':detalle.name=='Evaluación de competencias' ? detalle.calification:detalle.total_score}}    
                       </ng-container>
                       <ng-template #elseTemplate>
                         <ng-container *ngIf="detalle.name =='Evaluación de desempeño'; else elseTemplate">

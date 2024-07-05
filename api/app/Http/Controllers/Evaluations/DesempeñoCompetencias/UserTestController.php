@@ -190,7 +190,7 @@ class UserTestController extends Controller
                 'message' => 'Detalle de la prueba del usuario consultado correctamente',
                 'evaluated_user_name' => $user_evaluated?->name . ' ' . $user_evaluated?->father_last_name . ' ' . $user_evaluated?->mother_last_name,
                 'test' => $test,
-                'score' => $user_test->calification ,
+                'score' => $test->modular==1? $user_test->calification:$user_test->total_score ,
                 'clasification' => $clasification,
                 'user_test' => $user_test,
                 'tipo' => $evaluationType,

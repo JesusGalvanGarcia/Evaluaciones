@@ -437,7 +437,7 @@ class UserEvaluationController extends Controller
                 'user_tests.finish_date',
                 'S.description as status',
                 'UE.id as user_evaluation_id',
-                DB::raw("(CASE WHEN T.id = 141 THEN 1 ELSE 2 END) as 'order'"), // ordenar por los id test
+                DB::raw("(CASE WHEN T.modular = 1 THEN 1 ELSE 2 END) as 'order'"), // ordenar por los id test
                 'UE.process_id',
                 'C.name as clasificacion_name',
                 'C.color',

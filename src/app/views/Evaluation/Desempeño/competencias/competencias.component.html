@@ -340,7 +340,7 @@
                         </svg>
                       </button>
                     </div>
-                    <div class="col d-flex justify-content-end">
+                    <div class="col d-flex justify-content-end" *ngIf="!last ">
                       <button
                         class="btn btn-light"
                         (click)="next()"

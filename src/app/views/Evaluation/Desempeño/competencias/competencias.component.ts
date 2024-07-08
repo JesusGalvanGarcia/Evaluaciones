@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule,NgForm } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -38,9 +38,9 @@ export class CompetenciasComponent implements OnInit {
   loading: boolean = false;
   noteUser: NoteUser;
   miFormulario: FormGroup;
-
+  last = false;
   averageUser: any;
-  clasification:any;
+  clasification: any;
   showNote: boolean = false;
   changeProcess: ProcessModel;
   totalScore: number = 0;
@@ -140,7 +140,7 @@ export class CompetenciasComponent implements OnInit {
       // Estás en la primera pregunta del primer módulo, vuelve a mostrar el módulo
       this.showModule = true;
     }
-
+    this.last = false;
     this.showQuestion = false;
     setTimeout(() => {
       this.showQuestion = true;
@@ -186,20 +186,27 @@ export class CompetenciasComponent implements OnInit {
         this.showModule = false;
       }
     }
+    if (
+      this.indexQuestion + 1 == this.sizeQuestions &&
+      this.index === this.sizeTotal - 1
+    ) {
+      this.last = true;
+    }
+
     this.showQuestion = false;
     setTimeout(() => {
       this.showQuestion = true;
     }, 300);
   }
   sendNote(form: NgForm) {
-    if(form.valid){
-    if (
-      this.DesempenoTest.test_modules[this.index - 1].note != null &&
-      this.DesempenoTest.test_modules[this.index - 1].note.trim() != ''
-    ) {
-      this.PostsaveNote(this.DesempenoTest.test_modules[this.index - 1].id);
-    } else this.message.error('La nota es requerida para continuar');
-  }
+    if (form.valid) {
+      if (
+        this.DesempenoTest.test_modules[this.index - 1].note != null &&
+        this.DesempenoTest.test_modules[this.index - 1].note.trim() != ''
+      ) {
+        this.PostsaveNote(this.DesempenoTest.test_modules[this.index - 1].id);
+      } else this.message.error('La nota es requerida para continuar');
+    }
   }
   nextQuestion(
     idRespuesta: number,
@@ -300,8 +307,8 @@ export class CompetenciasComponent implements OnInit {
       .SendTestEvaluation(this.saveIndivisual)
       .then((response: any) => {
         this.score = Number(response.ranking);
-        this.clasification=response.clasification;
-        
+        this.clasification = response.clasification;
+
         this.loading = false;
 
         if (this.finish != true) {
@@ -340,7 +347,9 @@ export class CompetenciasComponent implements OnInit {
     this.userTestService
       .SendTestNote(this.noteUser)
       .then((response: any) => {
-        this.PostsaveAverage(this.DesempenoTest.test_modules[this.index - 1].id);
+        this.PostsaveAverage(
+          this.DesempenoTest.test_modules[this.index - 1].id
+        );
       })
       .catch(({ title, message, code }) => {
         this.message.error(message);
@@ -408,7 +417,7 @@ export class CompetenciasComponent implements OnInit {
     // this.changeProcessFunc(75,3);
     // this.isLoading=true;
     this.miFormulario = this.fb.group({
-      note: ['', Validators.required]
+      note: ['', Validators.required],
     });
     var user = localStorage.getItem('email');
     if (user == '') {

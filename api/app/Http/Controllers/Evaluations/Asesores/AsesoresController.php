@@ -12,7 +12,7 @@ use App\Models\ActionPlanParameter;
 use App\Models\ActionPlanSignature;
 use App\Services\Evaluations\DesempeñoCompetencias\TestService;
 use App\Services\Evaluations\Evaluation360\Test360Service;
-use App\Services\Evaluations\Asesores\AsesoresService ;
+use App\Services\Evaluations\Asesores\AsesoresService;
 
 use App\Models\Process;
 use App\Models\Status;
@@ -28,7 +28,6 @@ use App\Models\TestModule;
 use App\Models\Evaluation;
 use App\Models\User;
 use App\Models\FinishEvaluation;
-
 use App\Services\Evaluations\UserService;
 use Exception;
 use Illuminate\Http\Request;
@@ -63,6 +62,165 @@ class AsesoresController extends Controller
                 'title' => 'Ocurrio un error en el servidor',
                 'message' => $e->getMessage() . ' -L:' . $e->getLine(),
                 'code' => $this->prefix . 'X699'
+            ], 500);
+        }
+    }
+    public function show(string $id)
+    {
+        try {
+
+            // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            // if (!$this->checkPermissions(request()->route()->getName())) {
+
+            //     return response()->json([
+            //         'title' => 'Proceso cancelado',
+            //         'message' => 'No tienes permiso para hacer esto.',
+            //         'code' => 'P001'
+            //     ], 400);
+            // }
+
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|NotIn:0|Min:0'
+            ]);
+
+            if ($validator->fails()) {
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X201'
+                ], 400);
+            }
+
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X202'
+                ], 400);
+
+            // Se valida si el usuario tiene asignada la prueba y si existe.
+            $user_test = UserTest::find($id);
+
+            if (!$user_test)
+                return response()->json([
+                    'title' => 'Prueba no encontrada',
+                    'message' => 'Verifica la información.',
+                    'code' => $this->prefix . 'X203'
+                ], 400);
+
+            // Se consulta la prueba que tiene asignada el usuario y se valida que exista
+
+            $test = Test::select(
+                'id',
+                'evaluation_id',
+                'name',
+                'introduction_text',
+                'max_score',
+                'min_score',
+                'modular'
+            )
+                ->with([
+                    'test_modules' => function ($query) use ($id) {
+                        $query->select(
+                            'id',
+                            'name',
+                            'test_id',
+                            DB::raw("(SELECT TOP 1 note FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'note'"),
+                            DB::raw("(SELECT TOP 1 average FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'average'")
+                        );
+
+                        $query->with([
+                            'questions' => function ($query) use ($id) {
+                                $query->select('id', 'description', 'score', 'module_id');
+
+                                $query->with([
+                                    'answers' => function ($query) use ($id) {
+                                        $query->select(
+                                            'id',
+                                            'description',
+                                            'score',
+                                            'question_id',
+                                            DB::raw("(SELECT TOP 1 id from user_answers UA where user_test_id = $id AND UA.question_id = answers.question_id AND UA.answer_id = answers.id AND deleted_at is null) as 'user_answer_id'")
+                                        )
+                                            ->orderBy('score', 'desc');
+                                    }
+                                ]);
+                            }
+                        ]);
+                    }
+                ])
+                ->find($user_test->test_id);
+
+
+            //ir por permiso de andministradores
+            $permisses = ['Acceso Administracion desempeno', 'Acceso Administracion 360'];
+            $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
+            // revisar si el user_id recibido es de algun administrador
+            $userPermission = UserService::checkUserPermisseArray($permisses, $user);
+
+            // si no pertenece a ningun administrador, ni al responsable ni al evaluado no lo dejes pasarwq
+            if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
+                return response()->json([
+                    'title' => 'Consulta Cancelada ',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X202'
+                ], 400);
+            if ($user_evaluation->status_id == 1)
+                $user_evaluation->update([
+                    'status_id' => 2
+                ]);
+
+            $user_evaluated = $user_evaluation?->user;
+            $evaluationType = '';
+
+            switch ($user_evaluation?->type_evaluator_id) {
+                case 1:
+                    $evaluationType = "Lider";
+                    break;
+                case 2:
+                    $evaluationType = "Autoevaluacion";
+                    break;
+                case 3:
+                    $evaluationType = "Cliente";
+                    break;
+                case 4:
+                    $evaluationType = "Lateral";
+                    break;
+                case 5:
+                    $evaluationType = "Colaborador";
+                    break;
+                    // Puedes agregar más casos según tus necesidades
+                default:
+                    // Acción por defecto si el tipo no coincide con ningún caso
+                    break;
+            }
+            if (!$test)
+                return response()->json([
+                    'title' => 'Prueba no encontrada',
+                    'message' => 'Verifica la información.',
+                    'code' => $this->prefix . 'X204'
+                ], 400);
+
+
+
+            return response()->json([
+                'title' => 'Proceso terminado',
+                'message' => 'Detalle de la prueba del usuario consultado correctamente',
+                'evaluated_user_name' => $user_evaluated?->name . ' ' . $user_evaluated?->father_last_name . ' ' . $user_evaluated?->mother_last_name,
+                'test' => $test,
+                'score' => $user_test->calification,
+                'user_test' => $user_test,
+                'tipo' => $evaluationType,
+            ]);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X299'
             ], 500);
         }
     }
@@ -122,57 +280,50 @@ class AsesoresController extends Controller
             $total_score = $user_test->total_score;
 
             DB::beginTransaction();
-
-            // Se consulta la ultima pregunta respondida del usuario en caso de que se tenga
-            $last_user_answer = UserAnswer::where([
+            $question = Question::where('id', $request->question_id)->first();
+            $test_modules = TestModule::where('id', $question->module_id)->first();
+            $average = round(($request->score * $test_modules->max) /($question->score));
+        
+            $user_test_module = UserTestModule::where([
                 ['user_test_id', $request->user_test_id],
-                ['question_id', $request->question_id],
+                ['module_id', $question->module_id]
             ])->first();
 
-            if ($last_user_answer) {
-
-                if ($last_user_answer->answer_id != $request->answer_id) {
-
-                    $last_user_answer->delete();
-
-                    // Si no se tenia respuesta guardada de la pregunta se crea
-                    UserAnswer::create([
-                        'user_test_id' => $request->user_test_id,
-                        'question_id' => $request->question_id,
-                        'answer_id' => $request->answer_id
-                    ]);
-                }
-
-                $total_score -= (int)$last_user_answer->answer->score;
-            } else {
-
-                // Si no se tenia respuesta guardada de la pregunta se crea
-                UserAnswer::create([
-                    'user_test_id' => $request->user_test_id,
-                    'question_id' => $request->question_id,
-                    'answer_id' => $request->answer_id
+            if ($user_test_module) {
+               
+                $total_score =$total_score-$user_test_module->average;
+             
+                $user_test_module->update([
+                    'average' => round($average)
                 ]);
+                
+            } else {
+                UserTestModule::create([
+                    'user_test_id' => $request->user_test_id,
+                    'module_id' => $question->module_id,
+                    'average' => round($average)
+                ]);
+             
             }
-
-            $total_score += (int)$request->score;
-
+            $total_score += $average;
+         
             $user_test->update([
                 'status_id' => $request->its_over == 'si' ? 3 : 2,
                 'finish_date' => $request->its_over == 'si' ? Carbon::now()->format('Y-m-d') : null,
-                'total_score' => $total_score,
+                'total_score' => round($total_score),
                 'updated_by' => $request->user_id
             ]);
-
-
             if ($request->its_over == 'si') {
-
-
-                AsesoresService::sendTestMail([
+              /*  AsesoresService::sendTestMail([
                     "total_score" => $total_score,
                     "user_evaluation" => $user_test->user_evaluation,
                     "evaluation_name" => $user_test->user_evaluation->evaluation->name,
                     "test" => $user_test->test
-                ]);
+                ]);*/
+                $user_test_module = UserTestModule::join('test_modules', 'user_test_modules.module_id', '=', 'test_modules.id')
+                ->select('user_test_modules.*', 'test_modules.name','test_modules.max') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
+                ->where('user_test_modules.user_test_id', $request->user_test_id)
+                ->get();
             }
 
             DB::commit();
@@ -180,7 +331,8 @@ class AsesoresController extends Controller
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Respuesta guardada correctamente',
-                'actual_score' => $total_score,
+                'actual_score' => round($total_score),
+                'modules'=>$user_test_module
 
             ]);
         } catch (Exception $e) {
@@ -415,9 +567,9 @@ class AsesoresController extends Controller
                 'user_tests.id',
                 'T.name',
                 'user_tests.total_score',
+                'user_tests.calification',
                 'user_tests.finish_date',
                 'S.description as status',
-                DB::raw("(CASE WHEN user_tests.status_id != 3 THEN 'Sin clasificación' ELSE (CASE when user_tests.total_score < 70 THEN 'En Riesgo' WHEN user_tests.total_score >= 70 AND user_tests.total_score < 80 THEN 'Baja' WHEN user_tests.total_score >= 80 AND user_tests.total_score < 90 THEN 'Regular' WHEN user_tests.total_score >= 90 AND user_tests.total_score < 100 THEN 'Buena' WHEN user_tests.total_score >= 100 AND user_tests.total_score < 120 THEN 'Excelente' WHEN user_tests.total_score = 120 THEN 'Máxima' END) END) as 'rank'"),
                 DB::raw("1 as type")
             )
                 ->join('user_evaluations as UE', function ($join) use ($id) {
@@ -430,26 +582,6 @@ class AsesoresController extends Controller
                         ->where('S.table_name', 'user_tests');
                 })
                 ->get();
-
-            foreach ($user_tests as $user_test) {
-                $user_test_id = $user_test->id;
-
-                $user_test_modules = UserTestModule::select('average')
-                    ->where('user_test_id', $user_test_id)
-                    ->get();
-
-                $sum = 0;
-
-                foreach ($user_test_modules as $module) {
-                    $sum += $module->average;
-                }
-
-                $general = count($user_test_modules) > 0 ? $sum / count($user_test_modules) : 0;
-                $user_test->total_score = round($general, 2);
-
-                // Aquí puedes hacer lo que necesites con el valor $general
-            }
-
 
             // Se consulta la información de la evaluación del usuario
             $user_evaluation = UserEvaluation::find($id);
@@ -493,5 +625,4 @@ class AsesoresController extends Controller
             ], 500);
         }
     }
-
 }

@@ -16,7 +16,22 @@ export class AsesoresService {
  
   }
 
+  GetExam(data: any, id: number): Promise<any> {
+  
+    return axios.get(environment.apiUrl+this.controllerUrl+ "/"+ id,  {
+      params: data
+    })
+    .then((data) => {
+       
+        return data;
+      })
+      .catch((response) => {
 
+        const { data } = response
+       
+        throw data;
+      });
+  }
   AssingAsesors(data: any): Promise<any> {
 
     return axios.post(environment.apiUrl + this.controllerUrl+"/assignAsesors", data

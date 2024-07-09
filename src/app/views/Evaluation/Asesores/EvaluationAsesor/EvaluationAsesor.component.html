@@ -46,36 +46,6 @@
   [style.width]="exam_progress + '%'"> {{ exam_progress }} %</div>
 
   <div class="container">
-    <div class="row">
-      <div class="col">
-        <div >
-          <div *ngIf="index>0"   >
-            <button class="btn btn-light"   (click)="back()" [disabled]="sendButton"> 
-              <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="30"><path d="M160-240H80v-480h80v480Zm320 0L240-480l240-240 56 56-143 144h487v80H393l144 144-57 56Z"/></svg>               </button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div >
-        
-        </div>
-      </div>
-      <div class="col">
-        <div >
-        
-        </div>
-      </div>
-      <div class="col">
-        <div >
-          <div *ngIf="actualAnswer!=='Selecciona una opción...'"  >
-            <button class="btn btn-light"  (click)="next()" [disabled]="sendButton"> 
-              <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="30"><path d="M800-240v-480h80v480h-80Zm-320 0-57-56 144-144H80v-80h487L424-664l56-56 240 240-240 240Z"/></svg>            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
   
     <img mat-card-image src="./assets/img/trinitas-logo.png" >
         

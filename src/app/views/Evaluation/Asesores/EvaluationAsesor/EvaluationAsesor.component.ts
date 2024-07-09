@@ -57,6 +57,7 @@ export class EvaluationAsesorComponent implements OnInit {
   user_test_id: number = 0;
   displayedColumns: string[] = ['name', 'average', 'max'];
   dataSource: any;
+  icons:string[]=['person','assessment','description','attach_money','book','group']
   isLoading: boolean = true;
   loading: boolean = false;
   selectedOption: any;

@@ -32,8 +32,7 @@
     <mat-card-actions class="mt-4" >
 
       <button type="button" class="btn btn-success" (click)="changeStart()">
-          Empezar
-          <mat-icon>arrow_forward</mat-icon>
+          Comenzar
       </button>
   </mat-card-actions>
   </div>
@@ -94,16 +93,16 @@
     <span class="sdPregunta">{{ PLDTest.test_modules[index_module].questions[index].description }}  </span>
   </div>
 
-  <div style="text-align: center;display: flex;justify-content: center;">
+  <div class="container">
     <br/>
     <div class="form-group">
       <br/><br/>
       <form #miFormulario="ngForm" (ngSubmit)="onSelectChange(miFormulario)" novalidate>
-        <mat-form-field class="form-input" style="width: 100% !important">
+        <mat-form-field class="form-input" style="width: 70% !important">
+          <mat-icon matPrefix>{{icons[index_module]}}</mat-icon>
           <input
             matInput
             type="number"
-            class="form-control"
             [min]="0"
             [max]="PLDTest.test_modules[index_module].questions[index].score"
             placeholder="Ingresa tu respuesta..."
@@ -111,17 +110,18 @@
             name="score_question"
             required
           />
+          <mat-error *ngIf="miFormulario.controls['score_question'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="miFormulario.controls['score_question'].hasError('min')">
+            El valor debe ser mayor o igual a 0
+          </mat-error>
+          <mat-error *ngIf="miFormulario.controls['score_question'].hasError('max')">
+            El valor debe ser menor o igual a {{PLDTest.test_modules[index_module].questions[index].score}}
+          </mat-error>
         </mat-form-field>
-        <br />
-        <mat-error *ngIf="miFormulario.controls['score_question'].hasError('required')">
-          Este campo es obligatorio
-        </mat-error>
-        <mat-error *ngIf="miFormulario.controls['score_question'].hasError('min')">
-          El valor debe ser mayor o igual a 0
-        </mat-error>
-        <mat-error *ngIf="miFormulario.controls['score_question'].hasError('max')">
-          El valor debe ser menor o igual a {{PLDTest.test_modules[index_module].questions[index].score}}
-        </mat-error>
+        <br />  <br/>
+
         <div class="text-center btnEmpezarMod">
           <button class="btn btn-success" type="submit">
             Siguiente
@@ -131,7 +131,7 @@
       
     </div>
   </div>
-  <br/>  <br/>
+  <br/>
 <button class="btn btn-light" (click)="backIndex()" [disabled]="sendButton"> 
   <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>   
   Volver al inicio

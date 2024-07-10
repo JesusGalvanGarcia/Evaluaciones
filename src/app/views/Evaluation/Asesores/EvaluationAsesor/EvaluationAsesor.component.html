@@ -72,21 +72,6 @@
     </button>
   </div>
   <div class="col d-flex justify-content-end">
-    <button
-      class="btn btn-light"
-      (click)="next()"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="26"
-        viewBox="0 -960 960 960"
-        width="30"
-      >
-        <path
-          d="M800-240v-480h80v480h-80Zm-320 0-57-56 144-144H80v-80h487L424-664l56-56 240 240-240 240Z"
-        />
-      </svg>
-    </button>
   </div>
 </div>
   <div class="col-md-10 center-div" style="width: 100%;margin-top: 3%;">
@@ -108,8 +93,12 @@
             placeholder="Ingresa tu respuesta..."
             [(ngModel)]="score_question"
             name="score_question"
+            (input)="formatNumber($event)"
             required
+       
+
           />
+          <mat-label>{{label}}</mat-label>
           <mat-error *ngIf="miFormulario.controls['score_question'].hasError('required')">
             Este campo es obligatorio
           </mat-error>

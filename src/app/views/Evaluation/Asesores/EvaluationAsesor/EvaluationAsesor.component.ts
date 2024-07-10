@@ -72,6 +72,7 @@ export class EvaluationAsesorComponent implements OnInit {
   FinalEvalution: End;
   evaluatedUserName: string = '';
   type: string = '';
+  label:any;
   exam_progress: number = 0;
   max_score: number = 0;
   sendButton: boolean = false;
@@ -193,18 +194,28 @@ export class EvaluationAsesorComponent implements OnInit {
       }, 300);
     }
   }
+  formatNumber(event: any) {
+    let input = event.target.value.replace(/,/g, '');
+    if (!isNaN(input) && input !== '') {
+      this.label = input.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    } else {
+      this.label = input;
+    }
+  }
   next() {
     this.size = this.PLDTest.test_modules[this.index].questions.length; //tamaño preguntas
     this.size_modules = this.PLDTest.test_modules.length; //tamaño modulos
     if (this.index_module < this.size_modules - 1) {
       this.index_module = this.index_module + 1;
       this.score_question = 0;
+      this.label=0;
       this.count++;
       this.showQuestion = false;
       setTimeout(() => {
         this.showQuestion = true;
       }, 300);
     }
+    console.log(this.miFormulario);
   }
   getNumber(data: string) {
     return Number(data);

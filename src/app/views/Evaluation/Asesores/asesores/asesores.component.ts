@@ -240,7 +240,7 @@ export class AsesoresComponent implements OnInit {
         }
         else
         {
-          this.router.navigate(['/plan-accion/'+id]);
+          this.router.navigate(['/plan-accion-asesor/'+id]);
         }
       break
       case "Evaluación de Competencias":

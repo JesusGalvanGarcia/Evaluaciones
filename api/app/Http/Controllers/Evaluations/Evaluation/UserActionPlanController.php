@@ -259,12 +259,7 @@ class UserActionPlanController extends Controller
 
                 ->get();
 
-            if (!$signatures->firstWhere('responsable_id', request('user_id')) && request('user_id') != 19 && request('user_id') != 88)
-                return response()->json([
-                    'title' => 'No estás autorizado.',
-                    'message' => 'El plan de acción no está disponible, contacta al administradoor.',
-                    'code' => $this->prefix . 'X204'
-                ], 400);
+       
 
             // Se consulta la evaluación del usuario
             $user_evaluation = ActionPlanService::findUserActionPlan($user_action_plan);

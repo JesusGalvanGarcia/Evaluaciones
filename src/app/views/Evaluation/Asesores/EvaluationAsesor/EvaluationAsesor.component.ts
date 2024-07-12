@@ -124,7 +124,7 @@ export class EvaluationAsesorComponent implements OnInit {
   }
 
   getExam(data: any) {
-    this.asesores
+    this.userTestService
       .GetExam(data, this.user_test_id)
       .then((response: any) => {
         this.PLDTest = response.data.test;

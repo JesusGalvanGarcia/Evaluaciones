@@ -23,18 +23,14 @@
         />
       </span>
       <span class="estilo-title">Evaluaciones de asesores</span>
-    </div>
+    </div><br/><br/>
     <div style="margin-top: 0%;">
-      <div class="center-container"></div>
-      <br/>
-      <div class="form-check form-switch mostrar">
-        Personal
-      <div class="checks">
-        <input class="form-check-input" id="idInp" name="nameinput" #isChekedModel="ngModel" (click)="onSwitchChange()" type="checkbox" [(ngModel)]="isChecked">
-      </div>
-        <label class="form-check-label" for="idInp">Colaboradores</label>
-        <br/>
-      </div>
+      <mat-tab-group (selectedTabChange)="onTabChange($event)">
+        <mat-tab label="Colaboradores" > 
+        </mat-tab>
+        <mat-tab label="Personal">
+        </mat-tab>
+      </mat-tab-group>
       <br/>
       <div class="custom-input" >
         <div class="input-group mb-3" style="margin: 0 auto;">

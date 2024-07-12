@@ -101,119 +101,16 @@ class AsesoresController extends Controller
                     'code' => $this->prefix . 'X202'
                 ], 400);
 
-            // Se valida si el usuario tiene asignada la prueba y si existe.
-            $user_test = UserTest::find($id);
-
-            if (!$user_test)
-                return response()->json([
-                    'title' => 'Prueba no encontrada',
-                    'message' => 'Verifica la información.',
-                    'code' => $this->prefix . 'X203'
-                ], 400);
-
-            // Se consulta la prueba que tiene asignada el usuario y se valida que exista
-
-            $test = Test::select(
-                'id',
-                'evaluation_id',
-                'name',
-                'introduction_text',
-                'max_score',
-                'min_score',
-                'modular'
-            )
-                ->with([
-                    'test_modules' => function ($query) use ($id) {
-                        $query->select(
-                            'id',
-                            'name',
-                            'test_id',
-                            DB::raw("(SELECT TOP 1 note FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'note'"),
-                            DB::raw("(SELECT TOP 1 average FROM user_test_modules UTM WHERE UTM.user_test_id = $id AND UTM.module_id = test_modules.id AND deleted_at IS NULL) AS 'average'")
-                        );
-
-                        $query->with([
-                            'questions' => function ($query) use ($id) {
-                                $query->select('id', 'description', 'score', 'module_id');
-
-                                $query->with([
-                                    'answers' => function ($query) use ($id) {
-                                        $query->select(
-                                            'id',
-                                            'description',
-                                            'score',
-                                            'question_id',
-                                            DB::raw("(SELECT TOP 1 id from user_answers UA where user_test_id = $id AND UA.question_id = answers.question_id AND UA.answer_id = answers.id AND deleted_at is null) as 'user_answer_id'")
-                                        )
-                                            ->orderBy('score', 'desc');
-                                    }
-                                ]);
-                            }
-                        ]);
-                    }
-                ])
-                ->find($user_test->test_id);
-
-
-            //ir por permiso de andministradores
-            $permisses = ['Acceso Administracion desempeno', 'Acceso Administracion 360'];
-            $user_evaluation = UserEvaluation::where('id', $user_test->user_evaluation_id)->first();
-            // revisar si el user_id recibido es de algun administrador
-            $userPermission = UserService::checkUserPermisseArray($permisses, $user);
-
-            // si no pertenece a ningun administrador, ni al responsable ni al evaluado no lo dejes pasarwq
-            if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
-                return response()->json([
-                    'title' => 'Consulta Cancelada ',
-                    'message' => 'Usuario invalido, no tienes acceso.',
-                    'code' => $this->prefix . 'X202'
-                ], 400);
-            if ($user_evaluation->status_id == 1)
-                $user_evaluation->update([
-                    'status_id' => 2
-                ]);
-
-            $user_evaluated = $user_evaluation?->user;
-            $evaluationType = '';
-
-            switch ($user_evaluation?->type_evaluator_id) {
-                case 1:
-                    $evaluationType = "Lider";
-                    break;
-                case 2:
-                    $evaluationType = "Autoevaluacion";
-                    break;
-                case 3:
-                    $evaluationType = "Cliente";
-                    break;
-                case 4:
-                    $evaluationType = "Lateral";
-                    break;
-                case 5:
-                    $evaluationType = "Colaborador";
-                    break;
-                    // Puedes agregar más casos según tus necesidades
-                default:
-                    // Acción por defecto si el tipo no coincide con ningún caso
-                    break;
-            }
-            if (!$test)
-                return response()->json([
-                    'title' => 'Prueba no encontrada',
-                    'message' => 'Verifica la información.',
-                    'code' => $this->prefix . 'X204'
-                ], 400);
-
+                $user_test_module = UserTestModule::join('test_modules', 'user_test_modules.module_id', '=', 'test_modules.id')
+                ->select('user_test_modules.*', 'test_modules.name','test_modules.max') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
+                ->where('user_test_modules.user_test_id', $id)
+                ->get();
 
 
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Detalle de la prueba del usuario consultado correctamente',
-                'evaluated_user_name' => $user_evaluated?->name . ' ' . $user_evaluated?->father_last_name . ' ' . $user_evaluated?->mother_last_name,
-                'test' => $test,
-                'score' => $user_test->calification,
-                'user_test' => $user_test,
-                'tipo' => $evaluationType,
+                'test' => $user_test_module,
             ]);
         } catch (Exception $e) {
 
@@ -324,6 +221,12 @@ class AsesoresController extends Controller
                 ->select('user_test_modules.*', 'test_modules.name','test_modules.max') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
                 ->where('user_test_modules.user_test_id', $request->user_test_id)
                 ->get();
+                $user_test->user_evaluation->update(
+                    [
+                        'status_id' => 2,
+                        'process_id' => 8
+                    ]
+                );
             }
 
             DB::commit();

@@ -32,8 +32,7 @@
     <mat-card-actions class="mt-4" >
 
       <button type="button" class="btn btn-success" (click)="changeStart()">
-          Empezar
-          <mat-icon>arrow_forward</mat-icon>
+          Comenzar
       </button>
   </mat-card-actions>
   </div>
@@ -46,36 +45,6 @@
   [style.width]="exam_progress + '%'"> {{ exam_progress }} %</div>
 
   <div class="container">
-    <div class="row">
-      <div class="col">
-        <div >
-          <div *ngIf="index>0"   >
-            <button class="btn btn-light"   (click)="back()" [disabled]="sendButton"> 
-              <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="30"><path d="M160-240H80v-480h80v480Zm320 0L240-480l240-240 56 56-143 144h487v80H393l144 144-57 56Z"/></svg>               </button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div >
-        
-        </div>
-      </div>
-      <div class="col">
-        <div >
-        
-        </div>
-      </div>
-      <div class="col">
-        <div >
-          <div *ngIf="actualAnswer!=='Selecciona una opción...'"  >
-            <button class="btn btn-light"  (click)="next()" [disabled]="sendButton"> 
-              <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="30"><path d="M800-240v-480h80v480h-80Zm-320 0-57-56 144-144H80v-80h487L424-664l56-56 240 240-240 240Z"/></svg>            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  
   
     <img mat-card-image src="./assets/img/trinitas-logo.png" >
         
@@ -86,38 +55,79 @@
   <p class="tex-center fw-bolder">Colaborador: {{ evaluatedUserName }}</p> 
 
 </div>
-  <div class="col-md-10 center-div" style="width: 100%;margin-top: 3%;">
-    <span class="sdPregunta">{{ PLDTest.test_modules[0].questions[index].description }}  </span>
+<div class="row">
+  <!-- Botón "backQuestion" alineado a la izquierda -->
+  <div class="col d-flex justify-content-start">
+    <button class="btn btn-light" (click)="back()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="26"
+        viewBox="0 -960 960 960"
+        width="30"
+      >
+        <path
+          d="M160-240H80v-480h80v480Zm320 0L240-480l240-240 56 56-143 144h487v80H393l144 144-57 56Z"
+        />
+      </svg>
+    </button>
   </div>
-
-
- 
-  <!-- <div style="justify-content: center; display: grid;width: 100%;"> -->
-    <div style="text-align: center;display: flex;justify-content: center;">
- <br/>
-  <div class="form-group" >
-    <br/> <br/>
-    <ng-select
-    [items]="PLDTest.test_modules[0].questions[index].answers"
-    bindLabel="description"
-    class="custom"
-    placeholder="Selecciona..."
-    [searchable]="true"
-    [ngModel]="getIndexOfAnswerWithNonNullUserAnswer(index)"
-    [ngModelOptions]="{ standalone: true }"
-    (change)="onSelectChange($event, index)"
-></ng-select>
-
-<br/>
+  <div class="col d-flex justify-content-end">
+  </div>
 </div>
+  <div class="col-md-10 center-div" style="width: 100%;margin-top: 3%;">
+    <span class="sdPregunta">{{ PLDTest.test_modules[index_module].questions[index].description }}  </span>
   </div>
 
+  <div class="container">
+    <br/>
+    <div class="form-group">
+      <br/><br/>
+      <form #miFormulario="ngForm" (ngSubmit)="onSelectChange(miFormulario)" novalidate>
+        <mat-form-field class="form-input" style="width: 70% !important">
+          <mat-icon matPrefix>{{icons[index_module]}}</mat-icon>
+          <input
+            matInput
+            type="number"
+            [min]="0"
+            [max]="PLDTest.test_modules[index_module].questions[index].score"
+            placeholder="Ingresa tu respuesta..."
+            [(ngModel)]="score_question"
+            name="score_question"
+            (input)="formatNumber($event)"
+            required
+       
+
+          />
+          <mat-label>{{label}}</mat-label>
+          <mat-error *ngIf="miFormulario.controls['score_question'].hasError('required')">
+            Este campo es obligatorio
+          </mat-error>
+          <mat-error *ngIf="miFormulario.controls['score_question'].hasError('min')">
+            El valor debe ser mayor o igual a 0
+          </mat-error>
+          <mat-error *ngIf="miFormulario.controls['score_question'].hasError('max')">
+            El valor debe ser menor o igual a {{PLDTest.test_modules[index_module].questions[index].score}}
+          </mat-error>
+        </mat-form-field>
+        <br />  <br/>
+
+        <div class="text-center btnEmpezarMod">
+          <button class="btn btn-success" type="submit">
+            Siguiente
+          </button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+  <br/>
 <button class="btn btn-light" (click)="backIndex()" [disabled]="sendButton"> 
   <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>   
   Volver al inicio
 </button><br/><br/><br/>
+
 <div class="pregunta-container">
-  <span>Pregunta &nbsp;</span> {{ (index+1) + "/" + (size) }}
+  <span>Pregunta &nbsp;</span> {{ (count) + "/" + (size_modules) }}
 </div>
 
 <div class="cent">
@@ -141,19 +151,37 @@
                     <div class="result-info">
                       <span class="result-score">Puntuación total:
                         <br/>
-                      <span style="color:#b60b0b;font-size: xx-large;font-weight: 500;" *ngIf="score<getNumber(PLDTest.min_score)">{{ score +"/"+max_score}}</span>  </span><br/>
-                      <span style="color:green; font-size: xx-large; font-weight: 500;" *ngIf="score>=getNumber(PLDTest.min_score)">{{ score +"/"+max_score}}</span>  <br/>
-                      <div *ngIf="score>=getNumber(PLDTest.min_score)">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" fill="green" viewBox="0 -960 960 960" width="24"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg>
-                      </div>
-                      <div *ngIf="score<getNumber(PLDTest.min_score)">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" fill="red" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>        
-                      </div>
+ </span><br/>
+                      <span style="color:rgb(6, 0, 128); font-size: xx-large; font-weight: 500;" *ngIf="score>=getNumber(PLDTest.min_score)">{{score}}</span>  <br/>
+                      <br/> 
+                      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="name">
+                          <th mat-header-cell *matHeaderCellDef> Pregunta </th>
+                          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        </ng-container>
+                      
+                        <!-- Average Column -->
+                        <ng-container matColumnDef="average">
+                          <th mat-header-cell *matHeaderCellDef> Calificación </th>
+                          <td mat-cell *matCellDef="let element"> {{element.average}} </td>
+                        </ng-container>
+                      
+                        <!-- Max Column -->
+                        <ng-container matColumnDef="max">
+                          <th mat-header-cell *matHeaderCellDef> Máximo </th>
+                          <td mat-cell *matCellDef="let element"> {{element.max}} </td>
+                        </ng-container>
+                      
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        
+                      </table>
+                      
                     </div>
                   
-                    <div class="result-evaluation">
-                      <span class="result-text" >Este fue el exámen: {{ PLDTest.name }}</span><br/><br/>
-                    </div>
+                    <br/><br/>
                     <button class="btn btn-light" (click)="backIndex()"  > 
                       <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>   
                       Volver al inicio

@@ -1,0 +1,183 @@
+// Estilos de la tabla de acuerdos
+
+.section-title {
+    width: 200px;
+    height: 50px;
+    background-color: #82B82B;
+    color: white;
+    font-size: medium;
+    font-weight: bold;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+    padding: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-bottom: 10px;
+}
+
+.container-fluid,
+.example-container {
+    height: 100%;
+}
+
+.pre-table-container {
+    position: relative;
+    overflow-x: auto;
+}
+
+.example-table-container {
+    position: relative;
+    min-height: 200px;
+    overflow: auto;
+}
+
+table {
+    width: auto;
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+td,
+th {
+    width: 25%;
+}
+
+.mat-column-id {
+    width: 5% !important;
+}
+
+.mat-column-opportunity_area {
+    width: 10% !important;
+}
+
+.mat-column-goal {
+    width: 20% !important;
+}
+
+.mat-column-developed_skill {
+    width: 15% !important;
+}
+
+.mat-column-action {
+    width: 20% !important;
+}
+
+.mat-column-established_date {
+    width: 15% !important;
+}
+
+.mat-column-actions {
+    width: 15% !important;
+}
+
+// Alineación de la lista
+.custom-list li {
+    text-align: left;
+}
+
+// Estilo sidenav
+
+.example-sidenav-content {
+    background-color: white; // Corrección de "withe" a "white"
+    width: 100%;
+}
+
+.example-sidenav {
+    padding: 20px;
+    width: 450px; // Estilo general para el formulario
+}
+
+// Estilo para firmas
+
+
+//*** Creación de firmas
+canvas {
+    border: 2px solid #3498db;
+    background-color: #f5f5f5;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    width: 100%;
+    /* Ocupa el ancho del contenedor */
+}
+
+.firma-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.firma-canvas-container {
+    width: 300px;
+    /* Ancho fijo para el canvas */
+}
+
+
+//******* Consulta de firmas
+
+.image-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; // Espaciado uniforme entre las imágenes
+    align-items: center; // Centra verticalmente las imágenes
+
+    .signature {
+        text-align: center; // Centra el nombre de la persona
+
+        .signature-image {
+            max-width: 100%; // Hace que la imagen sea responsiva
+            max-height: 150px; // Altura máxima de la imagen
+        }
+
+        .signature-name {
+            margin-top: 10px; // Espaciado entre el nombre y la imagen
+        }
+    }
+}
+
+
+/* Estilo para pantallas pequeñas (hasta 600px de ancho) */
+@media (max-width: 600px) {
+    .input-small {
+        width: 250px;
+        /* Tamaño máximo para pantallas pequeñas */
+    }
+    .example-sidenav {
+        padding: 20px;
+        width: 450px; // Estilo general para el formulario
+    }
+}
+
+/* Estilo para pantallas medianas (de 601px a 1200px de ancho) */
+@media (min-width: 601px) and (max-width: 1200px) {
+    .input-small {
+        width: 300px;
+        /* Tamaño máximo para pantallas medianas */
+    }
+    .example-sidenav {
+        padding: 20px;
+        width: 450px; // Estilo general para el formulario
+        margin-left: 60px;
+    }
+}
+
+/* Estilo para pantallas grandes (más de 1200px de ancho) */
+@media (min-width: 1201px) {
+    .input-small {
+        width: 400px;
+        /* Tamaño máximo para pantallas grandes */
+    }
+    .example-sidenav {
+        padding: 20px;
+        width: 450px; // Estilo general para el formulario
+        margin-left: 60px;
+    }
+}

@@ -27,7 +27,7 @@ import { UserEvaluationService } from '../../../../shared/services/Evaluations/D
 import { LoadingComponent } from '../../../app/loading/loading.component';
 import { UserTestService } from '@services/Evaluations/Desempeño/userTest.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-asesores',
@@ -44,7 +44,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     AgGridModule,
     MatIconModule,
     MatTableModule,
-    MatTabsModule
+    MatTabsModule,
   ],
 })
 export class AsesoresComponent implements OnInit {
@@ -87,7 +87,6 @@ export class AsesoresComponent implements OnInit {
       .then((response: any) => {
         this.mostrar = true;
         this.isLoading = false;
-
         this.ListColaborator[array].detail = response;
       })
       .catch((error: any) => {
@@ -110,22 +109,18 @@ export class AsesoresComponent implements OnInit {
     });
   }
 
-  changeList(status:any)
-  {
-    if(status=='Colaboradores')
-    this.ListColaborator=this.ListChangeColaborator;
-    else{
-    this.ListColaborator=this.PersonalList;
+  changeList(status: any) {//Cambia la lista de colaboradres y evaluaciones personales
+    if (status == 'Colaboradores')
+      this.ListColaborator = this.ListChangeColaborator;
+    else {
+      this.ListColaborator = this.PersonalList;
     }
     this.dataSource = new MatTableDataSource(this.ListColaborator);
-  
-    
   }
-  onTabChange(status:any) {
-    // Acciones a realizar cuando cambia el estado del switch   
+  onTabChange(status: any) {//Cambia de estatus el tab
     this.changeList(status.tab.textLabel);
   }
-  ngOnInit() {
+  ngOnInit() {//Revisa si existe o no el usuario para iniciar sesion
     var user = localStorage.getItem('email');
     if (user == '') {
       this.router.navigate(['/login']);
@@ -151,7 +146,7 @@ export class AsesoresComponent implements OnInit {
     this.dataSource.data = [...this.dataSource.data];
   }
 
-  getTable() {
+  getTable() {//Obtener evaluaciones con los procesos 6,8 y 9
     this.isLoading = true;
     let data = {
       user_id: Number(localStorage.getItem('user_id')),
@@ -164,13 +159,10 @@ export class AsesoresComponent implements OnInit {
       .then((response: any) => {
         this.ListColaborator = response.collaborators_evaluations;
         this.ListColaborator = this.ListColaborator;
-
         this.PersonalList = response.personal_evaluations;
         this.PersonalList = this.PersonalList;
-
         this.ListChangeColaborator = response.collaborators_evaluations;
         this.isLoading = false;
-
         this.dataSource = new MatTableDataSource(this.ListColaborator);
       })
       .catch((error: any) => {
@@ -188,48 +180,8 @@ export class AsesoresComponent implements OnInit {
 
     return user;
   }
-  clasification(data: string) {
-    switch (data) {
-      case 'Sin clasificación':
-        return 'Esta evaluacion no se terminado de contestar aún .';
-      case 'En Riesgo':
-        return 'El colaborador ha tenido un rendimiento significativamente por debajo de las expectativas, tiene áreas de mejoras claramente identificadas, mismas que se le han indicado por medio de retroalimentación, necesidad urgente de intervención y desarrollo.';
-      case 'Baja':
-        return 'El colaborador tuvo un desempeño insatisfactorio en varias áreas clave, así como el incumplimiento en sus metas y objetivos, requiere acciones correctivas para evitar consecuencias negativas.';
-      case 'Regular':
-        return 'El colaborador ha tenido un cumplimiento básico de responsabilidades y expectativas, muestra competencias en algunas áreas pero con espacio para mejora. Cumple con las expectativas mínimas pero hay oportunidades para el crecimiento.';
-      case 'Buena':
-        return 'El colaborador ha tenido un rendimiento sólido y consistente, cumple y en algunos casos supera las expectativas en su rol. Demuestra habilidades y competencias efectivas en la mayoría de las áreas.        ';
-      case 'Excelente':
-        return 'El colaborador excede consistentemente las expectativas, muestra un desempeño excepcional y contribuye de manera significativa al equipo y a los objetivos de la organización, tiene un alto sentido de compromiso.';
-      case 'Máxima':
-        return 'El colaborador tiene un desempeño excepcionalmente destacado en todas las áreas. Ha hecho contribuciones significativas que impactan positivamente en el equipo y en la organización en general, el colaborador muestra competencias que refieren estar listo para ser promovido.';
-      default:
-        return 'Sin clasificacion';
-    }
-  }
-  getColorByClasification(clasification: string) {
-    switch (clasification) {
-      case 'Sin clasificación':
-        return '#000';
-      case 'En Riesgo':
-        return '#A52A2A';
-      case 'Baja':
-        return '#DC143C';
-      case 'Regular':
-        return '#1E90FF';
-      case 'Buena':
-        return '#DAA520';
-      case 'Excelente':
-        return '#228B22';
-      case 'Máxima':
-        return '#228B22';
-      default:
-        return '#000'; // Color por defecto si no se encuentra una clasificación válida.
-    }
-  }
 
-  sendPageEvaluation(
+  sendPageEvaluation(//Navegacion entre paginas 
     process: string,
     id: string,
     status: string,
@@ -250,7 +202,7 @@ export class AsesoresComponent implements OnInit {
       case 'Evaluaciones de asesores':
         //  this.router.navigate(['exam/asesors/'+id+"/1"]);
         if (status == 'Terminado') {
-          localStorage.setItem("evaluation_id",id);
+          localStorage.setItem('evaluation_id', id);
           this.openModal();
         } else {
           this.router.navigate(['asesors/' + id + '/1']);
@@ -268,7 +220,6 @@ export class AsesoresComponent implements OnInit {
         const elemento = detalle.find(
           (item: any) => item.name === 'Evaluaciones de asesores'
         );
-
         if (elemento.status != 'Terminado') {
           this.message.error('La evaluación  no se ha terminado de contestar.');
         } else {
@@ -297,19 +248,5 @@ export class AsesoresComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  changeProcessFunc(process: number, user_test_id: number) {
-    this.changeProcess = {
-      user_id: Number(localStorage.getItem('user_id')),
-      user_test_id: user_test_id,
-      process_id: process,
-    };
-    this.userTestService
-      .SendChangeProcess(this.changeProcess)
-      .then((response: any) => {
-        this.message.error(
-          'Hace falta contestar una evaluación o este proceso ya esta terminado'
-        );
-      });
-  }
 
 }

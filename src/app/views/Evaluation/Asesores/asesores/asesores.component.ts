@@ -28,7 +28,8 @@ import { LoadingComponent } from '../../../app/loading/loading.component';
 import { UserTestService } from '@services/Evaluations/Desempeño/userTest.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import {MatTabsModule} from '@angular/material/tabs';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 @Component({
   selector: 'app-asesores',
   templateUrl: './asesores.component.html',
@@ -44,7 +45,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     AgGridModule,
     MatIconModule,
     MatTableModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSelectModule,
+    MatOptionModule
   ],
 })
 export class AsesoresComponent implements OnInit {
@@ -55,7 +58,8 @@ export class AsesoresComponent implements OnInit {
   ListTest: TestModel[];
   mostrar: boolean = false;
   indexPos: number;
-
+  options: string[] = ['Pendiente', 'Proceso', 'Terminado', 'Mis evaluaciones','Todas'];
+  selectedOptions: string[] = [];
   PersonalList: CollaboratorEvaluation[];
   protected isLoading: boolean = false;
   closeModalEvent: EventEmitter<void> = new EventEmitter<void>();
@@ -109,7 +113,24 @@ export class AsesoresComponent implements OnInit {
       dialogRef.close();
     });
   }
-
+  filterData(event: any) {
+    this.dataSource=new MatTableDataSource(this.ListColaborator);
+    switch(event)
+    {
+      case 'Todas':
+        this.dataSource.filter ='';
+        break;
+      case 'Mis evaluaciones':
+        this.dataSource.filter ='';
+        // Filtrar los datos para mostrar solo las evaluaciones del usuario actual
+        this.dataSource = new MatTableDataSource(this.ListColaborator.filter((item: any) => item.responsable_id === localStorage.getItem("user_id")));
+        break;
+      default:
+      this.dataSource.filter =event;
+    }
+  
+  }
+  
   changeList(status:any)
   {
     if(status=='Colaboradores')

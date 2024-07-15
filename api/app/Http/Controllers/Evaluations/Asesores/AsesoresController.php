@@ -101,8 +101,8 @@ class AsesoresController extends Controller
                     'code' => $this->prefix . 'X202'
                 ], 400);
 
-                $user_test_module = UserTestModule::join('test_modules', 'user_test_modules.module_id', '=', 'test_modules.id')
-                ->select('user_test_modules.*', 'test_modules.name','test_modules.max') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
+            $user_test_module = UserTestModule::join('test_modules', 'user_test_modules.module_id', '=', 'test_modules.id')
+                ->select('user_test_modules.*', 'test_modules.name', 'test_modules.max') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
                 ->where('user_test_modules.user_test_id', $id)
                 ->get();
 
@@ -172,38 +172,41 @@ class AsesoresController extends Controller
                     'message' => 'Está prueba no es valida o ya ha sido resuelta.',
                     'code' => $this->prefix . 'X603'
                 ], 400);
-
+            if ($user_test->user_evaluation->responsable_id != $request->user_id)
+                return response()->json([
+                    'title' => 'Prueba Invalida',
+                    'message' => 'Está prueba no te corresponde contestarla.',
+                    'code' => $this->prefix . 'X603'
+                ], 400);
             // Se iguala el score actual de la prueba
             $total_score = $user_test->total_score;
 
             DB::beginTransaction();
             $question = Question::where('id', $request->question_id)->first();
             $test_modules = TestModule::where('id', $question->module_id)->first();
-            $average = round(($request->score * $test_modules->max) /($question->score));
-        
+            $average = round(($request->score * $test_modules->max) / ($question->score));
+
             $user_test_module = UserTestModule::where([
                 ['user_test_id', $request->user_test_id],
                 ['module_id', $question->module_id]
             ])->first();
 
             if ($user_test_module) {
-               
-                $total_score =$total_score-$user_test_module->average;
-             
+
+                $total_score = $total_score - $user_test_module->average;
+
                 $user_test_module->update([
                     'average' => round($average)
                 ]);
-                
             } else {
                 UserTestModule::create([
                     'user_test_id' => $request->user_test_id,
                     'module_id' => $question->module_id,
                     'average' => round($average)
                 ]);
-             
             }
             $total_score += $average;
-         
+
             $user_test->update([
                 'status_id' => $request->its_over == 'si' ? 3 : 2,
                 'finish_date' => $request->its_over == 'si' ? Carbon::now()->format('Y-m-d') : null,
@@ -211,16 +214,16 @@ class AsesoresController extends Controller
                 'updated_by' => $request->user_id
             ]);
             if ($request->its_over == 'si') {
-              /*  AsesoresService::sendTestMail([
+                /*  AsesoresService::sendTestMail([
                     "total_score" => $total_score,
                     "user_evaluation" => $user_test->user_evaluation,
                     "evaluation_name" => $user_test->user_evaluation->evaluation->name,
                     "test" => $user_test->test
                 ]);*/
                 $user_test_module = UserTestModule::join('test_modules', 'user_test_modules.module_id', '=', 'test_modules.id')
-                ->select('user_test_modules.*', 'test_modules.name','test_modules.max') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
-                ->where('user_test_modules.user_test_id', $request->user_test_id)
-                ->get();
+                    ->select('user_test_modules.*', 'test_modules.name', 'test_modules.max') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
+                    ->where('user_test_modules.user_test_id', $request->user_test_id)
+                    ->get();
                 $user_test->user_evaluation->update(
                     [
                         'status_id' => 2,
@@ -235,7 +238,7 @@ class AsesoresController extends Controller
                 'title' => 'Proceso terminado',
                 'message' => 'Respuesta guardada correctamente',
                 'actual_score' => round($total_score),
-                'modules'=>$user_test_module
+                'modules' => $user_test_module
 
             ]);
         } catch (Exception $e) {
@@ -464,7 +467,14 @@ class AsesoresController extends Controller
                     'message' => 'Usuario invalido, no tienes acceso.',
                     'code' => $this->prefix . 'X202'
                 ], 400);
-
+            $user_evaluation = UserEvaluation::find($id);
+            $userPermission = UserService::checkUserPermisse('Acceso Administracion desempeno', $user);
+            if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X202'
+                ], 400);
             // Se consultan las pruebas de la evaluación asignadas.
             $user_tests = UserTest::select(
                 'user_tests.id',

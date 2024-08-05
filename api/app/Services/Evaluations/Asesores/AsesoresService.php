@@ -39,11 +39,8 @@ class AsesoresService extends ServiceProvider
 
         $responsable_leader_id = UserCollaborator::where('collaborator_id', $evaluation_data['user_evaluation']->responsable_id)->first();
         $responsable_leader = User::find($responsable_leader_id?->user_id);
-
         $process = Process::find($evaluation_data['user_evaluation']->process_id);
-
-      
-        $mail = Mail::to($responsable_user?->email)->cc(['francisco.delarosa@trinitas.mx'])->send(new asesoresComplete($evaluation_data, $evaluated_user, $responsable_user, $process));
+        $mail = Mail::to($responsable_user?->email)->cc(['francisco.delarosa@trinitas.mx',$evaluated_user->email])->send(new asesoresComplete($evaluation_data, $evaluated_user, $responsable_user, $process));
        
         
     }

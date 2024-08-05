@@ -214,12 +214,12 @@ class AsesoresController extends Controller
                 'updated_by' => $request->user_id
             ]);
             if ($request->its_over == 'si') {
-                /*  AsesoresService::sendTestMail([
+                  AsesoresService::sendTestMail([
                     "total_score" => $total_score,
                     "user_evaluation" => $user_test->user_evaluation,
                     "evaluation_name" => $user_test->user_evaluation->evaluation->name,
                     "test" => $user_test->test
-                ]);*/
+                ]);
                 $user_test_module = UserTestModule::join('test_modules', 'user_test_modules.module_id', '=', 'test_modules.id')
                     ->select('user_test_modules.*', 'test_modules.name', 'test_modules.max') // Selecciona todos los campos de user_test_modules y el campo module_name de test_modules
                     ->where('user_test_modules.user_test_id', $request->user_test_id)

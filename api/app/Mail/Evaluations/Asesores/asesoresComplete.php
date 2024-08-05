@@ -49,7 +49,7 @@ class asesoresComplete extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Evaluations/Evaluation360/EvaluationComplete',
+            view: 'Evaluations/Asesores/PerformanceComplete',
             with: [
                 'evaluation_data' => $this->evaluation_data,
                 'evaluated_user' => $this->evaluated_user,

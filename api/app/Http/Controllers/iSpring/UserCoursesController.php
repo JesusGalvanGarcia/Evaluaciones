@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\iSpring;
 
 use App\Http\Controllers\Controller;
+use App\Services\Evaluations\UserService;
+use App\Services\iSpring\iSpringService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -11,31 +13,32 @@ use Illuminate\Support\Facades\Http;
 class UserCoursesController extends Controller
 {
 
+    private $prefix = 'iSpring-User-Courses';
+
     public function index()
     {
         try {
 
-            $token = Http::withoutVerifying()
-                ->asForm()
-                ->withHeaders([
-                    'Accept' => '*/*'
-                ])
-                ->timeout(30)
-                ->post(
-                    'https://api-learn.ispringlearn.com/api/v3/token',
-                    [
-                        'client_id' => '1b6ae24f-19fc-11ef-be5a-cabf1d00afcb',
-                        'client_secret' => 'oFiIQUDYZPnNYttDtx7RVTSaD_e9mhHERmO2JW2Db-c',
-                        'grant_type' => 'client_credentials'
-                    ]
-                );
+            // Se valida que el usuario este vigente
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Fallo en la consulta',
+                    'message' => 'Usuario no encontrado.',
+                    'code' => $this->prefix . 'X001'
+                ], 400);
+
+            // Se consulta el token de acceso a la API de iSpring Learn
+            $token = iSpringService::getToken();
 
             // Maneja la respuesta
             if ($token->failed()) {
 
                 return response()->json([
                     'error' => 'Failed to fetch token',
-                    'details' => $token->body()
+                    'details' => $token->body(),
+                    'code' => $this->prefix . 'X002'
                 ], $token->status());
             }
 
@@ -50,7 +53,7 @@ class UserCoursesController extends Controller
                 ->get(
                     'https://api-learn.ispringlearn.com/learners/results',
                     [
-                        'userIds[]' => request('user_ispring_id')
+                        'userIds[]' => $user->ispring_id
                     ]
                 );
 

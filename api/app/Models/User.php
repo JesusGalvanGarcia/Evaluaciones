@@ -24,9 +24,9 @@ class User extends Authenticatable
         'name',
         'user_name',
         'email',
-     
         'password',
         'status_id',
+        'ispring_id',
         'created_by',
         'updated_by',
         'deleted_by',

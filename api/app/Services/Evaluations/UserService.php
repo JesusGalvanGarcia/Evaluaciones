@@ -12,6 +12,7 @@ class UserService extends ServiceProvider
     {
 
         $user = User::where('status_id', 1)->find($user_id);
+        
         return $user;
     }
 }

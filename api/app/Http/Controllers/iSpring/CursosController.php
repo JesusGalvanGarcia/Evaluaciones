@@ -3,40 +3,45 @@
 namespace App\Http\Controllers\iSpring;
 
 use App\Http\Controllers\Controller;
-use Exception;
+use App\Services\Evaluations\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+
+use App\Services\iSpring\iSpringService;
+
 use SimpleXMLElement;
+use Exception;
 
 class CursosController extends Controller
 {
+
+    private $prefix = 'iSpring-Courses';
 
     public function index()
     {
 
         try {
 
-            $token = Http::withoutVerifying()
-                ->asForm()
-                ->withHeaders([
-                    'Accept' => '*/*'
-                ])
-                ->timeout(30)
-                ->post(
-                    'https://api-learn.ispringlearn.com/api/v3/token',
-                    [
-                        'client_id' => '1b6ae24f-19fc-11ef-be5a-cabf1d00afcb',
-                        'client_secret' => 'oFiIQUDYZPnNYttDtx7RVTSaD_e9mhHERmO2JW2Db-c',
-                        'grant_type' => 'client_credentials'
-                    ]
-                );
+            // Se valida que el usuario este vigente
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Fallo en la consulta',
+                    'message' => 'Usuario no encontrado.',
+                    'code' => $this->prefix . 'X001'
+                ], 400);
+
+            // Se consulta el token de acceso a la API de iSpring Learn
+            $token = iSpringService::getToken();
 
             // Maneja la respuesta
             if ($token->failed()) {
 
                 return response()->json([
                     'error' => 'Failed to fetch token',
-                    'details' => $token->body()
+                    'details' => $token->body(),
+                    'code' => $this->prefix . 'X002'
                 ], $token->status());
             }
 
@@ -116,8 +121,8 @@ class CursosController extends Controller
                 ->post(
                     'https://api-learn.ispringlearn.com/api/v3/token',
                     [
-                        'client_id' => '1b6ae24f-19fc-11ef-be5a-cabf1d00afcb',
-                        'client_secret' => 'oFiIQUDYZPnNYttDtx7RVTSaD_e9mhHERmO2JW2Db-c',
+                        'client_id' => '0bc6d201-66de-11ef-8eab-723f2a388c99',
+                        'client_secret' => 'x5SnWUwzrz-U41KrTmOk0xrW-iKi4x9RDfKTk-B6lds',
                         'grant_type' => 'client_credentials'
                     ]
                 );
@@ -141,7 +146,7 @@ class CursosController extends Controller
                 ])
                 ->timeout(30)
                 ->get(
-                    'https://api-learn.ispringlearn.com/content/'.$id,
+                    'https://api-learn.ispringlearn.com/content/' . $id,
                     []
                 );
 

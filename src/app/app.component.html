@@ -1,6 +1,101 @@
-<div *ngIf="!isLoginPage()">
-    <app-sidenav></app-sidenav>
-</div>
-<div *ngIf="isLoginPage()">
+
+<!-- home.component.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example with Icons</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    .dropbtn {
+      color: #000;
+      padding: 16px;
+      border: none;
+    }
+    
+    .dropdown {
+      position: relative;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .dropdown-content a:hover {background-color: #ddd;}
+    
+    .dropdown:hover .dropdown-content {display: block;}
+    
+    </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Font Awesome -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div>
+          <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarMenu" aria-expanded="false" (click)="toggleMenu()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+          </div>
+          <div class="collapse navbar-collapse" [ngClass]="{'in': isMenuVisible}" id="navbarMenu">
+            <ul class="nav navbar-nav">
+                <li><img style="width: 50%;" src="assets/img/fondo.png" alt="Logo"></li>
+            <li *ngFor="let item of links" [ngClass]="{'dropdown': item.menu_items}">
+              <ng-container >
+                <!-- Enlaces simples -->
+                <a (click)="go(item.routeLink)"><i class="{{item.icon}}"></i> {{item.label}}</a>
+                <li class="dropdown">
+                    <div class="dropdown-content">
+                      <li *ngFor="let subItem of item.menu_items">
+                        <a (click)="go(subItem.routeLink)" ><i class="{{subItem.icon}}"></i> {{subItem.label}}</a>
+                      </li>
+                    </div>
+                  </li>
+              </ng-container>
+      
+  
+              
+            </li>
+            <li><a href="#"><i class="fa fa-graduation-cap"></i> Cursos</a></li>
+            <li><a href="#"><i class="fa fa-graduation-cap"></i> Cursos</a></li>
+            <li><a href="#"><i class="fa fa-graduation-cap"></i> Cursos</a></li>
+            <li><a href="#"><i class="fa fa-graduation-cap"></i> Cursos</a></li>
+            <li><a href="#"><i class="fa fa-graduation-cap"></i> Cursos</a></li>
+            <li><a href="#"><i class="fa fa-graduation-cap"></i> Cursos</a></li>
+            <li><a href="#"><i class="fa fa-graduation-cap"></i> Cursos</a></li>
+        
+
+          </ul>
+      
+        </div>
+        </div>
+      </nav>
+      
+  
+<div >
+    
     <router-outlet></router-outlet>
+
 </div>
+
+</body>
+</html>

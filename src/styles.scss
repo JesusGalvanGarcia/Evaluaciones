@@ -83,7 +83,15 @@ body {
     position: relative;
     font-family: 'Roboto', sans-serif;
 }
-
+.containerz {
+    background-color: #FFFFFF;
+    background-size: contain;
+    background-image: url('../src/assets/img/fondo.jpg');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
 .card {
     display: flex;
     flex-direction: column;
@@ -132,3 +140,15 @@ mat-form-field {
 {
     background-color: mat.get-color-from-palette($adelanto-primary, 600) !important;
 }
+@media (max-width: 768px) {
+    .containerz {
+        background-color: #FFFFFF;
+        background-size: contain;
+        background-image: url('../src/assets/img/fondo_blanco.gif');
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+}
+

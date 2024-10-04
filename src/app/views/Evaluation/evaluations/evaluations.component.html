@@ -1,7 +1,6 @@
-<div class="bgImageContainer2"></div><br/><br/>
-
-<div class="posi bgImageContainer">
+<div >
   <div class="container">
+    <mat-card class="card-body">
     <br/>
     <div class="colabora">
       <span>
@@ -13,20 +12,9 @@
         {{ getUser() }}
       </span><br/>
     </div><br/>
-    <div class="evaIcon">
-      <span>
-        <img
-          src="assets/svg/evaluation.svg"
-          class="estilo-imagen"
-          style="width: 20px;"
-          alt="Logo_Trinitas"
-        />
-      </span>
+
       <span class="estilo-title">Evaluaciones de competencias </span>
-    </div>
-    <div style="margin-top: 0%;">
-      <div class="center-container"></div>
-      <br/>
+
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <mat-tab label="Colaboradores" > 
         </mat-tab>
@@ -198,7 +186,7 @@
       
       </mat-table>
       <br/>     <br/>
-    </div>
+    </mat-card>
   </div>
 </div>
 <app-loading *ngIf="isLoading"></app-loading>

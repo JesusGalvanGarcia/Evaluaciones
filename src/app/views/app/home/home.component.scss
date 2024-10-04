@@ -24,7 +24,9 @@
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Stronger shadow */
   transition: transform 0.3s ease-in-out; /* Animation for hover effect */
 }
-
+.animation:hover {
+  transform: translateY(-20px); /* Hover effect to lift the card */
+}
 .user-card:hover {
   transform: translateY(-10px); /* Hover effect to lift the card */
 }

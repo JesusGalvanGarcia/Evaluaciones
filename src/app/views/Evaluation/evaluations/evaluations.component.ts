@@ -20,6 +20,7 @@ import { LoadingComponent } from '../../app/loading/loading.component';
 import { UserTestService } from '@services/Evaluations/Desempeño/userTest.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-evaluations',
@@ -28,6 +29,7 @@ import { MatOptionModule } from '@angular/material/core';
   imports: [
     CommonModule,
     MatTooltipModule,
+    MatCardModule,
     MatInputModule, 
     LoadingComponent,
     MatTabsModule,

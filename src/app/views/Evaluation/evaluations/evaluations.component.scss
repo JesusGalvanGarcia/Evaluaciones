@@ -1,21 +1,116 @@
 @import "~ag-grid-community/styles/ag-grid.css";
 @import "~ag-grid-community/styles/ag-theme-alpine.css";
 
+/* Tabla principal */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
 
-/* Estilos específicos para pantallas pequeñas (menos de 600px) */
-@media screen and (max-width: 600px) {
-  .table th,
-  .table td {
-    display: none;
+
+/* Estilos de la tabla responsiva */
+.tabla {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+/* Filas y celdas en la tabla responsiva */
+.encabezados, .fila {
+  display: table-row;
+}
+.mat-icon {
+  margin: 0;
+  padding: 0;
+}
+.ranks
+{
+  margin-left: 15%;
+}
+.encabezado, .dato {
+  display: table-cell;
+  padding: 8px 12px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+
+.btns
+{
+  position: absolute;
+  top: 50%;
+  height: 48px;
+  left: 50%;
+  width: 48px;
+  transform: translate(-50%, -50%);
+}
+
+.custom-input {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    margin-left: 25%;
+    }
+.back
+{
+    background-color: #fff;
+}
+/* Añadir estilos para dispositivos móviles */
+@media (max-width: 768px) {
+
+  .colabora {
+    text-align: center;
   }
-  .table thead {
-    display: none;
+
+  .custom-input {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    margin-left: 15%;
+    }
+
+  
+
+    .ventana {
+    width: 90%;
+    height: 90%;
+    margin-top: 5%;
+    margin-left: 5%;
+    padding: 10%;
   }
-  .table tbody {
-    display: block;
+  .ranks
+  {
+    margin-left: -10%;
   }
 }
+
+.estilo-texto {
+  margin-left: 5%;
+  font-weight: bold;
+}
+.estilo-title {
+  color: rgb(155, 155, 155);
+  font-weight: bold;
+  font-size: 150%;
+  margin-top: -20%;
+}
+
+.estilo-imagen {
+  width: 3%;
+  margin-top: -1%;
+}
+
+
+.expanded-row {
+  font-size: 16px;
+  line-height: 2;
+  height: 500px;
+}
+
+
+
 
   
   

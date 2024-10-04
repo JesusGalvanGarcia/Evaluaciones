@@ -16,6 +16,8 @@ import { TestModel } from '@models/colaboradorEvaluation/evaluationDetail';
 import { ProcessModel } from "../../../../shared/entities/models/testDetails/processModel";
 import { UserEvaluationService } from "../../../../shared/services/Evaluations/Desempeño/userEvaluation.service";
 import { LoadingComponent } from '../../../app/loading/loading.component';
+import {MatTabsModule} from '@angular/material/tabs';
+
 import { UserTestService } from '@services/Evaluations/Desempeño/userTest.service';
 @Component({
   selector: 'app-asesores',
@@ -24,6 +26,7 @@ import { UserTestService } from '@services/Evaluations/Desempeño/userTest.servi
   standalone:true,
   imports: [
     CommonModule,
+    MatTabsModule,
     MatTooltipModule,
     MatInputModule, 
     LoadingComponent,

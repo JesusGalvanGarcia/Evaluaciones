@@ -16,9 +16,12 @@
   justify-content: center;
   align-items: center;
 }
-
+.img-responsive
+{
+  width: 100%;
+}
 .user-card {
-  max-width: 400px; /* Set the max width of the card */
+  max-width: 500px; /* Set the max width of the card */
   width: 100%;
   border-radius: 12px; /* Rounded corners */
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Stronger shadow */
@@ -61,7 +64,7 @@
 }
 
 .user-info p {
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #777; /* Softer text color */
   margin: 0 15px 15px; /* Add some padding for better spacing */
 }

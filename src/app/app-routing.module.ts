@@ -78,11 +78,7 @@ const routes: Routes = [
     { path: 'pruebaAsesor/:user_test_id', component: UserAsesorComponent, data: { routeName: 'Consultar Prueba del Usuario' } },
     { path: 'asesores', component: AsesoresComponent, canActivate: [AuthGuardService], data: { permission: 'Acceso a evaluacion de Asesores' } },
     { path: 'asesoresAdmin', component: AdminAsesoresComponent, canActivate: [AuthGuardService], data: { permission: 'Acceso Administracion asesores' } },
-    { path: 'asesors/:id/:attempts', component: EvaluationAsesorComponent, data: { permission: 'Acceso a examen PLD' } },
-    { path: 'plan-accion-asesor/:user_action_plan_id', component: ActionPlanAsesorComponent },
-    
-
-
+    { path: 'asesors/:id/:attempts', component: EvaluationAsesorComponent, data: { permission: 'Acceso a examen PLD' } }
 ];
 
 @NgModule({

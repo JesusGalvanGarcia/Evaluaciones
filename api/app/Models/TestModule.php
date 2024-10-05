@@ -16,6 +16,7 @@ class TestModule extends Model
     protected $fillable = [
         'id',
         'test_id',
+        'max',
         'name',
         'created_by',
         'updated_by',

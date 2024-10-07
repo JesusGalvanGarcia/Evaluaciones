@@ -83,55 +83,7 @@ body {
     position: relative;
     font-family: 'Roboto', sans-serif;
 }
-.center-div {
-    display: flex; /* Habilita flexbox */
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-}
-.modern-title {
-    font-family: 'Roboto', sans-serif; /* Fuente moderna */
-    font-size: 1.5rem; /* Tamaño del texto */
-    font-weight: 600; /* Grosor de la fuente */
-    color: #858080; /* Color del texto */
-    text-align: center; /* Centra el texto */
-    position: relative; /* Necesario para el pseudo-elemento */
-    margin: 20px 0; /* Espacio arriba y abajo */
 
-    /* Estilo de subrayado moderno */
-    &:after {
-        content: ""; /* Pseudo-elemento */
-        display: block; /* Hace que el elemento sea un bloque */
-        width: 50%; /* Ancho del subrayado */
-        height: 4px; /* Altura del subrayado */
-        background: #1ebd60; /* Color del subrayado */
-        margin: 10px auto; /* Centra el subrayado */
-    }
-}
-.icon-color-blue {
-    color: #4A90E2; /* Color azul */
-  }
-  
-  .icon-color-green {
-    color: #28a745; /* Color verde */
-  }
-  
-  .icon-color-red {
-    color: #dc3545; /* Color rojo */
-  }
-  .icon-color-purple {
-    color: #b535dc; /* Color rojo */
-  }
-  .icon-color-orange {
-    color: #dc8035; /* Color rojo */
-  }
-  
-  .icon-color-yellow {
-    color: #ffc107; /* Color amarillo */
-  }
-  .icon-size
-  {
-    width: 49px;
-  }
 .card {
     display: flex;
     flex-direction: column;
@@ -180,14 +132,3 @@ mat-form-field {
 {
     background-color: mat.get-color-from-palette($adelanto-primary, 600) !important;
 }
-.bgImageContainer2 {
-    position: relative; /* Asegúrate de que sea relativo si necesitas z-index */
-    z-index: 1; 
-  
-    width: 100%;
-    height:100%;
-    background: rgb(46, 117, 182);
-    background: linear-gradient(to bottom right, #39add3, rgb(33, 113, 33));
-      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    background-size: 100% 100%;
-  }

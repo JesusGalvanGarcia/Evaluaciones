@@ -25,10 +25,9 @@ import { TestModel } from '@models/colaboradorEvaluation/evaluationDetail';
 import { ProcessModel } from '../../../../shared/entities/models/testDetails/processModel';
 import { UserEvaluationService } from '../../../../shared/services/Evaluations/Desempeño/userEvaluation.service';
 import { LoadingComponent } from '../../../app/loading/loading.component';
-import {MatTabsModule} from '@angular/material/tabs';
-
 import { UserTestService } from '@services/Evaluations/Desempeño/userTest.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import {MatTabsModule} from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 @Component({
@@ -38,7 +37,6 @@ import { MatOptionModule } from '@angular/material/core';
   standalone: true,
   imports: [
     CommonModule,
-    MatTabsModule,
     MatTooltipModule,
     MatInputModule,
     LoadingComponent,
@@ -47,6 +45,7 @@ import { MatOptionModule } from '@angular/material/core';
     AgGridModule,
     MatIconModule,
     MatTableModule,
+    MatTabsModule,
     MatSelectModule,
     MatOptionModule
   ],

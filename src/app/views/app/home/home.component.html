@@ -1,176 +1,38 @@
 <!-- home.component.html -->
 
-<div class="container-imgs">
-  <img src="../../../../assets//img/encuentro.jpg" class="header-image">
-</div>
-<div>
-  <div class="card-container">
-    <button mat-button class="prev-button" (click)="prevUser()">&#10094;</button>
-  
-    <mat-card class="user-card">
-      <mat-card-header>
-        <img mat-card-image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRluRxoixDhQJswuN-IW9lGfszTfECVe05CoQ&s" alt="Header Image" />
-      </mat-card-header>
-      <mat-card-content [@fadeAnimation]="animationState">
-        <div class="user-info">
-          <img class="user-image" [src]="users[currentUserIndex].imageUrl" alt="User Image" />
-          <h2>¿Conoces a {{ users[currentUserIndex].name }}?</h2>
-          <p>{{ users[currentUserIndex].introduction }}</p>
-        </div>
-      </mat-card-content>
-  
-    </mat-card>
-    <button mat-button class="next-button" (click)="nextUser()">&#10095;</button>
-  
+<div class="home-container">
+    <div class="background">
+      <mat-card class="card-body">
+  <div style="display:flex;gap:5%">
+    <img class="logo"       src="assets/img/fondo.png" alt="Logo">
+
   </div>
-</div>
-<br/>
-<div>
-  <div class="container ">
-    <div class="row">
-      <!-- Primera imagen -->
-      <div class="col-sm-4 ">
-        <a href="https://www.suggestionox.com/r/FinancieraTrinitas" target="_blank">
-          <img src="../../../../assets/img/BANNER-BUZO__N.jpg" alt="Imagen 1" class="img-responsive animation">
-        </a>      
-      </div>
-      <!-- Segunda imagen -->
-      <div class="col-sm-4">
-        <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3gUoaiQdeGT6Az3ZF9Byy6dPGaRfi9WfPNAycOU6Mm8ritT7ONAu_DYlwN1G3lLydIuMKMKtkj" target="_blank">
-        <img src="../../../../assets//img/Banner-Plataforma.jpg" alt="Imagen 2" class="img-responsive animation">
-      </a> 
-      </div>
-      <!-- Tercera imagen -->
-      <div class="col-sm-4">
-        <a href="https://issuu.com/capitalhumanotrinitas/docs/boletin_junio_2023_1_2_?fr=sM2QxMDM3NjY0Mw" target="_blank">
-        <img src="../../../../assets//img/boletin2.jpg" alt="Imagen 3" class="img-responsive animation">
-      </a> 
-      </div>
-    </div>
-    <div class="row">
-      <!-- Cuarta imagen -->
-      <div class="col-sm-4">
-        <a href="https://cdn.filestackcontent.com/usCwsaGYRQ61FhkNclDy" target="_blank">
-        <img src="../../../../assets//img/Captura de Pantalla 2021-12-14 a la(s) 23.06.20.png" alt="Imagen 4" class="img-responsive animation">
-      </a> 
-      </div>
-      <!-- Quinta imagen -->
-      <div class="col-sm-4">
-        <a href="https://issuu.com/capitalhumanotrinitas/docs/cat_logo_de_premios_vip_2023?fr=xKAE9_zU1NQ" target="_blank">
-        <img src="../../../../assets//img/CAT__LOGO DE PREMIOS VIP.jpg" alt="Imagen 5" class="img-responsive animation">
-      </a> 
-      </div>
-      <!-- Sexta imagen -->
-      <div class="col-sm-4">
-        <a href="https://trinitas.inteam.app/inbox?ticket=new" target="_blank">
-        <img src="../../../../assets//img/WhatsApp Image 2022-06-17 at 12.55.24 PM.jpeg" alt="Imagen 6" class="img-responsive animation">
-      </a> 
-      </div>
-    </div>
+      <!-- home.component.html -->
+<div class="data">
   
+<div class="title">Intranet</div>
+<div class="subtitle"> <i class="fa-solid fa-user"></i>&nbsp; {{ getUser() }}</div>
 </div>
+<app-loading *ngIf="isLoading"></app-loading>
+<!-- ... restante de tu contenido -->
+
   
-</div>
-<div class="container mt-4">
-  <div class="row">
-    <!-- Primera card: Valores de Trinitas -->
-    <div class="col-md-4 mb-4">
-      <div class="card card-custom">
-        <div class="card-header card-header-custom">
-          <i class="fa-solid fa-place-of-worship"></i>  Valores de Trinitas
-        </div>
-        <div class="card-body">
-          <div class="icon-list">
-            <!-- Iconos -->
-            <div class="icon-item">
-              <i class="fa-solid fa-person-harassing icon-color-purple" data-toggle="tooltip" data-placement="top" title="Sé un buen ejemplo y referente en tus acciones"></i>
-            </div>
-            <div class="icon-item">
-              <i class="fa-solid fa-people-group icon-color-orange" data-toggle="tooltip" data-placement="top" title="Crea con tus compañeros un ambiente de familia"></i>
-            </div>
-            <div class="icon-item">
-              <i class="fa-solid fa-mobile icon-color-green" data-toggle="tooltip" data-placement="top" title="Diviértete, sé un influencer y guardián de nuestra cultura"></i>
-            </div>
-            <div class="icon-item">
-              <i class="fa-regular fa-heart icon-color-blue" data-toggle="tooltip" data-placement="top" title="Trata a los demás con sentido humano, empatía y humildad"></i>
-            </div>
-            <div class="icon-item">
-              <i class="fa-regular fa-circle-question icon-color-red" data-toggle="tooltip" data-placement="top" title="Cuestiona todo"></i>
-            </div>
-            <div class="icon-item">
-              <i class="fa-solid fa-hand-holding-heart icon-color-yellow" data-toggle="tooltip" data-placement="top" title="Vive con actitud y servicio wow"></i>
-            </div>
-            <div class="icon-item">
-              <i class="fa-regular fa-face-smile icon-color-purple" data-toggle="tooltip" data-placement="top" title="Busca tu felicidad, sé positivo y lucha por tus sueños"></i>
-            </div>
-            <div class="icon-item">
-              <i class="fa-solid fa-graduation-cap icon-color-orange" data-toggle="tooltip" data-placement="top" title="Aprende y crece constantemente"></i>
-            </div>
-            <div class="icon-item">
-              <i class="fa-solid fa-people-carry-box icon-color-blue" data-toggle="tooltip" data-placement="top" title="Comprométete contigo y tus compañeros"></i>
-            </div>
-            <div class="icon-item">
-              <i class="fa-solid fa-user-plus icon-color-red" data-toggle="tooltip" data-placement="top" title="Apasiónate y marca la diferencia"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Segunda card: Company Highlights -->
-    <div class="col-md-4 mb-4">
-      <div class="card card-custom">
-        <div class="card-header card-header-custom">
-          <i class="fa-solid fa-calendar-plus"></i> Relevantes
-        </div>
-        <div class="card-body">
-          <div class="icon-list-blocks">
-            <!-- Icon 1: Events -->
-            <div class="icon-item">
-              <i class="fas fa-calendar-check icon-color-green" data-toggle="tooltip" data-placement="top" title="Upcoming Events"></i>
-              <span class="ml-2"> Eventos</span>
-            </div>
-            <!-- Icon 2: Anniversaries -->
-            <div class="icon-item">
-              <i class="fas fa-handshake icon-color-yellow" data-toggle="tooltip" data-placement="top" title="Company Anniversaries"></i>
-              <span class="ml-2"> Aniversarios</span>
-            </div>
-            <!-- Icon 3: Birthdays -->
-            <div class="icon-item">
-              <i class="fas fa-birthday-cake icon-color-red" data-toggle="tooltip" data-placement="top" title="Team Birthdays"></i>
-              <span class="ml-2"> Cumpleaños</span>
-            </div>
-            <!-- Icon 4: New Hires -->
-            <div class="icon-item">
-              <i class="fas fa-user-plus icon-color-blue" data-toggle="tooltip" data-placement="top" title="Welcome New Hires"></i>
-              <span class="ml-2"> Nuevos</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Tercera card: Schedule -->
-    <div class="col-md-4 mb-4">
-      <div class="card card-custom">
-        <div class="card-header card-header-custom">
-          <i class="fa-solid fa-plane"></i> Fuera de la oficina
-        </div>
-        <div class="card-body">
-          <div class="icon-list-blocks ">
-            <!-- Icon 1: Today -->
-            <div class="icon-item">
-              <i class="fas fa-calendar-day icon-color-blue" data-toggle="tooltip" data-placement="top" title="Today's Schedule"></i>
-              <span class="ml-2">Hoy</span>
-            </div>
-            <!-- Icon 2: Upcoming -->
-            <div class="icon-item">
-              <i class="fas fa-calendar-alt icon-color-green" data-toggle="tooltip" data-placement="top" title="Upcoming Schedule"></i>
-              <span class="ml-2">Proximamente</span>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="button-container" >
+  <div *ngFor="let role of links">
+  <button  *ngIf="role.label!='Home'&& role.label!='Cerrar sesion' && role.menu_items.length>0" class="bottos" mat-flat-button [color]="role.label === 'PLD' ? 'primary' : 'accent'" (click)="toggleSubMenu(role.label)">
+  
+  <div >
+
+  <i [class]="role.icon"></i><br/>
+    <div class="letter">{{ role.label }}</div>
+    <mat-icon *ngIf="showSubMenu === role.label" class="sub-icon">keyboard_arrow_up</mat-icon>
+    <div *ngIf="showSubMenu === role.label" class="sub-menu">
+      <a *ngFor="let item of role.menu_items" (click)="go(item.routeLink,role.routeLink)" >{{ item.label }}</a>
     </div>
   </div>
-</div>
+  </button>
+</div> </div>
+      </mat-card>
+   
+  </div>
+  

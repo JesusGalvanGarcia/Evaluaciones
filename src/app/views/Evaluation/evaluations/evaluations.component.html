@@ -1,7 +1,7 @@
+<div class="bgImageContainer2"></div><br/><br/>
 
-
-<div class="bgImageContainer2">
-  <div class="container back">
+<div class="posi bgImageContainer">
+  <div class="container">
     <br/>
     <div class="colabora">
       <span>
@@ -13,23 +13,19 @@
         {{ getUser() }}
       </span><br/>
     </div><br/>
-    <div >
-      <div >
-        <span>
-          <img
-            src="assets/svg/users.svg"
-            style="width: 20px;"
-            alt="Logo_Trinitas"
-          />
-          {{ getUser() }}
-        </span>
-      </div>
-    <div class="center-div" >
-      <i class="fa-solid fa-book icon-color-green icon-size"></i>
-      <span class="modern-title" >Evaluaciones de competencias </span>
+    <div class="evaIcon">
+      <span>
+        <img
+          src="assets/svg/evaluation.svg"
+          class="estilo-imagen"
+          style="width: 20px;"
+          alt="Logo_Trinitas"
+        />
+      </span>
+      <span class="estilo-title">Evaluaciones de competencias </span>
     </div>
     <div style="margin-top: 0%;">
- 
+      <div class="center-container"></div>
       <br/>
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <mat-tab label="Colaboradores" > 
@@ -203,8 +199,7 @@
       </mat-table>
       <br/>     <br/>
     </div>
-
-</div>
+  </div>
 </div>
 <app-loading *ngIf="isLoading"></app-loading>
 

@@ -1,7 +1,7 @@
+<div class="bgImageContainer2"></div><br/><br/>
 
-
-<div class="bgImageContainer2">
-  <div class="container back">
+<div class="posi bgImageContainer">
+  <div class="container">
     <br/>
     <div class="colabora">
       <span>
@@ -13,28 +13,23 @@
         {{ getUser() }}
       </span><br/>
     </div><br/>
-    <div >
-      <div >
-        <span>
-          <img
-            src="assets/svg/users.svg"
-            style="width: 20px;"
-            alt="Logo_Trinitas"
-          />
-          {{ getUser() }}
-        </span>
-      </div>
-      <div class="center-div" >
-        <i class="fa-solid fa-book icon-color-green icon-size"></i>
-        <span class="modern-title" >Evaluaciones 360 </span>
-      </div>
+    <div class="evaIcon">
+      <span>
+        <img
+          src="assets/svg/evaluation.svg"
+          class="estilo-imagen"
+          style="width: 20px;"
+          alt="Logo_Trinitas"
+        />
+      </span>
+      <span class="estilo-title">Evaluaciones 360</span>
       <div style="display:block">
         <!-- Button to toggle iframe visibility -->
-        <div class="center-div">
+        <div>
           <button (click)="toggleIframe()" class="btn btn-success" >Video Tutorial <i class="fa-solid fa-play"></i></button>
 
         </div>
-      <div class="center-div">
+      <div>
         <iframe *ngIf="showIframe" src="https://drive.google.com/file/d/12Ce4dr0wGmz0solNc_ZGpzrc2war9wCT/preview" width="640" height="480" allow="autoplay"></iframe>
 
       </div>
@@ -45,12 +40,14 @@
     <div style="margin-top: 0%;">
       <div class="center-container"></div>
       <br/>
-      <mat-tab-group (selectedTabChange)="onSwitchChange()">
-        <mat-tab label="Colaboradores" > 
-        </mat-tab>
-        <mat-tab label="Personal">
-        </mat-tab>
-      </mat-tab-group>
+      <div class="form-check form-switch mostrar">
+        Mis reportes
+      <div class="checks">
+        <input class="form-check-input" id="idInp" name="nameinput" #isChekedModel="ngModel" (click)="onSwitchChange()" type="checkbox" [(ngModel)]="isChecked">
+      </div>
+        <label class="form-check-label" for="idInp">Mis evaluaciones</label>
+        <br/>
+      </div>
       <br/>
 
       <div *ngIf="isChecked">

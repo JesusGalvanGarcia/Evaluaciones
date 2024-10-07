@@ -21,6 +21,8 @@ import { Evaluation360Service } from '@services/Evaluations/Evaluation360/evalua
 import { GridModule } from '@sharedComponents/grid/grid.module';
 import { GridActions } from '@utils/grid-action';
 import { ColDef } from 'ag-grid-community';
+import {MatTabsModule} from '@angular/material/tabs';
+
 @Component({
   selector: 'app-index360',
   standalone:true,
@@ -30,6 +32,7 @@ import { ColDef } from 'ag-grid-community';
     GridModule,
     MatInputModule, 
     LoadingComponent,
+    MatTabsModule,
     FormsModule,
     CdkTableModule,
     AgGridModule,

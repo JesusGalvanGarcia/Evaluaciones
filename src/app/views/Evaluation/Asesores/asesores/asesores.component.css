@@ -1,98 +1,15 @@
 @import "~ag-grid-community/styles/ag-grid.css";
 @import "~ag-grid-community/styles/ag-theme-alpine.css";
-.bgImageContainer2 {
-  z-index: -1;
-  position: fixed;
-  margin-top: -2%;
-  width: 100%;
-  height: 1000px;
-  background: rgb(46, 117, 182);
-  background: linear-gradient(0deg, rgba(16, 26, 62, 0.43) 0%, rgba(16, 26, 62, 0.43) 100%), linear-gradient(180deg, #6D9D06 0%, rgba(107, 175, 96, 0.00) 100%);
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  background-size: 100% 100%;
-}
+@import "~ag-grid-community/styles/ag-grid.css";
+@import "~ag-grid-community/styles/ag-theme-alpine.css";
+
 /* Tabla principal */
 .table {
   width: 100%;
   border-collapse: collapse;
 }
 
-/* Filas de detalles colapsadas */
-tr.example-detail-row {
-  height: 0;
-}
 
-/* Efecto de resaltado al pasar el mouse sobre filas */
-tr.example-element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
-}
-.custom-input {
-  width: 70%;
-  display: flex;
-  gap: 5%;
-  justify-content: center;
-  margin-left: 15%;
-  }
-.btn-light {
-
-  --bs-btn-color: #000;
-  --bs-btn-bg: #fff !important; 
-  --bs-btn-border-color: #f8f9fa;
-  --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: #d3d4d5;
-  --bs-btn-hover-border-color: #c6c7c8;
-  --bs-btn-focus-shadow-rgb: 211,212,213;
-  --bs-btn-active-color: #000;
-  --bs-btn-active-bg: #c6c7c8;
-  --bs-btn-active-border-color: #babbbc;
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: #f8f9fa;
-  --bs-btn-disabled-border-color: #f8f9fa;
-}
-/* Efecto de selección al hacer clic en filas */
-tr.example-element-row:not(.example-expanded-row):active {
-  background: #efefef;
-}
-
-/* Estilos de celdas en las filas principales */
-.example-element-row td {
-  border-bottom-width: 0;
-}
-
-/* Contenedor de detalles expandidos */
-.example-element-detail {
-  overflow: hidden;
-  display: flex;
-}
-
-/* Diagrama en detalles expandidos */
-.example-element-diagram {
-  min-width: 80px;
-  border: 2px solid black;
-  padding: 8px;
-  font-weight: lighter;
-  margin: 8px 0;
-  height: 104px;
-}
-
-/* Símbolo en detalles expandidos */
-.example-element-symbol {
-  font-weight: bold;
-  font-size: 40px;
-  line-height: normal;
-}
-
-/* Descripción en detalles expandidos */
-.example-element-description {
-  padding: 16px;
-  width: 100%;
-}
-
-/* Atribución en detalles expandidos */
-.example-element-description-attribution {
-  opacity: 0.5;
-}
 
 /* Estilos de la tabla responsiva */
 .tabla {
@@ -121,20 +38,7 @@ tr.example-element-row:not(.example-expanded-row):active {
   border: 1px solid #ccc;
 }
 
-/* Estilos para el encabezado de la tabla responsiva */
-.encabezado {
-  background-color: #f0f0f0;
-  font-weight: bold;
-}
 
-/* Estilos alternos para filas de la tabla responsiva */
-.fila:nth-child(odd) {
-  background-color: #f2f2f2;
-}
-
-.fila:nth-child(even) {
-  background-color: #e0e0e0;
-}
 .btns
 {
   position: absolute;
@@ -144,58 +48,21 @@ tr.example-element-row:not(.example-expanded-row):active {
   width: 48px;
   transform: translate(-50%, -50%);
 }
-.example-table {
-  box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f;  background-color: white;
-  border-bottom: 1px solid lightgray;
-  padding: 5px;
-  overflow-x: auto;
-}
-.example-table-container {
-  position: relative;
-  min-height: 200px;
-  overflow: auto;
-}
-.mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table .mat-mdc-header-cell {
-  background: inherit;
-  width: 30%;
-}
 
-.bgImageContainer {
-  background: #fff;
-  width: 90%;
-  border-radius: 15px !important;
-  background-position: center center;
-  background-size: cover;
-}
-@media screen and (min-width: 1000px) {
-  /* Estilos específicos para pantallas de 1000 píxeles o más de ancho */
-  .posi {
-    margin-top: 0%;
-    /* padding: 5px; */
-    margin-left: 8%;
-    height: auto;
-  }
-  .mostrar {
+.custom-input {
+    width: 50%;
     display: flex;
-    margin-left: 20%;
-    justify-content: space-between;
-  }
-  /* Agrega más estilos específicos aquí según tus necesidades */
+    justify-content: center;
+    margin-left: 25%;
+    gap:2%
+    }
+.back
+{
+    background-color: #fff;
 }
-
 /* Añadir estilos para dispositivos móviles */
 @media (max-width: 768px) {
-  
-.mostrar {
-  display: flex;
-  margin-left: 0%;
-  justify-content: space-between;
-}
-  .bgImageContainer2 {
-    margin-top: -6%;
-   /* width: 100%; */
-   border-radius: 0;
-  }
+
   .colabora {
     text-align: center;
   }
@@ -205,21 +72,11 @@ tr.example-element-row:not(.example-expanded-row):active {
     display: block;
     justify-content: center;
     margin-left: 15%;
+    gap:2%
     }
-  .bgImageContainer {
-    background: #fff;
-    width: 90%;
-    border-radius: 15px !important;
-    background-position: center center;
-    background-size: cover;
-  }
+
   
-  .posi {
-    margin-top: 5%;
-    /* padding: 5px; */
-    margin-left: 5%;
-  }
-  
+
     .ventana {
     width: 90%;
     height: 90%;
@@ -250,79 +107,14 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 
-.center-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5%;
-}
-.evaIcon {
-  margin-top:-5%;
-  text-align: center;
-}
-.imgs {
-  width: 50%;
-}
-
-.colaborador {
-
-  margin-top: 4%;
-}
-
-
-
-.alado {
-  display: flex;
-  margin-left: 5%;
-  margin-top: 2%;
-}
-
-.colabora {
-}
-.checks
-{
-  margin-left: 0%;
-}
-.ventana {
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  background-size: 100% 100%;
-  border-radius: 20px;
-  margin-top: 0%;
-  display: flex;
-  padding: 15%;
-  margin-left: 8%;
-}
-
-/* Añadir estilos para dispositivos móviles */
-
-
 .expanded-row {
   font-size: 16px;
   line-height: 2;
   height: 500px;
-  /* Otros estilos según tus preferencias */
-}
-.checks
-{
-  margin-left: 15%;
 }
 
-/* Estilos específicos para pantallas pequeñas (menos de 600px) */
-@media screen and (max-width: 600px) {
-  .table th,
-  .table td {
-    display: none;
-  }
-  .table thead {
-    display: none;
-  }
-  .table tbody {
-    display: block;
-  }
-}
+
+
 
   
   

@@ -1,7 +1,5 @@
-<div class="bgImageContainer2"></div><br/><br/>
-
-<div class="posi bgImageContainer">
-  <div class="container">
+<div class="bgImageContainer2">
+  <div class="container back">
     <br/>
     <div class="colabora">
       <span>
@@ -13,17 +11,22 @@
         {{ getUser() }}
       </span><br/>
     </div><br/>
-    <div class="evaIcon">
-      <span>
-        <img
-          src="assets/svg/evaluation.svg"
-          class="estilo-imagen"
-          style="width: 20px;"
-          alt="Logo_Trinitas"
-        />
-      </span>
-      <span class="estilo-title">Evaluaciones de asesores</span>
-    </div><br/><br/>
+    <div >
+      <div >
+        <span>
+          <img
+            src="assets/svg/users.svg"
+            style="width: 20px;"
+            alt="Logo_Trinitas"
+          />
+          {{ getUser() }}
+        </span>
+      </div>
+      <div class="center-div" >
+        <i class="fa-solid fa-book icon-color-green icon-size"></i>
+        <span class="modern-title" >Evaluacion de asesores </span>
+      </div>
+    </div>
     <div style="margin-top: 0%;">
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <mat-tab label="Colaboradores" > 

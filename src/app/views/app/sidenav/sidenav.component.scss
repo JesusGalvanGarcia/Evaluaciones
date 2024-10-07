@@ -171,12 +171,35 @@
 }
 
 .active-sublevel {
-    // opacity: 1 !important;
-    color: #1ebd60 !important;
+    color: #2C3E50 !important; /* Un tono gris oscuro formal */
     display: flex;
     text-align: center;
     justify-content: center;
+    background-color: #e8e8e8; /* Un fondo claro pero sobrio */
+    border-radius: 4px; /* Bordes suavizados para un toque más elegante */
+    padding: 0.5rem 1rem; /* Espaciado para un diseño más equilibrado */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+
+    &:hover {
+        background-color: #e2dfdf; /* Un tono gris intermedio para resaltar al pasar el mouse */
+        color: #34495E; /* Color ligeramente más oscuro en hover */
+    }
+
+    .sublevel-link-icon {
+        color: #7F8C8D; /* Tono gris medio para los íconos */
+        font-size: 16px;
+        margin-right: 0.5rem;
+        transition: color 0.3s ease;
+    }
+
+    .sublevel-link-text {
+        font-size: 16px;
+        color: #2C3E50; /* Mantiene el tono gris oscuro */
+        transition: color 0.3s ease;
+    }
 }
+
 
 .menu-collapse-icon {
     font-size: 25px;
@@ -200,14 +223,16 @@
     margin-left: 10px;
 
     .sublevel-nav-item {
-        .sublevel-nav-link {
+    .sublevel-nav-link {
             display: flex;
             align-items: center;
-            height: 3rem;
-            color: #898989;
+            padding: 0.5rem 1rem;
+            color: #4a4a4a;
             text-decoration: none;
-            border-radius: 0.625rem;
-            transition: all .3s ease;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
             .sublevel-link-icon {
                 font-size: 4px;

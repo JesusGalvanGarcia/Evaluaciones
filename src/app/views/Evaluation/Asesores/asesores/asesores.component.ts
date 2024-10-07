@@ -29,7 +29,6 @@ import {MatTabsModule} from '@angular/material/tabs';
 
 import { UserTestService } from '@services/Evaluations/Desempeño/userTest.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import {MatTabsModule} from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 @Component({
@@ -48,7 +47,6 @@ import { MatOptionModule } from '@angular/material/core';
     AgGridModule,
     MatIconModule,
     MatTableModule,
-    MatTabsModule,
     MatSelectModule,
     MatOptionModule
   ],

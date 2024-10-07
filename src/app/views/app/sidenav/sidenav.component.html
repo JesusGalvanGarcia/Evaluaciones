@@ -1,3 +1,4 @@
+<div >
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': ''">
   <div class="logo-container">
       <div class="logo-text" @fadeInOut >
@@ -91,6 +92,7 @@
       </ul>
   </div>
 </div>
-<div >
+
+<div class="rute" [ngClass]="collapsed ? 'collapsed' : ''">
   <router-outlet></router-outlet>
 </div>

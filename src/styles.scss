@@ -183,7 +183,7 @@ mat-form-field {
 .bgImageContainer2 {
     position: relative; /* Asegúrate de que sea relativo si necesitas z-index */
     z-index: 1; 
-  
+    min-height: 100vh; 
     width: 100%;
     height:100%;
     background: rgb(46, 117, 182);

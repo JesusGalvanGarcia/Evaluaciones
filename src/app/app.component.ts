@@ -21,7 +21,6 @@ export class AppComponent implements OnInit  {
     this.isLoading=true;
   
     this.getTool();
-  
   }
   constructor(public router: Router,private tools : ToolService) {}
   isLoginPage(): boolean {
@@ -38,7 +37,9 @@ export class AppComponent implements OnInit  {
     if (resetPasswordRouteRegex.test(currentUrl)) {
       return true;
     }
-  
+    if (this.links ==undefined) {
+      this.getTool();
+    } 
     return false;
   }
   go(page:string)
@@ -49,7 +50,7 @@ export class AppComponent implements OnInit  {
   }
   getTool()
   {
-       this.tools.getTools(this.id)
+       this.tools.getTools(localStorage.getItem("user_id"))
        .then((response: any) => {
         this.links=response;
        this.isLoading=false;

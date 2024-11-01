@@ -198,7 +198,7 @@ class UserActionPlanController extends Controller
                                 'created_at' => $module->created_at,
                                 'updated_at' => $module->updated_at,
                                 'deleted_at' => $module->deleted_at,
-                                'average' => ($module->average * 100) / 5,
+                                'average' => ($module->average * 100) / 5.56, //Por el momento dejar el valor en 5.6, cambiar a un promedio que se almacene en la tabla evaluation
                                 'module_name' => $module->module->name,
                                 'question' => Question::select('questions.description')
                                     ->join('user_answers as UA', 'UA.question_id', 'questions.id')

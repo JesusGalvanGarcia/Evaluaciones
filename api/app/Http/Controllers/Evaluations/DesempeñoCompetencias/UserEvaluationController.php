@@ -55,7 +55,7 @@ class UserEvaluationController extends Controller
                 'collaborators_id.*' => 'Integer|NotIn:0|Min:0|Distinct',
                 'evaluations_id' => 'Array|Nullable',
                 'evaluations_id.*' => 'Integer|NotIn:0|Min:0|Distinct',
-           
+
 
             ]);
 
@@ -102,16 +102,19 @@ class UserEvaluationController extends Controller
             )
                 ->join('users as U', 'U.id', 'user_evaluations.user_id')
                 ->join('users as R', 'R.id', 'user_evaluations.responsable_id')
-                ->join('evaluations as E', 'E.id', 'user_evaluations.evaluation_id')
+                ->join('evaluations as E', function ($condition) {
+                    return $condition->on('E.id', 'user_evaluations.evaluation_id')
+                        ->where('E.status_id', 1);
+                })
                 ->join('processes as P', 'P.id', 'user_evaluations.process_id')
                 ->join('status as S', function ($status_join) {
                     return $status_join->on('S.status_id', 'user_evaluations.status_id')
                         ->where('S.table_name', 'user_evaluations');
                 })
-                ->when(!in_array(request('user_id'), $users->toArray()), function ($query)  {
+                ->when(!in_array(request('user_id'), $users->toArray()), function ($query) {
                     return $query->where('user_evaluations.responsable_id', request('user_id'));
                 })
-                
+
 
                 ->when(count($collaborators_id) > 0, function ($when) use ($collaborators_id) {
 
@@ -122,8 +125,8 @@ class UserEvaluationController extends Controller
                     return $when->whereIn('user_evaluations.evaluation_id', $evaluations_id);
                 })
                 ->where("user_evaluations.evaluation_id", "!=", 2)
-                ->whereIn("user_evaluations.process_id",request('process_id'))
-           
+                ->whereIn("user_evaluations.process_id", request('process_id'))
+
                 ->get();
 
             $personal_evaluations = UserEvaluation::select(
@@ -154,7 +157,7 @@ class UserEvaluationController extends Controller
                 ->where("user_evaluations.evaluation_id", "!=", 2)
                 ->where("user_evaluations.status_id", 3)
 
-                ->whereIn("user_evaluations.process_id",request('process_id'))
+                ->whereIn("user_evaluations.process_id", request('process_id'))
 
                 ->get();
 
@@ -180,9 +183,9 @@ class UserEvaluationController extends Controller
             'responsable_id' => 'Required|Integer',
             'evaluation_id' => 'Required|Integer',
             'action_plan_id' => 'Required|Integer',
-            'colaborators'=>'Required|Array', //Colaboradores que seran asignados al responsable
-            'tests_id'=>'Required|Array', //Desempeño y Competencias o si se requiere mas, pues mas,
-            'responsables'=>'Required|Array',//responsable de firmar en este caso es paco, ya automaticamente hace la firma de el colaborador y colaborador-lider solo falta DO
+            'colaborators' => 'Required|Array', //Colaboradores que seran asignados al responsable
+            'tests_id' => 'Required|Array', //Desempeño y Competencias o si se requiere mas, pues mas,
+            'responsables' => 'Required|Array', //responsable de firmar en este caso es paco, ya automaticamente hace la firma de el colaborador y colaborador-lider solo falta DO
         ]);
 
         if ($validator->fails()) {
@@ -193,72 +196,68 @@ class UserEvaluationController extends Controller
                 'code' => $this->prefix . 'X101'
             ], 400);
         }
-        try{
+        try {
             DB::beginTransaction();
-        foreach($request->colaborators as $item)
-        {
-            //crear el user evaluation 
-             $user_evaluation=  UserEvaluation::create([
-                'user_id' => $item,
-                'evaluation_id' => $request->evaluation_id,
-                'process_id' => 12,
-                'status_id' => 1,
-                'created_by' => $request->user_id,
-                'updated_by' => $request->user_id,
-                'responsable_id' => $request->responsable_id,
-                'actual_attempt' => 1
-            ]);
-            //crear user_test es decir desempeño o competencias
-           foreach($request->tests_id as $test)
-           {
-            $user_tests=  UserTest::create([
-                'test_id' => $test,
-                'total_score' => 0,
-                'status_id' => 1,
-                'user_evaluation_id' =>$user_evaluation->id,
-                'attempts' => 1,
-                'strengths' => '',
-                'chance' =>'',
-                'suggestions' => '',
-                'calification' => null,
-                'created_by' => $request->user_id,
-                'updated_by' => $request->user_id,
-            ]);
-           }
-           //crear plan de accion
-           $user_action_plan=UserActionPlan::create([
-            'user_id' => $item,
-            'action_plan_id' => $request->action_plan_id,
-            'status_id' => 1,
-            'responsable_id' => $request->responsable_id,
-            'created_by' => $request->user_id,
-            'updated_by' => $request->user_id,
-           ]);
-           //Añadir como responsables de firmar a los colaboradores que no son DO
-           $action_plan_signature=ActionPlanSignature::create([
-            'user_action_plan_id' => $user_action_plan->id,
-            'status_id' => 1,
-            'responsable_id' => $item,
-           ]);
-           $action_plan_signature=ActionPlanSignature::create([
-            'user_action_plan_id' => $user_action_plan->id,
-            'status_id' => 1,
-            'responsable_id' => $request->responsable_id,
-           ]);
-           //crear firmas
-           foreach($request->responsables as $responsable)
-           {
-            $action_plan_signature=ActionPlanSignature::create([
-                'user_action_plan_id' => $user_action_plan->id,
-                'responsable_id' => $responsable,
-                'status_id' => 1,
-           
-               ]);
-           }
+            foreach ($request->colaborators as $item) {
+                //crear el user evaluation 
+                $user_evaluation =  UserEvaluation::create([
+                    'user_id' => $item,
+                    'evaluation_id' => $request->evaluation_id,
+                    'process_id' => 12,
+                    'status_id' => 1,
+                    'created_by' => $request->user_id,
+                    'updated_by' => $request->user_id,
+                    'responsable_id' => $request->responsable_id,
+                    'actual_attempt' => 1
+                ]);
+                //crear user_test es decir desempeño o competencias
+                foreach ($request->tests_id as $test) {
+                    $user_tests =  UserTest::create([
+                        'test_id' => $test,
+                        'total_score' => 0,
+                        'status_id' => 1,
+                        'user_evaluation_id' => $user_evaluation->id,
+                        'attempts' => 1,
+                        'strengths' => '',
+                        'chance' => '',
+                        'suggestions' => '',
+                        'calification' => null,
+                        'created_by' => $request->user_id,
+                        'updated_by' => $request->user_id,
+                    ]);
+                }
+                //crear plan de accion
+                $user_action_plan = UserActionPlan::create([
+                    'user_id' => $item,
+                    'action_plan_id' => $request->action_plan_id,
+                    'status_id' => 1,
+                    'responsable_id' => $request->responsable_id,
+                    'created_by' => $request->user_id,
+                    'updated_by' => $request->user_id,
+                ]);
+                //Añadir como responsables de firmar a los colaboradores que no son DO
+                $action_plan_signature = ActionPlanSignature::create([
+                    'user_action_plan_id' => $user_action_plan->id,
+                    'status_id' => 1,
+                    'responsable_id' => $item,
+                ]);
+                $action_plan_signature = ActionPlanSignature::create([
+                    'user_action_plan_id' => $user_action_plan->id,
+                    'status_id' => 1,
+                    'responsable_id' => $request->responsable_id,
+                ]);
+                //crear firmas
+                foreach ($request->responsables as $responsable) {
+                    $action_plan_signature = ActionPlanSignature::create([
+                        'user_action_plan_id' => $user_action_plan->id,
+                        'responsable_id' => $responsable,
+                        'status_id' => 1,
 
-        }
-        DB::commit();
-        return response()->json(['message' => 'Informacion insertada de forma correcta'], 201);
+                    ]);
+                }
+            }
+            DB::commit();
+            return response()->json(['message' => 'Informacion insertada de forma correcta'], 201);
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -271,7 +270,7 @@ class UserEvaluationController extends Controller
     }
     public function createQuestions(Request $request)
     {
-        
+
         $validator = Validator::make(request()->all(), [
             'user_id' => 'Required|Integer|NotIn:0|Min:0',
             'modules' => 'Required|Array'
@@ -285,7 +284,7 @@ class UserEvaluationController extends Controller
                 'code' => $this->prefix . 'X101'
             ], 400);
         }
-        try{
+        try {
             $data = $request->validate([
                 'user_id' => 'required|integer',
                 'test_id' => 'required|integer',
@@ -298,38 +297,36 @@ class UserEvaluationController extends Controller
                 'modules.*.questions.*.answers.*.description' => 'required|string',
                 'modules.*.questions.*.answers.*.score' => 'required|integer',
             ]);
-        DB::beginTransaction();
-        foreach ($data['modules'] as $module) {
-            $testModule = TestModule::create([
-                'test_id' => $data['test_id'],
-                'name' => $module['name'],
-                'created_by' => $request->user_id,
-                'updated_by' => $request->user_id
-            ]);
-
-            foreach ($module['questions'] as $question) {
-                $createdQuestion = Question::create([
-                    'module_id' => $testModule->id,
-                    'description' => $question['description'],
-                    'score' => $question['score'],
+            DB::beginTransaction();
+            foreach ($data['modules'] as $module) {
+                $testModule = TestModule::create([
+                    'test_id' => $data['test_id'],
+                    'name' => $module['name'],
                     'created_by' => $request->user_id,
                     'updated_by' => $request->user_id
                 ]);
 
-                foreach ($question['answers'] as $answer) {
-                    Answer::create([
-                        'question_id' => $createdQuestion->id,
-                        'description' => $answer['description'],
-                        'score' => $answer['score'],
+                foreach ($module['questions'] as $question) {
+                    $createdQuestion = Question::create([
+                        'module_id' => $testModule->id,
+                        'description' => $question['description'],
+                        'score' => $question['score'],
                         'created_by' => $request->user_id,
                         'updated_by' => $request->user_id
                     ]);
+
+                    foreach ($question['answers'] as $answer) {
+                        Answer::create([
+                            'question_id' => $createdQuestion->id,
+                            'description' => $answer['description'],
+                            'score' => $answer['score'],
+                            'created_by' => $request->user_id,
+                            'updated_by' => $request->user_id
+                        ]);
+                    }
                 }
             }
-        }
-        return response()->json(['message' => 'Informacion insertada de forma correcta'], 201);
-
-    
+            return response()->json(['message' => 'Informacion insertada de forma correcta'], 201);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
@@ -387,7 +384,7 @@ class UserEvaluationController extends Controller
     public function show(string $id)
     {
         try {
-            
+
             // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
             // if (!$this->checkPermissions(request()->route()->getName())) {
 
@@ -420,14 +417,14 @@ class UserEvaluationController extends Controller
                 ], 400);
             // Se consulta la información de la evaluación del usuario
             $user_evaluation = UserEvaluation::find($id);
-       
-            $userPermission = UserService::checkUserPermisse('Acceso Administracion desempeno',$user);
-            if (!$userPermission&&$user_evaluation->responsable_id!=request('user_id')&&$user_evaluation->user_id!=request('user_id'))
-            return response()->json([
-                'title' => 'Consulta Cancelada',
-                'message' => 'Usuario invalido, no tienes acceso.',
-                'code' => $this->prefix . 'X202'
-            ], 400);
+
+            $userPermission = UserService::checkUserPermisse('Acceso Administracion desempeno', $user);
+            if (!$userPermission && $user_evaluation->responsable_id != request('user_id') && $user_evaluation->user_id != request('user_id'))
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X202'
+                ], 400);
             // Se consultan las pruebas de la evaluación asignadas.
             $user_tests = UserTest::select(
                 'user_tests.id',
@@ -444,24 +441,24 @@ class UserEvaluationController extends Controller
                 DB::raw("C.description as clasification_description"),
                 DB::raw("1 as type")
             )
-            ->join('user_evaluations as UE', function ($join) use ($id) {
-                $join->on('UE.id', 'user_tests.user_evaluation_id')
-                    ->where('UE.id', $id);
-            })
-            ->join('tests as T', 'T.id', 'user_tests.test_id')
-            ->leftJoin('status as S', function ($join) {
-                $join->on('S.status_id', 'user_tests.status_id')
-                    ->where('S.table_name', 'user_tests');
-            })
-            ->leftJoin('clasification as C', function ($join) {
-                $join->on('user_tests.test_id', 'C.test_id')
-                    ->on('user_tests.calification', '>=', 'C.start_range')
-                    ->on('user_tests.calification', '<=', 'C.end_range');
-            })
-              ->orderby('order')
-            ->get();
+                ->join('user_evaluations as UE', function ($join) use ($id) {
+                    $join->on('UE.id', 'user_tests.user_evaluation_id')
+                        ->where('UE.id', $id);
+                })
+                ->join('tests as T', 'T.id', 'user_tests.test_id')
+                ->leftJoin('status as S', function ($join) {
+                    $join->on('S.status_id', 'user_tests.status_id')
+                        ->where('S.table_name', 'user_tests');
+                })
+                ->leftJoin('clasification as C', function ($join) {
+                    $join->on('user_tests.test_id', 'C.test_id')
+                        ->on('user_tests.calification', '>=', 'C.start_range')
+                        ->on('user_tests.calification', '<=', 'C.end_range');
+                })
+                ->orderby('order')
+                ->get();
 
-        
+
             // Evalua si la evaluación tiene relacionado un plan de acción
             $action_plan = ActionPlan::where('evaluation_id', $user_evaluation?->evaluation_id)->first();
 

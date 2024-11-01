@@ -422,7 +422,7 @@ class UserTestController extends Controller
                 'user_answer_id' => 'Nullable|Integer|NotIn:0|Min:0',
                 'question_id' => 'Required|Integer|NotIn:0|Min:0',
                 'answer_id' => 'Required|Integer|NotIn:0|Min:0',
-                'score' => 'Required|Integer',
+                'score' => 'Required|Numeric',
                 'its_over' => 'Required|In:si,no',
             ]);
 
@@ -484,7 +484,7 @@ class UserTestController extends Controller
                     ]);
                 }
 
-                $total_score -= (int)$last_user_answer->answer->score;
+                $total_score -= (float)$last_user_answer->answer->score;
             } else {
 
                 // Si no se tenia respuesta guardada de la pregunta se crea
@@ -495,7 +495,7 @@ class UserTestController extends Controller
                 ]);
             }
 
-            $total_score += (int)$request->score;
+            $total_score += (float)$request->score;
 
             $user_test->update([
                 'status_id' => $request->its_over == 'si' ? 3 : 2,
@@ -563,7 +563,7 @@ class UserTestController extends Controller
                 }
                 //Realizamos regla de 3 al finalizar la pregunta para saber la ponderación
                 $test = Test::find($user_test->test_id);
-                $new_score = round(($user_test->total_score * 100) / $test->max_score);
+                $new_score = round(($user_test->total_score * 100) / $test->max_score,0);
                 $user_test->update([
                     'calification' => $new_score,
                 ]);

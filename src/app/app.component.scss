@@ -4,6 +4,16 @@
     margin: 0;
     display: flex;
 }
+/* Estilos globales o en el archivo SCSS/CSS correspondiente */
+.main-conten{
+  margin-top: 2%; /* Ajusta el valor según la altura de tu navbar */
+}
+@media (max-width: 767.98px) {
+  .main-conten{
+    margin-top: 26%; /* Ajusta el valor según la altura de tu navbar */
+  }
+}
+
 /* Opcional: Para ajustar el dropdown dentro del menú */
 .dropdown-content {
     display: none;

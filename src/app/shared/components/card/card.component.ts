@@ -8,12 +8,16 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { CommonModule } from '@angular/common';
+
+
 @Component({
   selector: 'app-card',
   standalone: true,
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
   imports: [
+    CommonModule,
     MatCardModule,
     MatDividerModule,
     MatProgressBarModule,

@@ -17,6 +17,6 @@
         <mat-card-title class="title">{{ title }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <mat-card-subtitle class="custom-subtitle">{{ subtitle }} / 100</mat-card-subtitle>
+        <mat-card-subtitle class="custom-subtitle">{{ subtitle | number : '1.2-2' }} / 100</mat-card-subtitle>
     </mat-card-content>
 </mat-card>

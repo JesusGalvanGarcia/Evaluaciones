@@ -1087,15 +1087,7 @@ class Evaluation360Controller extends Controller
                 ->when(count($evaluations_id) > 0, function ($when) use ($evaluations_id) {
                     return $when->whereIn('user_evaluations.evaluation_id', $evaluations_id);
                 })
-                ->where(function ($query) use ($request) {
-                    $query->where([
-                        ['user_evaluations.process_id', 7],
-                        ['user_evaluations.user_id', $request->user_id],
-                    ])->orWhere(function ($query) {
-                        $query->whereIn('user_evaluations.process_id', [10, 11]);
-                    });
-                })
-                ->where('user_evaluations.user_id', $request->user_id)
+
                 ->get();
 
 

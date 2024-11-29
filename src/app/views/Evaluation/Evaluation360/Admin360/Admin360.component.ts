@@ -310,9 +310,9 @@ export class Admin360Component implements OnInit {
       if (actionEvent.action == GridActions.Seen )  //verificar si no han finalizado los intentos
       {
         let data = {
-          user_id: Number(actionEvent.data.collaborator_id),
-          collaborators_id: [],
-          evaluations_id: []
+          user_id: Number(localStorage.getItem("user_id")),
+          collaborators_id: [Number(actionEvent.data.collaborator_id)],
+          evaluations_id: [Number(actionEvent.data.evaluation_id)]
         };
         this.start=false;
         this.detail=true; 

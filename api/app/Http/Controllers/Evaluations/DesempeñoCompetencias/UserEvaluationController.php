@@ -203,8 +203,9 @@ class UserEvaluationController extends Controller
                 $user_evaluation =  UserEvaluation::create([
                     'user_id' => $item,
                     'evaluation_id' => $request->evaluation_id,
-                    'process_id' => 12,
+                    'process_id' => $request->process_id,
                     'status_id' => 1,
+                    "type_evaluator_id"=>$request->type,
                     'created_by' => $request->user_id,
                     'updated_by' => $request->user_id,
                     'responsable_id' => $request->responsable_id,
@@ -270,6 +271,7 @@ class UserEvaluationController extends Controller
     }
     public function createQuestions(Request $request)
     {
+        ini_set('max_execution_time', 600); // Increase to 120 seconds
 
         $validator = Validator::make(request()->all(), [
             'user_id' => 'Required|Integer|NotIn:0|Min:0',
@@ -298,6 +300,7 @@ class UserEvaluationController extends Controller
                 'modules.*.questions.*.answers.*.score' => 'required|integer',
             ]);
             DB::beginTransaction();
+         
             foreach ($data['modules'] as $module) {
                 $testModule = TestModule::create([
                     'test_id' => $data['test_id'],
@@ -326,6 +329,7 @@ class UserEvaluationController extends Controller
                     }
                 }
             }
+            DB::commit();
             return response()->json(['message' => 'Informacion insertada de forma correcta'], 201);
         } catch (Exception $e) {
             DB::rollBack();

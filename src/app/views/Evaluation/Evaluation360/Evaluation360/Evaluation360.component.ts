@@ -50,7 +50,7 @@ export class Evaluation360Component implements OnInit {
     chance:'',
     strengths:''
   };
-  Preview:Suggetions[]=[];
+  Preview:Suggetions;
   modulesPreview:ModulesUser[]=[];
   showSuggestions:boolean;
 
@@ -329,7 +329,7 @@ export class Evaluation360Component implements OnInit {
         .then((response: any) => {
           this.modulesPreview=response.module;
           this.general=response.general;
-          this.Preview=response.questions;
+          this.Preview=response.questions[0];
           this.loading=false;
           this.isLoading=false;
      

@@ -270,7 +270,7 @@ protected onActionEventPlans(actionEvent: { action: string, data: any }) {
      localStorage.setItem("score", detalle[0].total_score==null?"0":detalle[0].total_score.toString());
     switch(process)
     {
-      case "Evaluaciones 360":
+      case "Evaluación 360 lider":
         //  this.router.navigate(['exam/asesors/'+id+"/1"]);
           if(status=="Terminado")
           {
@@ -280,6 +280,16 @@ protected onActionEventPlans(actionEvent: { action: string, data: any }) {
             this.router.navigate(['evaluation360/'+id]);
           }
         break
+        case "Evaluación 360 Colaborador":
+          //  this.router.navigate(['exam/asesors/'+id+"/1"]);
+            if(status=="Terminado")
+            {
+              this.router.navigate(['/prueba360/'+id]);
+            }
+            else{
+              this.router.navigate(['evaluation360/'+id]);
+            }
+          break
         case "Feedback y Plan de Acción":
  
           if(detalle[0].status=="Terminado")

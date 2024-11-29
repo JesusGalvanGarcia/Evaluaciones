@@ -164,8 +164,7 @@ class Evaluation360Controller extends Controller
             $total_score += (int)$request->score;
 
             $user_test->update([
-                'status_id' => $request->its_over == 'si' ? 3 : 2,
-                'finish_date' => $request->its_over == 'si' ? Carbon::now()->format('Y-m-d') : null,
+    
                 'total_score' => $total_score,
                 'updated_by' => $request->user_id
             ]);
@@ -337,7 +336,9 @@ class Evaluation360Controller extends Controller
                 'suggestions' => $request->suggestions,
                 'strengths' => $request->strengths,
                 'chance' => $request->chance,
-                'status_id' => 3
+                'status_id' => 3,
+                'finish_date' => $request->its_over == 'si' ? Carbon::now()->format('Y-m-d') : null,
+
             ]);
 
             $user_evaluation  = UserTest::find($request->user_test_id)->user_evaluation;
@@ -1631,7 +1632,6 @@ class Evaluation360Controller extends Controller
             ], 400);*/
             $user_collaborator=UserCollaborator::where('collaborator_id',request('user_id'))->first();
             //return $user_collaborator;
-            $evaluation = Evaluation::where('id', $request->evaluation_id)->first();
             $users = User::select(DB::raw("CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name"), 'email')
                 ->where('id', $request->user_id)
                 ->first();
@@ -1665,7 +1665,8 @@ class Evaluation360Controller extends Controller
                     'user_test_modules.module_id',
                     'user_test_modules.average',
                     'ET.id as evaluator_type_id',
-                    'ET.description as evaluator_name'
+                    'ET.description as evaluator_name',
+                    'UT.test_id'
                 )
                     ->join('user_tests as UT', 'UT.id', 'user_test_modules.user_test_id')
                     ->join('user_evaluations as UE', 'UE.id', 'UT.user_evaluation_id')
@@ -1678,7 +1679,7 @@ class Evaluation360Controller extends Controller
                         ['UE.evaluation_id', $request->evaluation_id],
                         ['UE.user_id', $request->user_id]
                     ])
-                    ->groupBy('ET.description','UT.strengths','UT.chance','UT.suggestions','tm.name', 'user_test_modules.id', 'user_test_modules.user_test_id', 'user_test_modules.module_id', 'user_test_modules.average', 'ET.id')
+                    ->groupBy('ET.description','UT.strengths','UT.chance','UT.suggestions','tm.name', 'user_test_modules.id', 'user_test_modules.user_test_id', 'user_test_modules.module_id', 'user_test_modules.average', 'ET.id','UT.test_id')
                     ->get();
                     $evaluatorTypes = $evaluationsAll->pluck('evaluator_name', 'evaluator_type_id')->unique()->toArray(); // obtenemos los tipos de evuador que existen para esta persona y su id
                     uasort($evaluatorTypes, function($a, $b) {
@@ -1695,7 +1696,7 @@ class Evaluation360Controller extends Controller
                     $AverageGeneral=0;
                     $AverageAuto=0;
                     $question_averages=[];
-                    $modules = TestModule::where('test_id', 134)->get();
+                    $modules = TestModule::where('test_id',$evaluationsAll[0]->test_id)->get();
                     $questionPromedio=0;
                     $questionAuto=0;
                     foreach ($evaluatorTypes as $evaluatorType => $evaluatorTypeName) {
@@ -1736,8 +1737,8 @@ class Evaluation360Controller extends Controller
                         ->whereIn('user_test_id', $evaluations->pluck('user_test_id'))
                         ->whereIn('user_answers.question_id', $questions->pluck('id'))
                         ->get();
-                       
                             foreach ($NA as $answer) {
+                            
                                 // Obtener user_answers con NA y sin NA
                                 $questionText = $questions->where('id', $answer->question_id)->first()->description;
                                 $countNA= $NA->where('question_id', $answer->question_id)->where('description','NA')->all();
@@ -1780,7 +1781,6 @@ class Evaluation360Controller extends Controller
             foreach ($averagesByType as $moduleName => $evaluatorData) {
               
                 foreach ($evaluatorData as $evaluatorTypeName => $average) {
-                   
                     foreach ($question_averages[$moduleName] as $questionText => &$evaluatorAverages) {
                         // Si esta pregunta aún no tiene un arreglo para almacenar los promedios, inicialízalo
                         if (!isset($evaluatorAverages['Promedio'])) {

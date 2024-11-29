@@ -213,20 +213,20 @@
 
                 
                   </div>
-                  <form [formGroup]="miFormulario">
+             
                     <div *ngIf="modulesPreview[0].id" class="preview-container">
                       <div>
                         <span class="section-title">Fortalezas</span>
-                        <span class="section-content" *ngIf="miFormulario.get('strengths')?.valid">{{ miFormulario.get('strengths')?.value }}</span><br/><br/>
+                        <span class="section-content" >{{ Preview.strengths}}</span><br/><br/>
                   
                         <span class="section-title">Áreas de Oportunidad</span>
-                        <span class="section-content" *ngIf="miFormulario.get('chance')?.valid">{{ miFormulario.get('chance')?.value }}</span><br/><br/>
+                        <span class="section-content" >{{ Preview.chance }}</span><br/><br/>
                   
                         <span class="section-title">Sugerencias</span>
-                        <span class="section-content" *ngIf="miFormulario.get('suggestions')?.valid">{{ miFormulario.get('suggestions')?.value }}</span><br/><br/>
+                        <span class="section-content" >{{ Preview.suggestions }}</span><br/><br/>
                       </div>
                     </div>
-                  </form>
+               
                             
               
                 </div>

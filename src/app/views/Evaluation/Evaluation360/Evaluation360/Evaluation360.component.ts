@@ -27,6 +27,8 @@ import { AverageUser, UserAnswer ,Suggetions,ModulesUser} from '@models/testDeta
 export class Evaluation360Component implements OnInit {
   showQuestion: boolean = true;
    isLoading: boolean = true;
+   last = false;
+
   loading: boolean = false;
   noteUser: AverageUser;
   showNote:boolean=false;
@@ -157,6 +159,7 @@ export class Evaluation360Component implements OnInit {
       // Estás en la primera pregunta del primer módulo, vuelve a mostrar el módulo
       this.showModule = true;
     }
+    this.last = false;
 
     this.showQuestion = false;
     setTimeout(() => {
@@ -224,6 +227,12 @@ export class Evaluation360Component implements OnInit {
       this.isLoading=false;
       this.showModule=true;
   
+    }
+    if (
+      this.indexQuestion + 1 == this.sizeQuestions &&
+      this.index === this.sizeTotal - 1
+    ) {
+      this.last = true;
     }
     this.showQuestion = false;
     setTimeout(() => {

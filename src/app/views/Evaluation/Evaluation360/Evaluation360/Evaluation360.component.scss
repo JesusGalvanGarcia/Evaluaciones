@@ -511,7 +511,7 @@ margin-left: 20%;
 .cards
 {
   width: 50%;
-  margin-top: -2%;
+  margin-top: -1%;
   margin-left: 25%;
   text-align: center;
 }
@@ -874,7 +874,7 @@ background-color: #f0f0f0;
   text-align: center;
 }
 .tamanoMovil{
-margin-left: 15%;
+margin-left: 8%;
 width: 100%;
 }
 /* Estilos para dispositivos móviles */
@@ -882,7 +882,8 @@ width: 100%;
   .final
   {
     text-align: center;
-    gap:2%
+    gap:2%;
+    display: block;
   }
   .cardsEnd
 {

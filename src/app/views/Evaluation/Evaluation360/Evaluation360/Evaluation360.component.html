@@ -3,7 +3,7 @@
   <main>
     <!-- Contenedor -->
     <div class="sub-contenedor-login">
-      <div *ngIf="start" class="contenedor-padre">
+      <div *ngIf="start" class="contenedor-padre">   <br />   <br />
         <mat-card style="width: 60% !important;">
           <div class="row justify-content-center">
             <app-loading *ngIf="isLoading==true"></app-loading>
@@ -41,7 +41,7 @@
       </div>
       <div *ngIf="!start" class="contenedor-padre">
         <div>
-        <div *ngIf="showModule">
+        <div *ngIf="showModule"><br />   <br />
           <mat-card class="card-body cards" >
 
               <div class="row justify-content-center" style="padding-bottom: 50px; ">
@@ -248,7 +248,7 @@
           </div>
         </div>
         <div *ngIf="!showModule&&end==false&&showSuggestions==false">
-          <div>
+          <div><br />   <br />
             <mat-card class="card-body cards" >
               <!-- Imagen de Login -->
               <div class="row justify-content-center" style="padding-bottom: 50px; ">

@@ -52,12 +52,7 @@ export class Personal360Component implements OnInit {
  
   ngOnInit(): void {
     var user=localStorage.getItem("email");
-    if(user=="")
-    {
-      this.router.navigate(['/login']);
-      this.message.error("Tienes que iniciar sesion");
 
-    }
     this.name=localStorage.getItem("collaborator_name");
     this.rol=localStorage.getItem("admin");
     this.getData();

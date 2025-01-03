@@ -22,13 +22,16 @@ import { GridModule } from '@sharedComponents/grid/grid.module';
 import { GridActions } from '@utils/grid-action';
 import { ColDef } from 'ag-grid-community';
 import {MatTabsModule} from '@angular/material/tabs';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 @Component({
   selector: 'app-index360',
   standalone:true,
   imports: [
     CommonModule,
+    MatOptionModule,
     MatTooltipModule,
+    MatSelectModule,
     GridModule,
     MatInputModule, 
     LoadingComponent,
@@ -54,11 +57,13 @@ export class Index360Component implements OnInit {
   mostrar:boolean=false;
   indexPos:number;
   showIframe: boolean = false;
+  selectedOptions: string[] = [];
+  options: string[] = ['Pendiente', 'Proceso', 'Terminado', 'Mis evaluaciones','Todas'];
 
   PersonalList:CollaboratorEvaluation[];
   protected isLoading: boolean = false;
   
-  displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name','responsable_name', 'actual_process','start_date', 'evaluator_type', 'status',"action"];
+  displayedColumns: string[] = [ 'evaluation_name', 'collaborator_name', 'actual_process', 'evaluator_type', 'status',"action"];
   dataSource: MatTableDataSource<TestModel> | any = [];
   constructor(private http: HttpClient,
     private userEvaluationService: UserEvaluationService,
@@ -264,7 +269,23 @@ protected onActionEventPlans(actionEvent: { action: string, data: any }) {
       return user;
     }
 
-  
+    filterData(event: any) {
+      this.dataSource=new MatTableDataSource(this.ListColaborator);
+      switch(event)
+      {
+        case 'Todas':
+          this.dataSource.filter ='';
+          break;
+        case 'Mis evaluaciones':
+          this.dataSource.filter ='';
+          // Filtrar los datos para mostrar solo las evaluaciones del usuario actual
+          this.dataSource = new MatTableDataSource(this.ListColaborator.filter((item: any) => item.responsable_id === localStorage.getItem("user_id")));
+          break;
+        default:
+        this.dataSource.filter =event;
+      }
+    
+    }
   sendPageEvaluation(process:string,id:string,status:string,calificacion:number,detalle:any)
   {   
      localStorage.setItem("score", detalle[0].total_score==null?"0":detalle[0].total_score.toString());

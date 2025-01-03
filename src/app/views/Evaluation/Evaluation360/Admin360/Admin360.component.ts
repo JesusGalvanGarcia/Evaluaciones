@@ -55,8 +55,8 @@ export class Admin360Component implements OnInit {
         const component = { component: 'gridActionButton',
         params: { 
           action:  GridActions.Acept,
-          icon: 'fa-solid fa-paper-plane',
-          title:'Aprobar reporte'
+          icon: 'fa-solid fa-envelope-circle-check',
+          title:'Enviar reporte'
         }
       };
       return component;

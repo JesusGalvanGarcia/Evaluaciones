@@ -990,6 +990,10 @@ class Evaluation360Controller extends Controller
                     'status' => true
                 ]
             );
+            
+            Test360Service::sendReport(
+                $user_finish
+            );
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Examenes consultados correctamente',

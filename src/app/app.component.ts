@@ -28,10 +28,9 @@ export class AppComponent implements OnInit  {
     const currentUrl = this.router.url;
   
     // Verificar rutas exactas
-    if (loginRoutes.includes(currentUrl)) {
+    if (loginRoutes.some(route => currentUrl.includes(route))) {
       return true;
     }
-  
     // Verificar ruta con parámetros dinámicos
     const resetPasswordRouteRegex = /^\/resetPassword\/[^/]+$/;
     if (resetPasswordRouteRegex.test(currentUrl)) {

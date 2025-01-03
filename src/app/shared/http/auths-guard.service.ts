@@ -1,26 +1,21 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router,RouterStateSnapshot } from '@angular/router';
 //mport { AuthService } from './auth.service';
-import { GeneralConstant } from '@utils/general-constant';
-import { MensajeService } from '@http/mensaje.service';
-import {ToolService} from '@services/tools.service';
+import { MensajeService } from './/mensaje.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate {
+export class AuthSecondGuardService implements CanActivate {
 
-  constructor(public tools :ToolService,public router: Router,public message:MensajeService) { }
+  constructor(public router: Router,public message:MensajeService) { }
 
   public async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean>{
-    const requiredPermission = route.data['permission'];
  try{
-  const hasAccess = await this.tools.hasAccess(Number(localStorage.getItem("user_id")),requiredPermission);
-  if(!hasAccess)
+  if(localStorage.getItem("user_id")=="")
   {
     this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
 
     this.message.warning("No tienes acceso a esta pagina");
-    this.router.navigate(['home']);
 
     return false;
   }

@@ -35,6 +35,8 @@ import { UserExamComponent } from './views/PLD/user-exam/user-exam.component';
 import { LoginComponent } from './views/app/login/login.component';
 // Auth service
 import { AuthGuardService } from '@http/auth-guard.service';
+import { AuthSecondGuardService } from '@http/auths-guard.service'
+
 import {ActionPlanAsesorComponent} from './views/Evaluation/Asesores/action-plan/action-plan.component';
 const routes: Routes = [
     // App routes
@@ -62,7 +64,7 @@ const routes: Routes = [
     { path: 'users360/:idEvaluation', component: UsersComponent, canActivate: [AuthGuardService], data: { permission: 'Permiso para asignar clientes internos 360' } },
     { path: 'admin360', component: Admin360Component, canActivate: [AuthGuardService], data: { permission: 'Acceso Administracion 360' } },
     { path: 'evaluation360/:id', component: Evaluation360Component, data: { permission: 'Permiso para consultar la evaluacion 360' } },
-    { path: 'personal360/:idEvaluation/:idUser', component: Personal360Component, data: { permission: 'Permiso para ver mi reporte 360' } },
+    { path: 'personal360/:idEvaluation/:idUser', component: Personal360Component, canActivate: [AuthSecondGuardService], data: { permission: 'Permiso para ver mi reporte 360' } },
 
     // Routes PLD
     { path: 'exam/:user_test_id', component: UserExamComponent, data: { routeName: 'Consultar Examen del Usuario' } },

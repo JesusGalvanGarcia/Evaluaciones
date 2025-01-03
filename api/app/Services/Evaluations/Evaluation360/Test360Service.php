@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\UserActionPlan;
 use App\Mail\Evaluations\Evaluation360\signatures360 as Signatures360;
 use App\Mail\Evaluations\Evaluation360\evaluation360 as evaluation360;
+use App\Mail\Evaluations\Evaluation360\sendReport as sendReport;
 
 use App\Models\UserCollaborator;
 
@@ -42,6 +43,15 @@ class Test360Service extends ServiceProvider
 
       
         $mail = Mail::to($responsable_user?->email)->cc(['francisco.delarosa@trinitas.mx'])->send(new evaluation360($evaluation_data, $evaluated_user, $responsable_user, $process));
+       
+        
+    }
+    static function sendReport($evaluation_data)
+    {  
+
+        // Se obtiene el nombre de
+        $evaluated_user = User::find($evaluation_data->user_id);      
+        $mail = Mail::to( $evaluated_user?->email)->cc(['francisco.delarosa@trinitas.mx'])->send(new sendReport($evaluated_user->name, $evaluated_user->id,$evaluation_data->evaluation_id));
        
         
     }

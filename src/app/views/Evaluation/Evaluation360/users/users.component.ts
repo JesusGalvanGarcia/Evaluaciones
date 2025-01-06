@@ -90,7 +90,7 @@ export class UsersComponent implements OnInit {
     }
     let data = {
       user_id: Number(localStorage.getItem("user_id")),
-
+      evaluation_id:this.evaluation_id
     };
     this.getUsers(data);
     this.getAllUsers(data);

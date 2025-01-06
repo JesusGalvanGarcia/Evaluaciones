@@ -15,7 +15,9 @@
           </div><br>
      
           <span class="estilo-title">{{actualUser}}</span><br/>
-          <span style="text-align: center;font-weight: bold;">*Utiliza  este apartado para asignar clientes internos y recuerda que al  colaborador que selecciones se le asignaran los clientes internos elegidos</span>
+          <span style="text-align: center;font-weight: bold;">*Utiliza  este apartado para asignar clientes internos y recuerda que al  colaborador <span *ngIf="actualUser!='Asignar Clientes Internos'">
+           {{actualUser}}
+          </span>se le asignaran los clientes internos elegidos</span>
         </div>
     
  

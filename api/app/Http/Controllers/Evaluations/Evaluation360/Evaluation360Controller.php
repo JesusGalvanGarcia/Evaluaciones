@@ -193,7 +193,7 @@ class Evaluation360Controller extends Controller
             //Traer los datos del index de examenes
             // Se consultan las pruebas de la evaluación asignadas.
             $users = User::selectRaw("id, CONCAT(name, ' ', father_last_name, ' ', mother_last_name) as collaborator_name")
-                ->where('status_id', 1)
+                ->where('deleted_at', null)
                 ->get();
 
 
@@ -218,18 +218,29 @@ class Evaluation360Controller extends Controller
         try {
             //Traer los datos del index de examenes
             // Se consultan las pruebas de la evaluación asignadas.
-            $users = User::select('users.id', DB::raw("CONCAT(users.name, ' ', users.father_last_name, ' ', users.mother_last_name) as collaborator_name"))
-                ->join('Finish_evaluations', 'Finish_evaluations.user_id', '=', 'users.id')
-                ->groupBy('users.id', 'users.name', 'users.father_last_name', 'users.mother_last_name')
-                ->get();
+            $validator = Validator::make(request()->all(), [
+                'evaluation_id' => 'Required|Integer|NotIn:0|Min:0',
+            ]);
 
+            if ($validator->fails()) {
 
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X601'
+                ], 400);
+            }
+            $user=UserEvaluation::select('users.id', DB::raw("CONCAT(users.name, ' ', users.father_last_name, ' ', users.mother_last_name) as collaborator_name"))
+            ->join('users','users.id','=','user_evaluations.user_id')
+            ->where('user_evaluations.evaluation_id',$request->evaluation_id)
+            ->distinct()
+            ->get();
 
             return response()->json([
                 'title' => 'Proceso terminado',
                 'message' => 'Examenes consultados correctamente',
 
-                'evaluations' => $users
+                'evaluations' => $user
             ]);
         } catch (Exception $e) {
             DB::rollBack();

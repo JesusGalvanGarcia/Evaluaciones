@@ -27,7 +27,7 @@ export class Admin360Component implements OnInit {
   evaluationData: any;
   UsersData: any;
   UsersPersonalData: any;
-
+  all_data:any;
   isLoading: boolean = true;
   start:boolean=false;
   detail:boolean=false;
@@ -79,6 +79,26 @@ export class Admin360Component implements OnInit {
     },
     GridActions.DEFAULT_COLUMN
   )
+  public enableEvaluation: ColDef = Object.assign(
+    {
+      cellRendererSelector: (params: any) => {
+        if (params.data && params.data.status === 'Terminado') {
+          return {
+            component: 'gridActionButton',
+            params: {
+              action: GridActions.Seen,
+              icon: 'fa-solid fa-user-check',
+              title: 'Habilitar evaluación'
+            }
+          };
+        }
+        // Retornar `undefined` si no se cumple la condición para no renderizar nada
+        return undefined;
+      }
+    },
+    GridActions.DEFAULT_COLUMN
+  );
+  
   public goClients:ColDef = Object.assign(
     {
       cellRendererSelector: (params: any) => {
@@ -133,6 +153,7 @@ export class Admin360Component implements OnInit {
   { headerName: 'Evaluación', field: 'evaluation_name',  },
   { headerName: 'Estatus', field: 'status',  },
   { headerName: 'Evaluador', field: 'evaluator_type',  },
+  this.enableEvaluation
 ]
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -226,6 +247,23 @@ export class Admin360Component implements OnInit {
         // Handle errors here
       });
   }
+  enableEvaluations(data: any) {
+    this.isLoading=true;
+    
+    this.evaluations.enableEvaluation(data)  //Cargar examen
+      .then((response: any) => {    
+       this.message.success(response.message);
+       this.isLoading=false;
+       this.getUserPersonal(this.all_data);
+      })
+      .catch((error: any) => {
+        this.isLoading=false;
+
+        console.error('Error in the request:', error);
+        this.message.error(error.message+" "+error.code);
+        // Handle errors here
+      });
+  }
   back()
   {
     this.start=false;
@@ -292,6 +330,14 @@ export class Admin360Component implements OnInit {
       // Handle errors here
     });
   }
+  protected onActionEnable(actionEvent: { action: string, data: any }) {
+    let data = {
+      user_evaluation: actionEvent.data.user_evaluation_id,
+      user_id:Number(localStorage.getItem("user_id")),
+      evaluation_id:this.evaluationNumber
+    };
+    this.enableEvaluations(data);
+}
   protected onActionEventUser(actionEvent: { action: string, data: any }) {
 
       if (actionEvent.action == GridActions.Report )  //verificar si no han finalizado los intentos
@@ -314,6 +360,7 @@ export class Admin360Component implements OnInit {
           collaborators_id: [Number(actionEvent.data.collaborator_id)],
           evaluations_id: [Number(actionEvent.data.evaluation_id)]
         };
+        this.all_data=data;
         this.start=false;
         this.detail=true; 
         this.getUserPersonal(data);

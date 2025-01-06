@@ -577,7 +577,54 @@ class Evaluation360Controller extends Controller
             ], 500);
         }
     }
+    public function enableEvaluation(Request $request)
+    {
+        try{
+        app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            
+        if (!$this->checkPermissions(request()->route()->getName())) {
 
+            return response()->json([
+                'title' => 'Proceso cancelado',
+                'message' => 'No tienes permiso para hacer esto.',
+                'code' =>  'P402'
+            ], 400);
+        }
+        $validator = Validator::make(request()->all(), [
+            'user_id' => 'Required|Integer|NotIn:0|Min:0',
+            'evaluation_id.*' => 'Integer|NotIn:0|Min:0|Distinct',
+            'user_evaluation.*' => 'Integer|NotIn:0|Min:0|Distinct',
+        ]);
+        if ($validator->fails()) {
+
+            return response()->json([
+                'title' => 'Datos Faltantes',
+                'message' => $validator->messages()->first(),
+                'code' => $this->prefix . 'X601'
+            ], 400);
+        }
+        DB::beginTransaction();
+
+        $user_evaluation= UserEvaluation::where("id",$request->user_evaluation)->first();
+        $user_evaluation->update(['status_id' => 2,'process_id'=>7]);
+
+        $user_test=UserTest::where("user_evaluation_id", $request->user_evaluation)->first();
+        $user_test->update(['status_id' => 2]);
+        DB::commit();
+        return response()->json([
+            'title' => 'Proceso terminado',
+            'message' => 'Se ha actualizado el estado de la evaluacion de forma exitosa',
+ 
+        ]);
+    } catch (Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'title' => 'Ocurrio un error en el servidor',
+            'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+            'code' => $this->prefix . 'X699'
+        ], 500);
+    }
+    }
 
     public function assign360(Request $request)
     {

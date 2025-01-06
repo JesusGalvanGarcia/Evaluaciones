@@ -95,6 +95,20 @@ export class Evaluation360Service {
         throw data;
       });
   }
+  enableEvaluation(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl + this.controllerUrl+"/enableEvaluation", data
+    )
+      .then(({ data }: any) => {
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+
+        throw data;
+      });
+  }
   Get360(data: any): Promise<any> {
 
     return axios.get(environment.apiUrl+this.controllerUrl, {

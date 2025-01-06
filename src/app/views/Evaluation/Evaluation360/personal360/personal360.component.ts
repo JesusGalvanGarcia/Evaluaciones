@@ -302,7 +302,7 @@ average(aspect: any, question: any,autoevaluacion:any): any {
       // Check if the main content element exists
       if (dataElement) {
         // Get the total height of the content
-        const totalHeight = 1600
+        const totalHeight = 2000
     
         // Set the canvas height to the total height
         const canvas = await html2canvas(dataElement, { height: totalHeight });
@@ -313,17 +313,14 @@ average(aspect: any, question: any,autoevaluacion:any): any {
         const numPages =pages;
     
         // Create a new jsPDF instance
-
-    
+        let starts=[208,2000,3900,5700,6700,7000]
         // Loop through each page and add it to the PDF
         for (let page = 0; page < numPages; page++) {
-          const startY = page * canvas.height;
-    
           // Capture each page individually
           const pageCanvas = await html2canvas(dataElement, {
             height: totalHeight,
             windowHeight: canvas.height,
-            y: startY,
+            y: starts[page],
           });
     
           // Add the image of each page to the PDF
@@ -345,7 +342,7 @@ average(aspect: any, question: any,autoevaluacion:any): any {
   
     const convertAllElements = async () => {
       try{
-        await convertElementToTablePDF('reporte',6);
+        await convertElementToTablePDF('reporte',5);
 
       // Puedes agregar más llamadas a convertElementToPDF para otros elementos
   

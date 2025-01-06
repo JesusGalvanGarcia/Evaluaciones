@@ -46,6 +46,8 @@ Route::get('/evaluation360/showTest/{id}', [Evaluation360Controller::class, 'sho
 Route::post('/evaluation360/changeStatus', [Evaluation360Controller::class, 'changeStatus'])->name('Permiso para aprobar reportes 360');
 Route::post('/evaluation360/getFinish360', [Evaluation360Controller::class, 'getFinish360'])->name('Permiso para ver mi reporte 360');
 Route::post('/evaluation360/get360', [Evaluation360Controller::class, 'get360'])->name('Consultar evaluacinoes 360');
+Route::post('/evaluation360/enableEvaluation', [Evaluation360Controller::class, 'enableEvaluation'])->name('Permiso para aprobar reportes 360');
+
 Route::post('/evaluation360/Users', [Evaluation360Controller::class, 'Users'])->name('Consultar finish evaluation  360');
 Route::post('/evaluation360/Users360', [Evaluation360Controller::class, 'Users360'])->name('Obtener usuarios 360');
 Route::post('/evaluation360/assign', [Evaluation360Controller::class, 'assign'])->name('Permiso para asignar clientes internos 360');

@@ -2,7 +2,7 @@
 <div class="containerz" >
   <div class="container">
  
-    
+    <br/><br/>
       <mat-card class="card-body"><app-loading *ngIf="isLoading"></app-loading>
         <div class="evaIcon">
           <div class="col-md-12 center-div" >
@@ -48,7 +48,7 @@
         [rowData]="UsersPersonalData"
         [enableDelete]="false"
         [enableEdit]="false"
-        (actionEvent)="onActionEventUser($event)"
+        (actionEvent)="onActionEnable($event)"
         exportTitle="Usuarios"
       ></app-grid>
       </div>

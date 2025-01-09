@@ -288,7 +288,7 @@ protected onActionEventPlans(actionEvent: { action: string, data: any }) {
     }
   sendPageEvaluation(process:string,id:string,status:string,calificacion:number,detalle:any)
   {   
-     localStorage.setItem("score", detalle[0].total_score==null?"0":detalle[0].total_score.toString());
+     localStorage.setItem("score", detalle.detail[0].total_score==null?"0":detalle.detail[0].total_score.toString());
     switch(process)
     {
       case "Evaluación 360 lider":
@@ -298,7 +298,7 @@ protected onActionEventPlans(actionEvent: { action: string, data: any }) {
             this.router.navigate(['/prueba360/'+id]);
           }
           else{
-            this.router.navigate(['evaluation360/'+id]);
+            this.router.navigate(['evaluation360/'+id+"/"+detalle.status]);
           }
         break
         case "Evaluación 360 Colaborador":
@@ -308,12 +308,12 @@ protected onActionEventPlans(actionEvent: { action: string, data: any }) {
               this.router.navigate(['/prueba360/'+id]);
             }
             else{
-              this.router.navigate(['evaluation360/'+id]);
+              this.router.navigate(['evaluation360/'+id+"/"+detalle.status]);
             }
           break
         case "Feedback y Plan de Acción":
  
-          if(detalle[0].status=="Terminado")
+          if(detalle.detail[0].status=="Terminado")
           this.router.navigate(['/plan-accion/'+id]);
         else
         this.message.error("No has terminado  la evaluacion.")

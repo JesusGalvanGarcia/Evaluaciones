@@ -246,6 +246,20 @@ export class Evaluation360Service {
         throw data;
       });
   }
+  async FinishEvaluation(data: any): Promise<any> {
+
+    return axios.post(environment.apiUrl +this.controllerUrl+  "/finishStatus", data)
+      .then(({ data }: any) => {
+        
+        return data;
+      })
+      .catch(({ response }: any) => {
+
+        const { data } = response
+      
+        throw data;
+      });
+  }
   SendTestSuggestions(data: any): Promise<any> {
 
     return axios.post(environment.apiUrl +this.controllerUrl+  "/saveSuggetions", data)

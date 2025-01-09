@@ -55,7 +55,7 @@ export class Evaluation360Component implements OnInit {
   Preview:Suggetions;
   modulesPreview:ModulesUser[]=[];
   showSuggestions:boolean;
-
+  status_evaluation:any;
   evaluatedUserName: string = "";
   type: string = "";
 
@@ -85,6 +85,7 @@ export class Evaluation360Component implements OnInit {
     public message: MensajeService,private fb: FormBuilder) {
     this.route.params.subscribe(params => {
       this.user_test_id = params['id']; //recibe los parametros del titulo de  la evaluacion
+      this.status_evaluation=params['status']
     });
 
   }
@@ -273,6 +274,28 @@ export class Evaluation360Component implements OnInit {
     this.PostsaveSuggestions(form);
     this.end=true;
     this.showSuggestions=false;
+  }
+  finishEvaluation()
+  {
+    let data = {
+      user_id: Number(localStorage.getItem("user_id")),
+      user_test_id: Number(this.user_test_id),
+    }
+    this.evaluation360Service.FinishEvaluation(data)
+    .then((response: any) => {
+      this.getPreview();
+      this.score =response.actual_score;
+      this.loading=false;      
+      this.end=true;
+      this.showSuggestions=false;
+    })
+    .catch((error: any) => {
+      console.error('Error in the request:', error);
+      this.isLoading=false;
+      this.message.error(error.message+" "+error.code);
+     // this.indexQuestion = this.indexQuestion - 1;
+      // Handle errors here
+    });
   }
   PostsaveAnswers(idRespuesta: number, idModule: number, idPregunta: number, score: string,indexAnswer:number) {
     this.loading = true;

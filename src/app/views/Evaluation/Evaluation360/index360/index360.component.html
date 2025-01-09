@@ -173,7 +173,7 @@
                     </div>
                  
                     <div class="dato" *ngIf="isChecked ==true" >
-                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.rank,row.detail)">
+                      <button class="btn btn-primary" (click)="sendPageEvaluation(detalle.name,detalle.id,detalle.status,detalle.rank,row)">
                         {{detalle.status  === 'Pendiente'?"Comenzar":detalle.status=="Terminado"?"Ver":"Continuar"}}
                       </button>
                     </div>

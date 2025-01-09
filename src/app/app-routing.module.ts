@@ -63,7 +63,7 @@ const routes: Routes = [
     { path: '360Users/:idEvaluation', component: Users360Component, canActivate: [AuthGuardService], data: { permission: 'Permiso para asignar colaboradores 360' } },
     { path: 'users360/:idEvaluation', component: UsersComponent, canActivate: [AuthGuardService], data: { permission: 'Permiso para asignar clientes internos 360' } },
     { path: 'admin360', component: Admin360Component, canActivate: [AuthGuardService], data: { permission: 'Acceso Administracion 360' } },
-    { path: 'evaluation360/:id', component: Evaluation360Component, data: { permission: 'Permiso para consultar la evaluacion 360' } },
+    { path: 'evaluation360/:id/:status', component: Evaluation360Component, data: { permission: 'Permiso para consultar la evaluacion 360' } },
     { path: 'personal360/:idEvaluation/:idUser', component: Personal360Component, canActivate: [AuthSecondGuardService], data: { permission: 'Permiso para ver mi reporte 360' } },
 
     // Routes PLD

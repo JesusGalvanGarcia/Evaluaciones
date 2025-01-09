@@ -57,6 +57,8 @@ Route::post('/evaluation360/getPersonal360', [Evaluation360Controller::class, 'g
 Route::post('/evaluation360/getUsersAdmin360', [Evaluation360Controller::class, 'getUsersAdmin360'])->name('Permiso para ver reportes 360');
 Route::post('/evaluation360/actionPlan', [Evaluation360Controller::class, 'actionPlan'])->name('Consultar planes de  accion 360');
 Route::post('/evaluation360/saveAnswer360', [Evaluation360Controller::class, 'saveAnswer360'])->name('Guardar Respuesta del Usuario 360');
+Route::post('/evaluation360/finishStatus', [Evaluation360Controller::class, 'finishStatus'])->name('Guardar Respuesta del Usuario 360');
+
 Route::post('/evaluation360/saveSuggetions', [Evaluation360Controller::class, 'saveSuggetions'])->name('Guardar Respuesta del Usuario sugerencias 360');
 Route::post('/evaluation360/getPreview', [Evaluation360Controller::class, 'getPreview'])->name('Obtener reporte 360');
 Route::post('/evaluation360/saveAnswerAverage', [Evaluation360Controller::class, 'saveAnswerAverage'])->name('Guardar promedio del modulo');

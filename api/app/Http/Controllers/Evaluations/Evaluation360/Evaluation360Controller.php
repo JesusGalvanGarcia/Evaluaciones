@@ -111,7 +111,7 @@ class Evaluation360Controller extends Controller
                 ], 400);
 
             //Se valida el estado de la prueba
-            $user_test = UserTest::whereIn('status_id', [1, 2, 3])->find($request->user_test_id);
+            $user_test = UserTest::whereIn('status_id', [1, 2, 4])->find($request->user_test_id);
 
             if (!$user_test)
                 return response()->json([
@@ -269,18 +269,16 @@ class Evaluation360Controller extends Controller
                     'code' => $this->prefix . 'X601'
                 ], 400);
             }
-            $existingRecords = DB::table('user_evaluations')
-                ->join('users', 'user_evaluations.responsable_id', '=', 'users.id')
-                ->select(
-                    'user_evaluations.responsable_id as id',
-                    DB::raw("CONCAT(users.name, ' ', users.father_last_name, ' ', users.mother_last_name) as collaborator_name"),
-                )
-                ->where([
-                    ['user_evaluations.user_id', $request->responsable_id],
-                    ['user_evaluations.evaluation_id', $request->evaluation_id],
-                    ['user_evaluations.type_evaluator_id', 3],
-                ])
-                ->get();
+            $existingRecords = UserEvaluation::join('users', 'user_evaluations.responsable_id', '=', 'users.id')
+            ->select(
+                'user_evaluations.responsable_id as id',
+                DB::raw("CONCAT(users.name, ' ', users.father_last_name, ' ', users.mother_last_name) as collaborator_name")
+            )
+            ->where('user_evaluations.user_id', $request->responsable_id)
+            ->where('user_evaluations.evaluation_id', $request->evaluation_id)
+            ->where('user_evaluations.type_evaluator_id', 3)
+            ->get();
+        
 
 
 
@@ -588,6 +586,107 @@ class Evaluation360Controller extends Controller
             ], 500);
         }
     }
+    public function finishStatus(Request $request)
+    {
+        try {
+              
+            // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+            // if (!$this->checkPermissions(request()->route()->getName())) {
+
+            //     return response()->json([
+            //         'title' => 'Proceso cancelado',
+            //         'message' => 'No tienes permiso para hacer esto.',
+            //         'code' => 'P001'
+            //     ], 400);
+            // }
+
+            $validator = Validator::make(request()->all(), [
+                'user_id' => 'Required|Integer|NotIn:0|Min:0',
+                'user_test_id' => 'Required|Integer|NotIn:0|Min:0',
+            ]);
+
+            if ($validator->fails()) {
+
+                return response()->json([
+                    'title' => 'Datos Faltantes',
+                    'message' => $validator->messages()->first(),
+                    'code' => $this->prefix . 'X601'
+                ], 400);
+            }
+
+            $user = UserService::checkUser(request('user_id'));
+
+            if (!$user)
+                return response()->json([
+                    'title' => 'Consulta Cancelada',
+                    'message' => 'Usuario invalido, no tienes acceso.',
+                    'code' => $this->prefix . 'X602'
+                ], 400);
+
+            //Se valida el estado de la prueba
+            $user_test = UserTest::whereIn('status_id', [1, 2,4])->find($request->user_test_id);
+            $user_evaluation  = $user_test->user_evaluation;
+
+            if (!$user_test)
+                return response()->json([
+                    'title' => 'Prueba Invalida',
+                    'message' => 'Está prueba no es valida o ya ha sido resuelta.',
+                    'code' => $this->prefix . 'X603'
+                ], 400);
+            if ($user_test->user_evaluation->responsable_id!=$request->user_id)
+            return response()->json([
+                'title' => 'Prueba Invalida',
+                'message' => 'Está prueba no te corresponde contestarla.',
+                'code' => $this->prefix . 'X603'
+            ], 400);
+            // Se iguala el score actual de la prueba
+            $total_score = $user_test->total_score;
+
+            DB::beginTransaction();
+
+
+            $total_score += (int)$request->score;
+
+     
+            $user_test->update([
+                'status_id' => 3,
+                'finish_date' => $request->its_over == 'si' ? Carbon::now()->format('Y-m-d') : null,
+                'updated_by' => $request->user_id,
+            ]);
+            if ($user_evaluation->type_evaluator_id > 2) {
+                $user_evaluation->update(
+                    [
+                        'status_id' => 3,
+                        'finish_date' => Carbon::now()->format('Y-m-d'),
+                        'process_id' => 7
+                    ]
+                );
+            } else {
+                $user_evaluation->update(
+                    [
+                        'status_id' => $user_evaluation->type_evaluator_id==1?2:3,
+                        'process_id' => $user_evaluation->type_evaluator_id==1?10:7
+                    ]
+                );
+            }
+            DB::commit();
+
+            return response()->json([
+                'title' => 'Proceso terminado',
+                'message' => 'Respuesta guardada correctamente',
+                'actual_score' => $total_score,
+
+            ]);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return response()->json([
+                'title' => 'Ocurrio un error en el servidor',
+                'message' => $e->getMessage() . ' -L:' . $e->getLine(),
+                'code' => $this->prefix . 'X699'
+            ], 500);
+        }
+    }
     public function enableEvaluation(Request $request)
     {
         try{
@@ -617,7 +716,7 @@ class Evaluation360Controller extends Controller
         DB::beginTransaction();
 
         $user_evaluation= UserEvaluation::where("id",$request->user_evaluation)->first();
-        $user_evaluation->update(['status_id' => 2,'process_id'=>7]);
+        $user_evaluation->update(['status_id' => 4,'process_id'=>7]);
 
         $user_test=UserTest::where("user_evaluation_id", $request->user_evaluation)->first();
         $user_test->update(['status_id' => 2]);
@@ -939,28 +1038,57 @@ class Evaluation360Controller extends Controller
                     'code' => $this->prefix . 'X601'
                 ], 400);
             }
-            $existingRecords = DB::table('user_evaluations')
-                ->where([
+            $existingRecords = UserEvaluation::
+                where([
                     ['user_id', $request->responsable_id],
                     ['evaluation_id', $request->evaluation_id],
                     ['type_evaluator_id', 3],
 
                 ])
                 ->count();
+           $userIdsMatch = collect($request->users)->pluck('id')->toArray();
 
             if ($existingRecords > 0) {
                 // Si hay registros, entonces eliminar
-                DB::table('user_evaluations')
-                    ->where([
-                        ['user_id', $request->responsable_id],
-                        ['evaluation_id', $request->evaluation_id],
-                        ['type_evaluator_id', 3],
-                    ])
-                    ->delete();
+                $existingRecords = UserEvaluation::
+                   where([
+                    ['user_id', $request->responsable_id],
+                    ['evaluation_id', $request->evaluation_id],
+                    ['type_evaluator_id', 3],
+
+                ])
+                ->get();
+            
+            // Convertir registros existentes a un array de IDs
+            $existingUserIds = $existingRecords->pluck('responsable_id')->toArray();
+            
+            // Obtener los IDs de usuarios de la solicitud
+            $requestUserIds = collect($request->users)->pluck('id')->toArray();
+            
+
+            // Filtrar los usuarios que deben ser eliminados (en $existingUserIds pero no en $requestUserIds)
+           // $toDelete = collect($existingUserIds)->intersect($requestUserIds)->toArray();
+            $toDelete = collect($existingUserIds)->diff($requestUserIds)->toArray();
+       
+             // Filtrar los usuarios que deben ser agregados (en $requestUserIds pero no en $existingUserIds)
+            $userIdsMatch = array_values(collect($requestUserIds)->diff($existingUserIds)->toArray());
+            DB::beginTransaction();
+            if (!empty($toDelete)) {
+                UserEvaluation::where('evaluation_id', $request->evaluation_id)
+                ->where('user_id', $request->responsable_id)
+                ->where('type_evaluator_id', 3)
+                ->whereIn('responsable_id', $toDelete) // Asumiendo que 'user_id' es la columna correcta
+                ->update([
+                    'deleted_at' =>  Carbon::now()->format('Y-m-d'),
+                    'deleted_by' => $request->user_id, // O el ID del usuario actual
+                ]);
+            
             }
-            $userIdsMatch = collect($request->users)->pluck('id')->toArray();
+         
+            }
 
             $usersData = User::whereIn('id', $userIdsMatch)->select('id', 'name', 'email')->get();
+        
             $evaluationName = Evaluation::where('id', $request->evaluation_id)->value('name');
 
             // Enviar correos electrónicos a cada usuario
@@ -968,7 +1096,7 @@ class Evaluation360Controller extends Controller
                 Test360Service::sendEmail360($user->name, $evaluationName, $user->email);
             }
 
-            foreach ($request->users as $user) {
+            foreach ($usersData as $user) {
                 $userId = isset($user['id']) ? $user['id'] : null;
                 $evaluationId = $request->evaluation_id;
                 $responsableId = $request->responsable_id;

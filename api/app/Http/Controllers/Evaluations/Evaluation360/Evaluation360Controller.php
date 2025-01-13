@@ -784,14 +784,6 @@ class Evaluation360Controller extends Controller
                         'updated_at' => now(),
                         'deleted_at' => null,
                     ]);
-                } else {
-                    // Remove the user ID from both arrays
-                    unset($userIds[$key]);
-
-                    // If $request->users is a collection, remove the item from the collection
-                    $request->users = collect($request->users)->reject(function ($item) use ($user) {
-                        return $item['id'] == $user;
-                    })->values();
                 }
             }
 
@@ -847,7 +839,7 @@ class Evaluation360Controller extends Controller
             );
             $userIdsTotal = collect($evaluationsTotal)->pluck('user_id')->toArray();
             $userRespTotal = collect($evaluationsTotal)->pluck('responsable_id')->toArray();
-
+ 
             //convertir para inserts en User_evaluations
             // Convert to a collection
             $evaluationsCollection = collect($evaluationsTotal);
@@ -871,8 +863,42 @@ class Evaluation360Controller extends Controller
                     'deleted_at' => null,
                 ];
             });
+              // Obtener los registros existentes para la evaluación actual
+            $existingEvaluations = UserEvaluation::where([['evaluation_id', $request->evaluation_id],['user_id',$user]])->get();
+
+            // Convertir los registros existentes a un array de IDs de usuarios para fácil comparación
+            $existingUserIds = $existingEvaluations->pluck('responsable_id')->toArray();
+
+            // Extraer los IDs de usuario desde los nuevos colaboradores
+            $newUserIds = collect($InsertCollaborators)->pluck('responsable_id')->toArray();
             DB::beginTransaction();
-            $newEvaluations = UserEvaluation::insert($InsertCollaborators->toArray());
+            // Identificar registros que deben ser eliminados lógicamente (están en DB pero no en $InsertCollaborators)
+            $toDelete = array_diff($existingUserIds, $newUserIds);
+            if (!empty($toDelete)) {
+                UserEvaluation::where('evaluation_id', $request->evaluation_id)
+                    ->whereIn('responsable_id', $toDelete)
+                    ->update([
+                        'deleted_at' => Carbon::now(),
+                        'deleted_by' => $request->user_id, // O el ID del usuario actual
+                    ]);
+            }
+
+            // Identificar registros que deben ser insertados (están en $InsertCollaborators pero no en DB)
+            // Convertir la colección a un arreglo antes de usar array_filter
+            $toInsert = array_filter(
+                $InsertCollaborators->toArray(),
+                function ($collaborator) use ($existingUserIds) {
+                    return !in_array($collaborator['responsable_id'], $existingUserIds);
+                }
+            );
+        
+            // Insertar los nuevos registros
+            if (!empty($toInsert)) {
+                UserEvaluation::insert($toInsert);
+            }
+
+            
+            //$newEvaluations = UserEvaluation::insert($InsertCollaborators->toArray());
             //consultar los id con  los que fueron creados
             $user_evaluation_ids = UserEvaluation::whereIn('user_id', $userIdsTotal)
                 ->whereIn('responsable_id', $userRespTotal)
@@ -887,12 +913,15 @@ class Evaluation360Controller extends Controller
                 ->where('evaluation_id', $request->evaluation_id)
                 ->pluck('responsable_id');
 
-            $test = Test::where('evaluation_id', $request->evaluation_id)->first();
+            $test = Test::where('evaluation_id', $request->evaluation_id)->get();
 
             // Map and create an array of values
-            $InsertCollaboratorsTest = array_map(function ($item) use ($request, $test) {
+            $InsertCollaboratorsTest = array_map(function ($item) use ($request, $test,$userCollaboratorIds) {
+                $testId = count($userCollaboratorIds) > 0
+                ? $test->first()->id // Usa el primer registro
+                : ($test[1]->id ); // Usa el segundo si existe, de lo contrario, el primero.
                 return [
-                    'test_id' => $test->id,
+                    'test_id' =>  $testId,
                     'total_score' => 0,
                     'status_id' => 1,
                     'finish_date' => null,
@@ -917,9 +946,9 @@ class Evaluation360Controller extends Controller
             $evaluationName = Evaluation::where('id', $request->evaluation_id)->value('name');
 
             // Enviar correos electrónicos a cada usuario
-            foreach ($usersData as $user) {
+           /* foreach ($usersData as $user) {
                 Test360Service::sendEmail360($user->name, $evaluationName, $user->email);
-            }
+            }*/
 
             $user_evaluations = UserEvaluation::whereIn('user_id', $userIdsMatch)
                 ->where('evaluation_id', $request->evaluation_id)
